@@ -1,0 +1,328 @@
+body {
+  background-color: skyblue;
+  font-family: sans-serif;
+}
+
+h1 a {
+  text-decoration: none;
+}
+
+a {
+  color: darkgreen;
+}
+
+a:link {
+  color: darkgreen;
+}
+
+a:hover {
+  color: darkgreen;
+}
+
+.bad {
+  background-color: red;
+  color: yellow;
+}
+
+.canvasWidth {
+  width: 600px;
+  margin: auto;
+}
+
+.clr {
+  clear: both;
+}
+
+.modalHeader {
+  padding: 5px;
+  margin: 5px;
+}
+
+.good {
+  background-color: LightGreen;
+  color: black;
+}
+
+.info {
+  width: 20%;
+  text-align: centre;
+}
+
+.left {
+  float: left;
+}
+
+.right {
+  float: right;
+}
+
+.neutral {
+  background-color: white;
+  color: black;
+}
+
+.row {
+  display: table-row;
+}
+
+.col {
+  display: table-cell;
+}
+
+.links {
+  float: right;
+}
+
+.hidden {
+  display: none;
+}
+
+.table {
+  display: table;
+}
+
+.toolButton {
+  width: 140px;
+  margin-left: 5px;
+  margin-right: 5px;
+  border: 1px solid black;
+  color: black;
+  background-color: white;
+  font-family: sans-serif;
+  font-size: 12px;
+}
+
+.miscButton {
+  width: 100px;
+}
+
+.initialHidden {
+  display: none;
+}
+
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  border: 1px solid black;
+  padding: 5px;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  -moz-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  z-index: 20;
+  background-color: white;
+  font-size: large;
+  width: 500px;
+}
+
+.selected {
+  font-weight: bold;
+}
+
+.unselected {
+  font-weight: normal;
+}
+
+#header {
+  text-align: center;
+  width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  color: seagreen;
+}
+
+#appeal {
+  border: 1px solid gray;
+  padding: 10px;
+  font-size: 12px;
+}
+
+#appeal h2 {
+  color: yellow;
+}
+
+#budgetRequest, #budgetHeader {
+  background-color: dodgerblue;
+  border: none;
+  color: white;
+}
+
+#residentialButton {
+  background-color: lime;
+}
+
+#policeButton {
+  background-color: darkblue;
+  color: white;
+}
+
+#coalButton {
+  background-color: gray;
+}
+
+#wireButton {
+  background-color: khaki;
+}
+
+#commercialButton {
+  background-color: blue;
+  color: white;
+}
+
+#fireButton {
+  background-color: red;
+}
+
+#nuclearButton {
+  background-color: mistyrose;
+}
+
+#roadButton {
+  background-color: black;
+  color: white;
+}
+
+#industrialButton {
+  background-color: yellow;
+}
+
+#portButton {
+ background-color: dodgerblue;
+ color: white;
+}
+
+#stadiumButton {
+  background-color: indigo;
+  color: white;
+}
+
+#railButton {
+  background-color: brown;
+  color: white;
+}
+
+#parkButton {
+  background-color: darkgreen;
+  color: white;
+}
+
+#airportButton {
+  background-color: violet;
+}
+
+#queryButton {
+  background-color: cyan;
+}
+
+#bulldozerButton {
+  background-color: salmon;
+}
+
+#buttons {
+  display: table;
+}
+
+#disasterRequest, #disasterHeader {
+  background-color: red;
+  color: yellow;
+}
+
+#evalRequest, #evalHeader {
+  background-color: forestgreen;
+  border: none;
+  color: white;
+}
+
+#queryHeader {
+  background-color: cyan;
+}
+
+#infobar {
+  background-color: silver;
+}
+
+#miscControls {
+  padding: 5px;
+  width: 340px;
+  margin: auto;
+}
+
+#miscButtons {
+  margin-top: 10px;
+}
+
+#miscButtons button {
+  margin: 5px;
+  border: none;
+  cursor: pointer;
+}
+
+#notifications {
+  border: 1px solid black;
+  text-align: center;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+#opaque {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  opacity: .80;
+  filter: Alpha(Opacity=80); 
+  background-color: rgb(238, 238, 238);
+  background-repeat: repeat-x;
+  background-attachment: scroll;
+  background-position: 50% 50%;
+  z-index: 10;
+}
+
+#pauseRequest {
+  background-color: lightgray;
+  border: none;
+  color: black;
+}
+
+#rightButtons {
+  float: right;
+}
+
+#canvasContainer {
+  width: 600px;
+  height: 400px;
+  margin: 0 auto;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+#container {
+  width: 60%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#disasterLabel {
+  font-size: smaller;
+}
+
+#RCIContainer {
+  width: 140px;
+  height: 140px;
+  padding: 2px;
+  margin: 0px;
+  background-color: white;
+  border: 1px solid black;
+}
+
+#toolInfo {
+  text-align: center;
+}

@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+
+<!--
+ * micropolisJS. Adapted from Micropolis by Graeme McCutcheon.
+ *
+ * This code is released under the GNU GPL v3, with some additional terms.
+ * Please see the files LICENSE and COPYING for details. Alternatively,
+ * consult http://micropolisjs.graememcc.co.uk/LICENSE and
+ * http://micropolisjs.graememcc.co.uk/COPYING
+ *
+ * -->
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <script src="thirdparty/jquery/jquery-2.0.3.min.js"></script>
+    <script src="js/polyfills.js"></script>
+    <script data-main="js/main-built.js" src="thirdparty/requirejs/require.js"></script>
+    <link rel="stylesheet" media="screen" type="text/css" href="css/style.css">
+    <title>micropolisJS</title>
+  </head>
+  <body>
+    <div class="hidden" id="opaque"></div>
+    <div id='header'>
+      <h1 id="title">micropolisJS</h1>
+      <div class="links">
+        <a href="about.html">About</a> | <a href="participate.html">Get Involved</a>
+      </div>
+    </div>
+    <div id="container">
+      <div id="infobar" class="canvasWidth table initialHidden">
+        <div class="col info initialHidden">
+          <span id="date">Jan 1900</span>
+        </div>
+        <div class="col info initialHidden">
+          $<span id="funds">20000</span>
+        </div>
+        <div class="col info initialHidden">
+          Score: <span id="score">0</span>
+        </div>
+        <div class="col info initialHidden">
+          <span id="cclass">VILLAGE</span>
+          (
+          <span id="population">0</span>
+          )
+        </div>
+      </div>
+      <div id="canvasContainer">
+        <div id="MicropolisCanvas">
+          Loading...
+        </div>
+      </div>
+      <div id="toolInfo" class="initialHidden canvasWidth"><span id="toolOutput">&nbsp;</span></div>
+      <div id="notifications" class="initialHidden canvasWidth"></div>
+      <div id="buttons" class="canvasWidth initialHidden">
+        <div id="row1" class="row">
+          <button id="residentialButton" data-size="3" data-tool="residential" data-colour="lime" class="toolButton row unselected initialHidden">Residential $100</button>
+          <button id="policeButton" data-size="3" data-tool="police" data-colour="darkblue" class="toolButton row unselected initialHidden">Police $500</button>
+          <button id="coalButton" data-size="4" data-tool="coal" data-colour="gray" class="toolButton row unselected initialHidden">Coal $3000</button>
+          <button id="wireButton" data-size="1" data-tool="wire" data-colour="khaki" class="toolButton row unselected initialHidden">Wire $5</button>
+        </div>
+        <div id="row2" class="row">
+          <button id="commercialButton" data-size="3" data-tool="commercial" data-colour="blue" class="toolButton row unselected initialHidden">Commercial $100</button>
+          <button id="fireButton" data-size="3" data-tool="fire" data-colour="red" class="toolButton row unselected initialHidden">Fire $500</button>
+          <button id="nuclearButton" data-size="4" data-tool="nuclear" data-colour="mistyrose" class="toolButton row unselected initialHidden">Nuclear $5000</button>
+          <button id="roadButton" data-size="1" data-tool="road" data-colour="black" class="toolButton row unselected initialHidden">Road $10</button>
+        </div>
+        <div id="row3" class="row">
+          <button id="industrialButton" data-size="3" data-tool="industrial" data-colour="yellow" class="toolButton row unselected initialHidden">Industrial $100</button>
+          <button id="portButton" data-size="4" data-tool="port" data-colour="dodgerblue" class="toolButton row unselected initialHidden">Port $3000</button>
+          <button id="stadiumButton" data-size="4" data-tool="stadium" data-colour="indigo" class="toolButton row unselected initialHidden">Stadium $5000</button>
+          <button id="railButton" data-size="1" data-tool="rail" data-colour="brown" class="toolButton row unselected initialHidden">Rail $20</button>
+        </div>
+        <div id="row4" class="row">
+          <button id="parkButton" data-size="1" data-tool="park" data-colour="darkgreen" class="toolButton row unselected initialHidden">Park $10</button>
+          <button id="airportButton" data-size="6" data-tool="airport" data-colour="violet" class="toolButton row unselected initialHidden">Airport $10000</button>
+          <button id="queryButton" data-size="1" data-tool="query" data-colour="cyan" class="toolButton row unselected initialHidden">Query</button>
+          <button id="bulldozerButton" data-size="1" data-tool="bulldozer" data-colour="salmon" class="toolButton row unselected initialHidden">Bulldozer $1</button>
+        </div>
+      </div>
+      <div id="miscControls" class="initialHidden">
+        <div id="RCIContainer" class="left"></div>
+        <div id="miscButtons" class="right">
+          <div class="table">
+            <div class="row">
+              <button id="budgetRequest" class="miscButton">Budget</button>
+            </div>
+            <div class="row">
+              <button id="evalRequest" class="miscButton">Evaluation</button>
+            </div>
+            <div class="row">
+              <button id="disasterRequest" class="miscButton">Disasters</button>
+            </div>
+            <div class="row">
+              <button id="pauseRequest" class="miscButton">Pause</button>
+            </div>
+          </div>
+        </div>
+        <div class="clr"></div>
+      </div>
+    </div>
+    <div class="hidden modal" id="budget">
+      <div id="budgetHeader" class="modalHeader">
+         Budget
+      </div>
+      <form id="budgetForm">
+        <div>
+          <div id="taxInfo" class="left">Tax Collected: <span id="taxesCollected"></span></div>
+          <fieldset class="right">
+            <legend>Roads</legend>
+            <input type="range" id="roadRate" min="0" max="100" step="1" data-source="roadFund">
+            <div>
+              <label for="roadRate" id="roadRateLabel">100% of $100 = $100</label>
+            </div>
+          </fieldset>
+        </div>
+        <div class="clr"></div>
+        <div>
+          <div id="cashInfo" class="left">Cashflow: <span id="cashFlow"></span></div>
+          <fieldset class="right">
+            <legend>Fire</legend>
+            <input type="range" id="fireRate" min="0" max="100" step="1" data-source="fireFund">
+            <div>
+              <label for="fireRate" id="fireRateLabel">100% of $100 = $100</label>
+            </div>
+          </fieldset>
+        </div>
+        <div class="clr"></div>
+        <div>
+          <div id="previousInfo" class="left">Previous funds: <span id="previousFunds"></span></div>
+          <fieldset class="right">
+            <legend>Police</legend>
+            <input type="range" id="policeRate" min="0" max="100" step="1" data-source="policeFund">
+            <div>
+              <label for="policeRate" id="policeRateLabel">100% of $100 = $100</label>
+            </div>
+          </fieldset>
+        </div>
+        <div class="clr"></div>
+        <div>
+          <div id="currentInfo" class="left">Current funds: <span id="currentFunds"></span></div>
+          <fieldset class="right">
+            <legend>Tax</legend>
+            <input type="range" id="taxRate" min="0" max="20" step="1">
+            <div>
+              <label for="taxRate" id="taxRateLabel">100% of $100 = $100</label>
+            </div>
+          </fieldset>
+        </div>
+        <div class="clr"></div>
+        <div>
+          <div id="leftButtons" class="left">
+            <button id="budgetReset">Reset</button>
+          </div>
+          <div id="budgetRightButtons" class="right">
+            <button id="budgetCancel" class="rightButtons">Cancel</button>
+            <input type="submit" id="budgetOK" class="rightButtons" value="OK">
+          </div>
+          <div class="clr"></div>
+        </div>
+      </form>
+    </div>
+    <div class="hidden modal" id="queryWindow">
+      <div id="queryHeader" class="modalHeader">
+         Query
+      </div>
+      <div id="queryDebug" class="hidden">
+        <pre>
+        Tile: <span id="queryTile"></span>
+        TileValue: <span id="queryTileValue"></span>
+        Burnable: <span id="queryTileBurnable"></span>
+        Bulldozable: <span id="queryTileBulldozable"></span>
+        Conductive: <span id="queryTileCond"></span>
+        Animated: <span id="queryTileAnim"></span>
+        Powered: <span id="queryTilePowered"></span>
+        FireStation: <span id="queryFireStationRaw"></span>
+        FireStationEffect: <span id="queryFireStationEffectRaw"></span>
+        PoliceStation: <span id="queryPoliceStationRaw"></span>
+        PoliceStationEffect: <span id="queryPoliceStationEffectRaw"></span>
+        TerrainDensity: <span id="queryTerrainDensityRaw"></span>
+        ComRate: <span id="queryComRateRaw"></span>
+        RateOfGrowth: <span id="queryRateRaw"></span>
+        Pollution: <span id="queryPollutionRaw"></span>
+        Crime: <span id="queryCrimeRaw"></span>
+        LandValue: <span id="queryLandValueRaw"></span>
+        Traffic Density: <span id="queryTrafficDensityRaw"></span>
+        Density: <span id="queryDensityRaw"></span>
+        </pre>
+      </div>
+      <pre>
+        Zone: <span id="queryZoneType"></span>
+        Density: <span id="queryDensity"></span>
+        Value: <span id="queryLandValue"></span>
+        Crime: <span id="queryCrime"></span>
+        Pollution: <span id="queryPollution"></span>
+        Growth: <span id="queryRate"></span>
+      </pre>
+      <div class="right">
+        <form id="queryForm">
+          <input type="submit" id="queryOK" class="rightButtons" value="OK">
+        </form>
+      </div>
+      <div class="clr"></div>
+    </div>
+    <div class="hidden modal" id="evalWindow">
+      <div id="evalHeader" class="modalHeader">
+         Evaluation
+      </div>
+      <pre>
+      Public opinion:
+        Is the mayor doing a good job?:
+          Yes: <span id="evalYes"></span>% No: <span id="evalNo"></span>%
+        What are the worst problems?
+          <span id="evalProb1"></span> <span id="evalProb2"></span>
+          <span id="evalProb3"></span> <span id="evalProb4"></span>
+
+      Statistics:
+        Population: <span id="evalPopulation"></span>
+        Net Migration: <span id="evalMigration"></span>
+        Assessed Value: <span id="evalValue"></span>
+        Category: <span id="evalClass"></span>
+        Game Level: <span id="evalLevel"></span>
+        Score: <span id="evalScore"></span>
+        Annual change: <span id="evalScoreDelta"></span>
+      </pre>
+      <div class="right">
+        <form id="evalForm">
+        <input type="submit" id="evalOK" class="rightButtons" value="OK">
+        </form>
+      </div>
+      <div class="clr"></div>
+    </div>
+    <div class="hidden modal" id="disasterWindow">
+      <div id="disasterHeader" class="modalHeader">
+         Disasters
+      </div>
+      <form id="disasterForm">
+          <div id="disasterSelectContainer">
+          <label id="disasterLabel" for="disasterSelect">What disaster do you want to befall this unsuspecting world?</label>
+          <select id="disasterSelect">
+            <option id="disasterNone" value="None">None</option>
+            <option id="disasterMonster" value="Monster">Monster</option>
+            <option id="disasterFire" value="None">Fire</option>
+            <option id="disasterFlood" value="Flood">Flood</option>
+            <option id="disasterCrash" value="Crash">Crash</option>
+            <option id="disasterMeltdown" value="Meltdown">Meltdown</option>
+            <option id="disasterTornado" value="Tornado">Tornado</option>
+          </select>
+        </div>
+        <div id="disasterButtons" class="right">
+          <button id="disasterCancel" class="rightButtons">Cancel</button>
+          <input type="submit" id="disasterOK" class="rightButtons" value="OK">
+        </div>
+        <div class="clr"></div>
+      </form>
+    </div>
+  </body>
+</html>
