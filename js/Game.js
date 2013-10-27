@@ -12,10 +12,12 @@ define(['BudgetWindow', 'DisasterWindow', 'GameCanvas', 'EvaluationWindow', 'Inf
   "use strict";
 
 
-  function Game(gameMap, tileSet, spriteImages) {
+  function Game(gameMap, tileSet, spriteImages, difficulty) {
+    difficulty = difficulty || 0;
+
     this.gameMap = gameMap;
     this.tileSet = tileSet;
-    this.simulation = new Simulation(this.gameMap, Simulation.LEVEL_EASY, 1);
+    this.simulation = new Simulation(this.gameMap, difficulty, 1);
     this.rci = new RCI('RCIContainer');
     this.budgetWindow = new BudgetWindow('opaque', 'budget');
     this.queryWindow = new QueryWindow('opaque', 'queryWindow');

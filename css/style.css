@@ -326,7 +326,7 @@ a:hover {
   font-size: smaller;
 }
 
-#splashCanvas {
+#splashContainer {
   text-align: centre;
 }
 
@@ -343,6 +343,11 @@ a:hover {
   width: 250px;
   margin: auto;
 }
+
+#difficulties {
+  margin-top: 10px;
+}
+
 #RCIContainer {
   width: 140px;
   height: 140px;

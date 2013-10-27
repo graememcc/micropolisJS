@@ -23,12 +23,13 @@ define(['Game', 'MapGenerator', 'SplashCanvas'],
 
 
   SplashScreen.prototype.playMap = function() {
+    var difficulty = $('input[name="difficulty"]:checked').val() - 0;
     $('#splashGenerate').off('click');
     $('#splashPlay').off('click');
     $('#splashContainer').html('');
 
     // Actually launch the game
-    var g = new Game(this.map, this.tileSet, this.spriteImages);
+    var g = new Game(this.map, this.tileSet, this.spriteImages, difficulty);
   };
 
 
