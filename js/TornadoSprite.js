@@ -85,6 +85,7 @@ define(['BaseSprite', 'Messages', 'MiscUtils', 'Random', 'SpriteConstants', 'Spr
   // Metadata for image loading
   Object.defineProperties(TornadoSprite,
     {ID: MiscUtils.makeConstantDescriptor(6),
+     width: MiscUtils.makeConstantDescriptor(48),
      frames: MiscUtils.makeConstantDescriptor(3)});
 
 

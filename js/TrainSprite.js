@@ -121,6 +121,7 @@ define(['BaseSprite', 'Messages', 'MiscUtils', 'Random', 'SpriteConstants', 'Spr
   // Metadata for image loading
   Object.defineProperties(TrainSprite,
     {ID: MiscUtils.makeConstantDescriptor(1),
+     width: MiscUtils.makeConstantDescriptor(32),
      frames: MiscUtils.makeConstantDescriptor(5)});
 
 

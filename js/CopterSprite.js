@@ -103,6 +103,7 @@ define(['BaseSprite', 'Messages', 'MiscUtils', 'Random', 'SpriteConstants', 'Spr
   // Metadata for image loading
   Object.defineProperties(CopterSprite,
     {ID: MiscUtils.makeConstantDescriptor(2),
+     width: MiscUtils.makeConstantDescriptor(32),
      frames: MiscUtils.makeConstantDescriptor(8)});
 
 

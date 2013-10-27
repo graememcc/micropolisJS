@@ -161,6 +161,7 @@ define(['BaseSprite', 'Messages', 'MiscUtils', 'Random', 'SpriteConstants', 'Spr
   // Metadata for image loading
   Object.defineProperties(MonsterSprite,
     {ID: MiscUtils.makeConstantDescriptor(5),
+     width: MiscUtils.makeConstantDescriptor(48),
      frames: MiscUtils.makeConstantDescriptor(16)});
 
 

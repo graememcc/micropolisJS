@@ -171,6 +171,7 @@ define(['BaseSprite', 'Messages', 'MiscUtils', 'Random', 'SpriteConstants', 'Spr
   // Metadata for image loading
   Object.defineProperties(BoatSprite,
     {ID: MiscUtils.makeConstantDescriptor(4),
+     width: MiscUtils.makeConstantDescriptor(48),
      frames: MiscUtils.makeConstantDescriptor(8)});
 
 

@@ -2,9 +2,9 @@ define(['Game', 'MapGenerator', 'SplashCanvas'],
        function(Game, MapGenerator, SplashCanvas) {
   "use strict";
 
-  function SplashScreen(tileSet, spriteImages) {
+  function SplashScreen(tileSet, spriteSheet) {
     this.tileSet = tileSet;
-    this.spriteImages = spriteImages;
+    this.spriteSheet = spriteSheet;
     this.map = MapGenerator();
 
     $('#splashGenerate').click(this.regenerateMap.bind(this));
@@ -29,7 +29,7 @@ define(['Game', 'MapGenerator', 'SplashCanvas'],
     $('#splashContainer').html('');
 
     // Actually launch the game
-    var g = new Game(this.map, this.tileSet, this.spriteImages, difficulty);
+    var g = new Game(this.map, this.tileSet, this.spriteSheet, difficulty);
   };
 
 

@@ -71,7 +71,7 @@ define(['AnimationManager', 'GameMap', 'MouseBox', 'Tile', 'TileSet'],
   }
 
 
-  GameCanvas.prototype.init = function(map, tileSet, spriteImages) {
+  GameCanvas.prototype.init = function(map, tileSet, spriteSheet) {
     var e = new Error('Invalid parameter');
 
     if (arguments.length < 3)
@@ -81,7 +81,7 @@ define(['AnimationManager', 'GameMap', 'MouseBox', 'Tile', 'TileSet'],
       throw new Error('TileSet not ready!');
 
 
-    this._spriteImages = spriteImages;
+    this._spriteSheet = spriteSheet;
     this._tileSet = tileSet;
     var w = this._tileSet.tileWidth;
     this._map = map;
@@ -477,9 +477,15 @@ define(['AnimationManager', 'GameMap', 'MouseBox', 'Tile', 'TileSet'],
     var ctx = this._canvas.getContext('2d');
     for (var i = 0, l = spriteList.length; i < l; i++) {
       var sprite = spriteList[i];
-      var filename = sprite.getFileName();
-      var image = this._spriteImages[sprite.getFileName()];
-      ctx.drawImage(image, sprite.x + sprite.xOffset - this._originX * 16, sprite.y + sprite.yOffset - this._originY * 16);
+      ctx.drawImage(this._spriteSheet,
+                    (sprite.frame - 1) * 48,
+                    (sprite.type - 1) * 48,
+                    sprite.width,
+                    sprite.width,
+                    sprite.x + sprite.xOffset - this._originX * 16,
+                    sprite.y + sprite.yOffset - this._originY * 16,
+                    sprite.width,
+                    sprite.width);
     }
   };
 

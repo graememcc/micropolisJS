@@ -72,6 +72,7 @@ define(['BaseSprite', 'Messages', 'MiscUtils', 'Random', 'SpriteConstants', 'Spr
   // Metadata for image loading
   Object.defineProperties(ExplosionSprite,
     {ID: MiscUtils.makeConstantDescriptor(7),
+     width: MiscUtils.makeConstantDescriptor(48),
      frames: MiscUtils.makeConstantDescriptor(6)});
 
 

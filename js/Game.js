@@ -12,7 +12,7 @@ define(['BudgetWindow', 'DisasterWindow', 'GameCanvas', 'EvaluationWindow', 'Inf
   "use strict";
 
 
-  function Game(gameMap, tileSet, spriteImages, difficulty) {
+  function Game(gameMap, tileSet, spriteSheet, difficulty) {
     difficulty = difficulty || 0;
 
     this.gameMap = gameMap;
@@ -25,7 +25,7 @@ define(['BudgetWindow', 'DisasterWindow', 'GameCanvas', 'EvaluationWindow', 'Inf
     this.disasterWindow = new DisasterWindow('opaque', 'disasterWindow');
 
     this.gameCanvas = new GameCanvas('canvasContainer');
-    this.gameCanvas.init(this.gameMap, this.tileSet, spriteImages);
+    this.gameCanvas.init(this.gameMap, this.tileSet, spriteSheet);
     this.inputStatus = new InputStatus(this.gameMap);
     this.mouse = null;
     this.sprites = null;

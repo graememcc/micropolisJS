@@ -7,8 +7,8 @@
  *
  */
 
-define(['AirplaneSprite', 'BoatSprite', 'CopterSprite', 'ExplosionSprite', 'MonsterSprite', 'MiscUtils', 'TornadoSprite', 'TrainSprite'],
-       function(AirplaneSprite, BoatSprite, CopterSprite, ExplosionSprite, MonsterSprite, MiscUtils, TornadoSprite, TrainSprite) {
+define([],
+       function() {
   "use strict";
 
   function SpriteLoader() {
@@ -17,11 +17,11 @@ define(['AirplaneSprite', 'BoatSprite', 'CopterSprite', 'ExplosionSprite', 'Mons
   }
 
 
-  SpriteLoader.prototype._postLoad = function() {
+  SpriteLoader.prototype._loadCB = function() {
     var callback = this._loadCallback;
     this._loadCallback = null;
     this._errorCallback = null;
-    callback(this._loadedSprites);
+    callback(this._spriteSheet);
   };
 
 
@@ -29,30 +29,8 @@ define(['AirplaneSprite', 'BoatSprite', 'CopterSprite', 'ExplosionSprite', 'Mons
     var callback = this._errorCallback;
     this._loadCallback = null;
     this._errorCallback = null;
-    this._loadedSprites = {};
+    this._spriteSheet = null;
     callback();
-  };
-
-
-  SpriteLoader.prototype._loadCB = function(filename, canonical, loadedImage) {
-    Object.defineProperty(this._loadedSprites, canonical, MiscUtils.makeConstantDescriptor(loadedImage));
-    if (this._filesToLoad.length === 0) {
-      this._postLoad();
-      return;
-    }
-
-    filename = this._filesToLoad.pop();
-    canonical = this._canonicalNames.pop();
-
-    this._loadOne(filename, canonical);
-  };
-
-
-  SpriteLoader.prototype._loadOne = function(filename, canonical) {
-    var i = new Image();
-    i.onload = this._loadCB.bind(this, filename, canonical, i);
-    i.onerror = this._errorCB.bind(this);
-    i.src = filename;
   };
 
 
@@ -60,25 +38,10 @@ define(['AirplaneSprite', 'BoatSprite', 'CopterSprite', 'ExplosionSprite', 'Mons
     this._loadCallback = loadCallback;
     this._errorCallback = errorCallback;
 
-    var sprites = [AirplaneSprite, BoatSprite, CopterSprite, ExplosionSprite,
-                   MonsterSprite, TornadoSprite, TrainSprite];
-    this._filesToLoad = [];
-    this._canonicalNames = [];
-
-    for (var i = 0, l = sprites.length; i < l; i++) {
-      var id = sprites[i].ID;
-      var frames = sprites[i].frames;
-
-      for (var j = 0; j < frames; j++) {
-        this._filesToLoad.push(['sprites/obj', id, '-', j, '.png'].join(''));
-        this._canonicalNames.push(['obj', id, '-', j].join(''));
-      }
-    }
-
-    this._loadedSprites = {};
-    var file = this._filesToLoad.pop();
-    var canonical = this._canonicalNames.pop();
-    this._loadOne(file, canonical);
+    this._spriteSheet = new Image();
+    this._spriteSheet.onerror = this._errorCB.bind(this);
+    this._spriteSheet.onload = this._loadCB.bind(this);
+    this._spriteSheet.src = 'images/sprites.png';
   };
 
 
