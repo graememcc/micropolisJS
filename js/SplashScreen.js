@@ -9,6 +9,7 @@ define(['Game', 'MapGenerator', 'SplashCanvas'],
 
     $('#splashGenerate').click(this.regenerateMap.bind(this));
     $('#splashPlay').click(this.playMap.bind(this));
+    $('.awaitGeneration').toggle();
 
     this.splashCanvas = new SplashCanvas(SplashCanvas.DEFAULT_ID, 'splashContainer');
     this.splashCanvas.init(this.map, tileSet);

@@ -78,7 +78,7 @@ a:hover {
   float: right;
 }
 
-.hidden {
+.awaitGeneration, .hidden {
   display: none;
 }
 
