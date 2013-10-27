@@ -29,6 +29,11 @@ a:hover {
   margin: auto;
 }
 
+.splashWidth {
+  width: 400px;
+  margin: auto;
+}
+
 .clr {
   clear: both;
 }
@@ -118,6 +123,13 @@ a:hover {
   background-color: white;
   font-size: large;
   width: 500px;
+}
+
+.splashButton {
+  width: 100px;
+  margin: auto;
+  border: none;
+  cursor: pointer;
 }
 
 .selected {
@@ -314,6 +326,23 @@ a:hover {
   font-size: smaller;
 }
 
+#splashCanvas {
+  text-align: centre;
+}
+
+#splashGenerate {
+  background-color: dodgerBlue;
+  color: white
+}
+
+#splashPlay {
+  background-color: lightgreen;
+}
+
+#splashButtons {
+  width: 250px;
+  margin: auto;
+}
 #RCIContainer {
   width: 140px;
   height: 140px;

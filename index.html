@@ -15,7 +15,7 @@
     <meta charset="utf-8">
     <script src="thirdparty/jquery/jquery-2.0.3.min.js"></script>
     <script src="js/polyfills.js"></script>
-    <script data-main="js/main-built.js" src="thirdparty/requirejs/require.js"></script>
+    <script data-main="js/Main.js" src="thirdparty/requirejs/require.js"></script>
     <link rel="stylesheet" media="screen" type="text/css" href="css/style.css">
     <title>micropolisJS</title>
   </head>
@@ -45,9 +45,17 @@
           )
         </div>
       </div>
+      <div class="splashWidth" id="splashContainer">
+         <div id="SplashCanvas">
+           Loading...
+         </div>
+          <div id="splashButtons">
+           <button class="splashButton" id="splashGenerate">Generate new map</button>
+           <button class="splashButton" id="splashPlay">Play this map</button>
+         </div>
+      </div>
       <div id="canvasContainer">
         <div id="MicropolisCanvas">
-          Loading...
         </div>
       </div>
       <div id="toolInfo" class="initialHidden canvasWidth"><span id="toolOutput">&nbsp;</span></div>

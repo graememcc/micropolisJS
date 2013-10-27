@@ -12,7 +12,7 @@ define(['Direction', 'GameMap', 'Random', 'Tile'],
   "use strict";
 
 
-  var TERRAIN_CREATE_ISLAND = Random.getRandom(2) - 1;
+  var TERRAIN_CREATE_ISLAND;
   var TERRAIN_TREE_LEVEL = -1;
   var TERRAIN_LAKE_LEVEL = -1;
   var TERRAIN_CURVE_LEVEL = 0;
@@ -21,6 +21,8 @@ define(['Direction', 'GameMap', 'Random', 'Tile'],
   var generateMap = function(w, h) {
     w = w || 120;
     h = h || 100;
+
+    TERRAIN_CREATE_ISLAND = Random.getRandom(2) - 1;
 
     var map = new GameMap(w, h);
     // Construct land.

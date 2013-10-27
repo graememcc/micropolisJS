@@ -7,14 +7,13 @@
  *
  */
 
-require(['Game', 'SpriteLoader', 'TileSet', 'TileSetURI'],
-        function(Game, SpriteLoader, TileSet, TileSetURI) {
+require(['SplashScreen', 'SpriteLoader', 'TileSet', 'TileSetURI'],
+        function(SplashScreen, SpriteLoader, TileSet, TileSetURI) {
 
   var i, tileSet;
 
   var spritesLoaded = function(spriteImages) {
-    // Launch the game
-    var g = new Game(tileSet, spriteImages);
+    var s = new SplashScreen(tileSet, spriteImages);
   };
 
 

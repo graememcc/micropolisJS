@@ -7,13 +7,13 @@
  *
  */
 
-define(['BudgetWindow', 'DisasterWindow', 'GameCanvas', 'EvaluationWindow', 'InfoBar', 'InputStatus', 'MapGenerator', 'Messages', 'MessageManager', 'Notification', 'QueryWindow', 'RCI', 'Simulation', 'Text'],
-       function(BudgetWindow, DisasterWindow, GameCanvas, EvaluationWindow, InfoBar, InputStatus, MapGenerator, Messages, MessageManager, Notification, QueryWindow, RCI, Simulation, Text) {
+define(['BudgetWindow', 'DisasterWindow', 'GameCanvas', 'EvaluationWindow', 'InfoBar', 'InputStatus', 'Messages', 'MessageManager', 'Notification', 'QueryWindow', 'RCI', 'Simulation', 'Text'],
+       function(BudgetWindow, DisasterWindow, GameCanvas, EvaluationWindow, InfoBar, InputStatus, Messages, MessageManager, Notification, QueryWindow, RCI, Simulation, Text) {
   "use strict";
 
 
-  function Game(tileSet, spriteImages) {
-    this.gameMap = MapGenerator();
+  function Game(gameMap, tileSet, spriteImages) {
+    this.gameMap = gameMap;
     this.tileSet = tileSet;
     this.simulation = new Simulation(this.gameMap, Simulation.LEVEL_EASY, 1);
     this.rci = new RCI('RCIContainer');
