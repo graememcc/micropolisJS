@@ -319,7 +319,7 @@ define(['BlockMap', 'BlockMapUtils', 'Budget', 'Census', 'Commercial', 'Disaster
 
       case 26:
         if (this._census.resPop > 500 && this._census.stadiumPop === 0) {
-          this._messageManager.sendMessage(MESSAGE_NEED_STADIUM);
+          this._messageManager.sendMessage(Messages.MESSAGE_NEED_STADIUM);
           this._valves.resCap = true;
         } else {
           this._valves.resCap = false;
