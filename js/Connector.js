@@ -211,10 +211,18 @@ define(['Tile', 'TileUtils'],
   };
 
 
+  // Note that this differs in style from BaseTool. After BaseTool has been called
+  // on an implementation, we have the following prototype chain:
+  //   toolConstructor -> {<prototype: empty object>} -> BaseToolImpl
+  // Following that idiom again would lead to difficulties regarding where to interpose
+  // the Connector implementation in the prototype chain, as really the BaseTool implementation
+  // and the Connector implementation should be singleton objects. Instead, we just add the required
+  // functions to the newly minted prototype
   var Connector = function(toolConstructor) {
     toolConstructor.prototype.checkZoneConnections = checkZoneConnections;
     toolConstructor.prototype.fixSingle = fixSingle;
     toolConstructor.prototype.checkBorder = checkBorder;
+    return toolConstructor;
   };
 
 

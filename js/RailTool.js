@@ -12,12 +12,10 @@ define(['BaseTool', 'Connector', 'Tile', 'TileUtils'],
   "use strict";
 
   var makeTool = BaseTool.makeTool;
-  var RailTool = makeTool(function(map) {
+  var RailTool = Connector(makeTool(function(map) {
     this.init(20, map, true, true);
-  });
+  }));
 
-
-  Connector(RailTool);
 
   RailTool.prototype.layRail = function(x, y) {
     this.doAutoBulldoze(x, y);

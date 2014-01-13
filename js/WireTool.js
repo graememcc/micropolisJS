@@ -12,12 +12,9 @@ define(['BaseTool', 'Connector', 'Tile', 'TileUtils'],
   "use strict";
 
   var makeTool = BaseTool.makeTool;
-  var WireTool = makeTool(function(map) {
+  var WireTool = Connector(makeTool(function(map) {
     this.init(20, map, true, true);
-  });
-
-
-  Connector(WireTool);
+  }));
 
 
   WireTool.prototype.layWire = function(x, y) {

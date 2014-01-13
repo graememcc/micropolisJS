@@ -12,15 +12,12 @@ define(['BaseTool', 'Connector', 'Tile', 'TileUtils'],
   "use strict";
 
   var makeTool = BaseTool.makeTool;
-  var BuildingTool = makeTool(function(cost, centreTile, map, size, animated) {
+  var BuildingTool = Connector(makeTool(function(cost, centreTile, map, size, animated) {
     this.init(cost, map, false);
     this.centreTile = centreTile;
     this.size = size;
     this.animated = animated;
-  });
-
-
-  Connector(BuildingTool);
+  }));
 
 
   BuildingTool.prototype.putBuilding = function(leftX, topY) {

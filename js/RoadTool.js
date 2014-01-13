@@ -12,12 +12,9 @@ define(['BaseTool', 'Connector', 'Tile', 'TileUtils'],
   "use strict";
 
   var makeTool = BaseTool.makeTool;
-  var RoadTool = makeTool(function(map) {
+  var RoadTool = Connector(makeTool(function(map) {
     this.init(10, map, true, true);
-  });
-
-
-  Connector(RoadTool);
+  }));
 
 
   RoadTool.prototype.layRoad = function(x, y) {
