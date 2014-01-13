@@ -7,17 +7,16 @@
  *
  */
 
-define(['BaseTool', 'Connector', 'Tile', 'TileUtils'],
-       function(BaseTool, Connector, Tile, TileUtils) {
+define(['ConnectingTool', 'Tile', 'TileUtils'],
+       function(ConnectingTool, Tile, TileUtils) {
   "use strict";
 
-  var makeTool = BaseTool.makeTool;
-  var BuildingTool = Connector(makeTool(function(cost, centreTile, map, size, animated) {
+  var BuildingTool = ConnectingTool(function(cost, centreTile, map, size, animated) {
     this.init(cost, map, false);
     this.centreTile = centreTile;
     this.size = size;
     this.animated = animated;
-  }));
+  });
 
 
   BuildingTool.prototype.putBuilding = function(leftX, topY) {

@@ -7,14 +7,13 @@
  *
  */
 
-define(['BaseTool', 'Connector', 'Tile', 'TileUtils'],
-       function(BaseTool, Connector, Tile, TileUtils) {
+define(['ConnectingTool', 'Tile', 'TileUtils'],
+       function(ConnectingTool, Tile, TileUtils) {
   "use strict";
 
-  var makeTool = BaseTool.makeTool;
-  var RailTool = Connector(makeTool(function(map) {
+  var RailTool = ConnectingTool(function(map) {
     this.init(20, map, true, true);
-  }));
+  });
 
 
   RailTool.prototype.layRail = function(x, y) {

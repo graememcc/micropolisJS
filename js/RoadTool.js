@@ -7,14 +7,13 @@
  *
  */
 
-define(['BaseTool', 'Connector', 'Tile', 'TileUtils'],
-       function(BaseTool, Connector, Tile, TileUtils) {
+define(['ConnectingTool', 'Tile', 'TileUtils'],
+       function(ConnectingTool, Tile, TileUtils) {
   "use strict";
 
-  var makeTool = BaseTool.makeTool;
-  var RoadTool = Connector(makeTool(function(map) {
+  var RoadTool = ConnectingTool(function(map) {
     this.init(10, map, true, true);
-  }));
+  });
 
 
   RoadTool.prototype.layRoad = function(x, y) {

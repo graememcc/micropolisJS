@@ -7,14 +7,13 @@
  *
  */
 
-define(['BaseTool', 'Connector', 'Tile', 'TileUtils'],
-       function(BaseTool, Connector, Tile, TileUtils) {
+define(['ConnectingTool', 'Tile', 'TileUtils'],
+       function(ConnectingTool, Tile, TileUtils) {
   "use strict";
 
-  var makeTool = BaseTool.makeTool;
-  var WireTool = Connector(makeTool(function(map) {
+  var WireTool = ConnectingTool(function(map) {
     this.init(20, map, true, true);
-  }));
+  });
 
 
   WireTool.prototype.layWire = function(x, y) {
