@@ -11,12 +11,12 @@ define(['BaseTool', 'Connector', 'Tile', 'TileUtils'],
        function(BaseTool, Connector, Tile, TileUtils) {
   "use strict";
 
-  function WireTool(map) {
+  var makeTool = BaseTool.makeTool;
+  var WireTool = makeTool(function(map) {
     this.init(20, map, true, true);
-  }
+  });
 
 
-  BaseTool.makeTool(WireTool);
   Connector(WireTool);
 
 

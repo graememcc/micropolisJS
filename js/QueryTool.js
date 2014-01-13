@@ -11,16 +11,14 @@ define(['BaseTool', 'Messages', 'Text', 'Tile'],
        function(BaseTool, Messages, Text, Tile) {
   "use strict";
 
-  function QueryTool(map) {
+  var makeTool = BaseTool.makeTool;
+  var QueryTool = makeTool(function(map) {
     this.init(0, map, false, false);
-  }
+  });
 
 
   // Keep in sync with QueryWindow
   var debug = true;
-
-  BaseTool.makeTool(QueryTool);
-
 
   QueryTool.prototype.classifyPopulationDensity = function(x, y, blockMaps) {
     var density = blockMaps.populationDensityMap.worldGet(x, y);

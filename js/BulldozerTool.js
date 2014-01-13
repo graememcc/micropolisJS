@@ -11,12 +11,10 @@ define(['BaseTool', 'Messages', 'Random', 'Tile', 'TileUtils', 'ZoneUtils'],
        function(BaseTool, Messages, Random, Tile, TileUtils, ZoneUtils) {
   "use strict";
 
-  function BulldozerTool(map) {
+  var makeTool = BaseTool.makeTool;
+  var BulldozerTool = makeTool(function(map) {
     this.init(10, map, true);
-  }
-
-
-  BaseTool.makeTool(BulldozerTool);
+  });
 
 
   BulldozerTool.prototype.putRubble = function(x, y, size) {

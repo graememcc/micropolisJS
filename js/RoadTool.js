@@ -11,12 +11,12 @@ define(['BaseTool', 'Connector', 'Tile', 'TileUtils'],
        function(BaseTool, Connector, Tile, TileUtils) {
   "use strict";
 
-  function RoadTool(map) {
+  var makeTool = BaseTool.makeTool;
+  var RoadTool = makeTool(function(map) {
     this.init(10, map, true, true);
-  }
+  });
 
 
-  BaseTool.makeTool(RoadTool);
   Connector(RoadTool);
 
 

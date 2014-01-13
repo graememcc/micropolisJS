@@ -11,15 +11,15 @@ define(['BaseTool', 'Connector', 'Tile', 'TileUtils'],
        function(BaseTool, Connector, Tile, TileUtils) {
   "use strict";
 
-  function BuildingTool(cost, centreTile, map, size, animated) {
+  var makeTool = BaseTool.makeTool;
+  var BuildingTool = makeTool(function(cost, centreTile, map, size, animated) {
     this.init(cost, map, false);
     this.centreTile = centreTile;
     this.size = size;
     this.animated = animated;
-  }
+  });
 
 
-  BaseTool.makeTool(BuildingTool);
   Connector(BuildingTool);
 
 

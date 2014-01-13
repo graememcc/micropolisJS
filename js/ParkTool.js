@@ -11,12 +11,10 @@ define(['BaseTool', 'Random', 'Tile', 'TileUtils'],
        function(BaseTool, Random, Tile, TileUtils) {
   "use strict";
 
-  function ParkTool(map) {
+  var makeTool = BaseTool.makeTool;
+  var ParkTool = makeTool(function(map) {
     this.init(10, map, true);
-  }
-
-
-  BaseTool.makeTool(ParkTool);
+  });
 
 
   ParkTool.prototype.doTool = function(x, y, messageManager, blockMaps) {

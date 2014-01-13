@@ -93,10 +93,13 @@ define(['Messages', 'MiscUtils', 'Tile', 'TileUtils', 'WorldEffects'],
   };
 
 
+  var makeTool = function(toolConstructor) {
+    toolConstructor.prototype = Object.create(BaseTool);
+    return toolConstructor;
+  };
+
   return {
-    makeTool: function(toolConstructor) {
-      toolConstructor.prototype = Object.create(BaseTool);
-    },
+    makeTool: makeTool,
     setAutoBulldoze: function(value) {
       BaseTool.autoBulldoze = value;
     }
