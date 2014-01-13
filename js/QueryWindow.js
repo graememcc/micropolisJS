@@ -7,8 +7,8 @@
  *
  */
 
-define([],
-       function() {
+define(['Config'],
+       function(Config) {
   "use strict";
 
   function QueryWindow(opacityLayerID, queryWindowID) {
@@ -22,8 +22,6 @@ define([],
   var queryFormID = "queryForm";
   var queryOKID = "queryForm";
 
-  // Keep in sync with QueryTool
-  var debug = false;
 
   var submit = function(e) {
     e.preventDefault();
@@ -45,7 +43,7 @@ define([],
 
     opacityLayer.toggle();
     queryWindow.toggle();
-    if (debug && !this.debugToggled) {
+    if ((Config.debug || Config.queryDebug) && !this.debugToggled) {
       $('#queryDebug').removeClass('hidden');
       this.debugToggled = true;
     }

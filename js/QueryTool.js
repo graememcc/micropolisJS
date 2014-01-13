@@ -7,8 +7,8 @@
  *
  */
 
-define(['BaseTool', 'Messages', 'Text', 'Tile'],
-       function(BaseTool, Messages, Text, Tile) {
+define(['BaseTool', 'Config', 'Messages', 'Text', 'Tile'],
+       function(BaseTool, Config, Messages, Text, Tile) {
   "use strict";
 
   var makeTool = BaseTool.makeTool;
@@ -17,12 +17,9 @@ define(['BaseTool', 'Messages', 'Text', 'Tile'],
   });
 
 
-  // Keep in sync with QueryWindow
-  var debug = true;
-
   QueryTool.prototype.classifyPopulationDensity = function(x, y, blockMaps) {
     var density = blockMaps.populationDensityMap.worldGet(x, y);
-    if (debug)
+    if (Config.debug || Config.queryDebug)
       $('#queryDensityRaw').text(density);
     density = density >> 6;
     density = density & 3;
@@ -32,7 +29,7 @@ define(['BaseTool', 'Messages', 'Text', 'Tile'],
 
   QueryTool.prototype.classifyLandValue = function(x, y, blockMaps) {
      var landValue = blockMaps.landValueMap.worldGet(x, y);
-     if (debug)
+     if (Config.debug || Config.queryDebug)
        $('#queryLandValueRaw').text(landValue);
 
      var i = 0;
@@ -50,7 +47,7 @@ define(['BaseTool', 'Messages', 'Text', 'Tile'],
 
   QueryTool.prototype.classifyCrime = function(x, y, blockMaps) {
     var crime = blockMaps.crimeRateMap.worldGet(x, y);
-    if (debug)
+    if (Config.debug || Config.queryDebug)
       $('#queryCrimeRaw').text(crime);
     crime = crime >> 6;
     crime = crime & 3;
@@ -60,7 +57,7 @@ define(['BaseTool', 'Messages', 'Text', 'Tile'],
 
   QueryTool.prototype.classifyPollution = function(x, y, blockMaps) {
     var pollution = blockMaps.pollutionDensityMap.worldGet(x, y);
-    if (debug)
+    if (Config.debug || Config.queryDebug)
       $('#queryPollutionRaw').text(pollution);
     pollution = pollution >> 6;
     pollution = pollution & 3;
@@ -70,7 +67,7 @@ define(['BaseTool', 'Messages', 'Text', 'Tile'],
 
   QueryTool.prototype.classifyRateOfGrowth = function(x, y, blockMaps) {
     var rate = blockMaps.rateOfGrowthMap.worldGet(x, y);
-    if (debug)
+    if (Config.debug || Config.queryDebug)
       $('#queryRateRaw').text(rate);
     rate = rate >> 6;
     rate = rate & 3;
@@ -79,7 +76,7 @@ define(['BaseTool', 'Messages', 'Text', 'Tile'],
 
 
   QueryTool.prototype.classifyDebug = function(x, y, blockMaps) {
-    if (!debug)
+    if (!Config.debug && !Config.queryDebug)
       return;
     $('#queryFireStationRaw').text(blockMaps.fireStationMap.worldGet(x, y));
     $('#queryFireStationEffectRaw').text(blockMaps.fireStationEffectMap.worldGet(x, y));
@@ -119,7 +116,7 @@ define(['BaseTool', 'Messages', 'Text', 'Tile'],
     var text = 'Position (' + x + ', ' + y + ')';
     text += ' TileValue: ' + this._map.getTileValue(x, y);
 
-    if (debug) {
+    if (Config.debug || Config.queryDebug) {
       var tile = this._map.getTile(x, y);
       $('#queryTile').text([x,y].join(', '));
       $('#queryTileValue').text(tile.getValue());
