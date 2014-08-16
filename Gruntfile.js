@@ -23,12 +23,20 @@ module.exports = function(grunt) {
           out: 'dist/js/Main.js'
         }
       }
+    },
+
+    watch: {
+      files: ['index.html', 'css/*', 'sprites/*', 'thirdparty/*', 'images/*', 'js/*', 'COPYING', 'LICENSE'],
+      tasks: ['copy', 'requirejs']
     }
   });
 
 
-  grunt.loadNpmTasks('grunt-contrib-copy');
-  grunt.loadNpmTasks('grunt-contrib-requirejs');
+  tasks = ['copy', 'requirejs', 'watch'];
+  tasks.forEach(function(task) {
+    grunt.loadNpmTasks('grunt-contrib-' + task);
+  });
+
 
   grunt.registerTask('default', ['requirejs', 'copy']);
 };
