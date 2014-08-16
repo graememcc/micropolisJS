@@ -1,0 +1,5 @@
+*.swp
+*.swo
+dist/
+node_modules/
+TODO
