@@ -1,3 +1,53 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+
+
+header {
+  background-color: linen;
+}
+
+
+header h1 {
+  font-family: 'Chewy', cursive;
+}
+
+
+.alignCentre {
+  text-align: center;
+}
+
+
+.border-bottom {
+  border-bottom: 1px solid black;
+}
+
+
+.contents {
+  width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+.fontlarge {
+  font-size: 36px;
+}
+
+
+.padding5 {
+  padding: 5px;
+}
+
+
+.seagreen {
+  color: seagreen;
+}
+
+
+/* Pre refactoring below */
+
 body {
   background-color: skyblue;
   font-family: sans-serif;
@@ -78,9 +128,6 @@ a:hover {
   display: table-cell;
 }
 
-.links {
-  float: right;
-}
 
 .awaitGeneration, .hidden {
   display: none;
@@ -142,16 +189,6 @@ a:hover {
 
 .unselected {
   font-weight: normal;
-}
-
-#header {
-  text-align: center;
-  width: 600px;
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 20px;
-  padding-bottom: 20px;
-  color: seagreen;
 }
 
 #appeal {
