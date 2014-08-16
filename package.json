@@ -1,0 +1,23 @@
+{
+  "name": "micropolisJS",
+  "version": "0.0.1",
+  "description": "A port of the open-source simulator \"Micropolis\" to Javascript/HTML5",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/graememcc/micropolisJS.git"
+  },
+  "bugs": {
+    "url": "https://github.com/graememcc/micropolisJS/issues"
+  },
+  "dev-dependencies": {
+    "mocha": ">=1.7.4",
+    "requirejs": ">=2.1.2"
+  }
+  "author": "Graeme McCutcheon (http://www.graememcc.co.uk)",
+  "license": "GPL-3.0",
+  "gitHead": "74d0f39746526590ffba22f13af4b66b4ee48049",
+  "readmeFilename": "README.md"
+}
