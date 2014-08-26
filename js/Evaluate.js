@@ -7,8 +7,8 @@
  *
  */
 
-define(['MiscUtils', 'Random'],
-       function(MiscUtils, Random) {
+define(['EventEmitter', 'Messages', 'MiscUtils', 'Random'],
+       function(EventEmitter, Messages, MiscUtils, Random) {
   "use strict";
 
   var PROBLEMS = ['CVP_CRIME', 'CVP_POLLUTION', 'CVP_HOUSING', 'CVP_TAXES',
@@ -16,12 +16,15 @@ define(['MiscUtils', 'Random'],
   var NUMPROBLEMS = PROBLEMS.length;
   var NUM_COMPLAINTS = 4;
 
+
   function Evaluation(gameLevel) {
     this.problemVotes = [];
     this.problemOrder = [];
     this.evalInit();
     this.gameLevel = '' + gameLevel;
     this.changed = false;
+
+    EventEmitter(this);
   }
 
 
@@ -89,6 +92,7 @@ define(['MiscUtils', 'Random'],
 
   Evaluation.prototype.doPopNum = function(census) {
     var oldCityPop = this.cityPop;
+    var oldCityClass = this.getCityClass(this.cityPop);
 
     this.cityPop = this.getPopulation(census);
 
@@ -97,6 +101,11 @@ define(['MiscUtils', 'Random'],
 
     this.cityPopDelta = this.cityPop - oldCityPop;
     this.cityClass = this.getCityClass(this.cityPop);
+
+    if (this.cityPopDelta !== 0)
+      this._emitEvent(Messages.POPULATION_UPDATED, this.cityPop);
+    if (this.cityClass !== oldCityClass)
+      this._emitEvent(Messages.CLASSIFICATION_UPDATED, this.cityClass);
   };
 
 
@@ -299,6 +308,9 @@ define(['MiscUtils', 'Random'],
     this.cityScore = Math.round((this.cityScore + score) / 2);
 
     this.cityScoreDelta = this.cityScore - cityScoreLast;
+
+    if (this.cityScoreDelta !== 0)
+      this._emitEvent(Messages.SCORE_UPDATED, this.cityScore);
   };
 
 
