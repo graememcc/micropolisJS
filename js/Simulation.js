@@ -513,7 +513,7 @@ define(['BlockMap', 'BlockMapUtils', 'Budget', 'Census', 'Commercial', 'Disaster
       this._cityYearLast = cityYear;
       this._cityMonthLast = cityMonth;
       this._messageManager.sendMessage(Messages.DATE_UPDATED, {month: cityMonth, year: cityYear});
-      this._emitEvent(Messages.DATE_UPDATED, {month: cityYear, year: cityYear});
+      this._emitEvent(Messages.DATE_UPDATED, {month: cityMonth, year: cityYear});
     }
   };
 
