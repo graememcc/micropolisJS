@@ -7,8 +7,8 @@
  *
  */
 
-define(['BlockMap', 'BlockMapUtils', 'Budget', 'Census', 'Commercial', 'DisasterManager', 'EmergencyServices', 'Evaluate', 'Industrial', 'MapScanner', 'Messages', 'MessageManager', 'MiscTiles', 'MiscUtils', 'PowerManager', 'RepairManager', 'Residential', 'Road', 'SpriteManager', 'Stadia', 'Traffic', 'Transport', 'Valves'],
-        function(BlockMap, BlockMapUtils, Budget, Census, Commercial, DisasterManager, EmergencyServices, Evaluate, Industrial, MapScanner, Messages, MessageManager, MiscTiles, MiscUtils, PowerManager, RepairManager, Residential, Road, SpriteManager, Stadia, Traffic, Transport, Valves) {
+define(['BlockMap', 'BlockMapUtils', 'Budget', 'Census', 'Commercial', 'DisasterManager', 'EventEmitter', 'EmergencyServices', 'Evaluate', 'Industrial', 'MapScanner', 'Messages', 'MessageManager', 'MiscTiles', 'MiscUtils', 'PowerManager', 'RepairManager', 'Residential', 'Road', 'SpriteManager', 'Stadia', 'Traffic', 'Transport', 'Valves'],
+        function(BlockMap, BlockMapUtils, Budget, Census, Commercial, DisasterManager, EventEmitter, EmergencyServices, Evaluate, Industrial, MapScanner, Messages, MessageManager, MiscTiles, MiscUtils, PowerManager, RepairManager, Residential, Road, SpriteManager, Stadia, Traffic, Transport, Valves) {
   "use strict";
 
   function Simulation(gameMap, gameLevel, speed) {
@@ -154,6 +154,18 @@ define(['BlockMap', 'BlockMapUtils', 'Budget', 'Census', 'Commercial', 'Disaster
 
 
   Simulation.prototype.init = function() {
+    EventEmitter(this);
+
+    var reflectEvent = function(event, value) {
+      this._emitEvent(event, value);
+    };
+
+    var evaluationEvents = ['CLASSIFICATION_UPDATED', 'POPULATION_UPDATED', 'SCORE_UPDATED'].map(function(m) {
+      return Messages[m];
+    });
+    for (i = 0, l = evaluationEvents.length; i < l; i++)
+      this.evaluation.addEventListener(evaluationEvents[i], reflectEvent.bind(this, evaluationEvents[i]));
+
     // Register actions
     Commercial.registerHandlers(this._mapScanner, this._repairManager);
     EmergencyServices.registerHandlers(this._mapScanner, this._repairManager);
