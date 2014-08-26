@@ -7,8 +7,8 @@
  *
  */
 
-define(['Messages', 'MiscUtils'],
-       function(Messages, MiscUtils) {
+define(['EventEmitter', 'Messages', 'MiscUtils'],
+       function(EventEmitter, Messages, MiscUtils) {
   "use strict";
 
   function Budget() {
@@ -42,6 +42,8 @@ define(['Messages', 'MiscUtils'],
     this.policeSpend = 0;
 
     this.autoBudget = true;
+
+    EventEmitter(this);
   }
 
 
@@ -212,6 +214,7 @@ define(['Messages', 'MiscUtils'],
 
     if (messageManager !== undefined)
       messageManager.sendMessage(Messages.FUNDS_CHANGED, this.totalFunds);
+    this._emitEvent(Messages.FUNDS_CHANGED, this.totalFunds);
   };
 
 
