@@ -7,16 +7,20 @@
  *
  */
 
-define(['Config'],
-       function(Config) {
+define(['Config', 'EventEmitter', 'Messages'],
+       function(Config, EventEmitter, Messages) {
   "use strict";
 
-  function QueryWindow(opacityLayerID, queryWindowID) {
+
+  function QueryWindow(opacityLayerID, queryWindowID, eventSource) {
     this._opacityLayer =  '#' + opacityLayerID;
     this._queryWindowID = '#' + queryWindowID;
     this._debugToggled = false;
     $('#' + queryFormID).on('submit', submit.bind(this));
     $('#' + queryOKID).on('click', submit.bind(this));
+
+    eventSource.addEventListener(Messages.QUERY_WINDOW_NEEDED, this._toggleDisplay.bind(this));
+    EventEmitter(this);
   }
 
   var queryFormID = "queryForm";
@@ -25,8 +29,8 @@ define(['Config'],
 
   var submit = function(e) {
     e.preventDefault();
-    this._callback();
     this._toggleDisplay();
+    this._emitEvent(Messages.QUERY_WINDOW_CLOSED);
   };
 
 
@@ -47,12 +51,6 @@ define(['Config'],
       $('#queryDebug').removeClass('hidden');
       this.debugToggled = true;
     }
-  };
-
-
-  QueryWindow.prototype.open = function(callback) {
-    this._callback = callback;
-    this._toggleDisplay();
   };
 
 

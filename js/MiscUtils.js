@@ -27,9 +27,15 @@ define([],
   };
 
 
+  var reflectEvent = function(message, value) {
+    this._emitEvent(message, value);
+  };
+
+
   var MiscUtils = {
     clamp: clamp,
-    makeConstantDescriptor: makeConstantDescriptor
+    makeConstantDescriptor: makeConstantDescriptor,
+    reflectEvent: reflectEvent
   };
 
 

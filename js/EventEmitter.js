@@ -56,6 +56,8 @@ define([],
     obj.addEventListener = addListener;
     obj.removeEventListener = removeListener;
     obj._emitEvent = emitEvent;
+
+    return obj;
   };
 
 

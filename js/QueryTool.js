@@ -7,13 +7,15 @@
  *
  */
 
-define(['BaseTool', 'Config', 'Messages', 'Text', 'Tile'],
-       function(BaseTool, Config, Messages, Text, Tile) {
+define(['BaseTool', 'Config', 'EventEmitter', 'Messages', 'Text', 'Tile'],
+       function(BaseTool, Config, EventEmitter, Messages, Text, Tile) {
   "use strict";
 
   var makeTool = BaseTool.makeTool;
   var QueryTool = makeTool(function(map) {
     this.init(0, map, false, false);
+
+    EventEmitter(this);
   });
 
 
@@ -135,7 +137,7 @@ define(['BaseTool', 'Config', 'Messages', 'Text', 'Tile'],
     this.classifyRateOfGrowth(x, y, blockMaps);
     this.classifyDebug(x, y, blockMaps);
 
-    messageManager.sendMessage(Messages.QUERY_WINDOW_NEEDED);
+    this._emitEvent(Messages.QUERY_WINDOW_NEEDED);
 
     this.result = this.TOOLRESULT_OK;
   };

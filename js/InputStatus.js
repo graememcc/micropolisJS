@@ -7,12 +7,15 @@
  *
  */
 
-define(['GameCanvas', 'GameTools'],
-       function(GameCanvas, GameTools) {
+define(['EventEmitter', 'GameCanvas', 'GameTools', 'Messages', 'MiscUtils'],
+       function(EventEmitter, GameCanvas, GameTools, Messages, MiscUtils) {
   "use strict";
 
   function InputStatus(map) {
+    EventEmitter(this);
     this.gameTools = new GameTools(map);
+
+    this.gameTools.addEventListener(Messages.QUERY_WINDOW_NEEDED, MiscUtils.reflectEvent.bind(this, Messages.QUERY_WINDOW_NEEDED));
 
     this.canvasID = canvasID;
 

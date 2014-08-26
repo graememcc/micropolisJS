@@ -156,17 +156,13 @@ define(['BlockMap', 'BlockMapUtils', 'Budget', 'Census', 'Commercial', 'Disaster
   Simulation.prototype.init = function() {
     EventEmitter(this);
 
-    var reflectEvent = function(event, value) {
-      this._emitEvent(event, value);
-    };
-
     var evaluationEvents = ['CLASSIFICATION_UPDATED', 'POPULATION_UPDATED', 'SCORE_UPDATED'].map(function(m) {
       return Messages[m];
     });
     for (var i = 0, l = evaluationEvents.length; i < l; i++)
-      this.evaluation.addEventListener(evaluationEvents[i], reflectEvent.bind(this, evaluationEvents[i]));
+      this.evaluation.addEventListener(evaluationEvents[i], MiscUtils.reflectEvent.bind(this, evaluationEvents[i]));
 
-    this.budget.addEventListener(Messages.FUNDS_CHANGED, reflectEvent.bind(this, Messages.FUNDS_CHANGED));
+    this.budget.addEventListener(Messages.FUNDS_CHANGED, MiscUtils.reflectEvent.bind(this, Messages.FUNDS_CHANGED));
 
     // Register actions
     Commercial.registerHandlers(this._mapScanner, this._repairManager);

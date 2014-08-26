@@ -20,13 +20,14 @@ define(['BudgetWindow', 'DisasterWindow', 'GameCanvas', 'EvaluationWindow', 'Inf
     this.simulation = new Simulation(this.gameMap, difficulty, 1);
     this.rci = new RCI('RCIContainer');
     this.budgetWindow = new BudgetWindow('opaque', 'budget');
-    this.queryWindow = new QueryWindow('opaque', 'queryWindow');
     this.evalWindow = new EvaluationWindow('opaque', 'evalWindow');
     this.disasterWindow = new DisasterWindow('opaque', 'disasterWindow');
 
     this.gameCanvas = new GameCanvas('canvasContainer');
     this.gameCanvas.init(this.gameMap, this.tileSet, spriteSheet);
     this.inputStatus = new InputStatus(this.gameMap);
+    this.queryWindow = new QueryWindow('opaque', 'queryWindow', this.inputStatus);
+    this.queryWindow.addEventListener(Messages.QUERY_WINDOW_CLOSED, this.handleQueryWindowClosure.bind(this));
     this.infoBar = InfoBar('cclass', 'population', 'score', 'funds', 'date');
     this.infoBar(this.simulation);
     this.mouse = null;
@@ -102,7 +103,7 @@ define(['BudgetWindow', 'DisasterWindow', 'GameCanvas', 'EvaluationWindow', 'Inf
   };
 
 
-  Game.prototype.handleQueryClosed = function() {
+  Game.prototype.handleQueryWindowClosure = function() {
     this.queryShowing = false;
   };
 
@@ -268,10 +269,6 @@ define(['BudgetWindow', 'DisasterWindow', 'GameCanvas', 'EvaluationWindow', 'Inf
         case Messages.BUDGET_NEEDED:
           this.simNeededBudget = true;
           this.handleBudgetRequest();
-          break;
-
-        case Messages.QUERY_WINDOW_NEEDED:
-          this.queryWindow.open(this.handleQueryClosed.bind(this));
           break;
 
         case Messages.VALVES_UPDATED:

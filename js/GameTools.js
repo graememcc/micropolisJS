@@ -7,12 +7,13 @@
  *
  */
 
-define(['BuildingTool', 'BulldozerTool', 'ParkTool', 'RailTool', 'RoadTool', 'QueryTool', 'Tile', 'WireTool'],
-       function(BuildingTool, BulldozerTool, ParkTool, RailTool, RoadTool, QueryTool, Tile, WireTool) {
+define(['BuildingTool', 'BulldozerTool', 'EventEmitter', 'Messages', 'MiscUtils', 'ParkTool', 'RailTool', 'RoadTool', 'QueryTool', 'Tile', 'WireTool'],
+       function(BuildingTool, BulldozerTool, EventEmitter, Messages, MiscUtils, ParkTool, RailTool, RoadTool, QueryTool, Tile, WireTool) {
   "use strict";
 
+
   function gameTools(map) {
-    return {
+    var tools = EventEmitter({
       airport: new BuildingTool(10000, Tile.AIRPORT, map, 6, false),
       bulldozer: new BulldozerTool(map),
       coal: new BuildingTool(3000, Tile.POWERPLANT, map, 4, false),
@@ -29,7 +30,11 @@ define(['BuildingTool', 'BulldozerTool', 'ParkTool', 'RailTool', 'RoadTool', 'Qu
       query: new QueryTool(map),
       stadium: new BuildingTool(5000, Tile.STADIUM, map, 4, false),
       wire: new WireTool(map),
-    };
+    });
+
+    tools.query.addEventListener(Messages.QUERY_WINDOW_NEEDED, MiscUtils.reflectEvent.bind(tools, Messages.QUERY_WINDOW_NEEDED));
+
+    return tools;
   }
 
 
