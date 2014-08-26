@@ -212,8 +212,6 @@ define(['EventEmitter', 'Messages', 'MiscUtils'],
 
     this.totalFunds = Math.max(0, amount);
 
-    if (messageManager !== undefined)
-      messageManager.sendMessage(Messages.FUNDS_CHANGED, this.totalFunds);
     this._emitEvent(Messages.FUNDS_CHANGED, this.totalFunds);
   };
 

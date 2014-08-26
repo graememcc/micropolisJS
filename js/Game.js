@@ -27,6 +27,8 @@ define(['BudgetWindow', 'DisasterWindow', 'GameCanvas', 'EvaluationWindow', 'Inf
     this.gameCanvas = new GameCanvas('canvasContainer');
     this.gameCanvas.init(this.gameMap, this.tileSet, spriteSheet);
     this.inputStatus = new InputStatus(this.gameMap);
+    this.infoBar = InfoBar('cclass', 'population', 'score', 'funds', 'date');
+    this.infoBar(this.simulation);
     this.mouse = null;
     this.sprites = null;
     this.lastCoord = null;
@@ -270,20 +272,6 @@ define(['BudgetWindow', 'DisasterWindow', 'GameCanvas', 'EvaluationWindow', 'Inf
 
         case Messages.QUERY_WINDOW_NEEDED:
           this.queryWindow.open(this.handleQueryClosed.bind(this));
-          break;
-
-        case Messages.DATE_UPDATED:
-          InfoBar.setDate(m.data.month, m.data.year);
-          break;
-
-        case Messages.EVAL_UPDATED:
-          InfoBar.setClass(Text.cityClass[m.data.classification]);
-          InfoBar.setScore(m.data.score);
-          InfoBar.setPopulation(m.data.population);
-          break;
-
-        case Messages.FUNDS_CHANGED:
-          InfoBar.setFunds(m.data);
           break;
 
         case Messages.VALVES_UPDATED:

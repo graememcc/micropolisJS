@@ -22,7 +22,6 @@ define(['EventEmitter', 'Messages', 'MiscUtils', 'Random'],
     this.problemOrder = [];
     this.evalInit();
     this.gameLevel = '' + gameLevel;
-    this.changed = false;
 
     EventEmitter(this);
   }
@@ -41,11 +40,9 @@ define(['EventEmitter', 'Messages', 'MiscUtils', 'Random'],
       this.doProblems(simData.census, simData.budget, simData.blockMaps, problemTable);
       this.getScore(simData, problemTable);
       this.doVotes();
-      this.changeEval();
     } else {
       this.evalInit();
       this.cityYes = 50;
-      this.changeEval();
     }
   };
 
@@ -323,11 +320,6 @@ define(['EventEmitter', 'Messages', 'MiscUtils', 'Random'],
       if (Random.getRandom(1000) < this.cityScore)
         this.cityYes++;
     }
-  };
-
-
-  Evaluation.prototype.changeEval = function() {
-    this.changed = true;
   };
 
 

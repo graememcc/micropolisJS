@@ -481,11 +481,6 @@ define(['BlockMap', 'BlockMapUtils', 'Budget', 'Census', 'Commercial', 'Disaster
     }
 
     this._updateTime();
-
-    if (this.evaluation.changed) {
-      this._messageManager.sendMessage(Messages.EVAL_UPDATED, {classification: this.evaluation.cityClass, population: this.evaluation.cityPop, score: this.evaluation.cityScore});
-      this.evaluation.changed = false;
-    }
   };
 
 
@@ -512,7 +507,6 @@ define(['BlockMap', 'BlockMapUtils', 'Budget', 'Census', 'Commercial', 'Disaster
     if (this._cityYearLast !== cityYear || this._cityMonthLast !== cityMonth) {
       this._cityYearLast = cityYear;
       this._cityMonthLast = cityMonth;
-      this._messageManager.sendMessage(Messages.DATE_UPDATED, {month: cityMonth, year: cityYear});
       this._emitEvent(Messages.DATE_UPDATED, {month: cityMonth, year: cityYear});
     }
   };
