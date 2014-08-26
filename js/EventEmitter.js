@@ -59,5 +59,5 @@ define([],
   };
 
 
-  return makeEventListener;
+  return makeEventEmitter;
 });
