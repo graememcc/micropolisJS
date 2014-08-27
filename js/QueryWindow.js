@@ -12,14 +12,13 @@ define(['Config', 'EventEmitter', 'Messages'],
   "use strict";
 
 
-  function QueryWindow(opacityLayerID, queryWindowID, eventSource) {
+  function QueryWindow(opacityLayerID, queryWindowID) {
     this._opacityLayer =  '#' + opacityLayerID;
     this._queryWindowID = '#' + queryWindowID;
     this._debugToggled = false;
     $('#' + queryFormID).on('submit', submit.bind(this));
     $('#' + queryOKID).on('click', submit.bind(this));
 
-    eventSource.addEventListener(Messages.QUERY_WINDOW_NEEDED, this._toggleDisplay.bind(this));
     EventEmitter(this);
   }
 
@@ -51,6 +50,11 @@ define(['Config', 'EventEmitter', 'Messages'],
       $('#queryDebug').removeClass('hidden');
       this.debugToggled = true;
     }
+  };
+
+
+  QueryWindow.prototype.open = function() {
+    this._toggleDisplay();
   };
 
 

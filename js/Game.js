@@ -43,10 +43,15 @@ define(['BudgetWindow', 'DisasterWindow', 'GameCanvas', 'EvaluationWindow', 'Inf
     this.disasterWindow.addEventListener(Messages.DISASTER_WINDOW_CLOSED, this.handleDisasterWindowClosure.bind(this));
     this.inputStatus.addEventListener(Messages.DISASTER_REQUESTED, this.handleDisasterRequest.bind(this));
 
-    this.queryWindow = new QueryWindow('opaque', 'queryWindow', this.inputStatus);
+    // ... and finally the query window
+    this.queryShowing = false;
+    this.queryWindow = new QueryWindow('opaque', 'queryWindow');
     this.queryWindow.addEventListener(Messages.QUERY_WINDOW_CLOSED, this.handleQueryWindowClosure.bind(this));
+    this.inputStatus.addEventListener(Messages.QUERY_WINDOW_NEEDED, this.handleQueryRequest.bind(this));
+
     this.infoBar = InfoBar('cclass', 'population', 'score', 'funds', 'date');
     this.infoBar(this.simulation);
+
     this.mouse = null;
     this.sprites = null;
     this.lastCoord = null;
@@ -54,7 +59,6 @@ define(['BudgetWindow', 'DisasterWindow', 'GameCanvas', 'EvaluationWindow', 'Inf
     // Unhide controls
     this.revealControls();
 
-    this.queryShowing = false;
     this.simNeedsBudget = false;
     this.isPaused = false;
 
@@ -160,6 +164,18 @@ define(['BudgetWindow', 'DisasterWindow', 'GameCanvas', 'EvaluationWindow', 'Inf
 
     this.evalShowing = true;
     this.evalWindow.open(this.simulation.evaluation);
+    nextFrame(this.tick.bind(this));
+  };
+
+
+  Game.prototype.handleQueryRequest = function() {
+    if (this.queryShowing) {
+      console.warn('Request was made to open query window. It is already open!');
+      return;
+    }
+
+    this.queryShowing = true;
+    this.queryWindow.open();
     nextFrame(this.tick.bind(this));
   };
 
