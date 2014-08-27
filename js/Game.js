@@ -20,12 +20,17 @@ define(['BudgetWindow', 'DisasterWindow', 'GameCanvas', 'EvaluationWindow', 'Inf
     this.simulation = new Simulation(this.gameMap, difficulty, 1);
     this.rci = new RCI('RCIContainer');
     this.budgetWindow = new BudgetWindow('opaque', 'budget');
-    this.evalWindow = new EvaluationWindow('opaque', 'evalWindow');
     this.disasterWindow = new DisasterWindow('opaque', 'disasterWindow');
+    this.inputStatus = new InputStatus(this.gameMap);
+
+    // Hook up listeners to open/close evaluation window
+    this.evalShowing = false;
+    this.evalWindow = new EvaluationWindow('opaque', 'evalWindow');
+    this.evalWindow.addEventListener(Messages.EVAL_WINDOW_CLOSED, this.handleEvalWindowClosure.bind(this));
+    this.inputStatus.addEventListener(Messages.EVAL_REQUESTED, this.handleEvalRequest.bind(this));
 
     this.gameCanvas = new GameCanvas('canvasContainer');
     this.gameCanvas.init(this.gameMap, this.tileSet, spriteSheet);
-    this.inputStatus = new InputStatus(this.gameMap);
     this.queryWindow = new QueryWindow('opaque', 'queryWindow', this.inputStatus);
     this.queryWindow.addEventListener(Messages.QUERY_WINDOW_CLOSED, this.handleQueryWindowClosure.bind(this));
     this.infoBar = InfoBar('cclass', 'population', 'score', 'funds', 'date');
@@ -39,7 +44,6 @@ define(['BudgetWindow', 'DisasterWindow', 'GameCanvas', 'EvaluationWindow', 'Inf
 
     this.budgetShowing = false;
     this.queryShowing = false;
-    this.evalShowing = false;
     this.simNeedsBudget = false;
     this.isPaused = false;
 
@@ -98,7 +102,7 @@ define(['BudgetWindow', 'DisasterWindow', 'GameCanvas', 'EvaluationWindow', 'Inf
   };
 
 
-  Game.prototype.handleEvalClosed = function() {
+  Game.prototype.handleEvalWindowClosure = function() {
     this.evalShowing = false;
   };
 
@@ -136,11 +140,12 @@ define(['BudgetWindow', 'DisasterWindow', 'GameCanvas', 'EvaluationWindow', 'Inf
 
 
   Game.prototype.handleEvalRequest = function() {
+    if (this.evalShowing) {
+      console.warn('Request was made to open eval window. It is already open!');
+      return;
+    }
     this.evalShowing = true;
-    this.evalWindow.open(this.handleEvalClosed.bind(this), this.simulation.evaluation);
-
-    // Let the input know we handled this request
-    this.inputStatus.evalHandled();
+    this.evalWindow.open(this.simulation.evaluation);
     nextFrame(this.tick.bind(this));
   };
 
@@ -223,11 +228,6 @@ define(['BudgetWindow', 'DisasterWindow', 'GameCanvas', 'EvaluationWindow', 'Inf
   Game.prototype.handleInput = function() {
     if (this.inputStatus.budgetRequested) {
       this.handleBudgetRequest();
-      return;
-    }
-
-    if (this.inputStatus.evalRequested) {
-      this.handleEvalRequest();
       return;
     }
 

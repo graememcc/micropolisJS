@@ -7,8 +7,8 @@
  *
  */
 
-define(['Text'],
-       function(Text) {
+define(['EventEmitter', 'Messages', 'Text'],
+       function(EventEmitter, Messages, Text) {
   "use strict";
 
   function EvaluationWindow(opacityLayerID, evaluationWindowID) {
@@ -16,6 +16,7 @@ define(['Text'],
     this._evaluationWindowID = '#' + evaluationWindowID;
     $('#' + evaluationFormID).on('submit', submit.bind(this));
     $('#' + evaluationOKID).on('click', submit.bind(this));
+    EventEmitter(this);
   }
 
   var evaluationFormID = "evaluationForm";
@@ -26,7 +27,7 @@ define(['Text'],
 
     // TODO Fix for enter keypress: submit isn't fired on FF due to form
     // only containing the submit button
-    this._callback();
+    this._emitEvent(Messages.EVAL_WINDOW_CLOSED);
     this._toggleDisplay();
   };
 
@@ -68,8 +69,7 @@ define(['Text'],
   };
 
 
-  EvaluationWindow.prototype.open = function(callback, evaluation) {
-    this._callback = callback;
+  EvaluationWindow.prototype.open = function(evaluation) {
     this._populateWindow(evaluation);
     this._toggleDisplay();
   };

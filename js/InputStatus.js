@@ -41,7 +41,6 @@ define(['EventEmitter', 'GameCanvas', 'GameTools', 'Messages', 'MiscUtils'],
 
     // Other buttons
     this.budgetRequested = false;
-    this.evalRequested = false;
     this.disasterRequested = false;
 
     // Speed
@@ -203,12 +202,7 @@ define(['EventEmitter', 'GameCanvas', 'GameTools', 'Messages', 'MiscUtils'],
 
 
   var evalHandler = function(e) {
-    this.evalRequested = true;
-  };
-
-
-  InputStatus.prototype.evalHandled = function(e) {
-    this.evalRequested = false;
+    this._emitEvent(Messages.EVAL_REQUESTED);
   };
 
 
