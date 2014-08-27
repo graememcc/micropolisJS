@@ -40,7 +40,6 @@ define(['EventEmitter', 'GameCanvas', 'GameTools', 'Messages', 'MiscUtils'],
     this.toolColour = '';
 
     // Other buttons
-    this.budgetRequested = false;
     this.disasterRequested = false;
 
     // Speed
@@ -207,12 +206,7 @@ define(['EventEmitter', 'GameCanvas', 'GameTools', 'Messages', 'MiscUtils'],
 
 
   var budgetHandler = function(e) {
-    this.budgetRequested = true;
-  };
-
-
-  InputStatus.prototype.budgetHandled = function(e) {
-    this.budgetRequested = false;
+    this._emitEvent(Messages.BUDGET_REQUESTED);
   };
 
 

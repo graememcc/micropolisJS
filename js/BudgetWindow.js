@@ -7,13 +7,14 @@
  *
  */
 
-define([],
-       function() {
+define(['EventEmitter', 'Messages'],
+       function(EventEmitter, Messages) {
   "use strict";
 
   function BudgetWindow(opacityLayerID, budgetWindowID) {
     this._opacityLayer =  '#' + opacityLayerID;
     this._budgetWindowID = '#' + budgetWindowID;
+    EventEmitter(this);
   }
 
 
@@ -21,7 +22,6 @@ define([],
   var spendKeys = ['roadRate', 'fireRate', 'policeRate'];
   var budgetResetID = 'budgetReset';
   var budgetCancelID = 'budgetCancel';
-  var budgetOKID = 'budgetOK';
   var budgetFormID = 'budgetForm';
 
 
@@ -63,10 +63,9 @@ define([],
 
   var cancel = function(e) {
     e.preventDefault();
-    this._callback(true, null);
+    this._emitEvent(Messages.BUDGET_WINDOW_CLOSED, {cancelled: true});
 
-    var toRemove = [budgetResetID, budgetOKID, 'taxRate',
-                    'roadRate', 'fireRate', 'policeRate'];
+    var toRemove = [budgetResetID, budgetFormID, 'taxRate', 'roadRate', 'fireRate', 'policeRate'];
 
     for (var i = 0, l = toRemove.length; i < l; i++)
       $('#' + toRemove[i]).off();
@@ -78,20 +77,21 @@ define([],
   var submit = function(e) {
     e.preventDefault();
 
+    var toRemove = [budgetResetID, budgetCancelID, budgetFormID, 'taxRate',
+                    'roadRate', 'fireRate', 'policeRate'];
+
+    for (var i = 0, l = toRemove.length; i < l; i++)
+      $('#' + toRemove[i]).off();
+
     // Get element values
     var roadPercent = $('#roadRate')[0].value;
     var firePercent = $('#fireRate')[0].value;
     var policePercent = $('#policeRate')[0].value;
     var taxPercent = $('#taxRate')[0].value;
 
-    this._callback(false, {roadPercent: roadPercent, firePercent: firePercent,
-                          policePercent: policePercent, taxPercent: taxPercent});
-
-    var toRemove = [budgetResetID, budgetCancelID, 'taxRate',
-                    'roadRate', 'fireRate', 'policeRate'];
-
-    for (var i = 0, l = toRemove.length; i < l; i++)
-      $('#' + toRemove[i]).off();
+    var data = {cancelled: false, roadPercent: roadPercent, firePercent: firePercent,
+                          policePercent: policePercent, taxPercent: taxPercent, e: e, original: e.type};
+    this._emitEvent(Messages.BUDGET_WINDOW_CLOSED, data);
 
     this._toggleDisplay();
   };
@@ -120,9 +120,8 @@ define([],
   };
 
 
-  BudgetWindow.prototype.open = function(callback, budgetData) {
+  BudgetWindow.prototype.open = function(budgetData) {
     var i, elem;
-    this._callback = callback;
 
     // Store max funding levels
     for (i = 0; i < dataKeys.length; i++) {

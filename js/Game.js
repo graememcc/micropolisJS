@@ -29,6 +29,12 @@ define(['BudgetWindow', 'DisasterWindow', 'GameCanvas', 'EvaluationWindow', 'Inf
     this.evalWindow.addEventListener(Messages.EVAL_WINDOW_CLOSED, this.handleEvalWindowClosure.bind(this));
     this.inputStatus.addEventListener(Messages.EVAL_REQUESTED, this.handleEvalRequest.bind(this));
 
+    // ... and similarly for the budget window
+    this.budgetShowing = false;
+    this.budgetWindow = new BudgetWindow('opaque', 'budget');
+    this.budgetWindow.addEventListener(Messages.BUDGET_WINDOW_CLOSED, this.handleBudgetWindowClosure.bind(this));
+    this.inputStatus.addEventListener(Messages.BUDGET_REQUESTED, this.handleBudgetRequest.bind(this));
+
     this.gameCanvas = new GameCanvas('canvasContainer');
     this.gameCanvas.init(this.gameMap, this.tileSet, spriteSheet);
     this.queryWindow = new QueryWindow('opaque', 'queryWindow', this.inputStatus);
@@ -42,7 +48,6 @@ define(['BudgetWindow', 'DisasterWindow', 'GameCanvas', 'EvaluationWindow', 'Inf
     // Unhide controls
     this.revealControls();
 
-    this.budgetShowing = false;
     this.queryShowing = false;
     this.simNeedsBudget = false;
     this.isPaused = false;
@@ -112,9 +117,9 @@ define(['BudgetWindow', 'DisasterWindow', 'GameCanvas', 'EvaluationWindow', 'Inf
   };
 
 
-  Game.prototype.handleBudgetClosed = function(cancelled, data) {
+  Game.prototype.handleBudgetWindowClosure = function(data) {
     this.budgetShowing = false;
-    if (!cancelled) {
+    if (!data.cancelled) {
       this.simulation.budget.roadPercent = data.roadPercent / 100;
       this.simulation.budget.firePercent = data.firePercent / 100;
       this.simulation.budget.policePercent = data.policePercent / 100;
@@ -144,6 +149,7 @@ define(['BudgetWindow', 'DisasterWindow', 'GameCanvas', 'EvaluationWindow', 'Inf
       console.warn('Request was made to open eval window. It is already open!');
       return;
     }
+
     this.evalShowing = true;
     this.evalWindow.open(this.simulation.evaluation);
     nextFrame(this.tick.bind(this));
@@ -151,6 +157,11 @@ define(['BudgetWindow', 'DisasterWindow', 'GameCanvas', 'EvaluationWindow', 'Inf
 
 
   Game.prototype.handleBudgetRequest = function() {
+    if (this.budgetShowing) {
+      console.warn('Request was made to open budget window. It is already open!');
+      return;
+    }
+
     this.budgetShowing = true;
 
     var budgetData = {
@@ -164,11 +175,7 @@ define(['BudgetWindow', 'DisasterWindow', 'GameCanvas', 'EvaluationWindow', 'Inf
       totalFunds: this.simulation.budget.totalFunds,
       taxesCollected: this.simulation.budget.taxFund};
 
-    this.budgetWindow.open(this.handleBudgetClosed.bind(this), budgetData);
-
-    // Let the input know we handled this request
-    this.inputStatus.budgetHandled();
-
+    this.budgetWindow.open(budgetData);
     nextFrame(this.tick.bind(this));
   };
 
@@ -226,11 +233,6 @@ define(['BudgetWindow', 'DisasterWindow', 'GameCanvas', 'EvaluationWindow', 'Inf
 
 
   Game.prototype.handleInput = function() {
-    if (this.inputStatus.budgetRequested) {
-      this.handleBudgetRequest();
-      return;
-    }
-
     if (this.inputStatus.disasterRequested) {
       this.handleDisasterRequest();
       return;

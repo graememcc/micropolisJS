@@ -14,6 +14,8 @@ define(['MiscUtils'],
   var messageData = {
     AUTOBUDGET_CHANGED: MiscUtils.makeConstantDescriptor('Autobudget changed'),
     BUDGET_NEEDED: MiscUtils.makeConstantDescriptor('User needs to budget'),
+    BUDGET_REQUESTED: MiscUtils.makeConstantDescriptor('Budget window requested'),
+    BUDGET_WINDOW_CLOSURE: MiscUtils.makeConstantDescriptor('Budget window closed'),
     BLACKOUTS_REPORTED: MiscUtils.makeConstantDescriptor('Blackouts reported'),
     CLASSIFICATION_UPDATED: MiscUtils.makeConstantDescriptor('Classification updated'),
     DATE_UPDATED: MiscUtils.makeConstantDescriptor('Date changed'),
