@@ -19,8 +19,6 @@ define(['BudgetWindow', 'DisasterWindow', 'GameCanvas', 'EvaluationWindow', 'Inf
     this.tileSet = tileSet;
     this.simulation = new Simulation(this.gameMap, difficulty, 1);
     this.rci = new RCI('RCIContainer');
-    this.budgetWindow = new BudgetWindow('opaque', 'budget');
-    this.disasterWindow = new DisasterWindow('opaque', 'disasterWindow');
     this.inputStatus = new InputStatus(this.gameMap);
 
     // Hook up listeners to open/close evaluation window
@@ -34,6 +32,12 @@ define(['BudgetWindow', 'DisasterWindow', 'GameCanvas', 'EvaluationWindow', 'Inf
     this.budgetWindow = new BudgetWindow('opaque', 'budget');
     this.budgetWindow.addEventListener(Messages.BUDGET_WINDOW_CLOSED, this.handleBudgetWindowClosure.bind(this));
     this.inputStatus.addEventListener(Messages.BUDGET_REQUESTED, this.handleBudgetRequest.bind(this));
+
+    // ... and also the disaster window
+    this.disasterShowing = false;
+    this.disasterWindow = new DisasterWindow('opaque', 'disasterWindow');
+    this.disasterWindow.addEventListener(Messages.DISASTER_WINDOW_CLOSED, this.handleDisasterWindowClosure.bind(this));
+    this.inputStatus.addEventListener(Messages.DISASTER_REQUESTED, this.handleDisasterRequest.bind(this));
 
     this.gameCanvas = new GameCanvas('canvasContainer');
     this.gameCanvas.init(this.gameMap, this.tileSet, spriteSheet);
@@ -72,7 +76,7 @@ define(['BudgetWindow', 'DisasterWindow', 'GameCanvas', 'EvaluationWindow', 'Inf
   };
 
 
-  Game.prototype.handleDisasterClosed = function(request) {
+  Game.prototype.handleDisasterWindowClosure = function(request) {
     this.disasterShowing = false;
     if (request === DisasterWindow.DISASTER_NONE)
       return;
@@ -135,11 +139,13 @@ define(['BudgetWindow', 'DisasterWindow', 'GameCanvas', 'EvaluationWindow', 'Inf
 
 
   Game.prototype.handleDisasterRequest = function() {
-    this.disasterShowing = true;
-    this.disasterWindow.open(this.handleDisasterClosed.bind(this));
+    if (this.disasterShowing) {
+      console.warn('Request was made to open disaster window. It is already open!');
+      return;
+    }
 
-    // Let the input know we handled this request
-    this.inputStatus.disasterHandled();
+    this.disasterShowing = true;
+    this.disasterWindow.open();
     nextFrame(this.tick.bind(this));
   };
 
@@ -233,11 +239,6 @@ define(['BudgetWindow', 'DisasterWindow', 'GameCanvas', 'EvaluationWindow', 'Inf
 
 
   Game.prototype.handleInput = function() {
-    if (this.inputStatus.disasterRequested) {
-      this.handleDisasterRequest();
-      return;
-    }
-
     if (this.inputStatus.speedChangeRequested) {
       this.handleSpeedChange();
       return;

@@ -39,9 +39,6 @@ define(['EventEmitter', 'GameCanvas', 'GameTools', 'Messages', 'MiscUtils'],
     this.toolWidth = 0;
     this.toolColour = '';
 
-    // Other buttons
-    this.disasterRequested = false;
-
     // Speed
     this.speedChangeRequested = false;
     this.requestedSpeed = null;
@@ -191,12 +188,7 @@ define(['EventEmitter', 'GameCanvas', 'GameTools', 'Messages', 'MiscUtils'],
 
 
   var disasterHandler = function(e) {
-    this.disasterRequested = true;
-  };
-
-
-  InputStatus.prototype.disasterHandled = function(e) {
-    this.disasterRequested = false;
+    this._emitEvent(Messages.DISASTER_REQUESTED);
   };
 
 

@@ -7,14 +7,15 @@
  *
  */
 
-define(['MiscUtils'],
-       function(MiscUtils) {
+define(['EventEmitter', 'Messages', 'MiscUtils'],
+       function(EventEmitter, Messages, MiscUtils) {
   "use strict";
 
   function DisasterWindow(opacityLayerID, disasterWindowID) {
     this._opacityLayer =  '#' + opacityLayerID;
     this._disasterWindowID = '#' + disasterWindowID;
     this._requestedDisaster = DisasterWindow.DISASTER_NONE;
+    EventEmitter(this);
   }
 
 
@@ -28,7 +29,7 @@ define(['MiscUtils'],
     e.preventDefault();
     $('#' + disasterFormID).off();
     this._toggleDisplay();
-    this._callback(DisasterWindow.DISASTER_NONE);
+    this._emitEvent(Messages.DISASTER_WINDOW_CLOSED, DisasterWindow.DISASTER_NONE);
   };
 
 
@@ -39,7 +40,7 @@ define(['MiscUtils'],
     var requestedDisaster = $('#' + disasterSelectID)[0].value;
     $('#' + disasterFormID).off();
     this._toggleDisplay();
-    this._callback(requestedDisaster);
+    this._emitEvent(Messages.DISASTER_WINDOW_CLOSED, requestedDisaster);
   };
 
 
@@ -65,9 +66,8 @@ define(['MiscUtils'],
   };
 
 
-  DisasterWindow.prototype.open = function(callback) {
+  DisasterWindow.prototype.open = function() {
     var i;
-    this._callback = callback;
 
     // Ensure options have right values
     $('#disasterNone').attr('value', DisasterWindow.DISASTER_NONE);
