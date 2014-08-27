@@ -163,20 +163,22 @@ define(['BlockMap', 'BlockMapUtils', 'Budget', 'Census', 'Commercial', 'Disaster
     for (var i = 0, l = evaluationEvents.length; i < l; i++)
       this.evaluation.addEventListener(evaluationEvents[i], MiscUtils.reflectEvent.bind(this, evaluationEvents[i]));
 
-    this._powerManager.addEventListener(Messages.NOT_ENOUGH_POWER, this._wrapMessage(this, Messages.NOT_ENOUGH_POWER));
+    this._powerManager.addEventListener(Messages.NOT_ENOUGH_POWER, this._wrapMessage.bind(this, Messages.NOT_ENOUGH_POWER));
 
     this.budget.addEventListener(Messages.FUNDS_CHANGED, MiscUtils.reflectEvent.bind(this, Messages.FUNDS_CHANGED));
+    this.budget.addEventListener(Messages.BUDGET_NEEDED, MiscUtils.reflectEvent.bind(this, Messages.BUDGET_NEEDED));
+    this.budget.addEventListener(Messages.NO_MONEY, this._wrapMessage.bind(this, Messages.NO_MONEY));
 
     this._valves.addEventListener(Messages.VALVES_UPDATED, this._onValveChange.bind(this));
 
     for (i = 0, l = Messages.disasterMessages.length; i < l; i++) {
-      this.spriteManager.addEventListener(Messages.disasterMessages[i], this._wrapMessage(this, Messages.disasterMessages[i]));
-      this.disasterManager.addEventListener(Messages.disasterMessages[i], this._wrapMessage(this, Messages.disasterMessages[i]));
+      this.spriteManager.addEventListener(Messages.disasterMessages[i], this._wrapMessage.bind(this, Messages.disasterMessages[i]));
+      this.disasterManager.addEventListener(Messages.disasterMessages[i], this._wrapMessage.bind(this, Messages.disasterMessages[i]));
     }
     for (i = 0, l = Messages.crashes.length; i < l; i++)
-      this.spriteManager.addEventListener(Messages.crashes[i], this._wrapMessage(this, Messages.crashes[i]));
+      this.spriteManager.addEventListener(Messages.crashes[i], this._wrapMessage.bind(this, Messages.crashes[i]));
 
-    this.spriteManager.addEventListener(Messages.HEAVY_TRAFFIC, this._wrapMessage(this, Messages.HEAVY_TRAFFIC));
+    this.spriteManager.addEventListener(Messages.HEAVY_TRAFFIC, this._wrapMessage.bind(this, Messages.HEAVY_TRAFFIC));
 
     // Register actions
     Commercial.registerHandlers(this._mapScanner, this._repairManager);

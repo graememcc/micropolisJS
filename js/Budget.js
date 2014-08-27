@@ -139,9 +139,9 @@ define(['EventEmitter', 'Messages', 'MiscUtils'],
     // Uh-oh. Not enough money. Make this the user's problem.
     // They don't know it yet, but they're about to get a budget window.
     this.autoBudget = false;
-    messageManager.sendMessage(Messages.AUTOBUDGET_CHANGED, this.autoBudget);
-    messageManager.sendMessage(Messages.BUDGET_NEEDED);
-    messageManager.sendMessage(Messages.NO_MONEY);
+    this._emitEvent(Messages.AUTOBUDGET_CHANGED, this.autoBudget);
+    this._emitEvent(Messages.BUDGET_NEEDED);
+    this._emitEvent(Messages.NO_MONEY);
   };
 
 

@@ -52,6 +52,9 @@ define(['BudgetWindow', 'DisasterWindow', 'GameCanvas', 'EvaluationWindow', 'Inf
     // Listen for front end messages
     this.simulation.addEventListener(Messages.FRONT_END_MESSAGE, this.processFrontEndMessage.bind(this));
 
+    // Listen for budget messages
+    this.simulation.addEventListener(Messages.BUDGET_NEEDED, this.handleMandatoryBudget.bind(this));
+
     this.infoBar = InfoBar('cclass', 'population', 'score', 'funds', 'date');
     this.infoBar(this.simulation);
 
@@ -204,6 +207,12 @@ define(['BudgetWindow', 'DisasterWindow', 'GameCanvas', 'EvaluationWindow', 'Inf
 
     this.budgetWindow.open(budgetData);
     nextFrame(this.tick.bind(this));
+  };
+
+
+  Game.prototype.handleMandatoryBudget = function() {
+    this.simNeededBudget = true;
+    this.handleBudgetRequest();
   };
 
 
