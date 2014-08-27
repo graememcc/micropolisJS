@@ -19,6 +19,10 @@ define(['BudgetWindow', 'DisasterWindow', 'GameCanvas', 'EvaluationWindow', 'Inf
     this.tileSet = tileSet;
     this.simulation = new Simulation(this.gameMap, difficulty, 1);
     this.rci = new RCI('RCIContainer');
+
+    // Note: must init canvas before inputStatus
+    this.gameCanvas = new GameCanvas('canvasContainer');
+    this.gameCanvas.init(this.gameMap, this.tileSet, spriteSheet);
     this.inputStatus = new InputStatus(this.gameMap);
 
     // Hook up listeners to open/close evaluation window
@@ -39,8 +43,6 @@ define(['BudgetWindow', 'DisasterWindow', 'GameCanvas', 'EvaluationWindow', 'Inf
     this.disasterWindow.addEventListener(Messages.DISASTER_WINDOW_CLOSED, this.handleDisasterWindowClosure.bind(this));
     this.inputStatus.addEventListener(Messages.DISASTER_REQUESTED, this.handleDisasterRequest.bind(this));
 
-    this.gameCanvas = new GameCanvas('canvasContainer');
-    this.gameCanvas.init(this.gameMap, this.tileSet, spriteSheet);
     this.queryWindow = new QueryWindow('opaque', 'queryWindow', this.inputStatus);
     this.queryWindow.addEventListener(Messages.QUERY_WINDOW_CLOSED, this.handleQueryWindowClosure.bind(this));
     this.infoBar = InfoBar('cclass', 'population', 'score', 'funds', 'date');
