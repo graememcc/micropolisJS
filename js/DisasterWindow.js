@@ -26,6 +26,7 @@ define(['EventEmitter', 'Messages', 'MiscUtils'],
 
   var cancel = function(e) {
     e.preventDefault();
+    $('#' + disasterCancelID).off();
     $('#' + disasterFormID).off();
     this._toggleDisplay();
     this._emitEvent(Messages.DISASTER_WINDOW_CLOSED, DisasterWindow.DISASTER_NONE);
@@ -38,6 +39,7 @@ define(['EventEmitter', 'Messages', 'MiscUtils'],
     // Get element values
     var requestedDisaster = $('#' + disasterSelectID)[0].value;
     $('#' + disasterFormID).off();
+    $('#' + disasterCancelID).off();
     this._toggleDisplay();
     this._emitEvent(Messages.DISASTER_WINDOW_CLOSED, requestedDisaster);
   };
@@ -60,8 +62,8 @@ define(['EventEmitter', 'Messages', 'MiscUtils'],
 
 
   DisasterWindow.prototype._registerButtonListeners = function() {
-    $('#' + disasterCancelID).one('click', cancel.bind(this));
-    $('#' + disasterFormID).one('submit', submit.bind(this));
+    $('#' + disasterCancelID).on('click', cancel.bind(this));
+    $('#' + disasterFormID).on('submit', submit.bind(this));
   };
 
 
