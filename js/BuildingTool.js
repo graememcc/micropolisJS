@@ -106,7 +106,7 @@ define(['ConnectingTool', 'Tile', 'TileUtils'],
   };
 
 
-  BuildingTool.prototype.doTool = function(x, y, messageManager, blockMaps) {
+  BuildingTool.prototype.doTool = function(x, y, blockMaps) {
     this.result = this.buildBuilding(x, y);
   };
 

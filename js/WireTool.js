@@ -109,7 +109,7 @@ define(['ConnectingTool', 'Tile', 'TileUtils'],
   };
 
 
-  WireTool.prototype.doTool = function(x, y, messageManager, blockMaps) {
+  WireTool.prototype.doTool = function(x, y, blockMaps) {
     this.result = this.layWire(x, y);
   };
 

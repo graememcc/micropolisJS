@@ -51,14 +51,14 @@ define(['Messages', 'MiscUtils', 'Tile', 'TileUtils', 'WorldEffects'],
   };
 
 
-  var apply = function(budget, messageManager) {
+  var apply = function(budget) {
     this._worldEffects.apply();
-    budget.spend(this._applicationCost, messageManager);
+    budget.spend(this._applicationCost);
     this.clear();
   };
 
 
-  var modifyIfEnoughFunding = function(budget, messageManager) {
+  var modifyIfEnoughFunding = function(budget) {
     if (this.result !== this.TOOLRESULT_OK)
       return false;
 
@@ -67,7 +67,7 @@ define(['Messages', 'MiscUtils', 'Tile', 'TileUtils', 'WorldEffects'],
       return false;
     }
 
-    apply.call(this, budget, messageManager);
+    apply.call(this, budget);
     return true;
   };
 

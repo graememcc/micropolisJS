@@ -68,7 +68,7 @@ define(['BaseSprite', 'Messages', 'MiscUtils', 'Random', 'SpriteConstants', 'Spr
 
   var CANTMOVE = 10;
 
-  BoatSprite.prototype.move = function(spriteCycle, messageManager, disasterManager, blockMaps) {
+  BoatSprite.prototype.move = function(spriteCycle, disasterManager, blockMaps) {
     var tile = Tile.RIVER;
 
     if (this.soundCount > 0)
@@ -154,14 +154,14 @@ define(['BaseSprite', 'Messages', 'MiscUtils', 'Random', 'SpriteConstants', 'Spr
       }
 
       if (i === 7) {
-        this.explodeSprite(messageManager);
+        this.explodeSprite();
         SpriteUtils.destroyMapTile(this.spriteManager, this.map, blockMaps, this.x, this.y);
       }
     }
   };
 
 
-  BoatSprite.prototype.explodeSprite = function(messageManager) {
+  BoatSprite.prototype.explodeSprite = function() {
     this.frame = 0;
     this.spriteManager.makeExplosionAt(this.x, this.y);
     this._emitEvent(Messsages.SHIP_CRASHED);

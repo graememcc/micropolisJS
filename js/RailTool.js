@@ -102,7 +102,7 @@ define(['ConnectingTool', 'Tile', 'TileUtils'],
 
 
 
-  RailTool.prototype.doTool = function(x, y, messageManager, blockMaps) {
+  RailTool.prototype.doTool = function(x, y, blockMaps) {
     this.result = this.layRail(x, y);
   };
 

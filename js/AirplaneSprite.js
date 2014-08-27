@@ -34,7 +34,7 @@ define(['BaseSprite', 'Messages', 'MiscUtils', 'Random', 'SpriteConstants', 'Spr
   var xDelta = [0, 0, 6, 8, 6, 0, -6, -8, -6, 8, 8, 8];
   var yDelta = [0, -8, -6, 0, 6, 8,  6, 0, -6, 0, 0, 0];
 
-  AirplaneSprite.prototype.move = function(spriteCycle, messageManager, disasterManager, blockMaps) {
+  AirplaneSprite.prototype.move = function(spriteCycle, disasterManager, blockMaps) {
     var frame = this.frame;
 
     if ((spriteCycle % 5) === 0) {
@@ -73,13 +73,13 @@ define(['BaseSprite', 'Messages', 'MiscUtils', 'Random', 'SpriteConstants', 'Spr
         if ((s.type === SpriteConstants.SPRITE_HELICOPTER ||
              s.type === SpriteConstants.SPRITE_AIRPLANE) &&
               SpriteUtils.checkSpriteCollision(this, s)) {
-          s.explodeSprite(messageManager);
+          s.explodeSprite();
           explode = true;
         }
       }
 
       if (explode)
-        this.explodeSprite(messageManager);
+        this.explodeSprite();
     }
 
     this.x += xDelta[frame];
@@ -90,7 +90,7 @@ define(['BaseSprite', 'Messages', 'MiscUtils', 'Random', 'SpriteConstants', 'Spr
   };
 
 
-  AirplaneSprite.prototype.explodeSprite = function(messageManager) {
+  AirplaneSprite.prototype.explodeSprite = function() {
     this.frame = 0;
     this.spriteManager.makeExplosionAt(this.x, this.y);
     this._emitEvent(Messages.PLANE_CRASHED);

@@ -29,7 +29,7 @@ define(['EventEmitter', 'Messages', 'MiscUtils', 'Random', 'SpriteConstants', 'T
 
   var DisChance = [4800, 2400, 60];
 
-  DisasterManager.prototype.doDisasters = function(census, messageManager) {
+  DisasterManager.prototype.doDisasters = function(census) {
     if (this._floodCount)
         this._floodCount--;
 
@@ -43,19 +43,19 @@ define(['EventEmitter', 'Messages', 'MiscUtils', 'Random', 'SpriteConstants', 'T
       switch (Random.getRandom(8)) {
         case 0:
         case 1:
-          this.setFire(messageManager);
+          this.setFire();
           break;
 
         case 2:
         case 3:
-          this.makeFlood(messageManager);
+          this.makeFlood();
           break;
 
         case 4:
           break;
 
         case 5:
-          this._spriteManager.makeTornado(messageManager);
+          this._spriteManager.makeTornado();
           break;
 
         case 6:
@@ -66,7 +66,7 @@ define(['EventEmitter', 'Messages', 'MiscUtils', 'Random', 'SpriteConstants', 'T
         case 7:
         case 8:
           if (census.pollutionAverage > 60)
-            this._spriteManager.makeMonster(messageManager);
+            this._spriteManager.makeMonster();
           break;
       }
     }
@@ -79,11 +79,11 @@ define(['EventEmitter', 'Messages', 'MiscUtils', 'Random', 'SpriteConstants', 'T
 
 
   // User initiated meltdown: need to find the plant first
-  DisasterManager.prototype.makeMeltdown = function(messageManager) {
+  DisasterManager.prototype.makeMeltdown = function() {
     for (var x = 0; x < (this._map.width - 1); x++) {
       for (var y = 0; y < (this._map.height - 1); y++) {
         if (this._map.getTileValue(x, y) === Tile.NUCLEAR) {
-          this.doMeltdown(messageManager, x, y);
+          this.doMeltdown(x, y);
           return;
         }
       }
@@ -102,7 +102,7 @@ define(['EventEmitter', 'Messages', 'MiscUtils', 'Random', 'SpriteConstants', 'T
 
 
   // User initiated earthquake
-  DisasterManager.prototype.makeEarthquake = function(messageManager) {
+  DisasterManager.prototype.makeEarthquake = function() {
     var strength = Random.getRandom(700) + 300;
     this.doEarthquake(strength);
 
@@ -122,7 +122,7 @@ define(['EventEmitter', 'Messages', 'MiscUtils', 'Random', 'SpriteConstants', 'T
   };
 
 
-  DisasterManager.prototype.setFire = function(messageManager, times, zonesOnly) {
+  DisasterManager.prototype.setFire = function(times, zonesOnly) {
     times = times || 1;
     zonesOnly = zonesOnly || false;
 
@@ -145,10 +145,10 @@ define(['EventEmitter', 'Messages', 'MiscUtils', 'Random', 'SpriteConstants', 'T
 
 
   // User initiated plane crash
-  DisasterManager.prototype.makeCrash = function(messageManager) {
+  DisasterManager.prototype.makeCrash = function() {
     var s = this._spriteManager.getSprite(SpriteConstants.SPRITE_PLANE);
     if (s !== null) {
-      s.explodeSprite(messageManager);
+      s.explodeSprite();
       return;
     }
 
@@ -156,20 +156,20 @@ define(['EventEmitter', 'Messages', 'MiscUtils', 'Random', 'SpriteConstants', 'T
     var y = Random.getRandom(this._map.height - 1);
     this._spriteManager.generatePlane(x, y);
     s = this._spriteManager.getSprite(SpriteConstants.SPRITE_AIRPLANE);
-    s.explodeSprite(messageManager);
+    s.explodeSprite();
   };
 
 
   // User initiated fire
-  DisasterManager.prototype.makeFire = function(messageManager) {
-    this.setFire(messageManager, 40, false);
+  DisasterManager.prototype.makeFire = function() {
+    this.setFire(40, false);
   };
 
 
   var Dx = [ 0, 1, 0, -1];
   var Dy = [-1, 0, 1, 0];
 
-  DisasterManager.prototype.makeFlood = function(messageManager) {
+  DisasterManager.prototype.makeFlood = function() {
     for (var i = 0; i < 300; i++) {
       var x = Random.getRandom(this._map.width - 1);
       var y = Random.getRandom(this._map.height - 1);
@@ -227,7 +227,7 @@ define(['EventEmitter', 'Messages', 'MiscUtils', 'Random', 'SpriteConstants', 'T
   };
 
 
-  DisasterManager.prototype.doMeltdown = function(messageManager, x, y) {
+  DisasterManager.prototype.doMeltdown = function(x, y) {
     this._spriteManager.makeExplosion(x - 1, y - 1);
     this._spriteManager.makeExplosion(x - 1, y + 2);
     this._spriteManager.makeExplosion(x + 2, y - 1);

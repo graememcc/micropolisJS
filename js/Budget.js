@@ -50,18 +50,18 @@ define(['EventEmitter', 'Messages', 'MiscUtils'],
   var RLevels = [0.7, 0.9, 1.2];
   var FLevels = [1.4, 1.2, 0.8];
 
-  Budget.prototype.doBudget = function(messageManager) {
-    return this.doBudgetNow(false, messageManager);
+  Budget.prototype.doBudget = function() {
+    return this.doBudgetNow(false);
   };
 
 
   // User initiated budget
-  Budget.prototype.doBudgetMenu = function(messageManager) {
-    return this.doBudgetNow(false, messageManager);
+  Budget.prototype.doBudgetMenu = function() {
+    return this.doBudgetNow(false);
   };
 
 
-  Budget.prototype.doBudgetNow = function(fromWindow, messageManager) {
+  Budget.prototype.doBudgetNow = function(fromWindow) {
     // How much would we be spending based on current percentages?
     this.roadSpend = Math.round(this.roadFund * this.roadPercent);
     this.fireSpend = Math.round(this.fireFund * this.firePercent);
@@ -124,7 +124,7 @@ define(['EventEmitter', 'Messages', 'MiscUtils'],
       // If we were called as the result of a manual budget,
       // go ahead and spend the money
       if (!fromWindow) {
-        this.doBudgetSpend(roadValue, fireValue, policeValue, this.cityTax, messageManager);
+        this.doBudgetSpend(roadValue, fireValue, policeValue, this.cityTax);
       }
       return;
     }
@@ -132,7 +132,7 @@ define(['EventEmitter', 'Messages', 'MiscUtils'],
     // Autobudget
     if (cashAvailable >= total) {
       // We were able to fully fund services. Go ahead and spend
-      this.doBudgetSpend(roadValue, fireValue, policeValue, this.cityTax, messageManager);
+      this.doBudgetSpend(roadValue, fireValue, policeValue, this.cityTax);
       return;
     }
 
@@ -145,14 +145,14 @@ define(['EventEmitter', 'Messages', 'MiscUtils'],
   };
 
 
-  Budget.prototype.doBudgetSpend = function(roadValue, fireValue, policeValue, taxRate, messageManager) {
+  Budget.prototype.doBudgetSpend = function(roadValue, fireValue, policeValue, taxRate) {
     this.roadSpend = roadValue;
     this.fireSpend = fireValue;
     this.policeSpend = policeValue;
     this.setTax(taxRate);
     var total = this.roadSpend + this.fireSpend + this.policeSpend;
 
-    this.spend(-(this.taxFund - total), messageManager);
+    this.spend(-(this.taxFund - total));
     this.updateFundEffects();
   };
 
@@ -174,7 +174,7 @@ define(['EventEmitter', 'Messages', 'MiscUtils'],
   };
 
 
-  Budget.prototype.collectTax = function(gameLevel, census, messageManager) {
+  Budget.prototype.collectTax = function(gameLevel, census) {
     this.cashFlow = 0;
 
     this.policeFund = census.policeStationPop * 100;
@@ -184,7 +184,7 @@ define(['EventEmitter', 'Messages', 'MiscUtils'],
 
     if (census.totalPop > 0) {
       this.cashFlow = this.taxFund - (this.policeFund + this.fireFund + this.roadFund);
-      this.doBudget(messageManager);
+      this.doBudget();
     } else {
       // We don't want roads etc deteriorating when population hasn't yet been established
       // (particularly early game)
@@ -195,7 +195,7 @@ define(['EventEmitter', 'Messages', 'MiscUtils'],
   };
 
 
-  Budget.prototype.setTax = function(amount, messageManager) {
+  Budget.prototype.setTax = function(amount) {
     if (amount === this.cityTax)
       return;
 
@@ -203,7 +203,7 @@ define(['EventEmitter', 'Messages', 'MiscUtils'],
   };
 
 
-  Budget.prototype.setFunds = function(amount, messageManager) {
+  Budget.prototype.setFunds = function(amount) {
     if (amount === this.totalFunds)
       return;
 
@@ -213,8 +213,8 @@ define(['EventEmitter', 'Messages', 'MiscUtils'],
   };
 
 
-  Budget.prototype.spend = function(amount, messageManager) {
-    this.setFunds(this.totalFunds - amount, messageManager);
+  Budget.prototype.spend = function(amount) {
+    this.setFunds(this.totalFunds - amount);
   };
 
 

@@ -7,8 +7,8 @@
  *
  */
 
-define(['BudgetWindow', 'DisasterWindow', 'GameCanvas', 'EvaluationWindow', 'InfoBar', 'InputStatus', 'Messages', 'MessageManager', 'Notification', 'QueryWindow', 'RCI', 'Simulation', 'Text'],
-       function(BudgetWindow, DisasterWindow, GameCanvas, EvaluationWindow, InfoBar, InputStatus, Messages, MessageManager, Notification, QueryWindow, RCI, Simulation, Text) {
+define(['BudgetWindow', 'DisasterWindow', 'GameCanvas', 'EvaluationWindow', 'InfoBar', 'InputStatus', 'Messages', 'Notification', 'QueryWindow', 'RCI', 'Simulation', 'Text'],
+       function(BudgetWindow, DisasterWindow, GameCanvas, EvaluationWindow, InfoBar, InputStatus, Messages, Notification, QueryWindow, RCI, Simulation, Text) {
   "use strict";
 
 
@@ -93,33 +93,30 @@ define(['BudgetWindow', 'DisasterWindow', 'GameCanvas', 'EvaluationWindow', 'Inf
     if (request === DisasterWindow.DISASTER_NONE)
       return;
 
-    var m = new MessageManager();
     switch (request) {
       case DisasterWindow.DISASTER_MONSTER:
-        this.simulation.spriteManager.makeMonster(m);
+        this.simulation.spriteManager.makeMonster();
         break;
 
       case DisasterWindow.DISASTER_FIRE:
-        this.simulation.disasterManager.makeFire(m);
+        this.simulation.disasterManager.makeFire();
         break;
 
       case DisasterWindow.DISASTER_FLOOD:
-        this.simulation.disasterManager.makeFlood(m);
+        this.simulation.disasterManager.makeFlood();
         break;
 
       case DisasterWindow.DISASTER_CRASH:
-        this.simulation.disasterManager.makeCrash(m);
+        this.simulation.disasterManager.makeCrash();
         break;
 
       case DisasterWindow.DISASTER_MELTDOWN:
-        this.simulation.disasterManager.makeMeltdown(m);
+        this.simulation.disasterManager.makeMeltdown();
         break;
 
       case DisasterWindow.DISASTER_TORNADO:
-        this.simulation.spriteManager.makeTornado(m);
+        this.simulation.spriteManager.makeTornado();
     }
-
-    this.processMessages(m.getMessages());
   };
 
 
@@ -141,7 +138,7 @@ define(['BudgetWindow', 'DisasterWindow', 'GameCanvas', 'EvaluationWindow', 'Inf
       this.simulation.budget.policePercent = data.policePercent / 100;
       this.simulation.budget.setTax(data.taxPercent);
       if (this.simNeededBudget) {
-        this.simulation.budget.doBudget(new MessageManager());
+        this.simulation.budget.doBudget();
         this.simNeededBudget = false;
       } else {
         this.simulation.budget.updateFundEffects();
@@ -229,12 +226,11 @@ define(['BudgetWindow', 'DisasterWindow', 'GameCanvas', 'EvaluationWindow', 'Inf
 
     var budget = this.simulation.budget;
     var evaluation = this.simulation.evaluation;
-    var messageMgr = new MessageManager();
 
     // do it!
-    tool.doTool(tileCoords.x, tileCoords.y, messageMgr, this.simulation.blockMaps);
+    tool.doTool(tileCoords.x, tileCoords.y, this.simulation.blockMaps);
 
-    tool.modifyIfEnoughFunding(budget, messageMgr);
+    tool.modifyIfEnoughFunding(budget);
     switch (tool.result) {
       case tool.TOOLRESULT_NEEDS_BULLDOZE:
         $('#toolOutput').text(Text.toolMessages.needsDoze);
@@ -248,7 +244,6 @@ define(['BudgetWindow', 'DisasterWindow', 'GameCanvas', 'EvaluationWindow', 'Inf
         $('#toolOutput').html('&nbsp;');
     }
 
-    this.processMessages(messageMgr.getMessages());
     this.inputStatus.clickHandled();
   };
 
@@ -294,7 +289,6 @@ define(['BudgetWindow', 'DisasterWindow', 'GameCanvas', 'EvaluationWindow', 'Inf
   Game.prototype.processFrontEndMessage = function(message) {
     var subject = message.subject;
 
-    // XXX This will eventually replace processMessages below
     if (Text.goodMessages[subject] !== undefined) {
       Notification.goodNews(Text.goodMessages[subject]);
       return;
@@ -311,42 +305,6 @@ define(['BudgetWindow', 'DisasterWindow', 'GameCanvas', 'EvaluationWindow', 'Inf
     }
 
     console.warn('Unexpected message: ', subject);
-  };
-
-
-  Game.prototype.processMessages = function(messages) {
-    // Don't want to output more than one user message
-    var messageOutput = false;
-
-    for (var i = 0, l = messages.length; i < l; i++) {
-      var m = messages[i];
-
-      switch (m.message) {
-        case Messages.BUDGET_NEEDED:
-          this.simNeededBudget = true;
-          this.handleBudgetRequest();
-          break;
-
-        default:
-          if (!messageOutput && Text.goodMessages[m.message] !== undefined) {
-            messageOutput = true;
-            Notification.goodNews(Text.goodMessages[m.message]);
-            break;
-          }
-
-          if (!messageOutput && Text.badMessages[m.message] !== undefined) {
-            messageOutput = true;
-            Notification.badNews(Text.badMessages[m.message]);
-            break;
-          }
-
-          if (!messageOutput && Text.neutralMessages[m.message] !== undefined) {
-            messageOutput = true;
-            Notification.news(Text.neutralMessages[m.message]);
-            break;
-          }
-      }
-    }
   };
 
 
@@ -398,8 +356,7 @@ define(['BudgetWindow', 'DisasterWindow', 'GameCanvas', 'EvaluationWindow', 'Inf
 
     if (!this.simulation.isPaused()) {
       // Run the sim
-      var messages = this.simulation.simTick();
-      this.processMessages(messages);
+      this.simulation.simTick();
     }
 
     // Run this even when paused: you can still build when paused

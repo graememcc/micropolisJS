@@ -32,7 +32,7 @@ define(['BaseSprite', 'Messages', 'MiscUtils', 'Random', 'SpriteConstants', 'Spr
   var xDelta = [0, 0, 3, 5, 3, 0, -3, -5, -3];
   var yDelta = [0, -5, -3, 0, 3, 5, 3, 0, -3];
 
-  CopterSprite.prototype.move = function(spriteCycle, messageManager, disasterManager, blockMaps) {
+  CopterSprite.prototype.move = function(spriteCycle, disasterManager, blockMaps) {
     if (this.soundCount > 0)
       this.soundCount--;
 
@@ -93,7 +93,7 @@ define(['BaseSprite', 'Messages', 'MiscUtils', 'Random', 'SpriteConstants', 'Spr
   };
 
 
-  CopterSprite.prototype.explodeSprite = function(messageManager) {
+  CopterSprite.prototype.explodeSprite = function() {
     this.frame = 0;
     this.spriteManager.makeExplosionAt(this.x, this.y);
     this._emitEvent(Messages.HELICOPTER_CRASHED);

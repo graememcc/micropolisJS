@@ -28,7 +28,7 @@ define(['BaseSprite', 'Messages', 'MiscUtils', 'Random', 'SpriteConstants', 'Spr
   var xDelta = [2, 3, 2, 0, -2, -3];
   var yDelta = [-2, 0, 2, 3, 2, 0];
 
-  TornadoSprite.prototype.move = function(spriteCycle, messageManager, disasterManager, blockMaps) {
+  TornadoSprite.prototype.move = function(spriteCycle, disasterManager, blockMaps) {
     var frame;
     frame = this.frame;
 
@@ -64,7 +64,7 @@ define(['BaseSprite', 'Messages', 'MiscUtils', 'Random', 'SpriteConstants', 'Spr
           (s.type === SpriteConstants.SPRITE_AIRPLANE || s.type === SpriteConstants.SPRITE_HELICOPTER ||
            s.type === SpriteConstants.SPRITE_SHIP || s.type === SpriteConstants.SPRITE_TRAIN) &&
         SpriteUtils.checkSpriteCollision(this, s)) {
-        s.explodeSprite(messageManager);
+        s.explodeSprite();
       }
     }
 

@@ -50,7 +50,6 @@ define(['AirplaneSprite', 'BoatSprite', 'CopterSprite', 'EventEmitter', 'Explosi
 
 
   SpriteManager.prototype.moveObjects = function(simData) {
-    var messageManager = simData.messageManager;
     var disasterManager = simData.disasterManager;
     var blockMaps = simData.blockMaps;
 
@@ -64,7 +63,7 @@ define(['AirplaneSprite', 'BoatSprite', 'CopterSprite', 'EventEmitter', 'Explosi
       if (sprite.frame === 0)
         continue;
 
-      sprite.move(this.spriteCycle, messageManager, disasterManager, blockMaps);
+      sprite.move(this.spriteCycle, disasterManager, blockMaps);
     }
 
     this.pruneDeadSprites();
@@ -85,7 +84,7 @@ define(['AirplaneSprite', 'BoatSprite', 'CopterSprite', 'EventEmitter', 'Explosi
   };
 
 
-  SpriteManager.prototype.makeTornado = function(messageManager) {
+  SpriteManager.prototype.makeTornado = function() {
     var sprite = this.getSprite(SpriteConstants.SPRITE_TORNADO);
     if (sprite !== null) {
       sprite.count = 200;
@@ -209,7 +208,7 @@ define(['AirplaneSprite', 'BoatSprite', 'CopterSprite', 'EventEmitter', 'Explosi
   };
 
 
-  SpriteManager.prototype.makeMonsterAt = function(messageManager, x, y) {
+  SpriteManager.prototype.makeMonsterAt = function(x, y) {
     this.makeSprite(SpriteConstants.SPRITE_MONSTER,
                     SpriteUtils.worldToPix(x),
                     SpriteUtils.worldToPix(y));
@@ -217,7 +216,7 @@ define(['AirplaneSprite', 'BoatSprite', 'CopterSprite', 'EventEmitter', 'Explosi
   };
 
 
-  SpriteManager.prototype.makeMonster = function(messageManager) {
+  SpriteManager.prototype.makeMonster = function() {
     var sprite = this.getSprite(SpriteConstants.SPRITE_MONSTER);
     if (sprite !== null) {
       sprite.soundCount = 1;
@@ -233,14 +232,14 @@ define(['AirplaneSprite', 'BoatSprite', 'CopterSprite', 'EventEmitter', 'Explosi
 
       var tile = this.map.getTile(x, y);
       if (tile.getValue() === Tile.RIVER) {
-        this.makeMonsterAt(messageManager, x, y);
+        this.makeMonsterAt(x, y);
         done = 1;
         break;
       }
     }
 
     if (done === 0)
-      this.makeMonsterAt(messageManager, 60, 50);
+      this.makeMonsterAt(60, 50);
   };
 
 

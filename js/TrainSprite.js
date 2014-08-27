@@ -47,7 +47,7 @@ define(['BaseSprite', 'Messages', 'MiscUtils', 'Random', 'SpriteConstants', 'Spr
   var WEST = 3;
   var CANTMOVE = 4;
 
-  TrainSprite.prototype.move = function(spriteCycle, messageManager, disasterManager, blockMaps) {
+  TrainSprite.prototype.move = function(spriteCycle, disasterManager, blockMaps) {
     // Trains can only move in the 4 cardinal directions
     // Over the course of 4 frames, we move through a tile, so
     // ever fourth frame, we try to find a direction to move in
@@ -111,7 +111,7 @@ define(['BaseSprite', 'Messages', 'MiscUtils', 'Random', 'SpriteConstants', 'Spr
   };
 
 
-  TrainSprite.prototype.explodeSprite = function(messageManager) {
+  TrainSprite.prototype.explodeSprite = function() {
     this.frame = 0;
     this.spriteManager.makeExplosionAt(this.x, this.y);
     this._emitEvent(Messages.TRAIN_CRASHED);

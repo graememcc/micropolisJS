@@ -103,7 +103,7 @@ define(['ConnectingTool', 'Tile', 'TileUtils'],
   };
 
 
-  RoadTool.prototype.doTool = function(x, y, messageManager, blockMaps) {
+  RoadTool.prototype.doTool = function(x, y, blockMaps) {
     this.result = this.layRoad(x, y);
   };
 

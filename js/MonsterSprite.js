@@ -49,7 +49,7 @@ define(['BaseSprite', 'Messages', 'MiscUtils', 'Random', 'SpriteConstants', 'Spr
   var diagonals1 = [ 2, 5, 8, 11];
   var diagonals2 = [11, 2, 5, 8];
 
-  MonsterSprite.prototype.move = function(spriteCycle, messageManager, disasterManager, blockMaps) {
+  MonsterSprite.prototype.move = function(spriteCycle, disasterManager, blockMaps) {
     if (this.soundCount > 0)
       this.soundCount--;
 
@@ -151,7 +151,7 @@ define(['BaseSprite', 'Messages', 'MiscUtils', 'Random', 'SpriteConstants', 'Spr
           (s.type === SpriteConstants.SPRITE_AIRPLANE || s.type === SpriteConstants.SPRITE_HELICOPTER ||
            s.type === SpriteConstants.SPRITE_SHIP || s.type === SpriteConstants.SPRITE_TRAIN) &&
             SpriteUtils.checkSpriteCollision(this, s))
-        s.explodeSprite(messageManager);
+        s.explodeSprite();
     }
 
     SpriteUtils.destroyMapTile(this.spriteManager, this.map, blockMaps, this.x, this.y);

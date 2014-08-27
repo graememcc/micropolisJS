@@ -44,7 +44,7 @@ define(['BaseSprite', 'Messages', 'MiscUtils', 'Random', 'SpriteConstants', 'Spr
   };
 
 
-  ExplosionSprite.prototype.move = function(spriteCycle, messageManager, disasterManager, blockMaps) {
+  ExplosionSprite.prototype.move = function(spriteCycle, disasterManager, blockMaps) {
     if ((spriteCycle & 1) === 0) {
       if (this.frame === 1) {
         // Convert sprite coordinates to tile coordinates.

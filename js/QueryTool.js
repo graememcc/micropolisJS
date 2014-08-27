@@ -114,7 +114,7 @@ define(['BaseTool', 'Config', 'EventEmitter', 'Messages', 'Text', 'Tile'],
   };
 
 
-  QueryTool.prototype.doTool = function(x, y, messageManager, blockMaps) {
+  QueryTool.prototype.doTool = function(x, y, blockMaps) {
     var text = 'Position (' + x + ', ' + y + ')';
     text += ' TileValue: ' + this._map.getTileValue(x, y);
 

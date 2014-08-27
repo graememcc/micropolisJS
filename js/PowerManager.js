@@ -60,7 +60,7 @@ define(['BlockMap', 'Direction', 'EventEmitter', 'Messages', 'Tile'],
   // Note: the algorithm is buggy: if you have two adjacent power
   // plants, the second will be regarded as drawing power from the first
   // rather than as a power source itself
-  PowerManager.prototype.doPowerScan = function(census, messageManager) {
+  PowerManager.prototype.doPowerScan = function(census) {
     // Clear power this._map.
     this.powerGridMap.clear();
 
@@ -125,7 +125,7 @@ define(['BlockMap', 'Direction', 'EventEmitter', 'Messages', 'Tile'],
     // In original Micropolis code, we bail and don't repair if melting down
     if (simData.disasterManager.disastersEnabled &&
         Random.getRandom(meltdownTable[simData.gameLevel]) === 0) {
-      simData.disasterManager.doMeltdown(messageManager, x, y);
+      simData.disasterManager.doMeltdown(x, y);
       return;
     }
 

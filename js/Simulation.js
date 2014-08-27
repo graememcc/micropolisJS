@@ -7,8 +7,8 @@
  *
  */
 
-define(['BlockMap', 'BlockMapUtils', 'Budget', 'Census', 'Commercial', 'DisasterManager', 'EventEmitter', 'EmergencyServices', 'Evaluate', 'Industrial', 'MapScanner', 'Messages', 'MessageManager', 'MiscTiles', 'MiscUtils', 'PowerManager', 'RepairManager', 'Residential', 'Road', 'SpriteManager', 'Stadia', 'Traffic', 'Transport', 'Valves'],
-        function(BlockMap, BlockMapUtils, Budget, Census, Commercial, DisasterManager, EventEmitter, EmergencyServices, Evaluate, Industrial, MapScanner, Messages, MessageManager, MiscTiles, MiscUtils, PowerManager, RepairManager, Residential, Road, SpriteManager, Stadia, Traffic, Transport, Valves) {
+define(['BlockMap', 'BlockMapUtils', 'Budget', 'Census', 'Commercial', 'DisasterManager', 'EventEmitter', 'EmergencyServices', 'Evaluate', 'Industrial', 'MapScanner', 'Messages', 'MiscTiles', 'MiscUtils', 'PowerManager', 'RepairManager', 'Residential', 'Road', 'SpriteManager', 'Stadia', 'Traffic', 'Transport', 'Valves'],
+        function(BlockMap, BlockMapUtils, Budget, Census, Commercial, DisasterManager, EventEmitter, EmergencyServices, Evaluate, Industrial, MapScanner, Messages, MiscTiles, MiscUtils, PowerManager, RepairManager, Residential, Road, SpriteManager, Stadia, Traffic, Transport, Valves) {
   "use strict";
 
   function Simulation(gameMap, gameLevel, speed) {
@@ -50,7 +50,6 @@ define(['BlockMap', 'BlockMapUtils', 'Budget', 'Census', 'Commercial', 'Disaster
     this._valves = new Valves();
     this.budget = new Budget();
     this._census = new Census();
-    this._messageManager = new MessageManager();
     this._powerManager = new PowerManager(this._map);
     this.spriteManager = new SpriteManager(this._map);
     this._mapScanner = new MapScanner(this._map);
@@ -103,7 +102,6 @@ define(['BlockMap', 'BlockMapUtils', 'Budget', 'Census', 'Commercial', 'Disaster
     //this.spriteManager.moveObjects(this._constructSimData());
     this._updateTime();
     // TODO Graphs
-    return this._messageManager.getMessages();
   };
 
 
@@ -120,7 +118,6 @@ define(['BlockMap', 'BlockMapUtils', 'Budget', 'Census', 'Commercial', 'Disaster
     if (this._speed === 2 && (this._speedCycle % 3) !== 0)
       return;
 
-    this._messageManager.clear();
     var simData = this._constructSimData();
     this._simulate(simData);
   };
@@ -142,7 +139,6 @@ define(['BlockMap', 'BlockMapUtils', 'Budget', 'Census', 'Commercial', 'Disaster
       cityTime: this._cityTime,
       disasterManager: this.disasterManager,
       gameLevel: this._gameLevel,
-      messageManager: this._messageManager,
       repairManager: this._repairManager,
       powerManager: this._powerManager,
       simulator: this,
@@ -197,7 +193,7 @@ define(['BlockMap', 'BlockMapUtils', 'Budget', 'Census', 'Commercial', 'Disaster
     this._valves.setValves(this._gameLevel, this._census, this.budget);
     this._clearCensus();
     this._mapScanner.mapScan(0, this._map.width, simData);
-    this._powerManager.doPowerScan(this._census, this._messageManager);
+    this._powerManager.doPowerScan(this._census);
     BlockMapUtils.pollutionTerrainLandValueScan(this._map, this._census, this.blockMaps);
     BlockMapUtils.crimeScan(this._census, this.blockMaps);
     BlockMapUtils.populationDensityScan(this._map, this.blockMaps);
@@ -258,7 +254,7 @@ define(['BlockMap', 'BlockMapUtils', 'Budget', 'Census', 'Commercial', 'Disaster
           this._census.take120Census(budget);
 
         if (this._cityTime % TAX_FREQUENCY === 0)  {
-          this.budget.collectTax(this._gameLevel, this._census, this._messageManager);
+          this.budget.collectTax(this._gameLevel, this._census);
           this.evaluation.cityEvaluation(simData);
         }
 
@@ -274,7 +270,7 @@ define(['BlockMap', 'BlockMapUtils', 'Budget', 'Census', 'Commercial', 'Disaster
 
       case 11:
         if ((this._simCycle % speedPowerScan[speedIndex]) === 0)
-          this._powerManager.doPowerScan(this._census, this._messageManager);
+          this._powerManager.doPowerScan(this._census);
         break;
 
       case 12:
@@ -296,7 +292,7 @@ define(['BlockMap', 'BlockMapUtils', 'Budget', 'Census', 'Commercial', 'Disaster
         if ((this._simCycle % speedFireAnalysis[speedIndex]) === 0)
           BlockMapUtils.fireAnalysis(this.blockMaps);
 
-        this.disasterManager.doDisasters(this._census, this._messageManager);
+        this.disasterManager.doDisasters(this._census);
         break;
     }
 

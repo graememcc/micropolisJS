@@ -72,7 +72,7 @@ define(['BaseTool', 'EventEmitter', 'Messages', 'Random', 'Tile', 'TileUtils', '
   };
 
 
-  BulldozerTool.prototype.doTool = function(x, y, messageManager, blockMaps) {
+  BulldozerTool.prototype.doTool = function(x, y, blockMaps) {
     if (!this._map.testBounds(x, y))
       this.result = Tile.TOOLRESULT_FAILED;
 
