@@ -101,7 +101,7 @@ define(['BlockMap', 'BlockMapUtils', 'Budget', 'Census', 'Commercial', 'Disaster
     this._simFrame();
     // Move sprite objects
     //this.spriteManager.moveObjects(this._constructSimData());
-    this._updateFrontEnd();
+    this._updateTime();
     // TODO Graphs
     return this._messageManager.getMessages();
   };
@@ -163,6 +163,8 @@ define(['BlockMap', 'BlockMapUtils', 'Budget', 'Census', 'Commercial', 'Disaster
       this.evaluation.addEventListener(evaluationEvents[i], MiscUtils.reflectEvent.bind(this, evaluationEvents[i]));
 
     this.budget.addEventListener(Messages.FUNDS_CHANGED, MiscUtils.reflectEvent.bind(this, Messages.FUNDS_CHANGED));
+
+    this._valves.addEventListener(Messages.VALVES_UPDATED, this._onValveChange.bind(this));
 
     // Register actions
     Commercial.registerHandlers(this._mapScanner, this._repairManager);
@@ -461,22 +463,17 @@ define(['BlockMap', 'BlockMapUtils', 'Budget', 'Census', 'Commercial', 'Disaster
   };
 
 
-  Simulation.prototype._updateFrontEnd = function() {
-    // Have valves changed?
-    if (this._valves.changed) {
-      this._resLast = this._valves.resValve;
-      this._comLast = this._valves.comValve;
-      this._indLast = this._valves.indValve;
+  Simulation.prototype._onValveChange  = function() {
+    // XXX Examine whether we need to keep the previous values
+    this._resLast = this._valves.resValve;
+    this._comLast = this._valves.comValve;
+    this._indLast = this._valves.indValve;
 
-      // Note: the valves changed the population
-      this._messageManager.sendMessage(Messages.VALVES_UPDATED,
-                                     {residential: this._valves.resValve,
-                                      commercial: this._valves.comValve,
-                                      industrial: this._valves.indValve});
-      this._valves.changed = false;
-    }
-
-    this._updateTime();
+    // XXX When this was in updateFrontEnd it had a comment that updating
+    // the valves updated the population. It seems I was talking nonsense
+    this._emitEvent(Messages.VALVES_UPDATED, {residential: this._valves.resValve,
+                                              commercial: this._valves.comValve,
+                                              industrial: this._valves.indValve});
   };
 
 

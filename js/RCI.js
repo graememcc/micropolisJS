@@ -7,22 +7,19 @@
  *
  */
 
-define(['MiscUtils'],
-       function(MiscUtils) {
+define(['Messages', 'MiscUtils'],
+       function(Messages, MiscUtils) {
   "use strict";
 
-  function RCI(id, parentNode) {
+  function RCI(parentNode, eventSource, id) {
     var e = new Error('Invalid parameter');
 
-    if (arguments.length < 1) {
+    if (arguments.length < 2) {
       throw e;
     }
 
-    // Argument shuffling
-    if (parentNode === undefined) {
-      parentNode = id;
+    if (id === undefined)
       id = RCI.DEFAULT_ID;
-    } 
 
     if (typeof(parentNode) === 'string') {
       var orig = parentNode;
@@ -60,6 +57,8 @@ define(['MiscUtils'],
         throw new Error('ID ' + id + ' already exists in document!');
     } else
       parentNode.appendChild(this._canvas);
+
+    eventSource.addEventListener(Messages.VALVES_UPDATED, this.update.bind(this));
   }
 
 
@@ -113,12 +112,12 @@ define(['MiscUtils'],
   };
 
 
-  RCI.prototype.update = function(res, com, ind) {
+  RCI.prototype.update = function(data) {
     var ctx = this._canvas.getContext('2d');
     this._clear(ctx);
     this._drawRect(ctx);
 
-    var values = [res, com, ind];
+    var values = [data.residential, data.commerical, data.industrial];
     for (var i = 0; i < 3; i++) {
       this._drawValue(ctx, i, values[i]);
       this._drawLabel(ctx, i);

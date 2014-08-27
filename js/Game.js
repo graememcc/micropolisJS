@@ -18,7 +18,7 @@ define(['BudgetWindow', 'DisasterWindow', 'GameCanvas', 'EvaluationWindow', 'Inf
     this.gameMap = gameMap;
     this.tileSet = tileSet;
     this.simulation = new Simulation(this.gameMap, difficulty, 1);
-    this.rci = new RCI('RCIContainer');
+    this.rci = new RCI('RCIContainer', this.simulation);
 
     // Note: must init canvas before inputStatus
     this.gameCanvas = new GameCanvas('canvasContainer');
@@ -78,7 +78,7 @@ define(['BudgetWindow', 'DisasterWindow', 'GameCanvas', 'EvaluationWindow', 'Inf
    });
 
    Notification.news(Text.neutralMessages[Messages.WELCOME]);
-   this.rci.update(0, 0, 0);
+   this.rci.update({residential: 0, commerical: 0, industrial: 0});
   };
 
 
@@ -290,10 +290,6 @@ define(['BudgetWindow', 'DisasterWindow', 'GameCanvas', 'EvaluationWindow', 'Inf
         case Messages.BUDGET_NEEDED:
           this.simNeededBudget = true;
           this.handleBudgetRequest();
-          break;
-
-        case Messages.VALVES_UPDATED:
-          this.rci.update(m.data.residential, m.data.commercial, m.data.industrial);
           break;
 
         default:

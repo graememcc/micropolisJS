@@ -7,18 +7,20 @@
  *
  */
 
-define(['MiscUtils'],
-       function(MiscUtils) {
+define(['EventEmitter', 'Messages', 'MiscUtils'],
+       function(EventEmitter, Messages, MiscUtils) {
   "use strict";
 
+
   function Valves() {
-    this.changed = false;
     this.resValve = 0;
     this.comValve = 0;
     this.indValve = 0;
     this.resCap = false;
     this.comCap = false;
     this.indCap = false;
+
+    EventEmitter(this);
   }
 
 
@@ -113,7 +115,7 @@ define(['MiscUtils'],
     if (this.indCap && this.indValve > 0)
         this.indValve = 0;
 
-    this.changed = true;
+    this._emitEvent(Messages.VALVES_UPDATED);
   };
 
 
