@@ -164,7 +164,7 @@ define(['BaseSprite', 'Messages', 'MiscUtils', 'Random', 'SpriteConstants', 'Spr
   BoatSprite.prototype.explodeSprite = function(messageManager) {
     this.frame = 0;
     this.spriteManager.makeExplosionAt(this.x, this.y);
-    messageManager.sendMessage(Messages.SHIP_CRASHED);
+    this._emitEvent(Messsages.SHIP_CRASHED);
   };
 
 

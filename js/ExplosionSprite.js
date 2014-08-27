@@ -51,7 +51,7 @@ define(['BaseSprite', 'Messages', 'MiscUtils', 'Random', 'SpriteConstants', 'Spr
         var explosionX = SpriteUtils.pixToWorld(this.x);
         var explosionY = SpriteUtils.pixToWorld(this.y);
         messageManager.sendMessage(Messages.SOUND_EXPLOSIONHIGH);
-        messageManager.sendMessage(Messages.EXPLOSION_REPORTED, {x: explosionX, y: explosionY});
+        this._emitEvent(Messages.EXPLOSION_REPORTED, {x: explosionX, y: explosionY});
       }
 
       this.frame++;

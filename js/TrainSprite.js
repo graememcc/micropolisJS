@@ -114,7 +114,7 @@ define(['BaseSprite', 'Messages', 'MiscUtils', 'Random', 'SpriteConstants', 'Spr
   TrainSprite.prototype.explodeSprite = function(messageManager) {
     this.frame = 0;
     this.spriteManager.makeExplosionAt(this.x, this.y);
-    messageManager.sendMessage(Messages.TRAIN_CRASHED);
+    this._emitEvent(Messages.TRAIN_CRASHED);
   };
 
 

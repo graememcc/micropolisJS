@@ -93,7 +93,7 @@ define(['BaseSprite', 'Messages', 'MiscUtils', 'Random', 'SpriteConstants', 'Spr
   AirplaneSprite.prototype.explodeSprite = function(messageManager) {
     this.frame = 0;
     this.spriteManager.makeExplosionAt(this.x, this.y);
-    messageManager.sendMessage(Messages.PLANE_CRASHED);
+    this._emitEvent(Messages.PLANE_CRASHED);
   };
 
 

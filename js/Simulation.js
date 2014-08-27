@@ -156,6 +156,7 @@ define(['BlockMap', 'BlockMapUtils', 'Budget', 'Census', 'Commercial', 'Disaster
   Simulation.prototype.init = function() {
     EventEmitter(this);
 
+    // Add various listeners that we will in turn transmit upwards
     var evaluationEvents = ['CLASSIFICATION_UPDATED', 'POPULATION_UPDATED', 'SCORE_UPDATED'].map(function(m) {
       return Messages[m];
     });
@@ -165,6 +166,13 @@ define(['BlockMap', 'BlockMapUtils', 'Budget', 'Census', 'Commercial', 'Disaster
     this.budget.addEventListener(Messages.FUNDS_CHANGED, MiscUtils.reflectEvent.bind(this, Messages.FUNDS_CHANGED));
 
     this._valves.addEventListener(Messages.VALVES_UPDATED, this._onValveChange.bind(this));
+
+    for (i = 0, l = Messages.disasterMessages.length; i < l; i++) {
+      this.spriteManager.addEventListener(Messages.disasterMessages[i], this._onDisasterMessage.bind(this, Messages.disasterMessages[i]));
+      this.disasterManager.addEventListener(Messages.disasterMessages[i], this._onDisasterMessage.bind(this, Messages.disasterMessages[i]));
+    }
+    for (i = 0, l = Messages.crashes.length; i < l; i++)
+      this.spriteManager.addEventListener(Messages.crashes[i], this._onDisasterMessage.bind(this, Messages.crashes[i]));
 
     // Register actions
     Commercial.registerHandlers(this._mapScanner, this._repairManager);
@@ -288,6 +296,11 @@ define(['BlockMap', 'BlockMapUtils', 'Budget', 'Census', 'Commercial', 'Disaster
 
     // Go on the the next phase.
     this._phaseCycle = (this._phaseCycle + 1) & 15;
+  };
+
+
+  Simulation.prototype._onDisasterMessage = function(message, data) {
+    this._emitEvent(Messages.FRONT_END_MESSAGE, {subject: message, data: data});
   };
 
 

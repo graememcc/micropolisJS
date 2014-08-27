@@ -7,8 +7,8 @@
  *
  */
 
-define(['SpriteUtils'],
-       function(SpriteUtils) {
+define(['EventEmitter', 'SpriteUtils'],
+       function(EventEmitter, SpriteUtils) {
   "use strict";
 
   var init = function(type, map, spriteManager, x, y) {
@@ -30,6 +30,8 @@ define(['SpriteUtils'],
     this.turn = 0;
     this.accel = 0;
     this.speed = 100;
+
+    EventEmitter(this);
   };
 
 

@@ -7,14 +7,15 @@
  *
  */
 
-define(['AirplaneSprite', 'BoatSprite', 'CopterSprite', 'ExplosionSprite', 'Messages', 'MiscUtils', 'MonsterSprite', 'Random', 'SpriteConstants', 'SpriteUtils', 'Tile', 'TornadoSprite', 'TrainSprite'],
-       function(AirplaneSprite, BoatSprite, CopterSprite, ExplosionSprite, Messages, MiscUtils, MonsterSprite, Random, SpriteConstants, SpriteUtils, Tile, TornadoSprite, TrainSprite) {
+define(['AirplaneSprite', 'BoatSprite', 'CopterSprite', 'EventEmitter', 'ExplosionSprite', 'Messages', 'MiscUtils', 'MonsterSprite', 'Random', 'SpriteConstants', 'SpriteUtils', 'Tile', 'TornadoSprite', 'TrainSprite'],
+       function(AirplaneSprite, BoatSprite, CopterSprite, EventEmitter, ExplosionSprite, Messages, MiscUtils, MonsterSprite, Random, SpriteConstants, SpriteUtils, Tile, TornadoSprite, TrainSprite) {
   "use strict";
 
   function SpriteManager(map) {
     this.spriteList = [];
     this.map = map;
     this.spriteCycle = 0;
+    EventEmitter(this);
   }
 
 
@@ -71,7 +72,13 @@ define(['AirplaneSprite', 'BoatSprite', 'CopterSprite', 'ExplosionSprite', 'Mess
 
 
   SpriteManager.prototype.makeSprite = function(type, x, y) {
-    this.spriteList.push(new constructors[type](this.map, this, x, y));
+    var newSprite = new constructors[type](this.map, this, x, y);
+
+    // Listen for crashes
+    for (var i = 0, l = Messages.crashes.length; i < l; i++)
+      newSprite.addEventListener(Messages.crashes[i], MiscUtils.reflectEvent.bind(this, Messages.crashes[i]));
+
+    this.spriteList.push(newSprite);
   };
 
 
@@ -86,8 +93,7 @@ define(['AirplaneSprite', 'BoatSprite', 'CopterSprite', 'ExplosionSprite', 'Mess
     var y = Random.getRandom(SpriteUtils.worldToPix(this.map.height) - 200) + 100;
 
     this.makeSprite(SpriteConstants.SPRITE_TORNADO, x, y);
-    messageManager.sendMessage(Messages.TORNADO_SIGHTED,
-                {x: SpriteUtils.pixToWorld(x), y: SpriteUtils.pixToWorld(y)});
+    this._emitEvent(Messages.TORNADO_SIGHTED, {x: SpriteUtils.pixToWorld(x), y: SpriteUtils.pixToWorld(y)});
   };
 
 
@@ -204,7 +210,7 @@ define(['AirplaneSprite', 'BoatSprite', 'CopterSprite', 'ExplosionSprite', 'Mess
     this.makeSprite(SpriteConstants.SPRITE_MONSTER,
                     SpriteUtils.worldToPix(x),
                     SpriteUtils.worldToPix(y));
-    messageManager.sendMessage(Messages.MONSTER_SIGHTED, {x: x, y: y});
+    this._emitEvent(Messages.MONSTER_SIGHTED, {x: x, y: y});
   };
 
 

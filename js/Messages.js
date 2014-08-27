@@ -30,6 +30,7 @@ define(['MiscUtils'],
     FIRE_REPORTED: MiscUtils.makeConstantDescriptor('Fire!'),
     FIRE_STATION_NEEDS_FUNDING: MiscUtils.makeConstantDescriptor('Fire station needs funding'),
     FLOODING_REPORTED: MiscUtils.makeConstantDescriptor('Flooding reported'),
+    FRONT_END_MESSAGE: MiscUtils.makeConstantDescriptor('Front-end Message'),
     FUNDS_CHANGED: MiscUtils.makeConstantDescriptor('Total funds has changed'),
     HEAVY_TRAFFIC: MiscUtils.makeConstantDescriptor('Total funds has changed'),
     HELICOPTER_CRASHED: MiscUtils.makeConstantDescriptor('Helicopter crashed'),
@@ -78,6 +79,14 @@ define(['MiscUtils'],
   };
 
   var Messages = Object.defineProperties({}, messageData);
+
+  var disasterMessages = [Messages.EARTHQUAKE, Messages.EXPLOSION_REPORTED, Messages.FIRE_REPORTED,
+                          Messages.FLOODING_REPORTED, Messages.MONSTER_SIGHTED, Messages.NUCLEAR_MELTDOWN,
+                          Messages.TORNADO_SIGHTED];
+  Object.defineProperty(Messages, 'disasterMessages', MiscUtils.makeConstantDescriptor(disasterMessages));
+
+  var crashes = [Messages.HELICOPTER_CRASHED, Messages.PLANE_CRASHED, Messages.SHIP_CRASHED, Messages.TRAIN_CRASHED];
+  Object.defineProperty(Messages, 'crashes', MiscUtils.makeConstantDescriptor(crashes));
 
 
   return Messages;

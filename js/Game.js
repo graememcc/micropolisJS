@@ -49,6 +49,9 @@ define(['BudgetWindow', 'DisasterWindow', 'GameCanvas', 'EvaluationWindow', 'Inf
     this.queryWindow.addEventListener(Messages.QUERY_WINDOW_CLOSED, this.handleQueryWindowClosure.bind(this));
     this.inputStatus.addEventListener(Messages.QUERY_WINDOW_NEEDED, this.handleQueryRequest.bind(this));
 
+    // Listen for front end messages
+    this.simulation.addEventListener(Messages.FRONT_END_MESSAGE, this.processFrontEndMessage.bind(this));
+
     this.infoBar = InfoBar('cclass', 'population', 'score', 'funds', 'date');
     this.infoBar(this.simulation);
 
@@ -276,6 +279,29 @@ define(['BudgetWindow', 'DisasterWindow', 'GameCanvas', 'EvaluationWindow', 'Inf
     if (this.inputStatus.currentTool !== null && this.inputStatus.clickX !== -1 &&
         this.inputStatus.clickY !== -1)
       this.handleTool(this.inputStatus.clickX, this.inputStatus.clickY);
+  };
+
+
+  Game.prototype.processFrontEndMessage = function(message) {
+    var subject = message.subject;
+
+    // XXX This will eventually replace processMessages below
+    if (Text.goodMessages[subject] !== undefined) {
+      Notification.goodNews(Text.goodMessages[subject]);
+      return;
+    }
+
+    if (Text.badMessages[subject] !== undefined) {
+      Notification.badNews(Text.badMessages[subject]);
+      return;
+    }
+
+    if (Text.neutralMessages[subject] !== undefined) {
+      Notification.news(Text.neutralMessages[subject]);
+      return;
+    }
+
+    console.warn('Unexpected message: ', subject);
   };
 
 

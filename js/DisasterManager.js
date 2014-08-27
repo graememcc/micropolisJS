@@ -7,8 +7,8 @@
  *
  */
 
-define(['Messages', 'MiscUtils', 'Random', 'SpriteConstants', 'Tile', 'TileUtils', 'ZoneUtils'],
-       function(Messages, MiscUtils, Random, SpriteConstants, Tile, TileUtils, ZoneUtils) {
+define(['EventEmitter', 'Messages', 'MiscUtils', 'Random', 'SpriteConstants', 'Tile', 'TileUtils', 'ZoneUtils'],
+       function(EventEmitter, Messages, MiscUtils, Random, SpriteConstants, Tile, TileUtils, ZoneUtils) {
   "use strict";
 
 
@@ -18,6 +18,8 @@ define(['Messages', 'MiscUtils', 'Random', 'SpriteConstants', 'Tile', 'TileUtils
     this._gameLevel = gameLevel;
 
     this._floodCount = 0;
+
+    EventEmitter(this);
 
     // TODO enable disasters
     Object.defineProperty(this, 'disastersEnabled',
@@ -104,7 +106,7 @@ define(['Messages', 'MiscUtils', 'Random', 'SpriteConstants', 'Tile', 'TileUtils
     var strength = Random.getRandom(700) + 300;
     this.doEarthquake(strength);
 
-    messageManager.sendMessage(Messages.EARTHQUAKE, {x: this._map.cityCenterX, y: this._map.cityCenterY});
+    this._emitEvent(Messages.EARTHQUAKE, {x: this._map.cityCenterX, y: this._map.cityCenterY});
 
     for (var i = 0; i < strength; i++)  {
       var x = Random.getRandom(this._map.width - 1);
@@ -134,7 +136,7 @@ define(['Messages', 'MiscUtils', 'Random', 'SpriteConstants', 'Tile', 'TileUtils
         var lowerLimit = zonesOnly ? Tile.LHTHR : Tile.TREEBASE;
         if (tile > lowerLimit && tile < Tile.LASTZONE) {
           this._map.setTo(x, y, TileUtils.randomFire());
-          messageManager.sendMessage(Messages.FIRE_REPORTED, {x: x, y: y});
+          this._emitEvent(Messages.FIRE_REPORTED, {x: x, y: y});
           return;
         }
       }
@@ -187,7 +189,7 @@ define(['Messages', 'MiscUtils', 'Random', 'SpriteConstants', 'Tile', 'TileUtils
           if (tile === Tile.DIRT || (tile.isBulldozable() && tile.isCombustible)) {
             this._map.setTo(xx, yy, new Tile(Tile.FLOOD));
             this._floodCount = 30;
-            messageManager.sendMessage(Messages.FLOODING_REPORTED, {x: xx, y: yy});
+            this._emitEvent(Messages.FLOODING_REPORTED, {x: xx, y: yy});
             return;
           }
         }
@@ -258,7 +260,7 @@ define(['Messages', 'MiscUtils', 'Random', 'SpriteConstants', 'Tile', 'TileUtils
     }
 
     // Report disaster to the user
-    messageManager.sendMessage(Messages.NUCLEAR_MELTDOWN, {x: x, y: y});
+    this._emitEvent(Messages.NUCLEAR_MELTDOWN, {x: x, y: y});
   };
 
 
