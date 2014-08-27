@@ -200,9 +200,6 @@ define(['EventEmitter', 'Messages', 'MiscUtils'],
       return;
 
     this.cityTax = amount;
-
-    if (messageManager !== undefined)
-      messageManager.sendMessage(Messages.TAXRATE_CHANGED, this.cityTax);
   };
 
 
