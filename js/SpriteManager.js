@@ -78,6 +78,9 @@ define(['AirplaneSprite', 'BoatSprite', 'CopterSprite', 'EventEmitter', 'Explosi
     for (var i = 0, l = Messages.crashes.length; i < l; i++)
       newSprite.addEventListener(Messages.crashes[i], MiscUtils.reflectEvent.bind(this, Messages.crashes[i]));
 
+    if (type == SpriteConstants.SPRITE_HELICOPTER)
+      newSprite.addEventListener(Messages.HEAVY_TRAFFIC, MiscUtils.reflectEvent.bind(this, Messages.HEAVY_TRAFFIC));
+
     this.spriteList.push(newSprite);
   };
 

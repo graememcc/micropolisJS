@@ -174,6 +174,9 @@ define(['BlockMap', 'BlockMapUtils', 'Budget', 'Census', 'Commercial', 'Disaster
     for (i = 0, l = Messages.crashes.length; i < l; i++)
       this.spriteManager.addEventListener(Messages.crashes[i], this._onDisasterMessage.bind(this, Messages.crashes[i]));
 
+    // Abusing onDisasterMessage a bit here, but it does what we want
+    this.spriteManager.addEventListener(Messages.HEAVY_TRAFFIC, this._onDisasterMessage.bind(this, Messages.HEAVY_TRAFFIC));
+
     // Register actions
     Commercial.registerHandlers(this._mapScanner, this._repairManager);
     EmergencyServices.registerHandlers(this._mapScanner, this._repairManager);

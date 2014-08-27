@@ -73,7 +73,7 @@ define(['BaseSprite', 'Messages', 'MiscUtils', 'Random', 'SpriteConstants', 'Spr
 
         if (x >= 0 && x < this.map.width && y >= 0 && y < this.map.height) {
           if (blockMaps.trafficDensityMap.worldGet(x, y) > 170 && (Random.getRandom16() & 7) === 0) {
-            messageManager.sendMessage(Messages.HEAVY_TRAFFIC, {x: x, y: y});
+            this._emitEvent(Messages.HEAVY_TRAFFIC, {x: x, y: y});
             this._emitEvent(Messages.SOUND_HEAVY_TRAFFIC);
             this.soundCount = 200;
         }
