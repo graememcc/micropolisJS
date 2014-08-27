@@ -27,7 +27,7 @@ define(['Random', 'SpriteConstants', 'Tile', 'TileUtils'],
           var mapValue = currentTile.getValue();
 
           // Replace bridge tiles with water, otherwise rubble
-          if (tile < Tile.RAILBASE + 2)
+          if (mapValue < Tile.RAILBASE + 2)
             map.setTo(x, y, Tile.RIVER);
           else
             map.setTo(x, y, TileUtils.randomRubble());
