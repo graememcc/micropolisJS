@@ -314,37 +314,37 @@ define(['BlockMap', 'BlockMapUtils', 'Budget', 'Census', 'Commercial', 'Disaster
     switch (this._cityTime & 63) {
       case 1:
         if (Math.floor(totalZonePop / 4) >= this._census.resZonePop)
-          this._messageManager.sendMessage(Messages.NEED_MORE_RESIDENTIAL);
+          this._emitEvent(Messages.FRONT_END_MESSAGE, {subject: Messages.NEED_MORE_RESIDENTIAL});
         break;
 
       case 5:
         if (Math.floor(totalZonePop / 8) >= this._census.comZonePop)
-          this._messageManager.sendMessage(Messages.NEED_MORE_COMMERCIAL);
+          this._emitEvent(Messages.FRONT_END_MESSAGE, {subject: Messages.NEED_MORE_COMMERCIAL});
         break;
 
       case 10:
         if (Math.floor(totalZonePop / 8) >= this._census.indZonePop)
-          this._messageManager.sendMessage(Messages.NEED_MORE_INDUSTRIAL);
+          this._emitEvent(Messages.FRONT_END_MESSAGE, {subject: Messages.NEED_MORE_INDUSTRIAL});
         break;
 
       case 14:
         if (totalZonePop > 10 && totalZonePop * 2 > this._census.roadTotal)
-          this._messageManager.sendMessage(Messages.NEED_MORE_ROADS);
+          this._emitEvent(Messages.FRONT_END_MESSAGE, {subject: Messages.NEED_MORE_ROADS});
         break;
 
       case 18:
         if (totalZonePop > 50 && totalZonePop > this._census.railTotal)
-          this._messageManager.sendMessage(Messages.NEED_MORE_RAILS);
+          this._emitEvent(Messages.FRONT_END_MESSAGE, {subject: Messages.NEED_MORE_RAILS});
         break;
 
       case 22:
         if (totalZonePop > 10 && powerPop == 0)
-          this._messageManager.sendMessage(Messages.NEED_ELECTRICITY);
+          this._emitEvent(Messages.FRONT_END_MESSAGE, {subject: Messages.NEED_ELECTRICITY});
         break;
 
       case 26:
         if (this._census.resPop > 500 && this._census.stadiumPop === 0) {
-          this._messageManager.sendMessage(Messages.MESSAGE_NEED_STADIUM);
+          this._emitEvent(Messages.FRONT_END_MESSAGE, {subject: Messages.MESSAGE_NEED_STADIUM});
           this._valves.resCap = true;
         } else {
           this._valves.resCap = false;
@@ -353,7 +353,7 @@ define(['BlockMap', 'BlockMapUtils', 'Budget', 'Census', 'Commercial', 'Disaster
 
       case 28:
         if (this._census.indPop > 70 && this._census.seaportPop === 0) {
-            this._messageManager.sendMessage(Messages.NEED_SEAPORT);
+            this._emitEvent(Messages.FRONT_END_MESSAGE, {subject: Messages.NEED_SEAPORT});
           this._valves.indCap = true;
         } else {
           this._valves.indCap = false;
@@ -362,7 +362,7 @@ define(['BlockMap', 'BlockMapUtils', 'Budget', 'Census', 'Commercial', 'Disaster
 
       case 30:
         if (this._census.comPop > 100 && this._census.airportPop === 0) {
-            this._messageManager.sendMessage(Messages._NEED_AIRPORT);
+            this._emitEvent(Messages.FRONT_END_MESSAGE, {subject: Messages._NEED_AIRPORT});
           this._valves.comCap = true;
         } else {
           this._valves.comCap = false;
@@ -373,53 +373,53 @@ define(['BlockMap', 'BlockMapUtils', 'Budget', 'Census', 'Commercial', 'Disaster
         var zoneCount = this._census.unpoweredZoneCount + this._census.poweredZoneCount;
         if (zoneCount > 0) {
           if (this._census.poweredZoneCount / zoneCount < 0.7)
-            this._messageManager.sendMessage(Messages.BLACKOUTS_REPORTED);
+            this._emitEvent(Messages.FRONT_END_MESSAGE, {subject: Messages.BLACKOUTS_REPORTED});
         }
         break;
 
       case 35:
         if (this._census.pollutionAverage > 60)
-          this._messageManager.sendMessage(Messages.HIGH_POLLUTION);
+          this._emitEvent(Messages.FRONT_END_MESSAGE, {subject: Messages.HIGH_POLLUTION});
         break;
 
       case 42:
         if (this._census.crimeAverage > 100)
-          this._messageManager.sendMessage(Messages.HIGH_CRIME);
+          this._emitEvent(Messages.FRONT_END_MESSAGE, {subject: Messages.HIGH_CRIME});
         break;
 
       case 45:
         if (this._census.totalPop > 60 && this._census.fireStationPop === 0)
-          this._messageManager.sendMessage(Messages.NEED_FIRE_STATION);
+          this._emitEvent(Messages.FRONT_END_MESSAGE, {subject: Messages.NEED_FIRE_STATION});
         break;
 
       case 48:
         if (this._census.totalPop > 60 && this._census.policeStationPop === 0)
-          this._messageManager.sendMessage(Messages.NEED_POLICE_STATION);
+          this._emitEvent(Messages.FRONT_END_MESSAGE, {subject: Messages.NEED_POLICE_STATION});
         break;
 
       case 51:
         if (this.budget.cityTax > 12)
-          this._messageManager.sendMessage(Messages.TAX_TOO_HIGH);
+          this._emitEvent(Messages.FRONT_END_MESSAGE, {subject: Messages.TAX_TOO_HIGH});
         break;
 
       case 54:
         if (this.budget.roadEffect < Math.floor(5 * this.budget.MAX_ROAD_EFFECT / 8) && this._census.roadTotal > 30)
-          this._messageManager.sendMessage(Messages.ROAD_NEEDS_FUNDING);
+          this._emitEvent(Messages.FRONT_END_MESSAGE, {subject: Messages.ROAD_NEEDS_FUNDING});
         break;
 
       case 57:
         if (this.budget.fireEffect < Math.floor(7 * this.budget.MAX_FIRE_STATION_EFFECT / 10) && this._census.totalPop > 20)
-          this._messageManager.sendMessage(Messages.FIRE_STATION_NEEDS_FUNDING);
+          this._emitEvent(Messages.FRONT_END_MESSAGE, {subject: Messages.FIRE_STATION_NEEDS_FUNDING});
         break;
 
       case 60:
         if (this.budget.policeEffect < Math.floor(7 * this.budget.MAX_POLICE_STATION_EFFECT / 10) && this._census.totalPop > 20)
-          this._messageManager.sendMessage(Messages.POLICE_NEEDS_FUNDING);
+          this._emitEvent(Messages.FRONT_END_MESSAGE, {subject: Messages.POLICE_NEEDS_FUNDING});
         break;
 
     case 63:
       if (this._census.trafficAverage > 60)
-        this._messageManager.sendMessage(Messages.TRAFFIC_JAMS, -1, -1, true);
+        this._emitEvent(Messages.FRONT_END_MESSAGE, {subject: Messages.TRAFFIC_JAMS});
       break;
     }
   };
@@ -467,7 +467,7 @@ define(['BlockMap', 'BlockMapUtils', 'Budget', 'Census', 'Commercial', 'Disaster
       }
 
       if (message !== '' && message !== this._messageLast) {
-        this._messageManager.sendMessage(message);
+        this._emitEvent(Messages.FRONT_END_MESSAGE, {subject: message});
         this._messageLast = message;
       }
 
