@@ -7,8 +7,8 @@
  *
  */
 
-define(['BlockMap', 'Direction', 'Messages', 'Tile'],
-       function(BlockMap, Direction, Messages, Tile) {
+define(['BlockMap', 'Direction', 'EventEmitter', 'Messages', 'Tile'],
+       function(BlockMap, Direction, EventEmitter, Messages, Tile) {
   "use strict";
 
   var COAL_POWER_STRENGTH = 700;
@@ -19,6 +19,7 @@ define(['BlockMap', 'Direction', 'Messages', 'Tile'],
     this._map = map;
     this._powerStack = [];
     this.powerGridMap = new BlockMap(this._map.width, this._map.height, 1, 0);
+    EventEmitter(this);
   }
 
 
@@ -76,7 +77,7 @@ define(['BlockMap', 'Direction', 'Messages', 'Tile'],
       do {
         powerConsumption++;
         if (powerConsumption > maxPower) {
-          messageManager.sendMessage(Messages.NOT_ENOUGH_POWER);
+          this._emitEvent(Messages.NOT_ENOUGH_POWER);
           return;
         }
 
