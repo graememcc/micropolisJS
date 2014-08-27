@@ -58,6 +58,9 @@ define(['BudgetWindow', 'DisasterWindow', 'GameCanvas', 'EvaluationWindow', 'Inf
     // Listen for tool clicks
     this.inputStatus.addEventListener(Messages.TOOL_CLICKED, this.handleTool.bind(this));
 
+    // And pauses
+    this.inputStatus.addEventListener(Messages.SPEED_CHANGE, this.handleSpeedChange.bind(this));
+
     this.infoBar = InfoBar('cclass', 'population', 'score', 'funds', 'date');
     this.infoBar(this.simulation);
 
@@ -260,17 +263,10 @@ define(['BudgetWindow', 'DisasterWindow', 'GameCanvas', 'EvaluationWindow', 'Inf
       this.simulation.setSpeed(Simulation.SPEED_PAUSED);
     else
       this.simulation.setSpeed(Simulation.SPEED_SLOW);
-
-    this.inputStatus.speedChangeHandled();
   };
 
 
   Game.prototype.handleInput = function() {
-    if (this.inputStatus.speedChangeRequested) {
-      this.handleSpeedChange();
-      return;
-    }
-
     // Handle keyboard movement
     if (this.inputStatus.left)
       this.gameCanvas.moveWest();

@@ -34,10 +34,6 @@ define(['EventEmitter', 'GameCanvas', 'GameTools', 'Messages', 'MiscUtils'],
     this.toolWidth = 0;
     this.toolColour = '';
 
-    // Speed
-    this.speedChangeRequested = false;
-    this.requestedSpeed = null;
-
     // Add the listeners
     $(document).keydown(keyDownHandler.bind(this));
     $(document).keyup(keyUpHandler.bind(this));
@@ -161,17 +157,11 @@ define(['EventEmitter', 'GameCanvas', 'GameTools', 'Messages', 'MiscUtils'],
   };
 
 
-  InputStatus.prototype.speedChangeHandled = function() {
-    this.speedChangeRequested = false;
-    this.requestedSpeed = null;
-  };
-
-
   InputStatus.prototype.speedChangeHandler = function(e) {
-    this.speedChangeRequested = true;
     var requestedSpeed = $('#pauseRequest').text();
     var newRequest = requestedSpeed === 'Pause' ? 'Play' : 'Pause';
     $('#pauseRequest').text(newRequest);
+    this._emitEvent(Messages.SPEED_CHANGE, requestedSpeed);
   };
 
 
