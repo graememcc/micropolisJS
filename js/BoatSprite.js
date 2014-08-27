@@ -78,7 +78,7 @@ define(['BaseSprite', 'Messages', 'MiscUtils', 'Random', 'SpriteConstants', 'Spr
       if ((Random.getRandom16() & 3) === 1) {
         // TODO Scenarios
         // TODO Sound
-        messageManager.sendMessage(Messages.SOUND_HONKHONK);
+        this._emitEvent(Messages.SOUND_HONKHONK);
       }
 
       this.soundCount = 200;

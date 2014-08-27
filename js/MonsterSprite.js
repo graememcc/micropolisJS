@@ -100,7 +100,7 @@ define(['BaseSprite', 'Messages', 'MiscUtils', 'Random', 'SpriteConstants', 'Spr
         currentDir = 4;
 
         if (!this.soundCount) {
-          messageManager.sendMessage(Messages.SOUND_MONSTER);
+          this._emitEvent(Messages.SOUND_MONSTER);
           this.soundCount = 50 + Random.getRandom(100);
         }
       }

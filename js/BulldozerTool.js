@@ -7,13 +7,14 @@
  *
  */
 
-define(['BaseTool', 'Messages', 'Random', 'Tile', 'TileUtils', 'ZoneUtils'],
-       function(BaseTool, Messages, Random, Tile, TileUtils, ZoneUtils) {
+define(['BaseTool', 'EventEmitter', 'Messages', 'Random', 'Tile', 'TileUtils', 'ZoneUtils'],
+       function(BaseTool, EventEmitter, Messages, Random, Tile, TileUtils, ZoneUtils) {
   "use strict";
 
   var makeTool = BaseTool.makeTool;
   var BulldozerTool = makeTool(function(map) {
     this.init(10, map, true);
+    EventEmitter(this);
   });
 
 
@@ -103,18 +104,18 @@ define(['BaseTool', 'Messages', 'Random', 'Tile', 'TileUtils', 'ZoneUtils'],
 
       switch (zoneSize) {
         case 3:
-          messageManager.sendMessage(Messages.SOUND_EXPLOSIONHIGH);
+          this._emitEvent(Messages.SOUND_EXPLOSIONHIGH);
           this.putRubble(centerX - 1, centerY - 1, 3);
           break;
 
         case 4:
-          messageManager.sendMessage(Messages.SOUND_EXPLOSIONLOW);
+          this._emitEvent(Messages.SOUND_EXPLOSIONLOW);
           this.putRubble(centerX - 1, centerY - 1, 4);
           break;
 
         case 6:
-          messageManager.sendMessage(Messages.SOUND_EXPLOSIONHIGH);
-          messageManager.sendMessage(Messages.SOUND_EXPLOSIONLOW);
+          this._emitEvent(Messages.SOUND_EXPLOSIONHIGH);
+          this._emitEvent(Messages.SOUND_EXPLOSIONLOW);
           this.putRubble(centerX - 1, centerY - 1, 6);
           break;
       }

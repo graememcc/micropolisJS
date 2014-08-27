@@ -50,7 +50,7 @@ define(['BaseSprite', 'Messages', 'MiscUtils', 'Random', 'SpriteConstants', 'Spr
         // Convert sprite coordinates to tile coordinates.
         var explosionX = SpriteUtils.pixToWorld(this.x);
         var explosionY = SpriteUtils.pixToWorld(this.y);
-        messageManager.sendMessage(Messages.SOUND_EXPLOSIONHIGH);
+        this._emitEvent(Messages.SOUND_EXPLOSIONHIGH);
         this._emitEvent(Messages.EXPLOSION_REPORTED, {x: explosionX, y: explosionY});
       }
 
