@@ -12,11 +12,9 @@ define(['BaseTool', 'Config', 'EventEmitter', 'Messages', 'Text', 'Tile'],
   "use strict";
 
   var makeTool = BaseTool.makeTool;
-  var QueryTool = makeTool(function(map) {
+  var QueryTool = EventEmitter(makeTool(function(map) {
     this.init(0, map, false, false);
-
-    EventEmitter(this);
-  });
+  }));
 
 
   QueryTool.prototype.classifyPopulationDensity = function(x, y, blockMaps) {

@@ -11,8 +11,7 @@ define(['EventEmitter', 'GameCanvas', 'GameTools', 'Messages', 'MiscUtils'],
        function(EventEmitter, GameCanvas, GameTools, Messages, MiscUtils) {
   "use strict";
 
-  function InputStatus(map) {
-    EventEmitter(this);
+  var InputStatus = EventEmitter(function(map) {
     this.gameTools = new GameTools(map);
 
     this.gameTools.addEventListener(Messages.QUERY_WINDOW_NEEDED, MiscUtils.reflectEvent.bind(this, Messages.QUERY_WINDOW_NEEDED));
@@ -56,7 +55,7 @@ define(['EventEmitter', 'GameCanvas', 'GameTools', 'Messages', 'MiscUtils'],
     $('#evalRequest').click(evalHandler.bind(this));
     $('#disasterRequest').click(disasterHandler.bind(this));
     $('#pauseRequest').click(this.speedChangeHandler.bind(this));
-  }
+  });
 
 
   var canvasID = '#' + GameCanvas.DEFAULT_ID;

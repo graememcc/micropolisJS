@@ -48,14 +48,23 @@ define([],
     };
 
 
-    if (['addEventListener', 'removeEventListener', '_emitEvent'].some(function(prop) {
-      return obj[prop] !== undefined;
-    }))
-      throw new Error('Cannot decorate object: existing properties would be overwritten!');
+    var addProps = function(obj, message) {
+      var hasExistingProp = ['addEventListener', 'removeEventListener', '_emitEvent'].some(function(prop) {
+        return obj[prop] !== undefined;
+      });
 
-    obj.addEventListener = addListener;
-    obj.removeEventListener = removeListener;
-    obj._emitEvent = emitEvent;
+      if (hasExistingProp)
+        throw new Error('Cannot decorate ' + message + ': existing properties would be overwritten!');
+
+      obj.addEventListener = addListener;
+      obj.removeEventListener = removeListener;
+      obj._emitEvent = emitEvent;
+    }
+
+    if (typeof(obj) === 'object')
+      addProps(obj, 'object');
+    else
+      addProps(obj.prototype, 'constructor');
 
     return obj;
   };

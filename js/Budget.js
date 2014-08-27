@@ -11,7 +11,7 @@ define(['EventEmitter', 'Messages', 'MiscUtils'],
        function(EventEmitter, Messages, MiscUtils) {
   "use strict";
 
-  function Budget() {
+  var Budget = EventEmitter(function() {
     Object.defineProperties(this,
      {MAX_ROAD_EFFECT: MiscUtils.makeConstantDescriptor(32),
       MAX_POLICESTATION_EFFECT: MiscUtils.makeConstantDescriptor(1000),
@@ -42,9 +42,7 @@ define(['EventEmitter', 'Messages', 'MiscUtils'],
     this.policeSpend = 0;
 
     this.autoBudget = true;
-
-    EventEmitter(this);
-  }
+  });
 
 
   var RLevels = [0.7, 0.9, 1.2];

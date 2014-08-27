@@ -11,7 +11,7 @@ define(['BlockMap', 'BlockMapUtils', 'Budget', 'Census', 'Commercial', 'Disaster
         function(BlockMap, BlockMapUtils, Budget, Census, Commercial, DisasterManager, EventEmitter, EmergencyServices, Evaluate, Industrial, MapScanner, Messages, MiscTiles, MiscUtils, PowerManager, RepairManager, Residential, Road, SpriteManager, Stadia, Traffic, Transport, Valves) {
   "use strict";
 
-  function Simulation(gameMap, gameLevel, speed) {
+  var Simulation = EventEmitter(function (gameMap, gameLevel, speed) {
     if (gameLevel !== Simulation.LEVEL_EASY &&
         gameLevel !== Simulation.LEVEL_MED &&
         gameLevel !== Simulation.LEVEL_HARD)
@@ -77,7 +77,7 @@ define(['BlockMap', 'BlockMapUtils', 'Budget', 'Census', 'Commercial', 'Disaster
 
 
     this.init();
-  }
+  });
 
 
   Simulation.prototype.setSpeed = function(s) {
@@ -150,8 +150,6 @@ define(['BlockMap', 'BlockMapUtils', 'Budget', 'Census', 'Commercial', 'Disaster
 
 
   Simulation.prototype.init = function() {
-    EventEmitter(this);
-
     // Add various listeners that we will in turn transmit upwards
     var evaluationEvents = ['CLASSIFICATION_UPDATED', 'POPULATION_UPDATED', 'SCORE_UPDATED'].map(function(m) {
       return Messages[m];

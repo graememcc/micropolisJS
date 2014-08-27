@@ -12,10 +12,9 @@ define(['BaseTool', 'EventEmitter', 'Messages', 'Random', 'Tile', 'TileUtils', '
   "use strict";
 
   var makeTool = BaseTool.makeTool;
-  var BulldozerTool = makeTool(function(map) {
+  var BulldozerTool = EventEmitter(makeTool(function(map) {
     this.init(10, map, true);
-    EventEmitter(this);
-  });
+  }));
 
 
   BulldozerTool.prototype.putRubble = function(x, y, size) {

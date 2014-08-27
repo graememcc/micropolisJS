@@ -11,13 +11,12 @@ define(['EventEmitter', 'Messages', 'Text'],
        function(EventEmitter, Messages, Text) {
   "use strict";
 
-  function EvaluationWindow(opacityLayerID, evaluationWindowID) {
+  var EvaluationWindow = EventEmitter(function(opacityLayerID, evaluationWindowID) {
     this._opacityLayer =  '#' + opacityLayerID;
     this._evaluationWindowID = '#' + evaluationWindowID;
     $('#' + evaluationFormID).on('submit', submit.bind(this));
     $('#' + evaluationOKID).on('click', submit.bind(this));
-    EventEmitter(this);
-  }
+  });
 
   var evaluationFormID = "evaluationForm";
   var evaluationOKID = "evalOK";

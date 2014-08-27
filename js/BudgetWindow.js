@@ -11,11 +11,10 @@ define(['EventEmitter', 'Messages'],
        function(EventEmitter, Messages) {
   "use strict";
 
-  function BudgetWindow(opacityLayerID, budgetWindowID) {
+  var BudgetWindow = EventEmitter(function(opacityLayerID, budgetWindowID) {
     this._opacityLayer =  '#' + opacityLayerID;
     this._budgetWindowID = '#' + budgetWindowID;
-    EventEmitter(this);
-  }
+  });
 
 
   var dataKeys = ['roadFund', 'fireFund', 'policeFund'];

@@ -30,8 +30,6 @@ define(['EventEmitter', 'SpriteUtils'],
     this.turn = 0;
     this.accel = 0;
     this.speed = 100;
-
-    EventEmitter(this);
   };
 
 
@@ -57,6 +55,7 @@ define(['EventEmitter', 'SpriteUtils'],
 
   var BaseSprite = function(spriteConstructor) {
     spriteConstructor.prototype = Object.create(base);
+    EventEmitter(spriteConstructor);
   };
 
 

@@ -11,12 +11,11 @@ define(['EventEmitter', 'Messages', 'MiscUtils'],
        function(EventEmitter, Messages, MiscUtils) {
   "use strict";
 
-  function DisasterWindow(opacityLayerID, disasterWindowID) {
+  var DisasterWindow = EventEmitter(function(opacityLayerID, disasterWindowID) {
     this._opacityLayer =  '#' + opacityLayerID;
     this._disasterWindowID = '#' + disasterWindowID;
     this._requestedDisaster = DisasterWindow.DISASTER_NONE;
-    EventEmitter(this);
-  }
+  });
 
 
   var disasterSelectID = 'disasterSelect';

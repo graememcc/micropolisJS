@@ -12,19 +12,17 @@ define(['EventEmitter', 'Messages', 'MiscUtils', 'Random', 'SpriteConstants', 'T
   "use strict";
 
 
-  function DisasterManager(map, spriteManager, gameLevel) {
+  var DisasterManager = EventEmitter(function(map, spriteManager, gameLevel) {
     this._map = map;
     this._spriteManager = spriteManager;
     this._gameLevel = gameLevel;
 
     this._floodCount = 0;
 
-    EventEmitter(this);
-
     // TODO enable disasters
     Object.defineProperty(this, 'disastersEnabled',
                           MiscUtils.makeConstantDescriptor(false));
-  }
+  });
 
 
   var DisChance = [4800, 2400, 60];

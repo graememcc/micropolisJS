@@ -17,14 +17,12 @@ define(['EventEmitter', 'Messages', 'MiscUtils', 'Random'],
   var NUM_COMPLAINTS = 4;
 
 
-  function Evaluation(gameLevel) {
+  var Evaluation = EventEmitter(function(gameLevel) {
     this.problemVotes = [];
     this.problemOrder = [];
     this.evalInit();
     this.gameLevel = '' + gameLevel;
-
-    EventEmitter(this);
-  }
+  });
 
 
   Evaluation.prototype.cityEvaluation = function(simData) {

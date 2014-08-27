@@ -15,12 +15,11 @@ define(['BlockMap', 'Direction', 'EventEmitter', 'Messages', 'Tile'],
   var NUCLEAR_POWER_STRENGTH = 2000;
 
 
-  function PowerManager(map) {
+  var PowerManager = EventEmitter(function(map) {
     this._map = map;
     this._powerStack = [];
     this.powerGridMap = new BlockMap(this._map.width, this._map.height, 1, 0);
-    EventEmitter(this);
-  }
+  });
 
 
   PowerManager.prototype.setTilePower = function(x, y) {

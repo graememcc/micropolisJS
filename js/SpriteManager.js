@@ -11,12 +11,11 @@ define(['AirplaneSprite', 'BoatSprite', 'CopterSprite', 'EventEmitter', 'Explosi
        function(AirplaneSprite, BoatSprite, CopterSprite, EventEmitter, ExplosionSprite, Messages, MiscUtils, MonsterSprite, Random, SpriteConstants, SpriteUtils, Tile, TornadoSprite, TrainSprite) {
   "use strict";
 
-  function SpriteManager(map) {
+  var SpriteManager = EventEmitter(function(map) {
     this.spriteList = [];
     this.map = map;
     this.spriteCycle = 0;
-    EventEmitter(this);
-  }
+  });
 
 
   SpriteManager.prototype.getSprite = function(type) {
