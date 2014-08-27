@@ -55,6 +55,9 @@ define(['BudgetWindow', 'DisasterWindow', 'GameCanvas', 'EvaluationWindow', 'Inf
     // Listen for budget messages
     this.simulation.addEventListener(Messages.BUDGET_NEEDED, this.handleMandatoryBudget.bind(this));
 
+    // Listen for tool clicks
+    this.inputStatus.addEventListener(Messages.TOOL_CLICKED, this.handleTool.bind(this));
+
     this.infoBar = InfoBar('cclass', 'population', 'score', 'funds', 'date');
     this.infoBar(this.simulation);
 
@@ -213,14 +216,15 @@ define(['BudgetWindow', 'DisasterWindow', 'GameCanvas', 'EvaluationWindow', 'Inf
   };
 
 
-  Game.prototype.handleTool = function(x, y) {
+  Game.prototype.handleTool = function(data) {
+    var x = data.x;
+    var y = data.y;
+
     // Were was the tool clicked?
     var tileCoords = this.gameCanvas.canvasCoordinateToTileCoordinate(x, y);
 
-    if (tileCoords === null) {
-      this.inputStatus.clickHandled();
+    if (tileCoords === null)
       return;
-    }
 
     var tool = this.inputStatus.currentTool;
 
@@ -243,8 +247,6 @@ define(['BudgetWindow', 'DisasterWindow', 'GameCanvas', 'EvaluationWindow', 'Inf
       default:
         $('#toolOutput').html('&nbsp;');
     }
-
-    this.inputStatus.clickHandled();
   };
 
 
@@ -278,11 +280,6 @@ define(['BudgetWindow', 'DisasterWindow', 'GameCanvas', 'EvaluationWindow', 'Inf
       this.gameCanvas.moveEast();
     else if (this.inputStatus.down)
       this.gameCanvas.moveSouth();
-
-    // Was a tool clicked?
-    if (this.inputStatus.currentTool !== null && this.inputStatus.clickX !== -1 &&
-        this.inputStatus.clickY !== -1)
-      this.handleTool(this.inputStatus.clickX, this.inputStatus.clickY);
   };
 
 

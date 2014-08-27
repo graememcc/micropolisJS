@@ -18,10 +18,6 @@ define(['EventEmitter', 'GameCanvas', 'GameTools', 'Messages', 'MiscUtils'],
 
     this.canvasID = canvasID;
 
-    // Tool clicks
-    this.clickX = -1;
-    this.clickY = -1;
-
     // Keyboard Movement
     this.up = false;
     this.down = false;
@@ -95,13 +91,6 @@ define(['EventEmitter', 'GameCanvas', 'GameTools', 'Messages', 'MiscUtils'],
   };
 
 
-  InputStatus.prototype.clickHandled = function() {
-    this.clickX = -1;
-    this.clickY = -1;
-    this.currentTool.clear();
-  };
-
-
   var getRelativeCoordinates = function(e) {
     var x;
     var y;
@@ -146,8 +135,8 @@ define(['EventEmitter', 'GameCanvas', 'GameTools', 'Messages', 'MiscUtils'],
 
 
   var canvasClickHandler = function(e) {
-    this.clickX = this.mouseX;
-    this.clickY = this.mouseY;
+    if (this.currentTool !== null && this.mouseX !== -1 && this.mouseY !== -1)
+      this._emitEvent(Messages.TOOL_CLICKED, {x: this.mouseX, y: this.mouseY});
     e.preventDefault();
   };
 
