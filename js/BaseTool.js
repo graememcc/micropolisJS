@@ -54,7 +54,6 @@ define(['Messages', 'MiscUtils', 'Tile', 'TileUtils', 'WorldEffects'],
   var apply = function(budget, messageManager) {
     this._worldEffects.apply();
     budget.spend(this._applicationCost, messageManager);
-    messageManager.sendMessage(Messages.DID_TOOL);
     this.clear();
   };
 
