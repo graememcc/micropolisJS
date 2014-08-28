@@ -17,6 +17,7 @@ define([],
 
   var Config = {
     debug: false,
+    gameDebug: false,
     queryDebug: false
   };
 
