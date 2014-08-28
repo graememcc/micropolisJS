@@ -11,13 +11,19 @@ define([],
        function() {
   "use strict";
 
+
   function TileHistory() {
-    this.data = {};
+    this.clear();
   }
 
 
   var toKey = function(x, y) {
     return [x, y].join(',');
+  };
+
+
+  TileHistory.prototype.clear = function() {
+    this.data = {};
   };
 
 

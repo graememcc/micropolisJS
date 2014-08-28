@@ -26,6 +26,7 @@ define(['Tile', 'TileHistory'],
     // consistently display the correct frame even as the
     // canvas moves
     this._lastPainted = null;
+    this._currentPainted = null;
 
     this._data = [];
     this.initArray();
@@ -72,7 +73,8 @@ define(['Tile', 'TileHistory'],
     if ((this.count % this.animationPeriod) === 0 && !isPaused)
       shouldChangeAnimation = true;
 
-    var newPainted = new TileHistory();
+    var newPainted = this._currentPainted === null ? new TileHistory() : this._currentPainted;
+
     var tilesToPaint = [];
 
     for (var x = startX; x < boundX; x++) {
@@ -118,7 +120,14 @@ define(['Tile', 'TileHistory'],
       }
     }
 
+    // Rotate tile histories
+    var temp = this._lastPainted;
     this._lastPainted = newPainted;
+
+    if (temp !== null)
+      temp.clear();
+    this._currentPainted = temp;
+
     return tilesToPaint;
   };
 
