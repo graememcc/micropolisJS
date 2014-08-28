@@ -56,7 +56,7 @@ define([],
 
     var existingFlags = 0;
     if (tileValue < Tile.BIT_START)
-      existingFlags = this.getFlags();
+      existingFlags = this._value & Tile.ALLBITS;
     this._value = tileValue | existingFlags;
   };
 

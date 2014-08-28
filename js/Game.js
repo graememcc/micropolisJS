@@ -401,7 +401,7 @@ define(['BudgetWindow', 'Config', 'DisasterWindow', 'GameCanvas', 'EvaluationWin
     var date = new Date();
     var elapsed = Math.floor((date - this.animStart) / 1000);
 
-    if (elapsed > this.lastElapsed + 4) {
+    if (elapsed > this.lastElapsed) {
       console.log(Math.floor(this.frameCount/elapsed) + ' fps');
       this.lastElapsed = elapsed;
     }

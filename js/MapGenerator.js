@@ -64,7 +64,7 @@ define(['Direction', 'GameMap', 'Random', 'Tile'],
   var clearMap = function(map) {
     for (var x = 0; x < map.width; x++) {
       for (var y = 0; y < map.height; y++) {
-        map.setTo(x, y, new Tile(Tile.DIRT));
+        map.setTile(x, y, Tile.DIRT, 0);
       }
     }
   };
@@ -75,7 +75,7 @@ define(['Direction', 'GameMap', 'Random', 'Tile'],
       for (var y = 0; y < map.height; y++) {
         var tileValue = map.getTileValue(x, y);
         if (tileValue > Tile.WOODS)
-          map.setTo(x, y, new Tile(Tile.DIRT));
+          map.setTile(x, y, Tile.DIRT, 0);
       }
     }
   };
@@ -89,9 +89,9 @@ define(['Direction', 'GameMap', 'Random', 'Tile'],
       for (y = 0; y < map.height; y++) {
         if ((x < 5) || (x >= map.width - 5) ||
             (y < 5) || (y >= map.height - 5)) {
-          map.setTo(x, y, new Tile(Tile.RIVER));
+          map.setTile(x, y, Tile.RIVER, 0);
         } else {
-          map.setTo(x, y, new Tile(Tile.DIRT));
+          map.setTile(x, y, Tile.DIRT, 0);
         }
       }
     }
@@ -178,7 +178,7 @@ define(['Direction', 'GameMap', 'Random', 'Tile'],
         return;
 
       if (map.getTileValue(treePos) === Tile.DIRT)
-        map.setTo(treePos, new Tile(Tile.WOODS, Tile.BLBNBIT));
+        map.setTile(treePos, Tile.WOODS, Tile.BLBNBIT);
 
       numTrees--;
     }
@@ -204,14 +204,15 @@ define(['Direction', 'GameMap', 'Random', 'Tile'],
   };
 
 
+  var riverEdges = [
+    13 | Tile.BULLBIT, 13 | Tile.BULLBIT, 17 | Tile.BULLBIT, 15 | Tile.BULLBIT,
+    5 | Tile.BULLBIT, 2, 19 | Tile.BULLBIT, 17 | Tile.BULLBIT,
+    9 | Tile.BULLBIT, 11 | Tile.BULLBIT, 2, 13 | Tile.BULLBIT,
+    7 | Tile.BULLBIT, 9 | Tile.BULLBIT, 5 | Tile.BULLBIT, 2];
+
   var smoothRiver = function(map) {
     var dx = [-1,  0,  1,  0];
     var dy = [0,  1,  0, -1];
-    var riverEdges = [
-      13 | Tile.BULLBIT, 13 | Tile.BULLBIT, 17 | Tile.BULLBIT, 15 | Tile.BULLBIT,
-      5 | Tile.BULLBIT, 2, 19 | Tile.BULLBIT, 17 | Tile.BULLBIT,
-      9 | Tile.BULLBIT, 11 | Tile.BULLBIT, 2, 13 | Tile.BULLBIT,
-      7 | Tile.BULLBIT, 9 | Tile.BULLBIT, 5 | Tile.BULLBIT, 2];
 
     for (var x = 0; x < map.width; x++) {
       for (var y = 0; y < map.height; y++) {
@@ -234,7 +235,7 @@ define(['Direction', 'GameMap', 'Random', 'Tile'],
           if (temp !== Tile.RIVER && Random.getRandom(1))
             temp++;
 
-          map.setTo(x, y, new Tile(temp));
+          map.setTileValue(x, y, temp);
         }
       }
     }
@@ -256,15 +257,15 @@ define(['Direction', 'GameMap', 'Random', 'Tile'],
   };
 
 
+  var treeTable = [
+    0,  0,  0,  34,
+    0,  0,  36, 35,
+    0,  32, 0,  33,
+    30, 31, 29, 37];
+
   var smoothTreesAt = function(map, x, y, preserve) {
     var dx = [-1,  0,  1,  0 ];
     var dy = [ 0,  1,  0, -1 ];
-    var treeTable = [
-      0,  0,  0,  34,
-      0,  0,  36, 35,
-      0,  32, 0,  33,
-      30, 31, 29, 37];
-
     if (!isTree(map.getTileValue(x, y)))
         return;
 
@@ -284,10 +285,10 @@ define(['Direction', 'GameMap', 'Random', 'Tile'],
         if ((x + y) & 1)
             temp = temp - 8;
       }
-      map.setTo(x, y, new Tile(temp, Tile.BLBNBIT));
+      map.setTile(x, y, temp, Tile.BLBNBIT);
     } else {
       if (!preserve)
-        map.setTo(x, y, new Tile(temp));
+        map.setTileValue(x, y, temp);
     }
   };
 
@@ -382,7 +383,7 @@ define(['Direction', 'GameMap', 'Random', 'Tile'],
       if (tileValue === Tile.CHANNEL)
         return;
     }
-    map.setTo(x, y, new Tile(newVal));
+    map.setTile(x, y, newVal, 0);
   };
 
 
@@ -438,7 +439,7 @@ define(['Direction', 'GameMap', 'Random', 'Tile'],
 
             /* If nearest object is not water: */
             if (tile < Tile.WATER_LOW || tile > Tile.WATER_HIGH) {
-              map.setTo(x, y, new Tile(Tile.REDGE)); /* set river edge */
+              map.setTileValue(x, y, Tile.REDGE, 0); /* set river edge */
               break; // Continue with next tile
             }
           }
@@ -464,7 +465,7 @@ define(['Direction', 'GameMap', 'Random', 'Tile'],
           }
 
           if (makeRiver)
-            map.setTo(x, y, new Tile(Tile.RIVER));
+            map.setTileValue(x, y, Tile.RIVER, 0);
         }
       }
     }
@@ -479,7 +480,7 @@ define(['Direction', 'GameMap', 'Random', 'Tile'],
              tile = map.getTileFromMap(pos, dir, TILE_INVALID);
 
              if (tile === Tile.RIVER || tile === Tile.CHANNEL) {
-               map.setTo(x, y, new Tile(Tile.REDGE)); /* make it water's edge */
+               map.setTileValue(x, y, Tile.REDGE, 0); /* make it water's edge */
                break;
              }
            }
