@@ -27,7 +27,6 @@ define(['BlockMap', 'BlockMapUtils', 'Budget', 'Census', 'Commercial', 'Disaster
     this._gameLevel = gameLevel;
 
     this._speed = speed;
-    this._speedCycle = 0;
     this._phaseCycle = 0;
     this._simCycle = 0;
     this._doInitialEval = true;
@@ -98,8 +97,6 @@ define(['BlockMap', 'BlockMapUtils', 'Budget', 'Census', 'Commercial', 'Disaster
 
   Simulation.prototype.simTick = function() {
     this._simFrame();
-    // Move sprite objects
-    //this.spriteManager.moveObjects(this._constructSimData());
     this._updateTime();
     // TODO Graphs
   };
@@ -109,17 +106,35 @@ define(['BlockMap', 'BlockMapUtils', 'Budget', 'Census', 'Commercial', 'Disaster
     if (this.budget.awaitingValues)
       return;
 
-    if (this._speed === 0)
-      return;
+    var threshold = 0;
 
-    if (this._speed === 1 && (this._speedCycle % 5) !== 0)
-      return;
+    switch (this._speed) {
+      case Simulation.SPEED_PAUSED:
+        return;
 
-    if (this._speed === 2 && (this._speedCycle % 3) !== 0)
+      case Simulation.SPEED_SLOW:
+        threshold = 100;
+        break;
+
+      case Simulation.SPEED_NORMAL:
+        threshold = 25;
+        break;
+
+      case Simulation.SPEED_FAST:
+        threshold = 1;
+        break;
+
+      default:
+        console.warn('Unexpected speed', this._speed);
+    }
+
+    var d = new Date();
+    if (d - this._lastTickTime < threshold)
       return;
 
     var simData = this._constructSimData();
     this._simulate(simData);
+    this._lastTickTime = new Date();
   };
 
 
@@ -150,6 +165,8 @@ define(['BlockMap', 'BlockMapUtils', 'Budget', 'Census', 'Commercial', 'Disaster
 
 
   Simulation.prototype.init = function() {
+    this._lastTickTime = -1;
+
     // Add various listeners that we will in turn transmit upwards
     var evaluationEvents = ['CLASSIFICATION_UPDATED', 'POPULATION_UPDATED', 'SCORE_UPDATED'].map(function(m) {
       return Messages[m];
