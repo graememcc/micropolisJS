@@ -11,6 +11,10 @@ define(['Tile'],
        function(Tile) {
   "use strict";
 
+  // Tile to be filled to avoid creating lots of GC-able objects
+  var tile = new Tile();
+
+
   function MapScanner(map) {
     this._map = map;
     this._actions = [];
@@ -30,7 +34,7 @@ define(['Tile'],
   MapScanner.prototype.mapScan = function(startX, maxX, simData) {
     for (var y = 0; y < this._map.height; y++) {
       for (var x = startX; x < maxX; x++) {
-        var tile = this._map.getTile(x, y);
+        this._map.getTile(x, y, tile);
         var tileValue = tile.getValue();
 
         if (tileValue < Tile.FLOOD)
