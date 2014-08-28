@@ -75,6 +75,7 @@ define(['BudgetWindow', 'Config', 'DisasterWindow', 'GameCanvas', 'EvaluationWin
     this.isPaused = false;
 
     // Run the sim
+    this.tick = tick.bind(this);
     this.tick();
 
     // Paint the map
@@ -170,7 +171,7 @@ define(['BudgetWindow', 'Config', 'DisasterWindow', 'GameCanvas', 'EvaluationWin
 
     this.disasterShowing = true;
     this.disasterWindow.open();
-    nextFrame(this.tick.bind(this));
+    window.setTimeout(this.tick, 0);
   };
 
 
@@ -182,7 +183,7 @@ define(['BudgetWindow', 'Config', 'DisasterWindow', 'GameCanvas', 'EvaluationWin
 
     this.evalShowing = true;
     this.evalWindow.open(this.simulation.evaluation);
-    nextFrame(this.tick.bind(this));
+    window.setTimeout(this.tick, 0);
   };
 
 
@@ -194,7 +195,7 @@ define(['BudgetWindow', 'Config', 'DisasterWindow', 'GameCanvas', 'EvaluationWin
 
     this.queryShowing = true;
     this.queryWindow.open();
-    nextFrame(this.tick.bind(this));
+    window.setTimeout(this.tick, 0);
   };
 
 
@@ -218,7 +219,7 @@ define(['BudgetWindow', 'Config', 'DisasterWindow', 'GameCanvas', 'EvaluationWin
       taxesCollected: this.simulation.budget.taxFund};
 
     this.budgetWindow.open(budgetData);
-    nextFrame(this.tick.bind(this));
+    window.setTimeout(this.tick, 0);
   };
 
 
@@ -347,12 +348,12 @@ define(['BudgetWindow', 'Config', 'DisasterWindow', 'GameCanvas', 'EvaluationWin
   };
 
 
-  Game.prototype.tick = function() {
+  var tick = function() {
     this.handleInput();
 
     if (this.budgetShowing || this.queryShowing || this.disasterShowing ||
         this.evalShowing) {
-      window.setTimeout(this.tick.bind(this), 0);
+      window.setTimeout(this.tick, 0);
       return;
     }
 
@@ -364,7 +365,7 @@ define(['BudgetWindow', 'Config', 'DisasterWindow', 'GameCanvas', 'EvaluationWin
     // Run this even when paused: you can still build when paused
     this.mouse = this.calculateMouseForPaint();
 
-    window.setTimeout(this.tick.bind(this), 0);
+    window.setTimeout(this.tick, 0);
   };
 
 
