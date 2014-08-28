@@ -108,7 +108,7 @@ define([],
 
 
   Tile.prototype.setFlags = function(bitMask) {
-    if (typeof(bitMask) !== 'number' || bitMask < Tile.BIT_START || bitMask >= (Tile.BIT_END << 1))
+    if (typeof(bitMask) !== 'number' || (bitMask !== 0 && bitMask < Tile.BIT_START) || bitMask >= (Tile.BIT_END << 1))
       throw new Error('Invalid parameter');
 
     var existingValue = this._value & ~Tile.ALLBITS;

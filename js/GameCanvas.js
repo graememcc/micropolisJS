@@ -11,7 +11,7 @@ define(['AnimationManager', 'GameMap', 'MouseBox', 'Tile', 'TileSet'],
        function(AnimationManager, GameMap, MouseBox, Tile, TileSet) {
   "use strict";
 
-  function GameCanvas(id, parentNode, width, height) {
+  function GameCanvas(id, parentNode) {
     if (!(this instanceof GameCanvas))
       return new GameCanvas(id, parentNode, width, height);
 
@@ -21,17 +21,7 @@ define(['AnimationManager', 'GameMap', 'MouseBox', 'Tile', 'TileSet'],
       throw e;
 
     // Argument shuffling
-    if (height === undefined) {
-      if (width === undefined) {
-        height = GameCanvas.DEFAULT_HEIGHT;
-        width = GameCanvas.DEFAULT_WIDTH;
-      } else {
-        height = width;
-        width = parentNode;
-      }
-    }
-
-    if (parentNode === undefined || parentNode === width) {
+    if (parentNode === undefined) {
       // No ID supplied
       parentNode = id;
       id = GameCanvas.DEFAULT_ID;
@@ -47,13 +37,12 @@ define(['AnimationManager', 'GameMap', 'MouseBox', 'Tile', 'TileSet'],
 
     this._canvas = document.createElement('canvas');
     this._canvas.id = id;
-    this._canvas.width = width;
-    this._canvas.height = height;
 
-    // We will set this for real after a successful init
-    this._justConstructed = false;
-
-    this._moved = false;
+    // The canvas is assumed to fill its container on-screen
+    this._canvas.width = parentNode.clientWidth;
+    this._canvas.height = parentNode.clientHeight;
+    this._canvas.style.margin = '0';
+    this._canvas.style.padding = '0';
 
     this._pendingTileSet = null;
 
@@ -90,27 +79,61 @@ define(['AnimationManager', 'GameMap', 'MouseBox', 'Tile', 'TileSet'],
     if (this._canvas.width < w || this._canvas.height < w)
       throw new Error('Canvas too small!');
 
-    this._calculateMaximaAndMinima();
+    // An array indexed by tile offset containing the tileValue last painted there
+    this._lastPaintedTiles = null;
+    this._currentPaintedTiles = null; // for future use
+
+    // Last time we painted, the canvas was this many tiles wide and tall
+    this._lastPaintedWidth = -1;
+    this._lastPaintedHeight = -1;
+
+    // Last time we painted, the canvas was this wide and tall in pixels (determines whether we
+    // can safely call putImageData)
+    this._lastCanvasWidth = -1;
+    this._lastCanvasHeight = -1;
+
+    // After painting tiles, we store the image data here before painting sprites and mousebox
+    this._lastCanvasData = null;
+
+    // Whether we need to put image data (i.e. whether a mouse box or sprite was drawn last time)
+    // (initially true to ensure we do the right thing on our first paint)
+    this._lastDamaged = true;
+
+    this._calculateDimensions();
 
     // Order is important here. ready must be set before the call to centreOn below
     this.ready = true;
     this.centreOn(Math.floor(this._map.width / 2), Math.floor(this._map.height / 2));
 
-    this._justConstructed = true;
     this.paint(null, null);
   };
 
 
-  GameCanvas.prototype._calculateMaximaAndMinima = function() {
+  GameCanvas.prototype._calculateDimensions = function() {
+    // The canvas is assumed to fill its container on-screen
+    var canvasWidth = this._canvasWidth = this._canvas.parentNode.clientWidth;
+    var canvasHeight = this._canvasHeight = this._canvas.parentNode.clientHeight;
+
+    if (canvasHeight === this._lastCanvasHeight && canvasWidth === this._lastCanvasWidth)
+      return;
+
+    this._canvas.width = canvasWidth;
+    this._canvas.height = canvasHeight;
+
     var w = this._tileSet.tileWidth;
-    this.minX = 0 - Math.ceil(Math.floor(this._canvas.width/w) / 2);
-    this.maxX = (this._map.width - 1) - Math.ceil(Math.floor(this._canvas.width/w) / 2);
-    this.minY = 0 - Math.ceil(Math.floor(this._canvas.height/w) / 2);
-    this.maxY = (this._map.height - 1) - Math.ceil(Math.floor(this._canvas.height/w) / 2);
-    this._wholeTilesInViewX = Math.floor(this._canvas.width / w);
-    this._wholeTilesInViewY = Math.floor(this._canvas.height / w);
-    this._totalTilesInViewX = Math.ceil(this._canvas.width / w);
-    this._totalTilesInViewY = Math.ceil(this._canvas.height / w);
+
+    // The min/max properties denote how far we will let the canvas' origin move: the map
+    // should be visible in at least half the canvas
+    this.minX = 0 - Math.ceil(Math.floor(canvasWidth/w) / 2);
+    this.maxX = (this._map.width - 1) - Math.ceil(Math.floor(canvasWidth/w) / 2);
+    this.minY = 0 - Math.ceil(Math.floor(canvasHeight/w) / 2);
+    this.maxY = (this._map.height - 1) - Math.ceil(Math.floor(canvasHeight/w) / 2);
+
+    // How many tiles fit?
+    this._wholeTilesInViewX = Math.floor(canvasWidth / w);
+    this._wholeTilesInViewY = Math.floor(canvasHeight / w);
+    this._totalTilesInViewX = Math.ceil(canvasWidth / w);
+    this._totalTilesInViewY = Math.ceil(canvasHeight / w);
   };
 
 
@@ -118,10 +141,8 @@ define(['AnimationManager', 'GameMap', 'MouseBox', 'Tile', 'TileSet'],
     if (!this.ready)
       throw new Error("Not ready!");
 
-    if (this._originY > this.minY) {
-      this._moved = true;
+    if (this._originY > this.minY)
       this._originY--;
-    }
   };
 
 
@@ -129,10 +150,8 @@ define(['AnimationManager', 'GameMap', 'MouseBox', 'Tile', 'TileSet'],
     if (!this.ready)
       throw new Error("Not ready!");
 
-    if (this._originX < this.maxX) {
-      this._moved = true;
+    if (this._originX < this.maxX)
       this._originX++;
-    }
   };
 
 
@@ -140,10 +159,8 @@ define(['AnimationManager', 'GameMap', 'MouseBox', 'Tile', 'TileSet'],
     if (!this.ready)
       throw new Error("Not ready!");
 
-    if (this._originY < this.maxY) {
-      this._moved = true;
+    if (this._originY < this.maxY)
       this._originY++;
-    }
   };
 
 
@@ -151,10 +168,8 @@ define(['AnimationManager', 'GameMap', 'MouseBox', 'Tile', 'TileSet'],
     if (!this.ready)
       throw new Error("Not ready!");
 
-    if (this._originX > this.minX) {
-      this._moved = true;
+    if (this._originX > this.minX)
       this._originX--;
-    }
   };
 
 
@@ -173,7 +188,6 @@ define(['AnimationManager', 'GameMap', 'MouseBox', 'Tile', 'TileSet'],
 
     this._originX = x;
     this._originY = y;
-    this._moved = true;
   };
 
 
@@ -193,7 +207,6 @@ define(['AnimationManager', 'GameMap', 'MouseBox', 'Tile', 'TileSet'],
 
     this._originX = Math.floor(x) - Math.ceil(this._wholeTilesInViewX / 2);
     this._originY = Math.floor(y) - Math.ceil(this._wholeTilesInViewY / 2);
-    this._moved = true;
   };
 
 
@@ -240,7 +253,7 @@ define(['AnimationManager', 'GameMap', 'MouseBox', 'Tile', 'TileSet'],
     if (!this.ready)
       throw new Error("Not ready!");
 
-    if (x >= this._canvas.width || y >= this._canvas.height)
+    if (x >= this._canvasWidth || y >= this._canvasHeight)
       return null;
 
     return {x: this._originX + Math.floor(x/this._tileSet.tileWidth),
@@ -257,7 +270,7 @@ define(['AnimationManager', 'GameMap', 'MouseBox', 'Tile', 'TileSet'],
     if (!this.ready)
       throw new Error("Not ready!");
 
-    if (x >= this._canvas.width || y >= this._canvas.height)
+    if (x >= this._canvasWidth || y >= this._canvasHeight)
       return null;
 
     x = this._originX + Math.floor(x / this._tileSet.tileWidth);
@@ -329,8 +342,8 @@ define(['AnimationManager', 'GameMap', 'MouseBox', 'Tile', 'TileSet'],
       throw new Error('dimensions have changed');
 
     var w = tileSet.tileWidth;
-    var canvasWidth = this._pendingWidth === null ? this._canvas.width : this._pendingWidth;
-    var canvasHeight = this._pendingHeight === null ? this._canvas.height : this._pendingHeight;
+    var canvasWidth = this._pendingWidth === null ? this._canvasWidth : this._pendingWidth;
+    var canvasHeight = this._pendingHeight === null ? this._canvasHeight : this._pendingHeight;
 
     if (canvasWidth < w || canvasHeight < w)
       throw new Error('canvas too small');
@@ -341,6 +354,7 @@ define(['AnimationManager', 'GameMap', 'MouseBox', 'Tile', 'TileSet'],
 
 
   GameCanvas.prototype.takeScreenshot = function(onlyVisible) {
+    // XXX FIXME
     var e = new Error('Invalid parameter');
 
     if (arguments.length < 1)
@@ -366,115 +380,11 @@ define(['AnimationManager', 'GameMap', 'MouseBox', 'Tile', 'TileSet'],
 
 
   GameCanvas.prototype.shoogle = function() {
-    // TODO
+    // TODO Earthquakes
   };
 
 
-  GameCanvas.prototype._paintTile = function(tileVal, x, y, canvas) {
-    canvas = canvas || this._canvas;
-    var src = this._tileSet[tileVal];
-
-    var ctx = canvas.getContext('2d');
-    ctx.drawImage(src, x, y);
-  };
-
-
-  GameCanvas.prototype._paintVoid = function(x, y, w, h, col) {
-    col = col || 'black';
-    var ctx = this._canvas.getContext('2d');
-    ctx.fillStyle = col;
-    ctx.fillRect(x, y, w, h);
-  };
-
-
-  GameCanvas.prototype._getDataForPainting = function() {
-    // Calculate bounds of tiles we're going to paint
-    var xStart = this._originX;
-    var yStart = this._originY;
-    var xEnd = this._totalTilesInViewX;
-    var yEnd = this._totalTilesInViewY;
-
-    if (xStart < 0) {
-      // Chop off number of tiles in void
-      xEnd = xEnd + xStart;
-      xStart = 0;
-    }
-
-    if (yStart < 0) {
-      // Chop off number of tiles in void
-      yEnd = yEnd + yStart;
-      yStart = 0;
-    }
-
-    if (xStart + xEnd > this._map.width)
-      xEnd = this._map.width - xStart;
-
-    if (yStart + yEnd > this._map.height)
-      yEnd = this._map.height - yStart;
-
-    return {offsetX: xStart - this._originX,
-            offsetY: yStart - this._originY,
-            tileData: this._map.getTiles(xStart, yStart, xEnd, yEnd)};
-  };
-
-
-  GameCanvas.prototype._fullRepaint = function(paintData) {
-    var ctx = this._canvas.getContext('2d');
-    var start, end;
-
-    // First, clear canvas
-    ctx.clearRect(0, 0, this._canvas.width, this._canvas.height);
-
-    // Paint any black voids
-    if (this._originX < 0) {
-      this._paintVoid(0, 0, this._tileSet.tileWidth * (0 - this._originX), this._canvas.height);
-    }
-
-    if (this._originX + this._totalTilesInViewX > this._map.width) {
-      start = this.tileToCanvasCoordinate(this._map.width, this._originY).x;
-      end = this._canvas.width - start;
-      this._paintVoid(start, 0, end, this._canvas.height);
-    }
-
-    if (this._originY < 0) {
-      this._paintVoid(0, 0, this._canvas.width, this._tileSet.tileWidth * (0 - this._originY));
-    }
-
-    if (this._originY + this._totalTilesInViewY > this._map.height) {
-      start = this.tileToCanvasCoordinate(this._originX, this._map.height).x;
-      end = this._canvas.height - start;
-      this._paintVoid(0, start, this._canvas.width, end);
-    }
-
-    var xOffset = paintData.offsetX;
-    var yOffset = paintData.offsetY;
-    var tilesToPaint = paintData.tileData;
-
-    for (var y = 0; y < tilesToPaint.length; y++) {
-      var xs = tilesToPaint[y];
-      for (var x = 0, l2 = xs.length; x < l2; x++) {
-        this._paintTile(xs[x].getValue(), (x + xOffset) * this._tileSet.tileWidth, (y + yOffset) * this._tileSet.tileWidth);
-      }
-    }
-  };
-
-
-  GameCanvas.prototype._paintAnimatedTiles = function(isPaused) {
-    var xMin = this._originX, xMax = xMin + this._totalTilesInViewX + 1;
-    var yMin = this._originY, yMax = yMin + this._totalTilesInViewY + 1;
-
-    var animatedTiles = this._animationManager.getTiles(xMin, yMin, xMax, yMax, isPaused);
-    for (var i = 0, l = animatedTiles.length; i < l; i++) {
-      var tile = animatedTiles[i];
-      this._paintTile(tile.tileValue,
-                      (tile.x - xMin) * this._tileSet.tileWidth,
-                      (tile.y - yMin) * this._tileSet.tileWidth);
-    }
-  };
-
-
-  GameCanvas.prototype._processSprites = function(spriteList) {
-    var ctx = this._canvas.getContext('2d');
+  GameCanvas.prototype._processSprites = function(ctx, spriteList) {
     for (var i = 0, l = spriteList.length; i < l; i++) {
       var sprite = spriteList[i];
       ctx.drawImage(this._spriteSheet,
@@ -521,13 +431,81 @@ define(['AnimationManager', 'GameMap', 'MouseBox', 'Tile', 'TileSet'],
   };
 
 
-  GameCanvas.prototype.paint = function(mouse, sprites, isPaused) {
-    var e = new Error('Invalid parameter');
+  GameCanvas.prototype._paintVoid = function(ctx, x, y) {
+    var w = this._tileSet.tileWidth;
+    ctx.fillStyle = 'black';
+    ctx.fillRect(x * w, y * w, w, w);
+  };
 
-    if (arguments.length < 2) {
-      throw e;
+
+  GameCanvas.prototype._paintOne = function(ctx, tileVal, x, y) {
+    if (tileVal === Tile.TILE_INVALID) {
+      this._paintVoid(ctx, x, y);
+      return;
     }
 
+    var src = this._tileSet[tileVal];
+    ctx.drawImage(src, x * this._tileSet.tileWidth, y * this._tileSet.tileWidth);
+  };
+
+
+  GameCanvas.prototype._paintTiles = function(ctx, paintData) {
+    if (this._lastPaintedTiles !== null) {
+      var xBound = Math.min(this._lastPaintedWidth, this._totalTilesInViewX);
+      var yBound = Math.min(this._lastPaintedHeight, this._totalTilesInViewY);
+
+      // Loop, comparing the current value with what was there last time
+      for (var y = 0; y < yBound; y++) {
+        var row = paintData[y];
+        var lastRow = this._lastPaintedTiles[y];
+
+        for (var x = 0; x < xBound; x++) {
+          if (lastRow[x] === row[x])
+            continue;
+
+          // Tile is different: repaint
+          this._paintOne(ctx, row[x], x, y);
+        }
+      }
+
+      // Do we have more tiles than before?
+      if (this._totalTilesInViewX > this._lastPaintedWidth) {
+        for (y = 0; y < this._totalTilesInViewY; y++) {
+          row = paintData[y];
+
+          for (x = this._lastPaintedWidth; x < this._totalTilesInViewX; x++)
+              this._paintOne(ctx, row[x], x, y);
+        }
+      } else if (this._totalTilesInViewY > this._lastPaintedHeight) {
+        for (y = this._lastPaintedHeight; y < this._totalTilesInViewY; y++) {
+          row = paintData[y];
+
+          for (x = 0; x < this._totalTilesInViewX; x++)
+            this._paintOne(ctx, row[x], x, y);
+        }
+      }
+    } else {
+      // Full paint
+      for (var y = 0; y < this._totalTilesInViewY; y++) {
+        row = paintData[y];
+
+        for (x = 0; x < this._totalTilesInViewX; x++)
+            this._paintOne(ctx, row[x], x, y);
+      }
+    }
+
+    // Stash data
+    this._lastPaintedWidth = this._totalTilesInViewX;
+    this._lastPaintedHeight = this._totalTilesInViewY;
+
+    // Rotate tile data
+    var temp = this._lastPaintedTiles;
+    this._lastPaintedTiles = paintData;
+    this._currentPaintedTiles = temp;
+  };
+
+
+  GameCanvas.prototype.paint = function(mouse, sprites, isPaused) {
     if (!this.ready)
       throw new Error("Not ready!");
 
@@ -537,40 +515,55 @@ define(['AnimationManager', 'GameMap', 'MouseBox', 'Tile', 'TileSet'],
       this._tileSet = this._pendingTileSet;
       this._pendingTileSet = null;
       tileSetChanged = true;
+
+      this._lastPaintedTiles = null;
+      this._lastCanvasData = null;
     }
 
-    // Make any pending dimension changes to the canvas
-    var dimensionsChanged = false;
+    this._calculateDimensions();
 
-    if (tileSetChanged || dimensionsChanged)
-      this._calculateMaximaAndMinima();
+    // Fill an array with the values we need to paint
+    var tileValues = this._map.getTileValuesForPainting(this._originX, this._originY, this._totalTilesInViewX, this._totalTilesInViewY, this._currentPaintedTiles);
 
-    // TODO Selective repainting
-    var needsFullPaint = true;
-    if (this._justConstructed || this._moved || tileSetChanged) {
-      this._justConstructed = false;
-      this._moved = false;
-      needsFullPaint = true;
+    // Adjust for animations
+    this._animationManager.getTiles(tileValues, this._originX, this._originY, this._totalTilesInViewX, this._totalTilesInViewY, isPaused);
+
+    var ctx = this._canvas.getContext('2d');
+
+    if (this._lastCanvasData !== null && this._canvasWidth === this._lastCanvasWidth && this._canvasHeight === this._lastCanvasHeight) {
+      if (this._lastDamaged)
+        ctx.putImageData(this._lastCanvasData, 0, 0);
+    } else {
+      ctx.clearRect(0, 0, this._canvasWidth, this._canvasHeight);
     }
 
-    var mapData = this._getDataForPainting();
+    this._paintTiles(ctx, tileValues);
 
-    if (needsFullPaint)
-      this._fullRepaint(mapData);
+    // Stash various values for next paint
+    this._lastCanvasWidth = this._canvasWidth;
+    this._lastCanvasHeight = this._canvasHeight;
 
-    this._paintAnimatedTiles(isPaused);
+    if (!mouse && !sprites) {
+      if (this._lastCanvasData === null)
+        this._lastCanvasData = ctx.getImageData(0, 0, this._canvasWidth, this._canvasHeight);
+      this._lastDamaged = false;
+      return;
+    }
+
+    // Save canvas now, before painting sprites and mice
+    this._lastCanvasData = ctx.getImageData(0, 0, this._canvasWidth, this._canvasHeight);
+    this._lastDamaged = true;
 
     if (mouse)
       this._processMouse(mouse);
 
     if (sprites)
-      this._processSprites(sprites);
+      this._processSprites(ctx, sprites);
   };
 
 
-  GameCanvas.DEFAULT_WIDTH = 600;
-  GameCanvas.DEFAULT_HEIGHT = 400;
   GameCanvas.DEFAULT_ID = "MicropolisCanvas";
+
 
   return GameCanvas;
 });

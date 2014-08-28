@@ -11,6 +11,11 @@ define(['Tile', 'TileHistory'],
        function(Tile, TileHistory) {
   "use strict";
 
+
+  // Create a tile now that map.getTile can fill, to avoid repeatedly creating it in the animation loop
+  var animTile = new Tile();
+
+
   function AnimationManager(map, animationPeriod, blinkPeriod) {
     animationPeriod = animationPeriod || 5;
     blinkPeriod = blinkPeriod || 30;
@@ -60,38 +65,45 @@ define(['Tile', 'TileHistory'],
   };
 
 
-  AnimationManager.prototype.getTiles = function(startX, startY, boundX, boundY, isPaused) {
+  // Takes an array of tile values, and overwrites with the correct tile after factoring in animations and
+  // power blinks. offsetX and offsetY represent the offset into the map the tileArray represents; xBound and
+  // yBound note how far to iterate (the idea being that GameCanvas recycles its tile value array)
+  AnimationManager.prototype.getTiles = function(tileValues, offsetX, offsetY, xBound, yBound, isPaused) {
     isPaused = isPaused || false;
 
     var shouldChangeAnimation = false;
     if (!isPaused)
       this.count += 1;
 
+    var shouldBlink = this.shouldBlink;
     if ((this.count % this.blinkPeriod) === 0)
-      this.shouldBlink = !this.shouldBlink;
+      shouldBlink = this.shouldBlink = !this.shouldBlink;
 
     if ((this.count % this.animationPeriod) === 0 && !isPaused)
       shouldChangeAnimation = true;
 
     var newPainted = this._currentPainted === null ? new TileHistory() : this._currentPainted;
 
-    var tilesToPaint = [];
+    for (var y = 0; y < yBound; y++) {
+      var row = tileValues[y];
 
-    for (var x = startX; x < boundX; x++) {
-      for (var y = startY; y < boundY; y++) {
-        if (x < 0 || x >= this._map.width || y < 0 || y >= this._map.height)
+      for (var x = 0; x < xBound; x++) {
+        var mapX = x + offsetX;
+        var mapY = y + offsetY;
+
+        if (mapX < 0 || mapX >= this._map.width || mapY < 0 || mapY >= this._map.height)
           continue;
 
-        var tile = this._map.getTile(x, y);
-        if (tile.isZone() && !tile.isPowered() && this.shouldBlink) {
-          tilesToPaint.push({x: x, y: y, tileValue: Tile.LIGHTNINGBOLT});
+        this._map.getTile(mapX, mapY, animTile);
+        if (shouldBlink && animTile.isZone() && !animTile.isPowered()) {
+          row[x] = Tile.LIGHTNINGBOLT;
           continue;
         }
 
-        if (!tile.isAnimated())
+        if (!animTile.isAnimated())
           continue;
 
-        var tileValue = tile.getValue();
+        var tileValue = row[x];
         var newTile = Tile.TILE_INVALID;
         var last;
         if (this._lastPainted)
@@ -115,7 +127,7 @@ define(['Tile', 'TileHistory'],
         if (newTile === Tile.TILE_INVALID)
           continue;
 
-        tilesToPaint.push({x: x, y: y, tileValue: newTile});
+        row[x] = newTile;
         newPainted.setTile(x, y, newTile);
       }
     }
@@ -127,8 +139,6 @@ define(['Tile', 'TileHistory'],
     if (temp !== null)
       temp.clear();
     this._currentPainted = temp;
-
-    return tilesToPaint;
   };
 
 

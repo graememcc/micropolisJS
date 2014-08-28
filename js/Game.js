@@ -83,6 +83,7 @@ define(['BudgetWindow', 'Config', 'DisasterWindow', 'GameCanvas', 'EvaluationWin
     if (debug) {
       this.frameCount = 0;
       this.animStart = new Date();
+      this.lastElapsed = -1;
     }
     this.animate = (debug ? debugAnimate : animate).bind(this);
     this.animate();
@@ -400,8 +401,10 @@ define(['BudgetWindow', 'Config', 'DisasterWindow', 'GameCanvas', 'EvaluationWin
     var date = new Date();
     var elapsed = Math.floor((date - this.animStart) / 1000);
 
-    if (elapsed > 0)
+    if (elapsed > this.lastElapsed + 4) {
       console.log(Math.floor(this.frameCount/elapsed) + ' fps');
+      this.lastElapsed = elapsed;
+    }
 
     if (!this.isPaused)
       this.simulation.spriteManager.moveObjects(this.simulation._constructSimData());

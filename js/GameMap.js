@@ -11,15 +11,17 @@ define(['Direction', 'MiscUtils', 'PositionMaker', 'Tile'],
        function(Direction, MiscUtils, PositionMaker, Tile) {
   "use strict";
 
+
+  var invalid = new Error('Invalid parameter');
+
+
   function GameMap(width, height, defaultValue) {
     if (!(this instanceof GameMap))
       return new GameMap(width, height, defaultValue);
 
-    var e = new Error('Invalid parameter');
-
     if (arguments.length > 1 && typeof(width) === 'number' &&
         (width < 1 || height < 1))
-      throw e;
+      throw invalid;
 
     // Argument shuffling
     if (arguments.length === 0) {
@@ -70,33 +72,39 @@ define(['Direction', 'MiscUtils', 'PositionMaker', 'Tile'],
   };
 
 
-  GameMap.prototype.getTile = function(x, y) {
-    var e = new Error('Invalid parameter');
-
-    if (arguments.length < 1)
-      throw e;
-
+  GameMap.prototype.getTile = function(x, y, newTile) {
     // Argument-shuffling
     if (typeof(x) === 'object') {
       y = x.y;
       x = x.x;
     }
 
-    if (!this.testBounds(x, y))
-      throw e;
+    var width = this.width;
+    var height = this.height;
 
-    var tileIndex = this._calculateIndex(x, y);
+    if (x < 0 || y < 0 || x >= width || y >= height) {
+      console.warn('getTile called with bad bounds', x, y);
+      return new Tile(Tile.INVALID);
+    }
+
+    var tileIndex = x + y * width;
+    var tile;
     if (!(tileIndex in this._data))
-      this._data[tileIndex] = new Tile(this.defaultValue);
-    return this._data[tileIndex];
+      tile = this._data[tileIndex] = new Tile(this.defaultValue);
+    else
+      tile = this._data[tileIndex];
+
+    // Return the original tile if we're not given a tile to fill
+    if (!newTile)
+      return tile;
+
+    newTile.set(tile.getValue(), tile.getFlags());
   };
 
 
   GameMap.prototype.getTileValue = function(x, y) {
-    var e = new Error('Invalid parameter');
-
     if (arguments.length < 1)
-      throw e;
+      throw invalid;
 
     // Argument-shuffling
     if (typeof(x) === 'object') {
@@ -105,7 +113,7 @@ define(['Direction', 'MiscUtils', 'PositionMaker', 'Tile'],
     }
 
     if (!this.testBounds(x, y))
-      throw e;
+      throw invalid;
 
     var tileIndex = this._calculateIndex(x, y);
     if (!(tileIndex in this._data))
@@ -115,10 +123,8 @@ define(['Direction', 'MiscUtils', 'PositionMaker', 'Tile'],
 
 
   GameMap.prototype.getTileFlags = function(x, y) {
-    var e = new Error('Invalid parameter');
-
     if (arguments.length < 1)
-      throw e;
+      throw invalid;
 
     // Argument-shuffling
     if (typeof(x) === 'object') {
@@ -127,7 +133,7 @@ define(['Direction', 'MiscUtils', 'PositionMaker', 'Tile'],
     }
 
     if (!this.testBounds(x, y))
-      throw e;
+      throw invalid;
 
     var tileIndex = this._calculateIndex(x, y);
     if (!(tileIndex in this._data))
@@ -137,10 +143,8 @@ define(['Direction', 'MiscUtils', 'PositionMaker', 'Tile'],
 
 
   GameMap.prototype.getTiles = function(x, y, w, h) {
-    var e = new Error('Invalid parameter');
-
     if (arguments.length < 3)
-      throw e;
+      throw invalid;
 
     // Argument-shuffling
     if (arguments.length === 3) {
@@ -151,7 +155,7 @@ define(['Direction', 'MiscUtils', 'PositionMaker', 'Tile'],
     }
 
     if (!this.testBounds(x, y))
-      throw e;
+      throw invalid;
 
     var res = [];
     for (var a = y, ylim = y + h; a < ylim; a++) {
@@ -167,11 +171,11 @@ define(['Direction', 'MiscUtils', 'PositionMaker', 'Tile'],
   };
 
 
-  GameMap.prototype.getTileValues = function(x, y, w, h) {
-    var e = new Error('Invalid parameter');
+  GameMap.prototype.getTileValuesForPainting = function(x, y, w, h, result) {
+    result = result || [];
 
     if (arguments.length < 3)
-      throw e;
+      throw invalid;
 
     // Argument-shuffling
     if (arguments.length === 3) {
@@ -181,20 +185,27 @@ define(['Direction', 'MiscUtils', 'PositionMaker', 'Tile'],
       x = x.x;
     }
 
-    if (!this.testBounds(x, y))
-      throw e;
+    var width = this.width;
+    var height = this.height;
 
-    var res = [];
+    // Result is stored in row-major order
     for (var a = y, ylim = y + h; a < ylim; a++) {
-      res[a - y] = [];
+      var row = result[a - y] = [];
+
       for (var b = x, xlim = x + w; b < xlim; b++) {
-        var tileIndex = this._calculateIndex(b, a);
+        if (a < 0 || b < 0 || a >= height || b >= width) {
+          row.push(Tile.TILE_INVALID);
+          continue;
+        }
+
+        var tileIndex =  b + a * width;
         if (!(tileIndex in this._data))
           this._data[tileIndex] = new Tile(this.defaultValue);
-        res[a-y].push(this._data[tileIndex].getValue());
+        row.push(this._data[tileIndex].getValue());
       }
     }
-    return res;
+
+    return result;
   };
 
 
@@ -230,10 +241,8 @@ define(['Direction', 'MiscUtils', 'PositionMaker', 'Tile'],
 
 
   GameMap.prototype.setTile = function(x, y, value, flags) {
-    var e = new Error('Invalid parameter');
-
     if (arguments.length < 3)
-      throw e;
+      throw invalid;
 
     // Argument-shuffling
     if (arguments.length === 3) {
@@ -244,7 +253,7 @@ define(['Direction', 'MiscUtils', 'PositionMaker', 'Tile'],
     }
 
     if (!this.testBounds(x, y))
-      throw e;
+      throw invalid;
 
     var tileIndex = this._calculateIndex(x, y);
     if (!(tileIndex in this._data))
@@ -254,10 +263,8 @@ define(['Direction', 'MiscUtils', 'PositionMaker', 'Tile'],
 
 
   GameMap.prototype.setTo = function(x, y, tile) {
-    var e = new Error('Invalid parameter');
-
     if (arguments.length < 2)
-      throw e;
+      throw invalid;
 
     // Argument-shuffling
     if (tile === undefined) {
@@ -267,7 +274,7 @@ define(['Direction', 'MiscUtils', 'PositionMaker', 'Tile'],
     }
 
     if (!this.testBounds(x, y))
-      throw e;
+      throw invalid;
 
     var tileIndex = this._calculateIndex(x, y);
     this._data[tileIndex] = tile;
@@ -275,10 +282,8 @@ define(['Direction', 'MiscUtils', 'PositionMaker', 'Tile'],
 
 
   GameMap.prototype.setTileValue = function(x, y, value) {
-    var e = new Error('Invalid parameter');
-
     if (arguments.length < 2)
-      throw e;
+      throw invalid;
 
     // Argument-shuffling
     if (arguments.length === 2) {
@@ -288,7 +293,7 @@ define(['Direction', 'MiscUtils', 'PositionMaker', 'Tile'],
     }
 
     if (!this.testBounds(x, y))
-      throw e;
+      throw invalid;
 
     var tileIndex = this._calculateIndex(x, y);
     if (!(tileIndex in this._data))
@@ -298,10 +303,8 @@ define(['Direction', 'MiscUtils', 'PositionMaker', 'Tile'],
 
 
   GameMap.prototype.setTileFlags = function(x, y, flags) {
-    var e = new Error('Invalid parameter');
-
     if (arguments.length < 2)
-      throw e;
+      throw invalid;
 
     // Argument-shuffling
     if (arguments.length === 2) {
@@ -311,7 +314,7 @@ define(['Direction', 'MiscUtils', 'PositionMaker', 'Tile'],
     }
 
     if (!this.testBounds(x, y))
-      throw e;
+      throw invalid;
 
     var tileIndex = this._calculateIndex(x, y);
     if (!(tileIndex in this._data))
@@ -321,10 +324,8 @@ define(['Direction', 'MiscUtils', 'PositionMaker', 'Tile'],
 
 
   GameMap.prototype.addTileFlags = function(x, y, flags) {
-    var e = new Error('Invalid parameter');
-
     if (arguments.length < 2)
-      throw e;
+      throw invalid;
 
     // Argument-shuffling
     if (arguments.length === 2) {
@@ -334,7 +335,7 @@ define(['Direction', 'MiscUtils', 'PositionMaker', 'Tile'],
     }
 
     if (!this.testBounds(x, y))
-      throw e;
+      throw invalid;
 
     var tileIndex = this._calculateIndex(x, y);
     if (!(tileIndex in this._data))
@@ -344,10 +345,8 @@ define(['Direction', 'MiscUtils', 'PositionMaker', 'Tile'],
 
 
   GameMap.prototype.removeTileFlags = function(x, y, flags) {
-    var e = new Error('Invalid parameter');
-
     if (arguments.length < 2)
-      throw e;
+      throw invalid;
 
     // Argument-shuffling
     if (arguments.length === 2) {
@@ -357,7 +356,7 @@ define(['Direction', 'MiscUtils', 'PositionMaker', 'Tile'],
     }
 
     if (!this.testBounds(x, y))
-      throw e;
+      throw invalid;
 
     var tileIndex = this._calculateIndex(x, y);
     if (!(tileIndex in this._data))
@@ -367,10 +366,8 @@ define(['Direction', 'MiscUtils', 'PositionMaker', 'Tile'],
 
 
   GameMap.prototype.putZone = function(centreX, centreY, centreTile, size) {
-    var e = new Error('Invalid parameter');
-
     if (!this.testBounds(centreX, centreY) || !this.testBounds(centreX - 1 + size, centreY - 1 + size))
-      throw e;
+      throw invalid;
 
     var tile = centreTile - 1 - size;
     var startX = centreX - 1;
