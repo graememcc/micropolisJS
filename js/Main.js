@@ -7,8 +7,9 @@
  *
  */
 
-require(['SplashScreen', 'SpriteLoader', 'TileSet', 'TileSetURI'],
-        function(SplashScreen, SpriteLoader, TileSet, TileSetURI) {
+require(['Config', 'SplashScreen', 'SpriteLoader', 'TileSet', 'TileSetURI'],
+        function(Config, SplashScreen, SpriteLoader, TileSet, TileSetURI) {
+  "use strict";
 
   var i, tileSet;
 
@@ -42,6 +43,11 @@ require(['SplashScreen', 'SpriteLoader', 'TileSet', 'TileSetURI'],
     alert('Failed to load tile images!');
   };
 
+
+  // Check for debug parameter in URL
+  Config.debug = window.location.search.slice(1).split('&').some(function(param) {
+    return param.trim().toLowerCase() === 'debug=1';
+  });
 
   var i = new Image();
   i.onload = loadTileSet;
