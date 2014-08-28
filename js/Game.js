@@ -7,8 +7,8 @@
  *
  */
 
-define(['BudgetWindow', 'DisasterWindow', 'GameCanvas', 'EvaluationWindow', 'InfoBar', 'InputStatus', 'Messages', 'Notification', 'QueryWindow', 'RCI', 'Simulation', 'Text'],
-       function(BudgetWindow, DisasterWindow, GameCanvas, EvaluationWindow, InfoBar, InputStatus, Messages, Notification, QueryWindow, RCI, Simulation, Text) {
+define(['BudgetWindow', 'Config', 'DisasterWindow', 'GameCanvas', 'EvaluationWindow', 'InfoBar', 'InputStatus', 'Messages', 'Notification', 'QueryWindow', 'RCI', 'Simulation', 'Text'],
+       function(BudgetWindow, Config, DisasterWindow, GameCanvas, EvaluationWindow, InfoBar, InputStatus, Messages, Notification, QueryWindow, RCI, Simulation, Text) {
   "use strict";
 
 
@@ -74,7 +74,16 @@ define(['BudgetWindow', 'DisasterWindow', 'GameCanvas', 'EvaluationWindow', 'Inf
     this.simNeedsBudget = false;
     this.isPaused = false;
 
+    // Run the sim
     this.tick();
+
+    // Paint the map
+    var debug = Config.debug || Config.gameDebug;
+    if (debug) {
+      this.frameCount = 0;
+      this.animStart = new Date();
+    }
+    this.animate = (debug ? debugAnimate : animate).bind(this);
     this.animate();
   }
 
@@ -359,24 +368,12 @@ define(['BudgetWindow', 'DisasterWindow', 'GameCanvas', 'EvaluationWindow', 'Inf
   };
 
 
-  Game.prototype.animate = function() {
-    // Don't run on blur - bad things seem to happen
-    // when switching back to our tab in Fx
+  var animate = function() {
     if (this.budgetShowing || this.queryShowing ||
         this.disasterShowing || this.evalShowing) {
-      nextFrame(this.animate.bind(this));
+      nextFrame(this.animate);
       return;
     }
-
-    // TEMP
-    this.frameCount++;
-
-    var date = new Date();
-    var elapsed = Math.floor((date - this.animStart) / 1000);
-
-    // TEMP
-    if (elapsed > 0)
-      this.d.textContent = Math.floor(this.frameCount/elapsed) + ' fps';
 
     if (!this.isPaused)
       this.simulation.spriteManager.moveObjects(this.simulation._constructSimData());
@@ -384,7 +381,34 @@ define(['BudgetWindow', 'DisasterWindow', 'GameCanvas', 'EvaluationWindow', 'Inf
     this.sprite = this.calculateSpritesForPaint();
     this.gameCanvas.paint(this.mouse, this.sprite, this.isPaused);
 
-    nextFrame(this.animate.bind(this));
+    nextFrame(this.animate);
+  };
+
+
+  var debugAnimate = function() {
+    // Don't run on blur - bad things seem to happen
+    // when switching back to our tab in Fx
+    if (this.budgetShowing || this.queryShowing ||
+        this.disasterShowing || this.evalShowing) {
+      nextFrame(this.animate);
+      return;
+    }
+
+    this.frameCount++;
+
+    var date = new Date();
+    var elapsed = Math.floor((date - this.animStart) / 1000);
+
+    if (elapsed > 0)
+      console.log(Math.floor(this.frameCount/elapsed) + ' fps');
+
+    if (!this.isPaused)
+      this.simulation.spriteManager.moveObjects(this.simulation._constructSimData());
+
+    this.sprite = this.calculateSpritesForPaint();
+    this.gameCanvas.paint(this.mouse, this.sprite, this.isPaused);
+
+    nextFrame(this.animate);
   };
 
 
