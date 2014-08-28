@@ -136,7 +136,7 @@ define(['Tile', 'ZoneUtils'],
 
     if (!tile.isCombustible()) {
       if (tileValue >= Tile.ROADBASE && tileValue <= Tile.LASTROAD)
-        map.setTo(x, y, new Tile(Tile.RIVER));
+        map.setTile(x, y, Tile.RIVER, 0);
 
       return;
     }
@@ -149,9 +149,9 @@ define(['Tile', 'ZoneUtils'],
     }
 
     if (checkWet(tileValue))
-      map.setTo(x, y, new Tile(Tile.RIVER));
+      map.setTile(x, y, Tile.RIVER, 0);
     else
-      map.setTo(x, y, new Tile(Tile.TINYEXP, Tile.BULLBIT | Tile.ANIMBIT));
+      map.setTile(x, y, Tile.TINYEXP, Tile.BULLBIT | Tile.ANIMBIT);
   };
 
 

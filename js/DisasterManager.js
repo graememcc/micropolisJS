@@ -185,7 +185,7 @@ define(['EventEmitter', 'Messages', 'MiscUtils', 'Random', 'SpriteConstants', 'T
           tileValue = tile.getValue();
 
           if (tile === Tile.DIRT || (tile.isBulldozable() && tile.isCombustible)) {
-            this._map.setTo(xx, yy, new Tile(Tile.FLOOD));
+            this._map.setTile(xx, yy, Tile.FLOOD, 0);
             this._floodCount = 30;
             this._emitEvent(Messages.FLOODING_REPORTED, {x: xx, y: yy});
             return;
@@ -213,14 +213,14 @@ define(['EventEmitter', 'Messages', 'MiscUtils', 'Random', 'SpriteConstants', 'T
               if (tile.isZone())
                 ZoneUtils.fireZone(this.map, xx, yy, blockMaps);
 
-              this._map.setTo(xx, yy, new Tile(Tile.FLOOD + Random.getRandom(2)));
+              this._map.setTile(xx, yy, Tile.FLOOD + Random.getRandom(2), 0);
             }
           }
         }
       }
     } else {
       if (Random.getChance(15))
-        this._map.setTo(x, y, new Tile(Tile.DIRT));
+        this._map.setTile(x, y, Tile.DIRT, 0);
     }
   };
 
@@ -254,7 +254,7 @@ define(['EventEmitter', 'Messages', 'MiscUtils', 'Random', 'SpriteConstants', 'T
           continue;
 
       if (tile.isCombustible() || tile.getValue() === Tile.DIRT)
-          this._map.setTo(dX, dY, new Tile(Tile.RADTILE));
+          this._map.setTile(dX, dY, Tile.RADTILE, 0);
     }
 
     // Report disaster to the user

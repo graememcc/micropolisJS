@@ -64,7 +64,7 @@ define(['Random', 'Tile', 'TileUtils', 'ZoneUtils'],
 
   var radiationFound = function(map, x, y, simData) {
     if (Random.getChance(4095))
-      map.setTo(x, y, new Tile(Tile.DIRT));
+      map.setTile(x, y, Tile.DIRT, 0);
   };
 
 

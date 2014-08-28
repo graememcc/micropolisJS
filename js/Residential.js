@@ -95,8 +95,8 @@ define(['Random', 'Tile', 'TileUtils', 'Traffic', 'ZoneUtils'],
     }
 
     if (best > 0)
-      map.setTo(x + xDelta[best], y + yDelta[best],
-                new Tile(Tile.HOUSE + Random.getRandom(2) + lpValue * 3, Tile.BLBNCNBIT)); 
+      map.setTile(x + xDelta[best], y + yDelta[best],
+                Tile.HOUSE + Random.getRandom(2) + lpValue * 3, Tile.BLBNCNBIT);
   };
 
 
@@ -149,12 +149,12 @@ define(['Random', 'Tile', 'TileUtils', 'Traffic', 'ZoneUtils'],
 
     if (population === 16) {
       // Already at lowest density: degrade to 8 individual houses
-      map.setTo(x, y, new Tile(Tile.FREEZ, Tile.BLBNCNBIT | Tile.ZONEBIT));
+      map.setTile(x, y, Tile.FREEZ, Tile.BLBNCNBIT | Tile.ZONEBIT);
 
       for (yy = y - 1; yy <= y + 1; yy++) {
         for (xx = x - 1; xx <= x + 1; xx++) {
           if (xx === x && yy === y) continue;
-          map.setTo(x, y, new Tile(Tile.LHTHR + lpValue + Random.getRandom(2), Tile.BLBNCNBIT));
+          map.setTile(x, y, Tile.LHTHR + lpValue + Random.getRandom(2), Tile.BLBNCNBIT);
         } 
       } 
 
@@ -171,7 +171,7 @@ define(['Random', 'Tile', 'TileUtils', 'Traffic', 'ZoneUtils'],
         var currentValue = map.getTileValue(xx, yy);
         if (currentValue >= Tile.LHTHR && currentValue <= Tile.HHTHR) {
           // We've found a house. Replace it with the normal free zone tile
-          map.setTo(xx, yy, new Tile(freeZone[i] + Tile.RESBASE, Tile.BLBNCNBIT));
+          map.setTile(xx, yy, freeZone[i] + Tile.RESBASE, Tile.BLBNCNBIT);
          return;
         } 
         i += 1;

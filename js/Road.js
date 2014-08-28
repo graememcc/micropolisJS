@@ -122,7 +122,7 @@ define(['Random', 'Tile', 'TileUtils'],
 
             // Replace bridge tiles with water, otherwise rubble
             if ((tileValue & 15) < 2 || (tileValue & 15) === 15)
-              map.setTo(x, y, Tile.RIVER);
+              map.setTile(x, y, Tile.RIVER, 0);
             else
               map.setTo(x, y, TileUtils.randomRubble());
 

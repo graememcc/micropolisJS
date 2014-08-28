@@ -20,8 +20,8 @@ define(['Tile'],
       if (((simData.cityTime + x + y) & 31) === 0) {
         map.putZone(x, y, Tile.FULLSTADIUM, 4);
         map.addTileFlags(x, y, Tile.POWERBIT);
-        map.setTo(x + 1, y, new Tile(Tile.FOOTBALLGAME1, Tile.ANIMBIT));
-        map.setTo(x + 1, y + 1, new Tile(Tile.FOOTBALLGAME2, Tile.ANIMBIT));
+        map.setTile(x + 1, y, Tile.FOOTBALLGAME1, Tile.ANIMBIT);
+        map.setTile(x + 1, y + 1, Tile.FOOTBALLGAME2, Tile.ANIMBIT);
       }
     }
   };

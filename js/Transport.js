@@ -28,7 +28,7 @@ define(['Random', 'SpriteConstants', 'Tile', 'TileUtils'],
 
           // Replace bridge tiles with water, otherwise rubble
           if (mapValue < Tile.RAILBASE + 2)
-            map.setTo(x, y, Tile.RIVER);
+            map.setTile(x, y, Tile.RIVER, 0);
           else
             map.setTo(x, y, TileUtils.randomRubble());
         }
@@ -43,7 +43,7 @@ define(['Random', 'SpriteConstants', 'Tile', 'TileUtils'],
     var tile = map.getTile(x, y);
     if (tile.isPowered()) {
       if (map.getTileValue(x + 1, y - 1) === Tile.RADAR)
-        map.setTo(x + 1, y - 1, new Tile(Tile.RADAR0, Tile.CONDBIT | Tile.ANIMBIT | Tile.BURNBIT));
+        map.setTile(x + 1, y - 1, Tile.RADAR0, Tile.CONDBIT | Tile.ANIMBIT | Tile.BURNBIT);
 
       if (Random.getRandom(5) === 0) {
         simData.spriteManager.generatePlane(x, y);
@@ -53,7 +53,7 @@ define(['Random', 'SpriteConstants', 'Tile', 'TileUtils'],
       if (Random.getRandom(12) === 0)
         simData.spriteManager.generateCopter(x, y);
     } else {
-        map.setTo(x + 1, y - 1, new Tile(Tile.RADAR, Tile.CONDBIT | Tile.BURNBIT));
+        map.setTile(x + 1, y - 1, Tile.RADAR, Tile.CONDBIT | Tile.BURNBIT);
     }
   };
 

@@ -41,7 +41,7 @@ define(['Tile'],
 
         var currentValue = current.getValue();
         if (currentValue < Tile.RUBBLE || currentValue >= Tile.ROADBASE)
-          this._map.setTo(x + xx, y + yy, new Tile(tileValue, Tile.CONDBIT | Tile.BURNBIT));
+          this._map.setTile(x + xx, y + yy, tileValue, Tile.CONDBIT | Tile.BURNBIT);
       }
     }
   };
