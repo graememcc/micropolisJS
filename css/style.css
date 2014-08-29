@@ -3,46 +3,55 @@
   margin: 0;
 }
 
+@font-face {
+  font-family: 'Chunk';
+  font-style: normal;
+  font-weight: 400;
+  src: local('ChunkFive'), url(chunk.woff) format('woff');
+}
 
 header {
-  background-color: linen;
+  background-color: darkslategray;
+  background-image: repeating-linear-gradient(-45deg, transparent, transparent 35px, rgba(255, 255, 255, 0.2) 35px, rgba(255, 255, 255, 0.2) 70px); 
+  font-family: 'Chunk', serif;
+  height: 45px;
 }
 
-
-header h1 {
-  font-family: 'Chewy', cursive;
+nav a, nav a:link, nav a:visited, nav a:hover {
+  text-decoration: none;
+  color: white;
 }
 
-
-.alignCentre {
-  text-align: center;
+.bold {
+  font-weight: bold;
 }
 
+.white {
+  color: white;
+}
 
 .border-bottom {
   border-bottom: 1px solid black;
 }
 
-
-.contents {
-  width: 800px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-
 .fontlarge {
   font-size: 36px;
 }
 
-
-.padding5 {
-  padding: 5px;
+.inlineblock {
+  display: inline-block;
 }
 
+.left {
+  float: left;
+}
 
-.seagreen {
-  color: seagreen;
+.right {
+  float: right;
+}
+
+.padding10 {
+  padding: 10px;
 }
 
 
@@ -55,10 +64,6 @@ body {
 
 h1 a {
   text-decoration: none;
-}
-
-a {
-  color: darkgreen;
 }
 
 a:link {
@@ -105,14 +110,6 @@ a:hover {
 .info {
   width: 20%;
   text-align: centre;
-}
-
-.left {
-  float: left;
-}
-
-.right {
-  float: right;
 }
 
 .neutral {
