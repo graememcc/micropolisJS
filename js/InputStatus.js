@@ -11,12 +11,14 @@ define(['EventEmitter', 'GameCanvas', 'GameTools', 'Messages', 'MiscUtils'],
        function(EventEmitter, GameCanvas, GameTools, Messages, MiscUtils) {
   "use strict";
 
-  var InputStatus = EventEmitter(function(map) {
+  var InputStatus = EventEmitter(function(map, tileWidth) {
     this.gameTools = new GameTools(map);
 
     this.gameTools.addEventListener(Messages.QUERY_WINDOW_NEEDED, MiscUtils.reflectEvent.bind(this, Messages.QUERY_WINDOW_NEEDED));
 
     this.canvasID = canvasID;
+
+    this._tileWidth = tileWidth;
 
     // Keyboard Movement
     this.up = false;
@@ -27,6 +29,11 @@ define(['EventEmitter', 'GameCanvas', 'GameTools', 'Messages', 'MiscUtils'],
     // Mouse movement
     this.mouseX = -1;
     this.mouseY = -1;
+
+    // Mouse drags
+    this._dragging = false;
+    this._lastdragX = -1;
+    this._lastdragY = -1;
 
     // Tool buttons
     this.toolName = null;
@@ -41,8 +48,12 @@ define(['EventEmitter', 'GameCanvas', 'GameTools', 'Messages', 'MiscUtils'],
     $(this.canvasID).on('mouseenter', mouseEnterHandler.bind(this));
     $(this.canvasID).on('mouseleave', mouseLeaveHandler.bind(this));
 
-    $('.toolButton').click(toolButtonHandler.bind(this));
+    this.mouseDownHandler = mouseDownHandler.bind(this);
+    this.mouseMoveHandler = mouseMoveHandler.bind(this);
+    this.mouseUpHandler = mouseUpHandler.bind(this);
+    this.canvasClickHandler = canvasClickHandler.bind(this);
 
+    $('.toolButton').click(toolButtonHandler.bind(this));
     $('#budgetRequest').click(budgetHandler.bind(this));
     $('#evalRequest').click(evalHandler.bind(this));
     $('#disasterRequest').click(disasterHandler.bind(this));
@@ -109,13 +120,49 @@ define(['EventEmitter', 'GameCanvas', 'GameTools', 'Messages', 'MiscUtils'],
 
 
   var mouseEnterHandler = function(e) {
-    $(this.canvasID).on('mousemove', mouseMoveHandler.bind(this));
-    $(this.canvasID).on('click', canvasClickHandler.bind(this));
+    if (this.currentTool === null)
+      return;
+
+    $(this.canvasID).on('mousemove', this.mouseMoveHandler);
+    $(this.canvasID).on('click', this.canvasClickHandler);
+
+    if (this.currentTool.isDraggable)
+      $(this.canvasID).on('mousedown', this.mouseDownHandler);
+  };
+
+
+  var mouseDownHandler = function(e) {
+    if (e.button !== 0 || e.buttons !== 1)
+      return;
+
+    var coords = getRelativeCoordinates(e);
+    this.mouseX = coords.x;
+    this.mouseY = coords.y;
+
+    this._dragging = true;
+    this._emitEvent(Messages.TOOL_CLICKED, {x: this.mouseX, y: this.mouseY});
+
+    this._lastDragX = Math.floor(this.mouseX / this._tileWidth);
+    this._lastDragY = Math.floor(this.mouseY / this._tileWidth);
+
+    $(this.canvasID).on('mouseup', this.mouseUpHandler);
+    e.preventDefault();
+  };
+
+
+  var mouseUpHandler = function(e) {
+    this._dragging = false;
+    this._lastDragX = -1;
+    this._lastDragY = -1;
+    $(this.canvasID).off('mouseup');
+    e.preventDefault();
   };
 
 
   var mouseLeaveHandler = function(e) {
+    $(this.canvasID).off('mousedown');
     $(this.canvasID).off('mousemove');
+    $(this.canvasID).off('mouseup');
     $(this.canvasID).off('click');
 
     this.mouseX = -1;
@@ -127,11 +174,26 @@ define(['EventEmitter', 'GameCanvas', 'GameTools', 'Messages', 'MiscUtils'],
     var coords = getRelativeCoordinates(e);
     this.mouseX = coords.x;
     this.mouseY = coords.y;
+
+    if (this._dragging) {
+      // XXX Work up how to patch up the path for fast mouse moves. My first attempt was too slow, and ended up missing
+      // mouseUp events
+      var x = Math.floor(this.mouseX / this._tileWidth);
+      var y = Math.floor(this.mouseY / this._tileWidth);
+
+      var lastX = this._lastDragX;
+      var lastY = this._lastDragY;
+      if (x !== lastX || y !== lastY) {
+        this._emitEvent(Messages.TOOL_CLICKED, {x: this.mouseX, y: this.mouseY});
+        this._lastDragX = x;
+        this._lastDragY = y;
+      }
+    }
   };
 
 
   var canvasClickHandler = function(e) {
-    if (this.currentTool !== null && this.mouseX !== -1 && this.mouseY !== -1)
+    if (e.button === 0 && e.buttons === 1 && this.mouseX !== -1 && this.mouseY !== -1 && !this._dragging)
       this._emitEvent(Messages.TOOL_CLICKED, {x: this.mouseX, y: this.mouseY});
     e.preventDefault();
   };

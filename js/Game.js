@@ -23,7 +23,7 @@ define(['BudgetWindow', 'Config', 'DisasterWindow', 'GameCanvas', 'EvaluationWin
     // Note: must init canvas before inputStatus
     this.gameCanvas = new GameCanvas('canvasContainer');
     this.gameCanvas.init(this.gameMap, this.tileSet, spriteSheet);
-    this.inputStatus = new InputStatus(this.gameMap);
+    this.inputStatus = new InputStatus(this.gameMap, tileSet.tileWidth);
 
     // Hook up listeners to open/close evaluation window
     this.evalShowing = false;
