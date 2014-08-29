@@ -95,10 +95,6 @@ define(['AnimationManager', 'GameMap', 'MouseBox', 'Tile', 'TileSet'],
     // After painting tiles, we store the image data here before painting sprites and mousebox
     this._lastCanvasData = null;
 
-    // Whether we need to put image data (i.e. whether a mouse box or sprite was drawn last time)
-    // (initially true to ensure we do the right thing on our first paint)
-    this._lastDamaged = true;
-
     this._calculateDimensions();
 
     // Order is important here. ready must be set before the call to centreOn below
@@ -385,6 +381,9 @@ define(['AnimationManager', 'GameMap', 'MouseBox', 'Tile', 'TileSet'],
 
 
   GameCanvas.prototype._processSprites = function(ctx, spriteList) {
+    var spriteDamage = [];
+    var tileWidth = this._tileSet.tileWidth;
+
     for (var i = 0, l = spriteList.length; i < l; i++) {
       var sprite = spriteList[i];
       ctx.drawImage(this._spriteSheet,
@@ -396,7 +395,15 @@ define(['AnimationManager', 'GameMap', 'MouseBox', 'Tile', 'TileSet'],
                     sprite.y + sprite.yOffset - this._originY * 16,
                     sprite.width,
                     sprite.width);
+
+      // sprite values are in pixels
+      spriteDamage.push({x: Math.floor((sprite.x + sprite.xOffset - this._originX * 16) / tileWidth),
+                         xBound: Math.ceil((sprite.x + sprite.xOffset + sprite.width - this._originX * 16) / tileWidth),
+                         y: Math.floor((sprite.y + sprite.yOffset - this._originY * 16) / tileWidth),
+                         yBound: Math.ceil((sprite.y + sprite.yOffset + sprite.height - this._originY * 16) / tileWidth)});
     }
+
+    return spriteDamage;
   };
 
 
@@ -422,12 +429,16 @@ define(['AnimationManager', 'GameMap', 'MouseBox', 'Tile', 'TileSet'],
                  this._originX + mouseX >= this._map.width || this._originY + mouseY >= this._map.height;
 
     if (offMap)
-      return;
+      return {x: mouseX, xBound: mouseX, y: mouseY, yBound: mouseY};
 
     var pos = {x: mouseX * this._tileSet.tileWidth, y: mouseY * this._tileSet.tileWidth};
     var width = mouseWidth * this._tileSet.tileWidth;
     var height = mouseHeight * this._tileSet.tileWidth;
     MouseBox.draw(this._canvas, pos, width, height, options);
+
+    // Return an object representing tiles that were damaged that will need redrawn
+    // Note that we must take an extra tile either side to account for the outline
+    return {x: mouseX - 1, xBound: mouseX + mouseWidth + 2, y: mouseY - 1, yBound: mouseY + mouseWidth + 2};
   };
 
 
@@ -530,12 +541,8 @@ define(['AnimationManager', 'GameMap', 'MouseBox', 'Tile', 'TileSet'],
 
     var ctx = this._canvas.getContext('2d');
 
-    if (this._lastCanvasData !== null && this._canvasWidth === this._lastCanvasWidth && this._canvasHeight === this._lastCanvasHeight) {
-      if (this._lastDamaged)
-        ctx.putImageData(this._lastCanvasData, 0, 0);
-    } else {
+    if (this._canvasWidth !== this._lastCanvasWidth || this._canvasHeight !== this._lastCanvasHeight)
       ctx.clearRect(0, 0, this._canvasWidth, this._canvasHeight);
-    }
 
     this._paintTiles(ctx, tileValues);
 
@@ -544,21 +551,35 @@ define(['AnimationManager', 'GameMap', 'MouseBox', 'Tile', 'TileSet'],
     this._lastCanvasHeight = this._canvasHeight;
 
     if (!mouse && !sprites) {
-      if (this._lastCanvasData === null)
-        this._lastCanvasData = ctx.getImageData(0, 0, this._canvasWidth, this._canvasHeight);
-      this._lastDamaged = false;
       return;
     }
 
-    // Save canvas now, before painting sprites and mice
-    this._lastCanvasData = ctx.getImageData(0, 0, this._canvasWidth, this._canvasHeight);
-    this._lastDamaged = true;
+    if (mouse) {
+      var damaged = this._processMouse(mouse);
+      for (var x = damaged.x; x < damaged.xBound; x++) {
+        for (var y = damaged.y; y < damaged.yBound; y++) {
+          // Note: we can't use Tile.INVALID (-1) as that in some sense is a valid tile for the void!
+          this._lastPaintedTiles[y][x] = -2;
+        }
+      }
+    }
 
-    if (mouse)
-      this._processMouse(mouse);
-
-    if (sprites)
-      this._processSprites(ctx, sprites);
+    if (sprites) {
+      damaged = this._processSprites(ctx, sprites);
+      for (var i = 0, l = damaged.length; i < l; i++) {
+        damagedArea = damaged[i];
+        for (var y = damagedArea.y; y < damagedArea.yBound; y++) {
+          if (y >= this._lastPaintedTiles.length)
+            continue;
+          var row = this._lastPaintedTiles[y];
+          for (var x = damagedArea.x; x < damagedArea.xBound; x++) {
+            if (x >= row.length)
+              continue;
+            this._lastPaintedTiles[y][x] = -2;
+          }
+        }
+      }
+    }
   };
 
 

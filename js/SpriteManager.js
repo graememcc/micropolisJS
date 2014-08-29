@@ -42,8 +42,8 @@ define(['AirplaneSprite', 'BoatSprite', 'CopterSprite', 'EventEmitter', 'Explosi
     lastX = SpriteUtils.worldToPix(lastX);
     lastY = SpriteUtils.worldToPix(lastY);
     return this.spriteList.filter(function(s) {
-      return (s.x + s.xOffset >= startX && s.y + s.yOffset >= startY) &&
-             !(s.x + s.xOffset >= lastX && s.y + s.yOffset >= lastY);
+      return s.x + s.xOffset >= startX && s.y + s.yOffset >= startY &&
+             s.x + s.xOffset < lastX && s.y + s.yOffset < lastY;
     });
   };
 
