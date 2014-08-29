@@ -43,6 +43,10 @@ a:hover {
   margin: 5px;
 }
 
+.game {
+  cursor: pointer;
+}
+
 .good {
   background-color: LightGreen;
   color: black;

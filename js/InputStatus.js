@@ -240,6 +240,7 @@ define(['EventEmitter', 'GameCanvas', 'GameTools', 'Messages', 'MiscUtils'],
     this.currentTool = this.gameTools[this.toolName];
     this.toolColour = $(e.target).attr('data-colour');
 
+    $(this.canvasID).addClass('game');
     e.preventDefault();
   };
 
