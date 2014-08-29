@@ -67,18 +67,30 @@ define(['EventEmitter', 'GameCanvas', 'GameTools', 'Messages', 'MiscUtils'],
   var keyDownHandler = function(e) {
     var handled = false;
 
-    if (e.keyCode == 38) {
-      this.up = true;
-      handled = true;
-    } else if (e.keyCode == 40) {
-      this.down = true;
-      handled = true;
-    } else if (e.keyCode == 39) {
-      this.right = true;
-      handled = true;
-    } else if (e.keyCode == 37) {
-      this.left = true;
-      handled = true;
+    switch (e.keyCode) {
+      case 38:
+      case 87:
+        this.up = true;
+        handled = true;
+        break;
+
+      case 40:
+      case 83:
+        this.down = true;
+        handled = true;
+        break;
+
+      case 39:
+      case 68:
+        this.right = true;
+        handled = true;
+        break;
+
+      case 37:
+      case 65:
+        this.left = true;
+        handled = true;
+        break;
     }
 
     if (handled)
@@ -87,14 +99,27 @@ define(['EventEmitter', 'GameCanvas', 'GameTools', 'Messages', 'MiscUtils'],
 
 
   var keyUpHandler = function(e) {
-    if (e.keyCode == 38)
-      this.up = false;
-    if (e.keyCode == 40)
-      this.down = false;
-    if (e.keyCode == 39)
-      this.right = false;
-    if (e.keyCode == 37)
-      this.left = false;
+    switch (e.keyCode) {
+      case 38:
+      case 87:
+        this.up = false;
+        break;
+
+      case 40:
+      case 83:
+        this.down = false;
+        break;
+
+      case 39:
+      case 68:
+        this.right = false;
+        break;
+
+      case 37:
+      case 65:
+        this.left = false;
+        break;
+    }
   };
 
 
