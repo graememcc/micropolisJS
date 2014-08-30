@@ -75,7 +75,7 @@ define(['Evaluate', 'Messages', 'Simulation'],
   neutralMessages[Messages.NEED_STADIUM] = 'Residents demand a Stadium';
   neutralMessages[Messages.ROAD_NEEDS_FUNDING] = 'Roads deteriorating, due to lack of funds';
   neutralMessages[Messages.POLICE_NEEDS_FUNDING] = 'Police departments need funding';
-  neutralMessages[Messages.WELCOME] = 'Welcome to Micropolis';
+  neutralMessages[Messages.WELCOME] = 'Welcome to micropolisJS';
 
   var badMessages = {};
   badMessages[Messages.BLACKOUTS_REPORTED] = 'Brownouts, build another Power Plant';

@@ -76,7 +76,7 @@ define(['MiscUtils'],
     TRAFFIC_JAMS: MiscUtils.makeConstantDescriptor('Traffic jams reported'),
     TRAIN_CRASHED: MiscUtils.makeConstantDescriptor('Train crashed'),
     VALVES_UPDATED: MiscUtils.makeConstantDescriptor('Valves updated'),
-    WELCOME: MiscUtils.makeConstantDescriptor('Welcome to Micropolis')
+    WELCOME: MiscUtils.makeConstantDescriptor('Welcome to micropolisJS')
   };
 
   var Messages = Object.defineProperties({}, messageData);
