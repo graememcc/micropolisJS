@@ -17,14 +17,15 @@ define(['Tile', 'TileHistory'],
 
 
   function AnimationManager(map, animationPeriod, blinkPeriod) {
-    animationPeriod = animationPeriod || 5;
-    blinkPeriod = blinkPeriod || 30;
+    animationPeriod = animationPeriod || 50;
+    blinkPeriod = blinkPeriod || 500;
 
     this._map = map;
     this.animationPeriod = animationPeriod;
+    this.lastAnimation = new Date(1970, 1, 1);
+    this.lastBlink = new Date(1970, 1, 1);
     this.blinkPeriod = blinkPeriod;
     this.shouldBlink = false;
-    this.count = 1;
 
     // When painting we keep track of what frames
     // have been painted at which map coordinates so we can
@@ -72,15 +73,21 @@ define(['Tile', 'TileHistory'],
     isPaused = isPaused || false;
 
     var shouldChangeAnimation = false;
-    if (!isPaused)
-      this.count += 1;
+    var d = new Date();
 
     var shouldBlink = this.shouldBlink;
-    if ((this.count % this.blinkPeriod) === 0)
+    if (d - this.lastBlink > this.blinkPeriod) {
       shouldBlink = this.shouldBlink = !this.shouldBlink;
+      this.lastBlink = d;
+    }
 
-    if ((this.count % this.animationPeriod) === 0 && !isPaused)
-      shouldChangeAnimation = true;
+    if (!isPaused) {
+      if (d - this.lastAnimation > this.animationPeriod) {
+        shouldChangeAnimation = true;
+        this.lastAnimation = d;
+      }
+    }
+
 
     var newPainted = this._currentPainted === null ? new TileHistory() : this._currentPainted;
 
