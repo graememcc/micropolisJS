@@ -45,7 +45,7 @@ define(['Game', 'MapGenerator', 'SplashCanvas'],
     $('#playForm').off('submit');
     $('#start').toggle();
     var difficulty = $('#difficulties:checked').val() - 0;
-    var name = $('#name').val();
+    var name = $('#nameForm').val();
     var g = new Game(this.map, this.tileSet, this.spriteSheet, difficulty, name);
   };
 

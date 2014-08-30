@@ -12,13 +12,16 @@ define(['BudgetWindow', 'Config', 'DisasterWindow', 'GameCanvas', 'EvaluationWin
   "use strict";
 
 
-  function Game(gameMap, tileSet, spriteSheet, difficulty) {
+  function Game(gameMap, tileSet, spriteSheet, difficulty, name) {
     difficulty = difficulty || 0;
 
     this.gameMap = gameMap;
     this.tileSet = tileSet;
     this.simulation = new Simulation(this.gameMap, difficulty, 1);
     this.rci = new RCI('RCIContainer', this.simulation);
+
+    this.name = name;
+    $('#name').text(name || 'MyTown');
 
     // Note: must init canvas before inputStatus
     this.gameCanvas = new GameCanvas('canvasContainer');
