@@ -556,10 +556,11 @@ define(['AnimationManager', 'GameMap', 'MouseBox', 'Tile', 'TileSet'],
 
     if (mouse) {
       var damaged = this._processMouse(mouse);
-      for (var x = damaged.x; x < damaged.xBound; x++) {
-        for (var y = damaged.y; y < damaged.yBound; y++) {
+      for (var y = Math.max(0, damaged.y), yBound = Math.min(this._lastPaintedTiles.length, damaged.yBound); y < yBound; y++) {
+        var row = this._lastPaintedTiles[y];
+        for (var x = Math.max(0, damaged.x), xBound = Math.min(row.length, damaged.xBound); x < xBound; x++) {
           // Note: we can't use Tile.INVALID (-1) as that in some sense is a valid tile for the void!
-          this._lastPaintedTiles[y][x] = -2;
+          row[x] = -2;
         }
       }
     }
@@ -567,14 +568,10 @@ define(['AnimationManager', 'GameMap', 'MouseBox', 'Tile', 'TileSet'],
     if (sprites) {
       damaged = this._processSprites(ctx, sprites);
       for (var i = 0, l = damaged.length; i < l; i++) {
-        damagedArea = damaged[i];
-        for (var y = damagedArea.y; y < damagedArea.yBound; y++) {
-          if (y >= this._lastPaintedTiles.length)
-            continue;
-          var row = this._lastPaintedTiles[y];
-          for (var x = damagedArea.x; x < damagedArea.xBound; x++) {
-            if (x >= row.length)
-              continue;
+        var damagedArea = damaged[i];
+        for (var y = Math.max(0, damagedArea.y), yBound = Math.min(damagedArea.yBound, this._lastPaintedTiles.length); y < yBound; y++) {
+          row = this._lastPaintedTiles[y];
+          for (var x = Math.max(0, damagedArea.x), xBound = Math.min(damagedArea.xBound, row.length); x < xBound; x++) {
             this._lastPaintedTiles[y][x] = -2;
           }
         }
