@@ -45,6 +45,7 @@ define(['EventEmitter', 'GameCanvas', 'GameTools', 'Messages', 'MiscUtils'],
     $(document).keydown(keyDownHandler.bind(this));
     $(document).keyup(keyUpHandler.bind(this));
 
+    this.getRelativeCoordinates = getRelativeCoordinates.bind(this);
     $(this.canvasID).on('mouseenter', mouseEnterHandler.bind(this));
     $(this.canvasID).on('mouseleave', mouseLeaveHandler.bind(this));
 
@@ -124,23 +125,8 @@ define(['EventEmitter', 'GameCanvas', 'GameTools', 'Messages', 'MiscUtils'],
 
 
   var getRelativeCoordinates = function(e) {
-    var x;
-    var y;
-
-    if (e.x !== undefined && e.y !== undefined) {
-      x = e.x;
-      y = e.y;
-    } else {
-      x = e.clientX + document.body.scrollLeft +
-        document.documentElement.scrollLeft;
-      y = e.clientY + document.body.scrollTop +
-        document.documentElement.scrollTop;
-     }
-
-     var canvas = $(canvasID)[0];
-     x -= canvas.offsetLeft;
-     y -= canvas.offsetTop;
-     return {x: x, y: y};
+    var cRect = document.querySelector(this.canvasID).getBoundingClientRect();
+    return {x: e.clientX - cRect.left, y: e.clientY - cRect.top};
   };
 
 
@@ -160,7 +146,7 @@ define(['EventEmitter', 'GameCanvas', 'GameTools', 'Messages', 'MiscUtils'],
     if (e.button !== 0 || e.buttons !== 1)
       return;
 
-    var coords = getRelativeCoordinates(e);
+    var coords = this.getRelativeCoordinates(e);
     this.mouseX = coords.x;
     this.mouseY = coords.y;
 
@@ -196,7 +182,7 @@ define(['EventEmitter', 'GameCanvas', 'GameTools', 'Messages', 'MiscUtils'],
 
 
   var mouseMoveHandler = function(e) {
-    var coords = getRelativeCoordinates(e);
+    var coords = this.getRelativeCoordinates(e);
     this.mouseX = coords.x;
     this.mouseY = coords.y;
 

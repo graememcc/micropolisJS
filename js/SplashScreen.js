@@ -8,29 +8,45 @@ define(['Game', 'MapGenerator', 'SplashCanvas'],
     this.map = MapGenerator();
 
     $('#splashGenerate').click(this.regenerateMap.bind(this));
-    $('#splashPlay').click(this.playMap.bind(this));
-    $('.awaitGeneration').toggle();
+    $('#splashPlay').click(this.acquireNameAndDifficulty.bind(this));
 
     this.splashCanvas = new SplashCanvas(SplashCanvas.DEFAULT_ID, 'splashContainer');
     this.splashCanvas.init(this.map, tileSet);
+    $('.awaitGeneration').toggle();
+    $('#splashPlay').focus();
   }
 
 
-  SplashScreen.prototype.regenerateMap = function() {
+  SplashScreen.prototype.regenerateMap = function(e) {
+    e.preventDefault();
+
     this.splashCanvas.clearMap();
     this.map = MapGenerator();
     this.splashCanvas.paint(this.map);
   };
 
 
-  SplashScreen.prototype.playMap = function() {
-    var difficulty = $('input[name="difficulty"]:checked').val() - 0;
+  SplashScreen.prototype.acquireNameAndDifficulty = function(e) {
+    e.preventDefault();
+
     $('#splashGenerate').off('click');
     $('#splashPlay').off('click');
-    $('#splashContainer').html('');
+    $('#splash').toggle();
 
-    // Actually launch the game
-    var g = new Game(this.map, this.tileSet, this.spriteSheet, difficulty);
+    $('#playForm').submit(this.playMap.bind(this));
+    $('#start').toggle();
+    $('#name').focus();
+  };
+
+
+  SplashScreen.prototype.playMap = function(e) {
+    e.preventDefault();
+
+    $('#playForm').off('submit');
+    $('#start').toggle();
+    var difficulty = $('#difficulties:checked').val() - 0;
+    var name = $('#name').val();
+    var g = new Game(this.map, this.tileSet, this.spriteSheet, difficulty, name);
   };
 
 

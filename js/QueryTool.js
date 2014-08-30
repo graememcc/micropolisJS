@@ -120,11 +120,12 @@ define(['BaseTool', 'Config', 'EventEmitter', 'Messages', 'Text', 'Tile'],
       var tile = this._map.getTile(x, y);
       $('#queryTile').text([x,y].join(', '));
       $('#queryTileValue').text(tile.getValue());
-      $('#queryTileBurnable').text(tile.isCombustible());
-      $('#queryTileBulldozable').text(tile.isBulldozable());
-      $('#queryTileCond').text(tile.isConductive());
-      $('#queryTileAnim').text(tile.isAnimated());
-      $('#queryTilePowered').text(tile.isPowered());
+      $('#queryTileBurnable').text(tile.isCombustible() ? '\u2714' : '\u2718');
+      $('#queryTileBulldozable').text(tile.isBulldozable() ? '\u2714' : '\u2718');
+      $('#queryTileCond').text(tile.isConductive() ? '\u2714' : '\u2718');
+      $('#queryTileAnim').text(tile.isAnimated() ? '\u2714' : '\u2718');
+      $('#queryTilePowered').text(tile.isPowered() ? '\u2714' : '\u2718');
+      $('#queryTileZone').text(tile.isZone() ? '\u2714' : '\u2718');
     }
 
     this.classifyZone(x, y);

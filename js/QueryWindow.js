@@ -45,7 +45,7 @@ define(['Config', 'EventEmitter', 'Messages'],
     opacityLayer.toggle();
     queryWindow.toggle();
     if ((Config.debug || Config.queryDebug) && !this.debugToggled) {
-      $('#queryDebug').removeClass('hidden');
+      $('.queryDebug').removeClass('hidden');
       this.debugToggled = true;
     }
   };

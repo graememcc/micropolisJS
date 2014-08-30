@@ -259,7 +259,7 @@ define(['BudgetWindow', 'Config', 'DisasterWindow', 'GameCanvas', 'EvaluationWin
         break;
 
       default:
-        $('#toolOutput').html('&nbsp;');
+        $('#toolOutput').html('Tools');
     }
   };
 

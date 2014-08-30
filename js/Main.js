@@ -14,6 +14,7 @@ require(['Config', 'SplashScreen', 'SpriteLoader', 'TileSet', 'TileSetURI'],
   var i, tileSet;
 
   var spritesLoaded = function(spriteImages) {
+    $('#loadingBanner').css('display', 'none');
     var s = new SplashScreen(tileSet, spriteImages);
   };
 

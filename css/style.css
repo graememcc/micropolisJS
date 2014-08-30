@@ -1,3 +1,5 @@
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,300italic,400italic);
+
 * {
   padding: 0;
   margin: 0;
@@ -10,11 +12,43 @@
   src: local('ChunkFive'), url(chunk.woff) format('woff');
 }
 
+body {
+  background-image: url('../images/dirtbg.png');
+}
+
+button, input[type="submit"] {
+  width: 140px;
+  border-radius: 3px;
+  cursor: pointer;
+  border: none;
+}
+
+footer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0px;
+  height: 50px;
+  background-color: darkslategray;
+}
+
 header {
   background-color: darkslategray;
-  background-image: repeating-linear-gradient(-45deg, transparent, transparent 35px, rgba(255, 255, 255, 0.2) 35px, rgba(255, 255, 255, 0.2) 70px); 
+  background-image: repeating-linear-gradient(-45deg, transparent, transparent 35px, rgba(255, 255, 255, 0.2) 35px, rgba(255, 255, 255, 0.2) 70px);
   font-family: 'Chunk', serif;
   height: 45px;
+}
+
+header h1 {
+  margin-left: 50px;
+}
+
+main {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  overflow: hidden;
 }
 
 nav a, nav a:link, nav a:visited, nav a:hover {
@@ -22,56 +56,12 @@ nav a, nav a:link, nav a:visited, nav a:hover {
   color: white;
 }
 
-.bold {
-  font-weight: bold;
+.alignCenter {
+  text-align: center;
 }
 
-.white {
-  color: white;
-}
-
-.border-bottom {
-  border-bottom: 1px solid black;
-}
-
-.fontlarge {
-  font-size: 36px;
-}
-
-.inlineblock {
-  display: inline-block;
-}
-
-.left {
-  float: left;
-}
-
-.right {
-  float: right;
-}
-
-.padding10 {
-  padding: 10px;
-}
-
-
-/* Pre refactoring below */
-
-body {
-  background-color: skyblue;
-  font-family: sans-serif;
-}
-
-h1 a {
-  text-decoration: none;
-}
-
-a:link {
-  color: darkgreen;
-}
-
-a:hover {
-  color: darkgreen;
+.awaitGeneration, .hidden, .initialHidden {
+  display: none;
 }
 
 .bad {
@@ -79,23 +69,52 @@ a:hover {
   color: yellow;
 }
 
-.canvasWidth {
-  width: 600px;
-  margin: auto;
+.block {
+  display: block;
 }
 
-.splashWidth {
+.bold {
+  font-weight: bold;
+}
+
+.border-bottom {
+  border-bottom: 1px solid black;
+}
+
+.budgetRight {
+   margin-left: 7px
+}
+
+.cancel, #pauseRequest {
+  background-color: darkslategray;
+  color: white;
+}
+
+.centred {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border: 1px solid black;
   width: 400px;
-  margin: auto;
+  transform: translate(-50%, -50%);
 }
 
-.clr {
-  clear: both;
+.chunk {
+  font-family: 'Chunk', serif;
+  font-weight: normal;
 }
 
-.modalHeader {
-  padding: 5px;
-  margin: 5px;
+.dialogOK {
+  color: white;
+  background-color: green;
+}
+
+.difficulty {
+  margin-left: 10px;
+}
+
+.fontlarge {
+  font-size: 36px;
 }
 
 .game {
@@ -107,50 +126,20 @@ a:hover {
   color: black;
 }
 
-.info {
-  width: 20%;
-  text-align: centre;
+.inline {
+  display: inline;
 }
 
-.neutral {
-  background-color: white;
-  color: black;
+.inlineblock {
+  display: inline-block;
 }
 
-.row {
-  display: table-row;
+.left {
+  float: left;
 }
 
-.col {
-  display: table-cell;
-}
-
-
-.awaitGeneration, .hidden {
-  display: none;
-}
-
-.table {
-  display: table;
-}
-
-.toolButton {
-  width: 140px;
-  margin-left: 5px;
-  margin-right: 5px;
-  border: 1px solid black;
-  color: black;
-  background-color: white;
-  font-family: sans-serif;
-  font-size: 12px;
-}
-
-.miscButton {
-  width: 100px;
-}
-
-.initialHidden {
-  display: none;
+.margin10 {
+  margin: 10px 0;
 }
 
 .modal {
@@ -158,214 +147,235 @@ a:hover {
   top: 50%;
   left: 50%;
   border: 1px solid black;
-  padding: 5px;
-  -moz-box-sizing: border-box;
-  -ms-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  -moz-transform: translate(-50%, -50%);
-  -ms-transform: translate(-50%, -50%);
-  -webkit-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
   z-index: 20;
   background-color: white;
-  font-size: large;
   width: 500px;
 }
 
-.splashButton {
-  width: 100px;
-  margin: auto;
-  border: none;
-  cursor: pointer;
+.modal header {
+  height: 18px;
+}
+
+.mintcream, .neutral {
+  background-color: mintcream;
+}
+
+.neutral {
+  color: black;
+}
+
+.open {
+  font-family: 'Open Sans', sans-serif;
+}
+
+.opinion, .statistics {
+  font-size: 12px;
+}
+
+.opinionList dd {
+  font-style: italic;
+}
+
+.padding10 {
+  padding: 10px;
+}
+
+.statisticsItem, .queryItem {
+  display: inline-block;
+  width: 200px;
+}
+
+.queryList dt {
+  font-weight: 600;
+}
+
+.right {
+  float: right;
+}
+
+.row button {
+  display: inline-block;
 }
 
 .selected {
   font-weight: bold;
+  border: 1px solid black;
+}
+
+.semibold {
+  font-weight: 600px;
+}
+
+.shadow {
+  -ms-box-shadow: 10px 0px 35px 0px rgba(31,28,31, 0.8);
+  -webkit-box-shadow: 10px 0px 35px 0px rgba(31,28,31, 0.8);
+  -moz-box-shadow: 10px 0px 35px 0px rgba(31,28,31, 0.8);
+  box-shadow: 10px 0px 35px 0px rgba(31,28,31, 0.8);
+}
+
+.statisticsItem {
+  display: inline-block;
+  width: 200px;
+}
+
+.toolButton {
+  width: 140px;
+  margin-left: 5px;
+  margin-right: 5px;
+  color: black;
+  background-color: white;
+  font-size: 12px;
+  display: inline-block;
 }
 
 .unselected {
   font-weight: normal;
 }
 
-#appeal {
-  border: 1px solid gray;
-  padding: 10px;
-  font-size: 12px;
+.white {
+  color: white;
 }
 
-#appeal h2 {
-  color: yellow;
+.width140 {
+  width: 140px;
 }
 
-#budgetRequest, #budgetHeader {
+.z1 {
+  z-index: 1;
+}
+
+#budgetForm > div:nth-child(9) {
+  align: center;
+  width: 100%;
+}
+
+#budgetForm > div, #budgetForm > fieldset {
+  display: inline-block;
+  width: 230px;
+}
+
+#budgetReset {
+  color: white;
   background-color: dodgerblue;
-  border: none;
-  color: white;
 }
 
-#residentialButton {
-  background-color: lime;
+#controls {
+  border: 1px solid black;
+  position: absolute;
+  top: 40px;
+  right: 50px;
+  width: 305px;
+  height: 220px;
 }
 
-#policeButton {
-  background-color: darkblue;
-  color: white;
+#difficultyLabel {
+  margin-right: 5px;
 }
 
-#coalButton {
-  background-color: gray;
+#disasterLabel {
+  display: block;
 }
 
-#wireButton {
-  background-color: khaki;
+#evalContainer {
+  font-size: 14px;
 }
 
-#commercialButton {
-  background-color: blue;
-  color: white;
+#flagsTable {
+  text-align: center;
+  padding: 5px;
+  margin: 0 auto;
+  border: 1px solid black;
 }
 
-#fireButton {
-  background-color: red;
-}
-
-#nuclearButton {
-  background-color: mistyrose;
-}
-
-#roadButton {
-  background-color: black;
-  color: white;
-}
-
-#industrialButton {
-  background-color: yellow;
-}
-
-#portButton {
- background-color: dodgerblue;
- color: white;
-}
-
-#stadiumButton {
-  background-color: indigo;
-  color: white;
-}
-
-#railButton {
-  background-color: brown;
-  color: white;
-}
-
-#parkButton {
-  background-color: darkgreen;
-  color: white;
-}
-
-#airportButton {
-  background-color: violet;
-}
-
-#queryButton {
-  background-color: cyan;
-}
-
-#bulldozerButton {
-  background-color: salmon;
-}
-
-#buttons {
-  display: table;
-}
-
-#disasterRequest, #disasterHeader {
-  background-color: red;
-  color: yellow;
-}
-
-#evalRequest, #evalHeader {
-  background-color: forestgreen;
-  border: none;
-  color: white;
-}
-
-#queryHeader {
-  background-color: cyan;
+#flagsTable td, #flagsTable th {
+  padding: 0 5px;
 }
 
 #infobar {
-  background-color: silver;
-}
-
-#miscControls {
-  padding: 5px;
-  width: 340px;
-  margin: auto;
+  position: absolute;
+  top: 40px;
+  left: 50px;
+  height: 150px;
 }
 
 #miscButtons {
+  position: absolute;
+  left: 50px;
+  top: 230px;
+  height: 100px;
   margin-top: 10px;
 }
 
-#miscButtons button {
-  margin: 5px;
-  border: none;
-  cursor: pointer;
+#nameForm {
+  font-size: 18px;
 }
 
 #notifications {
+  position: absolute;
+  bottom: 50px;
+  left: 50%;
   border: 1px solid black;
-  text-align: center;
-  margin-top: 5px;
-  margin-bottom: 5px;
+  width: 400px;
+  text-overflow: ellipsis;
+  transform: translateX(-50%);
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 #opaque {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   bottom: 0;
   right: 0;
-  opacity: .80;
-  filter: Alpha(Opacity=80); 
-  background-color: rgb(238, 238, 238);
-  background-repeat: repeat-x;
-  background-attachment: scroll;
-  background-position: 50% 50%;
+  opacity: .70;
+  filter: Alpha(Opacity=70);
+  background-color: gray;
   z-index: 10;
 }
 
-#pauseRequest {
-  background-color: lightgray;
-  border: none;
-  color: black;
+#playit {
+  background-color: green;
+  color: white;
+  font-size: 18px;
 }
 
-#rightButtons {
-  float: right;
+#RCIContainer {
+  position: absolute;
+  left: 50px;
+  top: 400px;
+  width: 140px;
+  height: 140px;
+  margin: 0px;
 }
 
-#canvasContainer {
-  width: 600px;
-  height: 400px;
-  margin: 0 auto;
-  margin-top: 20px;
-  margin-bottom: 20px;
+#splash {
+  position: absolute;
+  width: 540px;
+  height: 380px;
 }
 
-#container {
-  width: 60%;
-  margin-left: auto;
-  margin-right: auto;
+#splashButton {
+  margin-bottom: 10px;
 }
 
-#disasterLabel {
-  font-size: smaller;
+#splashButtons {
+  position: absolute;
+  left: 10px;
+  top: 120px;
+}
+
+#splashButtonContainer {
+  position: absolute;
+  top: 90px;
+  left: 390px;
 }
 
 #splashContainer {
-  text-align: centre;
+  position: absolute;
+  top: 90px;
+  left: 20px;
 }
 
 #splashGenerate {
@@ -377,24 +387,128 @@ a:hover {
   background-color: lightgreen;
 }
 
-#splashButtons {
-  width: 250px;
-  margin: auto;
-}
-
-#difficulties {
-  margin-top: 10px;
-}
-
-#RCIContainer {
-  width: 140px;
-  height: 140px;
-  padding: 2px;
-  margin: 0px;
-  background-color: white;
-  border: 1px solid black;
-}
-
-#toolInfo {
+#start {
+  display: none;
   text-align: center;
+  font-size: 18px;
+}
+
+#statisticsList, .queryList {
+  width: 400px;
+  margin: 0 auto;
+  padding: 0 110px;
+}
+
+#wrapper {
+  position: absolute;
+  top: 50px;
+  left: 0px;
+  right: 0px;
+  bottom: 70px;
+}
+
+/* Miscellaneous buttons */
+
+#budgetRequest, #budgetHeader {
+  background-color: dodgerblue;
+  color: white;
+}
+
+#disasterRequest, #disasterHeader {
+  background-color: red;
+  color: yellow;
+}
+
+#evalRequest, #evalHeader {
+  background-color: forestgreen;
+  color: white;
+}
+
+/* Tool buttons */
+#airportButton {
+  background-color: violet;
+}
+
+#bulldozerButton {
+  background-color: salmon;
+}
+
+#coalButton {
+  background-color: gray;
+}
+
+#commercialButton {
+  background-color: blue;
+  color: white;
+}
+
+#fireButton {
+  background-color: red;
+}
+
+#industrialButton {
+  background-color: yellow;
+}
+
+#nuclearButton {
+  background-color: mistyrose;
+}
+
+#parkButton {
+  background-color: darkgreen;
+  color: white;
+}
+
+#policeButton {
+  background-color: darkblue;
+  color: white;
+}
+
+#portButton {
+ background-color: dodgerblue;
+ color: white;
+}
+
+#queryButton, #queryHeader {
+  background-color: cyan;
+}
+
+#railButton {
+  background-color: brown;
+  color: white;
+}
+
+#residentialButton {
+  background-color: lime;
+}
+
+#roadButton {
+  background-color: black;
+  color: white;
+}
+
+#stadiumButton {
+  background-color: indigo;
+  color: white;
+}
+
+#wireButton {
+  background-color: khaki;
+}
+
+/* Pre refactoring below */
+
+.info {
+  width: 20%;
+  text-align: centre;
+}
+
+#appeal {
+  border: 1px solid gray;
+  padding: 10px;
+  font-size: 12px;
+}
+
+#appeal h2 {
+  color: yellow;
 }
