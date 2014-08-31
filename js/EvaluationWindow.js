@@ -7,43 +7,29 @@
  *
  */
 
-define(['EventEmitter', 'Messages', 'Text'],
-       function(EventEmitter, Messages, Text) {
+define(['ModalWindow', 'Messages', 'Text'],
+       function(ModalWindow, Messages, Text) {
   "use strict";
 
-  var EvaluationWindow = EventEmitter(function(opacityLayerID, evaluationWindowID) {
-    this._opacityLayer =  '#' + opacityLayerID;
-    this._evaluationWindowID = '#' + evaluationWindowID;
+
+  var EvaluationWindow = ModalWindow(function() {
     $('#' + evaluationFormID).on('submit', submit.bind(this));
-    $('#' + evaluationOKID).on('click', submit.bind(this));
   });
 
-  var evaluationFormID = "evaluationForm";
+
+  var evaluationFormID = "evalButtons";
   var evaluationOKID = "evalOK";
+
+
+  EvaluationWindow.prototype.close = function() {
+    this._emitEvent(Messages.EVAL_WINDOW_CLOSED);
+    this._toggleDisplay();
+  }
+
 
   var submit = function(e) {
     e.preventDefault();
-
-    // TODO Fix for enter keypress: submit isn't fired on FF due to form
-    // only containing the submit button
-    this._emitEvent(Messages.EVAL_WINDOW_CLOSED);
-    this._toggleDisplay();
-  };
-
-
-  EvaluationWindow.prototype._toggleDisplay = function() {
-    var opacityLayer = $(this._opacityLayer);
-    opacityLayer = opacityLayer.length === 0 ? null : opacityLayer;
-    if (opacityLayer === null)
-      throw new Error('Node ' + orig + ' not found');
-
-    var evaluationWindow = $(this._evaluationWindowID);
-    evaluationWindow = evaluationWindow.length === 0 ? null : evaluationWindow;
-    if (evaluationWindow === null)
-      throw new Error('Node ' + orig + ' not found');
-
-    opacityLayer.toggle();
-    evaluationWindow.toggle();
+    this.close();
   };
 
 
@@ -52,10 +38,13 @@ define(['EventEmitter', 'Messages', 'Text'],
     $('#evalNo').text(100 - evaluation.cityYes);
     for (var i = 0; i < 4; i++) {
       var problemNo = evaluation.getProblemNumber(i);
-      var text = '';
-      if (problemNo !== -1)
-        text = Text.problems[problemNo];
-      $('#evalProb' + (i + 1)).text(text);
+      if (problemNo !== -1) {
+        var text = Text.problems[problemNo];
+        $('#evalProb' + (i + 1)).text(text);
+        $('#evalProb' + (i + 1)).show();
+      } else {
+        $('#evalProb' + (i + 1)).hide();
+      }
     }
 
     $('#evalPopulation').text(evaluation.cityPop);

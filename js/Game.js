@@ -28,27 +28,29 @@ define(['BudgetWindow', 'Config', 'DisasterWindow', 'GameCanvas', 'EvaluationWin
     this.gameCanvas.init(this.gameMap, this.tileSet, spriteSheet);
     this.inputStatus = new InputStatus(this.gameMap, tileSet.tileWidth);
 
+    var opacityLayerID = 'opaque';
+
     // Hook up listeners to open/close evaluation window
     this.evalShowing = false;
-    this.evalWindow = new EvaluationWindow('opaque', 'evalWindow');
+    this.evalWindow = new EvaluationWindow(opacityLayerID, 'evalWindow');
     this.evalWindow.addEventListener(Messages.EVAL_WINDOW_CLOSED, this.handleEvalWindowClosure.bind(this));
     this.inputStatus.addEventListener(Messages.EVAL_REQUESTED, this.handleEvalRequest.bind(this));
 
     // ... and similarly for the budget window
     this.budgetShowing = false;
-    this.budgetWindow = new BudgetWindow('opaque', 'budget');
+    this.budgetWindow = new BudgetWindow(opacityLayerID, 'budget');
     this.budgetWindow.addEventListener(Messages.BUDGET_WINDOW_CLOSED, this.handleBudgetWindowClosure.bind(this));
     this.inputStatus.addEventListener(Messages.BUDGET_REQUESTED, this.handleBudgetRequest.bind(this));
 
     // ... and also the disaster window
     this.disasterShowing = false;
-    this.disasterWindow = new DisasterWindow('opaque', 'disasterWindow');
+    this.disasterWindow = new DisasterWindow(opacityLayerID, 'disasterWindow');
     this.disasterWindow.addEventListener(Messages.DISASTER_WINDOW_CLOSED, this.handleDisasterWindowClosure.bind(this));
     this.inputStatus.addEventListener(Messages.DISASTER_REQUESTED, this.handleDisasterRequest.bind(this));
 
     // ... and finally the query window
     this.queryShowing = false;
-    this.queryWindow = new QueryWindow('opaque', 'queryWindow');
+    this.queryWindow = new QueryWindow(opacityLayerID, 'queryWindow');
     this.queryWindow.addEventListener(Messages.QUERY_WINDOW_CLOSED, this.handleQueryWindowClosure.bind(this));
     this.inputStatus.addEventListener(Messages.QUERY_WINDOW_NEEDED, this.handleQueryRequest.bind(this));
 
@@ -293,7 +295,16 @@ define(['BudgetWindow', 'Config', 'DisasterWindow', 'GameCanvas', 'EvaluationWin
       this.gameCanvas.moveSouth();
     else if (this.inputStatus.escape) {
       // We need to handle escape, as InputStatus won't know what dialogs are showing
-      this.inputStatus.clearTool();
+      if (this.queryShowing)
+        this.queryWindow.close();
+      if (this.evalShowing)
+        this.evalWindow.close();
+      else if (this.disasterShowing)
+        this.disasterWindow.close();
+      else if (this.budgetShowing)
+        this.budgetWindow.close();
+      else
+        this.inputStatus.clearTool();
     }
   };
 

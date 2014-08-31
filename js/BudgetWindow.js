@@ -7,13 +7,14 @@
  *
  */
 
-define(['EventEmitter', 'Messages'],
-       function(EventEmitter, Messages) {
+define(['Messages', 'ModalWindow'],
+       function(Messages, ModalWindow) {
   "use strict";
 
-  var BudgetWindow = EventEmitter(function(opacityLayerID, budgetWindowID) {
-    this._opacityLayer =  '#' + opacityLayerID;
-    this._budgetWindowID = '#' + budgetWindowID;
+  var BudgetWindow = ModalWindow(function() {
+    $('#' + budgetCancelID).on('click', cancel.bind(this));
+    $('#' + budgetResetID).on('click', resetItems.bind(this));
+    $('#' + budgetFormID).on('submit', submit.bind(this));
   });
 
 
@@ -22,6 +23,7 @@ define(['EventEmitter', 'Messages'],
   var budgetResetID = 'budgetReset';
   var budgetCancelID = 'budgetCancel';
   var budgetFormID = 'budgetForm';
+  var budgetOKID = 'budgetOK';
 
 
   var setSpendRangeText = function(element, percentage, totalSpend) {
@@ -60,27 +62,21 @@ define(['EventEmitter', 'Messages'],
   };
 
 
+  BudgetWindow.prototype.close = function(data) {
+    data = data || {cancelled: true};
+    this._emitEvent(Messages.BUDGET_WINDOW_CLOSED, data);
+    this._toggleDisplay();
+  };
+
+
   var cancel = function(e) {
     e.preventDefault();
-    this._emitEvent(Messages.BUDGET_WINDOW_CLOSED, {cancelled: true});
-
-    var toRemove = [budgetResetID, budgetFormID, 'taxRate', 'roadRate', 'fireRate', 'policeRate'];
-
-    for (var i = 0, l = toRemove.length; i < l; i++)
-      $('#' + toRemove[i]).off();
-
-    this._toggleDisplay();
+    this.close({cancelled: true});
   };
 
 
   var submit = function(e) {
     e.preventDefault();
-
-    var toRemove = [budgetResetID, budgetCancelID, budgetFormID, 'taxRate',
-                    'roadRate', 'fireRate', 'policeRate'];
-
-    for (var i = 0, l = toRemove.length; i < l; i++)
-      $('#' + toRemove[i]).off();
 
     // Get element values
     var roadPercent = $('#roadRate')[0].value;
@@ -90,32 +86,7 @@ define(['EventEmitter', 'Messages'],
 
     var data = {cancelled: false, roadPercent: roadPercent, firePercent: firePercent,
                           policePercent: policePercent, taxPercent: taxPercent, e: e, original: e.type};
-    this._emitEvent(Messages.BUDGET_WINDOW_CLOSED, data);
-
-    this._toggleDisplay();
-  };
-
-
-  BudgetWindow.prototype._toggleDisplay = function() {
-    var opacityLayer = $(this._opacityLayer);
-    opacityLayer = opacityLayer.length === 0 ? null : opacityLayer;
-    if (opacityLayer === null)
-      throw new Error('Node ' + orig + ' not found');
-
-    var budgetWindow = $(this._budgetWindowID);
-    budgetWindow = budgetWindow.length === 0 ? null : budgetWindow;
-    if (budgetWindow === null)
-      throw new Error('Node ' + orig + ' not found');
-
-    opacityLayer.toggle();
-    budgetWindow.toggle();
-  };
-
-
-  BudgetWindow.prototype._registerButtonListeners = function() {
-    $('#' + budgetResetID).on('click', resetItems.bind(this));
-    $('#' + budgetCancelID).one('click', cancel.bind(this));
-    $('#' + budgetFormID).one('submit', submit.bind(this));
+    this.close(data);
   };
 
 
@@ -169,7 +140,6 @@ define(['EventEmitter', 'Messages'],
     $('#previousFunds').text((previousFunds < 0 ? '-$' : '$') + previousFunds);
     $('#currentFunds').text('$' + currentFunds);
 
-    this._registerButtonListeners();
     this._toggleDisplay();
   };
 

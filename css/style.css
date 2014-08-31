@@ -85,6 +85,12 @@ nav li {
   border-bottom: 1px solid black;
 }
 
+.budgetData, .statisticsRight {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
 .budgetRight {
    margin-left: 7px
 }
@@ -189,9 +195,14 @@ nav li {
   padding: 10px;
 }
 
-.queryItem, .statisticsItem{
+.queryItem, .statisticsItem {
   display: inline-block;
   width: 200px;
+}
+
+.statisticsRight {
+  display: inline-block;
+  width: 150px;
 }
 
 .queryList dt {

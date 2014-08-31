@@ -7,15 +7,9 @@
  *
  */
 
-define(['EventEmitter', 'Messages', 'MiscUtils'],
-       function(EventEmitter, Messages, MiscUtils) {
+define(['Messages', 'MiscUtils', 'ModalWindow'],
+       function(Messages, MiscUtils, ModalWindow) {
   "use strict";
-
-  var DisasterWindow = EventEmitter(function(opacityLayerID, disasterWindowID) {
-    this._opacityLayer =  '#' + opacityLayerID;
-    this._disasterWindowID = '#' + disasterWindowID;
-    this._requestedDisaster = DisasterWindow.DISASTER_NONE;
-  });
 
 
   var disasterSelectID = 'disasterSelect';
@@ -24,12 +18,22 @@ define(['EventEmitter', 'Messages', 'MiscUtils'],
   var disasterFormID = 'disasterForm';
 
 
+  var DisasterWindow = ModalWindow(function() {
+    $('#' + disasterFormID).on('submit', submit.bind(this));
+    $('#' + disasterCancelID).on('click', cancel.bind(this));
+  }, disasterSelectID);
+
+
+  DisasterWindow.prototype.close = function(disaster) {
+    disaster = disaster || DisasterWindow.DISASTER_NONE;
+    this._toggleDisplay();
+    this._emitEvent(Messages.DISASTER_WINDOW_CLOSED, disaster);
+  }
+
+
   var cancel = function(e) {
     e.preventDefault();
-    $('#' + disasterCancelID).off();
-    $('#' + disasterFormID).off();
-    this._toggleDisplay();
-    this._emitEvent(Messages.DISASTER_WINDOW_CLOSED, DisasterWindow.DISASTER_NONE);
+    this.close();
   };
 
 
@@ -38,32 +42,7 @@ define(['EventEmitter', 'Messages', 'MiscUtils'],
 
     // Get element values
     var requestedDisaster = $('#' + disasterSelectID)[0].value;
-    $('#' + disasterFormID).off();
-    $('#' + disasterCancelID).off();
-    this._toggleDisplay();
-    this._emitEvent(Messages.DISASTER_WINDOW_CLOSED, requestedDisaster);
-  };
-
-
-  DisasterWindow.prototype._toggleDisplay = function() {
-    var opacityLayer = $(this._opacityLayer);
-    opacityLayer = opacityLayer.length === 0 ? null : opacityLayer;
-    if (opacityLayer === null)
-      throw new Error('Node ' + orig + ' not found');
-
-    var disasterWindow = $(this._disasterWindowID);
-    disasterWindow = disasterWindow.length === 0 ? null : disasterWindow;
-    if (disasterWindow === null)
-      throw new Error('Node ' + orig + ' not found');
-
-    opacityLayer.toggle();
-    disasterWindow.toggle();
-  };
-
-
-  DisasterWindow.prototype._registerButtonListeners = function() {
-    $('#' + disasterCancelID).on('click', cancel.bind(this));
-    $('#' + disasterFormID).on('submit', submit.bind(this));
+    this.close(requestedDisaster);
   };
 
 
@@ -79,7 +58,6 @@ define(['EventEmitter', 'Messages', 'MiscUtils'],
     $('#disasterMeltdown').attr('value', DisasterWindow.DISASTER_MELTDOWN);
     $('#disasterTornado').attr('value', DisasterWindow.DISASTER_TORNADO);
 
-    this._registerButtonListeners();
     this._toggleDisplay();
   };
 
