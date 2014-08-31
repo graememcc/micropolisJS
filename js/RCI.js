@@ -29,21 +29,17 @@ define(['Messages', 'MiscUtils'],
         throw new Error('Node ' + orig + ' not found');
     }
 
-    this._padding = 3; // 3 rectangles in each bit of padding
-    this._buckets = 10; // 0.2000 is scaled in to 10 buckets 
-    this._rectSize = 5; // Each rect is 5px
-    this._scale = Math.floor(2000 / this._buckets);
-
     // Each bar is 1 unit of padding wide, and there are 2 units
     // of padding between the 3 bars. There are 2 units of padding
     // either side. So 9 units of padding total
-    this._canvasWidth = 9 * this._rectSize;
-
     // Each bar can be at most bucket rectangles tall, but we multiply
     // that by 2 as we can have positive and negative directions. There
     // should be 1 unit of padding either side. The text box in the middle
     // is 1 unit of padding
-    this._canvasHeight = (2 * this._buckets + 3 * this._padding) * this._rectSize;
+    this._padding = 3; // 3 rectangles in each bit of padding
+    this._buckets = 10; // 0.2000 is scaled in to 10 buckets
+    this._rectSize = 5; // Each rect is 5px
+    this._scale = Math.floor(2000 / this._buckets);
 
     this._canvas = $('<canvas></canvas>', {id: id})[0];
 
@@ -57,6 +53,9 @@ define(['Messages', 'MiscUtils'],
         throw new Error('ID ' + id + ' already exists in document!');
     } else
       parentNode.appendChild(this._canvas);
+
+    // We might be created before our container has appeared on screen
+    this._initialisedBounds = false;
 
     eventSource.addEventListener(Messages.VALVES_UPDATED, this.update.bind(this));
   }
@@ -113,6 +112,16 @@ define(['Messages', 'MiscUtils'],
 
 
   RCI.prototype.update = function(data) {
+    if (!this._initialised) {
+      // The canvas is assumed to fill its container on-screen
+      var rect = this._canvas.parentNode.getBoundingClientRect();
+      this._canvas.width = rect.width;
+      this._canvas.height = rect.height;
+      this._canvas.style.margin = '0';
+      this._canvas.style.padding = '0';
+      this._intialised = true;
+    }
+
     var ctx = this._canvas.getContext('2d');
     this._clear(ctx);
     this._drawRect(ctx);

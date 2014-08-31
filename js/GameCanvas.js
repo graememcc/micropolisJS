@@ -39,8 +39,9 @@ define(['AnimationManager', 'GameMap', 'MouseBox', 'Tile', 'TileSet'],
     this._canvas.id = id;
 
     // The canvas is assumed to fill its container on-screen
-    this._canvas.width = parentNode.clientWidth;
-    this._canvas.height = parentNode.clientHeight;
+    var rect = parentNode.getBoundingClientRect();
+    this._canvas.width = rect.width;
+    this._canvas.height = rect.height;
     this._canvas.style.margin = '0';
     this._canvas.style.padding = '0';
 
