@@ -291,6 +291,10 @@ define(['BudgetWindow', 'Config', 'DisasterWindow', 'GameCanvas', 'EvaluationWin
       this.gameCanvas.moveEast();
     else if (this.inputStatus.down)
       this.gameCanvas.moveSouth();
+    else if (this.inputStatus.escape) {
+      // We need to handle escape, as InputStatus won't know what dialogs are showing
+      this.inputStatus.clearTool();
+    }
   };
 
 

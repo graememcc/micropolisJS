@@ -25,6 +25,7 @@ define(['EventEmitter', 'GameCanvas', 'GameTools', 'Messages', 'MiscUtils'],
     this.down = false;
     this.left = false;
     this.right = false;
+    this.escape = false;
 
     // Mouse movement
     this.mouseX = -1;
@@ -92,6 +93,10 @@ define(['EventEmitter', 'GameCanvas', 'GameTools', 'Messages', 'MiscUtils'],
         this.left = true;
         handled = true;
         break;
+
+      case 27:
+        this.escape = true;
+        handled = true;
     }
 
     if (handled)
@@ -120,6 +125,9 @@ define(['EventEmitter', 'GameCanvas', 'GameTools', 'Messages', 'MiscUtils'],
       case 65:
         this.left = false;
         break;
+
+      case 27:
+        this.escape = false;
     }
   };
 
@@ -204,9 +212,10 @@ define(['EventEmitter', 'GameCanvas', 'GameTools', 'Messages', 'MiscUtils'],
 
 
   var canvasClickHandler = function(e) {
-    if (e.button === 0 && e.buttons === 1 && this.mouseX !== -1 && this.mouseY !== -1 && !this._dragging)
+    if (e.button === 0 && e.buttons === 1 && this.mouseX !== -1 && this.mouseY !== -1 && !this._dragging) {
       this._emitEvent(Messages.TOOL_CLICKED, {x: this.mouseX, y: this.mouseY});
-    e.preventDefault();
+      e.preventDefault();
+    }
   };
 
 
@@ -236,6 +245,14 @@ define(['EventEmitter', 'GameCanvas', 'GameTools', 'Messages', 'MiscUtils'],
     var newRequest = requestedSpeed === 'Pause' ? 'Play' : 'Pause';
     $('#pauseRequest').text(newRequest);
     this._emitEvent(Messages.SPEED_CHANGE, requestedSpeed);
+  };
+
+
+  InputStatus.prototype.clearTool = function() {
+    this.currentTool = null;
+    this.toolWidth = 0;
+    this.toolColour = '';
+    $('.selected').removeClass('selected');
   };
 
 
