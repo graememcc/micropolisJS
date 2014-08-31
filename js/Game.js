@@ -362,7 +362,7 @@ define(['BudgetWindow', 'Config', 'DisasterWindow', 'GameCanvas', 'EvaluationWin
       return;
     }
 
-    if (!this.simulation.isPaused()) {
+    if (!this.simulation.isPaused() && !$('#tooSmall').is(':visible')) {
       // Run the sim
       this.simulation.simTick();
     }

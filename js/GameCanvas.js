@@ -541,8 +541,14 @@ define(['AnimationManager', 'GameMap', 'MouseBox', 'Tile', 'TileSet'],
 
     var ctx = this._canvas.getContext('2d');
 
-    if (this._canvasWidth !== this._lastCanvasWidth || this._canvasHeight !== this._lastCanvasHeight)
+    if (this._canvasWidth !== this._lastCanvasWidth || this._canvasHeight !== this._lastCanvasHeight) {
       ctx.clearRect(0, 0, this._canvasWidth, this._canvasHeight);
+      for (var y = 0, l = (this._lastPaintedTiles !== null ? this._lastPaintedTiles.length : 0); y < l; y++) {
+        var row = this._lastPaintedTiles[y];
+        for (var x = 0, l2 = row.length; x < l2; x++)
+          row[x] = -2;
+      }
+    }
 
     this._paintTiles(ctx, tileValues);
 

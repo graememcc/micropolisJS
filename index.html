@@ -24,11 +24,11 @@
       <div class="left inlineblock">
         <h1 id="title" class="white fontlarge">micropolisJS</h1>
       </div>
-      <nav class="white right inlineblock">
+      <nav class="white right padding10 inlineblock">
         <ul>
-          <li class="padding10 inlineblock"><a href="about.html">About</a></li>
-          <li class="padding10 inlineblock"><a href="https://github.com/graememcc/micropolisJS">Github</a></li>
-        <ul>
+          <li class="padding10"><a href="about.html">About</a></li>
+          <li class="padding10"><a href="https://github.com/graememcc/micropolisJS">Github</a></li>
+        </ul>
       </nav>
     </header>
     <div id="wrapper">
@@ -64,7 +64,7 @@
             </div>
           </form>
         </div>
-        <div id="infobar" class="alignCenter open width140 padding10 shadow mintcream z1 initialHidden">
+        <div id="infobar" class="alignCenter leftedge open width140 padding10 shadow mintcream z1 initialHidden">
           <div class="inner">
             <div class="semibold chunk">
               <span id="name">Your Name Here</span>
@@ -86,7 +86,7 @@
             </div>
           </div>
         </div>
-        <div id="miscButtons" class="alignCenter open shadow width140 padding10 mintcream z1 initialHidden">
+        <div id="miscButtons" class="alignCenter leftedge open shadow width140 padding10 mintcream z1 initialHidden">
           <div class="inner">
             <div class="">
               <button id="budgetRequest" class="miscButton">Budget</button>
@@ -102,8 +102,8 @@
             </div>
           </div>
         </div>
-        <div id="RCIContainer" class="shadow width140 padding10 mintcream z1 initialHidden"></div>
-        <div id="controls" class="shadow mintcream z1 initialHidden open">
+        <div id="RCIContainer" class="shadow leftedge width140 padding10 mintcream z1 initialHidden"></div>
+        <div id="controls" class="shadow mintcream z1 initialHidden rightedge open">
           <div id="toolInfo" class="alignCenter"><span id="toolOutput">Tools</span></div>
           <div id="buttons" class="">
             <button id="residentialButton" data-size="3" data-tool="residential" data-colour="lime" class="toolButton unselected">Residential $100</button>
@@ -124,8 +124,13 @@
             <button id="parkButton" data-size="1" data-tool="park" data-colour="darkgreen" class="toolButton unselected">Park $10</button>
           </div>
         </div>
-        <div id="notifications" class="initialHidden neutral z1 alignCenter padding10 shadow"></div>
+        <div id="fps" class="alignCenter z1 rightedge padding10 mintcream shadow open"><span id="fpsValue">0</span> FPS</div>
+        <div id="notifications" class="initialHidden neutral z1 rightedge alignCenter padding10 shadow"></div>
+        <div id="tooSmall" class="mintcream open"><div id="tooSmallInner" class="centred alignCenter"><h2 class="chunk">Uh-oh!</h2><p>It looks like your screen is too small for micropolisJS. Sorry!</p></div></div>
       </main>
+      <footer id="footer" class="alignCenter chunk white padding10">
+        FOOTER PLACEHOLDER TEXT
+      </footer>
       <div class="hidden modal shadow" id="budget">
         <header id="budgetHeader" class="budgetHeader padding10 chunk alignCenter">
            Budget
@@ -289,8 +294,5 @@
         </div>
       </div>
     </div>
-    <footer id="footer" class="alignCenter chunk white padding10">
-      FOOTER PLACEHOLDER TEXT
-    </footer>
   </body>
 </html>

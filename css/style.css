@@ -28,7 +28,7 @@ footer {
   left: 0;
   right: 0;
   bottom: 0px;
-  height: 50px;
+  height: 35px;
   background-color: darkslategray;
 }
 
@@ -36,7 +36,7 @@ header {
   background-color: darkslategray;
   background-image: repeating-linear-gradient(-45deg, transparent, transparent 35px, rgba(255, 255, 255, 0.2) 35px, rgba(255, 255, 255, 0.2) 70px);
   font-family: 'Chunk', serif;
-  height: 45px;
+  height: 35px;
 }
 
 header h1 {
@@ -46,7 +46,7 @@ header h1 {
 main {
   position: absolute;
   top: 0;
-  bottom: 0;
+  bottom: 55px;
   width: 100%;
   overflow: hidden;
 }
@@ -54,6 +54,10 @@ main {
 nav a, nav a:link, nav a:visited, nav a:hover {
   text-decoration: none;
   color: white;
+}
+
+nav li {
+  display: inline;
 }
 
 .alignCenter {
@@ -138,6 +142,10 @@ nav a, nav a:link, nav a:visited, nav a:hover {
   float: left;
 }
 
+.leftedge {
+  left: 50px;
+}
+
 .margin10 {
   margin: 10px 0;
 }
@@ -181,7 +189,7 @@ nav a, nav a:link, nav a:visited, nav a:hover {
   padding: 10px;
 }
 
-.statisticsItem, .queryItem {
+.queryItem, .statisticsItem{
   display: inline-block;
   width: 200px;
 }
@@ -192,6 +200,10 @@ nav a, nav a:link, nav a:visited, nav a:hover {
 
 .right {
   float: right;
+}
+
+.rightedge {
+  right: 50px;
 }
 
 .row button {
@@ -261,10 +273,8 @@ nav a, nav a:link, nav a:visited, nav a:hover {
 }
 
 #controls {
-  border: 1px solid black;
   position: absolute;
   top: 40px;
-  right: 50px;
   width: 305px;
   height: 220px;
 }
@@ -302,16 +312,13 @@ nav a, nav a:link, nav a:visited, nav a:hover {
 #infobar {
   position: absolute;
   top: 40px;
-  left: 50px;
   height: 150px;
 }
 
 #miscButtons {
   position: absolute;
-  left: 50px;
-  top: 230px;
+  top: 250px;
   height: 100px;
-  margin-top: 10px;
 }
 
 #nameForm {
@@ -320,10 +327,11 @@ nav a, nav a:link, nav a:visited, nav a:hover {
 
 #notifications {
   position: absolute;
-  bottom: 50px;
+  bottom: 65px;
   left: 50%;
   border: 1px solid black;
   width: 400px;
+  height: 19px;
   text-overflow: ellipsis;
   transform: translateX(-50%);
   overflow: hidden;
@@ -350,8 +358,7 @@ nav a, nav a:link, nav a:visited, nav a:hover {
 
 #RCIContainer {
   position: absolute;
-  left: 50px;
-  top: 400px;
+  top: 410px;
   width: 140px;
   height: 140px;
   margin: 0px;
@@ -406,13 +413,24 @@ nav a, nav a:link, nav a:visited, nav a:hover {
   padding: 0 110px;
 }
 
+#tooSmall {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: none;
+  z-index: 200;
+}
+
 #wrapper {
   position: absolute;
-  top: 50px;
+  top: 55px;
   left: 0px;
   right: 0px;
-  bottom: 70px;
+  bottom: 0px;
 }
+
 
 /* Miscellaneous buttons */
 
@@ -501,6 +519,203 @@ nav a, nav a:link, nav a:visited, nav a:hover {
 
 #wireButton {
   background-color: khaki;
+}
+
+@media (max-height: 720px) {
+ footer {
+    height: 15px;
+  }
+
+  header {
+    height: 15px;
+  }
+
+  main {
+    bottom: 35px;
+  }
+
+  .border-bottom {
+    border: none;
+  }
+
+  .fontlarge {
+      font-size: 16px;
+  }
+
+  #notifications {
+    bottom: unset;
+    border: none;
+    top: 531px;
+  }
+
+  #wrapper {
+    top: 35px;
+  }
+}
+
+@media (max-height: 680px) {
+  #controls {
+    top: 30px;
+  }
+
+  #fps {
+    display: none;
+  }
+
+  #infobar {
+    top: 30px;
+  }
+
+  #miscButtons {
+    top: 230px;
+  }
+
+  #notifications {
+    top: 501px;
+  }
+
+  #RCIContainer {
+    top: 380px;
+  }
+}
+
+@media (max-height: 640px) {
+  #controls {
+    top: 20px;
+  }
+
+  #infobar {
+    top: 20px;
+  }
+
+  #miscButtons {
+    top: 210px;
+  }
+
+  #notifications {
+    top: 471px;
+  }
+
+  #RCIContainer {
+    top: 350px;
+  }
+}
+
+@media (max-height: 600px) {
+  #controls {
+    top: 10px;
+    -ms-box-shadow: unset;
+    -webkit-box-shadow: unset;
+    -moz-box-shadow: unset;
+    box-shadow: unset;
+  }
+
+  #infobar {
+    top: 10px;
+    -ms-box-shadow: unset;
+    -webkit-box-shadow: unset;
+    -moz-box-shadow: unset;
+    box-shadow: unset;
+  }
+
+  #miscButtons {
+    top: 190px;
+    -ms-box-shadow: unset;
+    -webkit-box-shadow: unset;
+    -moz-box-shadow: unset;
+    box-shadow: unset;
+  }
+
+  #notifications {
+    top: 441px;
+    -ms-box-shadow: unset;
+    -webkit-box-shadow: unset;
+    -moz-box-shadow: unset;
+    box-shadow: unset;
+  }
+
+  #RCIContainer {
+    top: 320px;
+    -ms-box-shadow: unset;
+    -webkit-box-shadow: unset;
+    -moz-box-shadow: unset;
+    box-shadow: unset;
+  }
+}
+
+@media (max-height: 560px) {
+  #controls {
+    top: 0px;
+  }
+
+  #infobar {
+    top: 0px;
+  }
+
+  #miscButtons {
+    top: 170px;
+  }
+
+  #notifications {
+    top: 411px;
+  }
+
+  #RCIContainer {
+    top: 290px;
+  }
+}
+
+@media (max-height: 520px) {
+  #tooSmall {
+    display: block;
+  }
+}
+
+@media (max-width: 850px) {
+  .leftedge {
+    left: 20px;
+  }
+
+  .rightedge {
+    right: 20px;
+  }
+
+  #fps {
+    display: none;
+  }
+
+  #notifications {
+    bottom: 40px;
+    left: unset;
+    right: 0;
+    transform: unset;
+  }
+}
+
+@media (max-width: 750px) {
+  .leftedge {
+    left: 10px;
+  }
+
+  .rightedge {
+    right: 10px;
+  }
+}
+
+@media (max-width: 650px) {
+  .leftedge {
+    left: 0px;
+  }
+
+  .rightedge {
+    right: 0px;
+  }
+}
+
+@media (max-width: 590px) {
+  #tooSmall {
+    display: block;
+  }
 }
 
 /* Pre refactoring below */
