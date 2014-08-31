@@ -81,6 +81,9 @@ define(['EventEmitter', 'Messages', 'MiscUtils', 'Random'],
 
   Evaluation.prototype.getPopulation = function(census) {
     var population = (census.resPop + (census.comPop + census.indPop) * 8) * 20;
+
+    // Emit population now, to avoid inconsistency with front-end messages
+    this._emitEvent(Messages.POPULATION_UPDATED, population);
     return population;
   };
 
@@ -97,8 +100,6 @@ define(['EventEmitter', 'Messages', 'MiscUtils', 'Random'],
     this.cityPopDelta = this.cityPop - oldCityPop;
     this.cityClass = this.getCityClass(this.cityPop);
 
-    if (this.cityPopDelta !== 0)
-      this._emitEvent(Messages.POPULATION_UPDATED, this.cityPop);
     if (this.cityClass !== oldCityClass)
       this._emitEvent(Messages.CLASSIFICATION_UPDATED, this.cityClass);
   };
