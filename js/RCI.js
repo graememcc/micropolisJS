@@ -117,7 +117,7 @@ define(['Messages', 'MiscUtils'],
     this._clear(ctx);
     this._drawRect(ctx);
 
-    var values = [data.residential, data.commerical, data.industrial];
+    var values = [data.residential, data.commercial, data.industrial];
     for (var i = 0; i < 3; i++) {
       this._drawValue(ctx, i, values[i]);
       this._drawLabel(ctx, i);
