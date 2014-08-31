@@ -151,7 +151,7 @@ define(['EventEmitter', 'GameCanvas', 'GameTools', 'Messages', 'MiscUtils'],
 
 
   var mouseDownHandler = function(e) {
-    if (e.button !== 0 || e.buttons !== 1)
+    if (e.which !== 1 || e.buttons !== 1 || e.shiftKey || e.altKey || e.ctrlKey || e.metaKey)
       return;
 
     var coords = this.getRelativeCoordinates(e);
@@ -212,10 +212,12 @@ define(['EventEmitter', 'GameCanvas', 'GameTools', 'Messages', 'MiscUtils'],
 
 
   var canvasClickHandler = function(e) {
-    if (e.button === 0 && e.buttons === 1 && this.mouseX !== -1 && this.mouseY !== -1 && !this._dragging) {
-      this._emitEvent(Messages.TOOL_CLICKED, {x: this.mouseX, y: this.mouseY});
-      e.preventDefault();
-    }
+    if (e.which !== 1 || e.buttons !== 1 || e.shiftKey || e.altKey || e.ctrlKey || e.metaKey || this.mouseX === -1 ||
+       this._mouseY === -1 || this._dragging)
+      return;
+
+    this._emitEvent(Messages.TOOL_CLICKED, {x: this.mouseX, y: this.mouseY});
+    e.preventDefault();
   };
 
 
