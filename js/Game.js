@@ -84,6 +84,7 @@ define(['BudgetWindow', 'Config', 'DisasterWindow', 'GameCanvas', 'EvaluationWin
     // Paint the map
     var debug = Config.debug || Config.gameDebug;
     if (debug) {
+      $('#fps').toggle();
       this.frameCount = 0;
       this.animStart = new Date();
       this.lastElapsed = -1;
@@ -404,8 +405,8 @@ define(['BudgetWindow', 'Config', 'DisasterWindow', 'GameCanvas', 'EvaluationWin
     var date = new Date();
     var elapsed = Math.floor((date - this.animStart) / 1000);
 
-    if (elapsed > this.lastElapsed) {
-      console.log(Math.floor(this.frameCount/elapsed) + ' fps');
+    if (elapsed > this.lastElapsed && this.frameCount > 0) {
+      $('#fpsValue').text(Math.floor(this.frameCount/elapsed));
       this.lastElapsed = elapsed;
     }
 

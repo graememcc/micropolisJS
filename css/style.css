@@ -292,6 +292,13 @@ nav a, nav a:link, nav a:visited, nav a:hover {
   padding: 0 5px;
 }
 
+#fps {
+  position: absolute;
+  top: 280px;
+  width: 280px;
+  display: none;
+}
+
 #infobar {
   position: absolute;
   top: 40px;
