@@ -51,9 +51,14 @@ main {
   overflow: hidden;
 }
 
-nav a, nav a:link, nav a:visited, nav a:hover {
+nav a, nav a:link, nav a:visited, nav a:hover, footer a, footer a:link, footer a:visited, footer a:hover {
   text-decoration: none;
   color: white;
+}
+
+footer a, footer a:link, footer a:visited, footer a:hover {
+  text-decoration: underline;
+  margin-left: 5px;
 }
 
 nav li {
@@ -552,6 +557,10 @@ nav li {
 
   .fontlarge {
       font-size: 16px;
+  }
+
+  #author {
+    display: none;
   }
 
   #notifications {
