@@ -288,6 +288,10 @@ nav li {
   background-color: dodgerblue;
 }
 
+#congratsHeader {
+  background-color: limegreen;
+}
+
 #controls {
   position: absolute;
   top: 40px;

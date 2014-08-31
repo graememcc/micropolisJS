@@ -7,8 +7,8 @@
  *
  */
 
-define(['BudgetWindow', 'Config', 'DisasterWindow', 'GameCanvas', 'EvaluationWindow', 'InfoBar', 'InputStatus', 'Messages', 'Notification', 'QueryWindow', 'RCI', 'Simulation', 'Text'],
-       function(BudgetWindow, Config, DisasterWindow, GameCanvas, EvaluationWindow, InfoBar, InputStatus, Messages, Notification, QueryWindow, RCI, Simulation, Text) {
+define(['BudgetWindow', 'Config', 'CongratsWindow', 'DisasterWindow', 'GameCanvas', 'EvaluationWindow', 'InfoBar', 'InputStatus', 'Messages', 'Notification', 'QueryWindow', 'RCI', 'Simulation', 'Text'],
+       function(BudgetWindow, Config, CongratsWindow, DisasterWindow, GameCanvas, EvaluationWindow, InfoBar, InputStatus, Messages, Notification, QueryWindow, RCI, Simulation, Text) {
   "use strict";
 
 
@@ -73,6 +73,12 @@ define(['BudgetWindow', 'Config', 'DisasterWindow', 'GameCanvas', 'EvaluationWin
     this.sprites = null;
     this.lastCoord = null;
 
+    // Track when various milestones are first reached
+    this._reachedTown = this._reachedCity = this._reachedCapital = this._reachedMetropolis = this._reacedMegalopolis = false;
+    this.congratsShowing = false;
+    this.congratsWindow = new CongratsWindow(opacityLayerID, 'congratsWindow');
+    this.congratsWindow.addEventListener(Messages.CONGRATS_WINDOW_CLOSED, this.handleCongratsWindowClosure.bind(this));
+
     // Unhide controls
     this.revealControls();
 
@@ -91,6 +97,7 @@ define(['BudgetWindow', 'Config', 'DisasterWindow', 'GameCanvas', 'EvaluationWin
       this.animStart = new Date();
       this.lastElapsed = -1;
     }
+
     this.animate = (debug ? debugAnimate : animate).bind(this);
     this.animate();
   }
@@ -145,6 +152,11 @@ define(['BudgetWindow', 'Config', 'DisasterWindow', 'GameCanvas', 'EvaluationWin
 
   Game.prototype.handleEvalWindowClosure = function() {
     this.evalShowing = false;
+  };
+
+
+  Game.prototype.handleCongratsWindowClosure = function() {
+    this.congratsShowing = false;
   };
 
 
@@ -303,6 +315,8 @@ define(['BudgetWindow', 'Config', 'DisasterWindow', 'GameCanvas', 'EvaluationWin
         this.disasterWindow.close();
       else if (this.budgetShowing)
         this.budgetWindow.close();
+      else if (this.congratsShowing)
+        this.congratsWindow.close();
       else
         this.inputStatus.clearTool();
     }
@@ -313,7 +327,52 @@ define(['BudgetWindow', 'Config', 'DisasterWindow', 'GameCanvas', 'EvaluationWin
     var subject = message.subject;
 
     if (Text.goodMessages[subject] !== undefined) {
+      var cMessage = this.name + ' is now a ';
+
+      switch (subject) {
+        case Messages.REACHED_CAPITAL:
+          if (!this._reachedCapital) {
+            this._reachedCapital = true;
+            cMessage += 'capital!';
+          }
+          break;
+
+        case Messages.REACHED_CITY:
+          if (!this._reachedCity) {
+            this._reachedCity = true;
+            cMessage += 'city!';
+          }
+          break;
+
+        case Messages.REACHED_MEGALOPOLIS:
+          if (!this._reachedMegalopolis) {
+            this._reachedMegalopolis = true;
+            cMessage += 'megalopolis!';
+          }
+          break;
+
+        case Messages.REACHED_METROPOLIS:
+          if (!this._reachedMetropolis) {
+            this._reachedMetropolis = true;
+            cMessage += 'metropolis!';
+          }
+          break;
+
+        case Messages.REACHED_TOWN:
+          if (!this._reachedTown) {
+            this._reachedTown = true;
+            cMessage += 'town!';
+          }
+          break;
+      }
+
       Notification.goodNews(Text.goodMessages[subject]);
+
+      if (cMessage !== (this.name + ' is now a ')) {
+        this.congratsShowing = true;
+        this.congratsWindow.open(cMessage);
+      }
+
       return;
     }
 

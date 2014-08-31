@@ -98,7 +98,7 @@ define(['Evaluate', 'Messages', 'Simulation'],
   badMessages[Messages.TRAFFIC_JAMS] = 'Frequent traffic jams reported';
   badMessages[Messages.TRAIN_CRASHED] = 'A train crashed ';
 
-  var goodMessages = ' {}';
+  var goodMessages = {};
   goodMessages[Messages.REACHED_CAPITAL] = 'Population has reached 50,000';
   goodMessages[Messages.REACHED_CITY] = 'Population has reached 10,000';
   goodMessages[Messages.REACHED_MEGALOPOLIS] = 'Population has reached 500,000';
