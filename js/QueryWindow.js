@@ -35,6 +35,11 @@ define(['Config', 'Messages', 'ModalWindow', 'MiscUtils'],
 
 
   QueryWindow.prototype.open = function() {
+    if ((Config.debug || Config.queryDebug) && !this._debugToggled) {
+      this._debugToggled = true;
+      $('.queryDebug').removeClass('hidden');
+    }
+
     this._toggleDisplay();
     $(queryOKID).focus();
   };
