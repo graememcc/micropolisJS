@@ -132,7 +132,7 @@ nav li {
   font-size: 36px;
 }
 
-.game {
+.game, .pointer {
   cursor: pointer;
 }
 

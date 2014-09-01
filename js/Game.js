@@ -79,6 +79,8 @@ define(['BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', 'DisasterWind
     this.sprites = null;
     this.lastCoord = null;
 
+    this._notificationBar = new Notification('#notifications', this.gameCanvas, Text.messageText[Messages.WELCOME]);
+
     // Track when various milestones are first reached
     this._reachedTown = this._reachedCity = this._reachedCapital = this._reachedMetropolis = this._reacedMegalopolis = false;
     this.congratsShowing = false;
@@ -119,7 +121,7 @@ define(['BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', 'DisasterWind
      $(this).removeClass('initialHidden');
    });
 
-   Notification.news(Text.neutralMessages[Messages.WELCOME]);
+   this._notificationBar.news({subject: Messages.WELCOME});
    this.rci.update({residential: 0, commerical: 0, industrial: 0});
   };
 
@@ -405,7 +407,7 @@ define(['BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', 'DisasterWind
           break;
       }
 
-      Notification.goodNews(Text.goodMessages[subject]);
+      this._notificationBar.goodNews(message);
 
       if (cMessage !== (this.name + ' is now a ')) {
         this.congratsShowing = true;
@@ -416,12 +418,12 @@ define(['BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', 'DisasterWind
     }
 
     if (Text.badMessages[subject] !== undefined) {
-      Notification.badNews(Text.badMessages[subject]);
+      this._notificationBar.badNews(message);
       return;
     }
 
     if (Text.neutralMessages[subject] !== undefined) {
-      Notification.news(Text.neutralMessages[subject]);
+      this._notificationBar.news(message);
       return;
     }
 
