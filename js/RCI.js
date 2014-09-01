@@ -23,7 +23,7 @@ define(['Messages', 'MiscUtils'],
 
     if (typeof(parentNode) === 'string') {
       var orig = parentNode;
-      parentNode = $('#' + parentNode);
+      parentNode = $(MiscUtils.normaliseDOMid(parentNode));
       parentNode = parentNode.length === 0 ? null : parentNode[0];
       if (parentNode === null)
         throw new Error('Node ' + orig + ' not found');
@@ -44,7 +44,7 @@ define(['Messages', 'MiscUtils'],
     this._canvas = $('<canvas></canvas>', {id: id})[0];
 
     // Remove any existing element with the same id
-    var elems = $('#' + id)
+    var elems = $(MiscUtils.normaliseDOMid(id))
     var current = elems.length > 0 ? elems[0] : null;
     if (current !== null) {
       if (current.parentNode === parentNode)

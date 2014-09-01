@@ -7,19 +7,19 @@
  *
  */
 
-define(['Config', 'Messages', 'ModalWindow'],
-       function(Config, Messages, ModalWindow) {
+define(['Config', 'Messages', 'ModalWindow', 'MiscUtils'],
+       function(Config, Messages, ModalWindow, MiscUtils) {
   "use strict";
 
 
   var QueryWindow = ModalWindow(function() {
     this._debugToggled = false;
-    $('#' + queryFormID).on('submit', submit.bind(this));
+    $(queryFormID).on('submit', submit.bind(this));
   });
 
 
-  var queryFormID = "queryForm";
-  var queryOKID = "queryOK";
+  var queryFormID = "#queryForm";
+  var queryOKID = "#queryOK";
 
 
   var submit = function(e) {
@@ -36,7 +36,7 @@ define(['Config', 'Messages', 'ModalWindow'],
 
   QueryWindow.prototype.open = function() {
     this._toggleDisplay();
-    $('#' + queryOKID).focus();
+    $(queryOKID).focus();
   };
 
 

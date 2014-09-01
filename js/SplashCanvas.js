@@ -7,8 +7,8 @@
  *
  */
 
-define(['MouseBox', 'TileSet'],
-       function(MouseBox, TileSet) {
+define(['MiscUtils', 'MouseBox', 'TileSet'],
+       function(MiscUtils, MouseBox, TileSet) {
   "use strict";
 
   function SplashCanvas(id, parentNode) {
@@ -25,7 +25,7 @@ define(['MouseBox', 'TileSet'],
 
     if (typeof(parentNode) === 'string') {
       var orig = parentNode;
-      parentNode = $('#' + parentNode);
+      parentNode = $(MiscUtils.normaliseDOMid(parentNode));
       parentNode = parentNode.length === 0 ? null : parentNode[0];
       if (parentNode === null)
         throw new Error('Node ' + orig + ' not found');

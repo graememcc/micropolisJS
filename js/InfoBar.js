@@ -7,18 +7,19 @@
  *
  */
 
-define(['Messages', 'Text'],
-       function(Messages, Text) {
+define(['Messages', 'MiscUtils', 'Text'],
+       function(Messages, MiscUtils, Text) {
   "use strict";
+
 
   // TODO L20N
 
   var InfoBar = function(classification, population, score, funds, date) {
-    var classificationSelector = (classification[0] == '#' ? '' : '#') + classification;
-    var populationSelector = (population[0] == '#' ? '' : '#') + population;
-    var scoreSelector = (score[0] == '#' ? '' : '#') + score;
-    var fundsSelector = (funds[0] == '#' ? '' : '#') + funds;
-    var dateSelector = (date[0] == '#' ? '' : '#') + date;
+    var classificationSelector = MiscUtils.normaliseDOMid(classification);
+    var populationSelector = MiscUtils.normaliseDOMid(population);
+    var scoreSelector = MiscUtils.normaliseDOMid(score);
+    var fundsSelector = MiscUtils.normaliseDOMid(funds);
+    var dateSelector = MiscUtils.normaliseDOMid(date);
 
     return function(dataSource) {
       // Add the various listeners

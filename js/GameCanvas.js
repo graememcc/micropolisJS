@@ -7,8 +7,8 @@
  *
  */
 
-define(['AnimationManager', 'GameMap', 'MouseBox', 'Tile', 'TileSet'],
-       function(AnimationManager, GameMap, MouseBox, Tile, TileSet) {
+define(['AnimationManager', 'GameMap', 'MiscUtils', 'MouseBox', 'Tile', 'TileSet'],
+       function(AnimationManager, GameMap, MiscUtils, MouseBox, Tile, TileSet) {
   "use strict";
 
   function GameCanvas(id, parentNode) {
@@ -29,7 +29,7 @@ define(['AnimationManager', 'GameMap', 'MouseBox', 'Tile', 'TileSet'],
 
     if (typeof(parentNode) === 'string') {
       var orig = parentNode;
-      parentNode = $('#' + parentNode);
+      parentNode = $(MiscUtils.normaliseDOMid(parentNode));
       parentNode = parentNode.length === 0 ? null : parentNode[0];
       if (parentNode === null)
         throw new Error('Node ' + orig + ' not found');

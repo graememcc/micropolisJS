@@ -16,7 +16,7 @@ define(['EventEmitter', 'GameCanvas', 'GameTools', 'Messages', 'MiscUtils'],
 
     this.gameTools.addEventListener(Messages.QUERY_WINDOW_NEEDED, MiscUtils.reflectEvent.bind(this, Messages.QUERY_WINDOW_NEEDED));
 
-    this.canvasID = canvasID;
+    this.canvasID = MiscUtils.normaliseDOMid(canvasID);
 
     this._tileWidth = tileWidth;
 

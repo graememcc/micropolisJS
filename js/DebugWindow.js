@@ -12,14 +12,14 @@ define(['Messages', 'ModalWindow', 'MiscUtils'],
   "use strict";
 
   var DebugWindow = ModalWindow(function() {
-    $('#' + debugCancelID).on('click', cancel.bind(this));
-    $('#' + debugFormID).on('submit', submit.bind(this));
+    $(debugCancelID).on('click', cancel.bind(this));
+    $(debugFormID).on('submit', submit.bind(this));
   });
 
 
-  var debugCancelID = 'debugCancel';
-  var debugFormID = 'debugForm';
-  var debugOKID = 'debugOK';
+  var debugCancelID = '#debugCancel';
+  var debugFormID = '#debugForm';
+  var debugOKID = '#debugOK';
 
 
   DebugWindow.prototype.close = function(actions) {

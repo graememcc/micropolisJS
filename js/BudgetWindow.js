@@ -7,35 +7,36 @@
  *
  */
 
-define(['Messages', 'ModalWindow'],
-       function(Messages, ModalWindow) {
+define(['Messages', 'MiscUtils', 'ModalWindow'],
+       function(Messages, MiscUtils, ModalWindow) {
   "use strict";
 
   var BudgetWindow = ModalWindow(function() {
-    $('#' + budgetCancelID).on('click', cancel.bind(this));
-    $('#' + budgetResetID).on('click', resetItems.bind(this));
-    $('#' + budgetFormID).on('submit', submit.bind(this));
+    $(budgetCancelID).on('click', cancel.bind(this));
+    $(budgetResetID).on('click', resetItems.bind(this));
+    $(budgetFormID).on('submit', submit.bind(this));
   });
 
 
   var dataKeys = ['roadFund', 'fireFund', 'policeFund'];
   var spendKeys = ['roadRate', 'fireRate', 'policeRate'];
-  var budgetResetID = 'budgetReset';
-  var budgetCancelID = 'budgetCancel';
-  var budgetFormID = 'budgetForm';
-  var budgetOKID = 'budgetOK';
+
+  var budgetResetID = '#budgetReset';
+  var budgetCancelID = '#budgetCancel';
+  var budgetFormID = '#budgetForm';
+  var budgetOKID = '#budgetOK';
 
 
   var setSpendRangeText = function(element, percentage, totalSpend) {
     var labelID = element + 'Label';
     var cash = Math.floor(totalSpend * (percentage / 100));
     var text = [percentage, '% of $', totalSpend, ' = $', cash].join('');
-    $('#' + labelID).text(text);
+    $(MiscUtils.normaliseDOMid(labelID)).text(text);
   };
 
 
   var onFundingUpdate = function(elementID, e) {
-    var element = $('#' + elementID)[0];
+    var element = $(MiscUtils.normaliseDOMid(elementID))[0];
     var percentage = element.value - 0;
     var dataSource = element.getAttribute('data-source');
     setSpendRangeText(elementID, percentage, this[dataSource]);
@@ -52,7 +53,7 @@ define(['Messages', 'ModalWindow'],
   var resetItems = function(e) {
     for (var i = 0; i < spendKeys.length; i++) {
       var original = this['original' + spendKeys[i]];
-      $('#' + spendKeys[i])[0].value = original;
+      $(MiscUtils.normaliseDOMid(spendKeys[i]))[0].value = original;
       setSpendRangeText(spendKeys[i], original, this[dataKeys[i]]);
     }
     $('#taxRate')[0].value = this.originaltaxRate;
@@ -108,7 +109,7 @@ define(['Messages', 'ModalWindow'],
       elem = spendKeys[i];
       this['original' + elem] = budgetData[elem];
       setSpendRangeText(elem, budgetData[spendKeys[i]], this[dataKeys[i]]);
-      elem = $('#' + elem);
+      elem = $(MiscUtils.normaliseDOMid(elem));
       elem.on('input', onFundingUpdate.bind(this, spendKeys[i]));
       elem = elem[0];
       elem.value = budgetData[spendKeys[i]];

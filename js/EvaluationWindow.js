@@ -13,12 +13,12 @@ define(['ModalWindow', 'Messages', 'Text'],
 
 
   var EvaluationWindow = ModalWindow(function() {
-    $('#' + evaluationFormID).on('submit', submit.bind(this));
+    $(evaluationFormID).on('submit', submit.bind(this));
   });
 
 
-  var evaluationFormID = "evalButtons";
-  var evaluationOKID = "evalOK";
+  var evaluationFormID = "#evalButtons";
+  var evaluationOKID = "#evalOK";
 
 
   EvaluationWindow.prototype.close = function() {

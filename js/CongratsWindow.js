@@ -14,13 +14,13 @@ define(['Config', 'Messages', 'ModalWindow'],
 
   var CongratsWindow = ModalWindow(function() {
     this._debugToggled = false;
-    $('#' + congratsFormID).on('submit', submit.bind(this));
+    $(congratsFormID).on('submit', submit.bind(this));
   });
 
 
-  var congratsFormID = "congratsForm";
-  var congratsMessageID = "congratsMessage";
-  var congratsOKID = "congratsOK";
+  var congratsFormID = "#congratsForm";
+  var congratsMessageID = "#congratsMessage";
+  var congratsOKID = "#congratsOK";
 
 
   var submit = function(e) {
@@ -37,8 +37,8 @@ define(['Config', 'Messages', 'ModalWindow'],
 
   CongratsWindow.prototype.open = function(message) {
     this._toggleDisplay();
-    $('#' + congratsMessageID).text(message);
-    $('#' + congratsOKID).focus();
+    $(congratsMessageID).text(message);
+    $(congratsOKID).focus();
   };
 
 

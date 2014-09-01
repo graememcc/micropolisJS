@@ -12,15 +12,15 @@ define(['Messages', 'MiscUtils', 'ModalWindow'],
   "use strict";
 
 
-  var disasterSelectID = 'disasterSelect';
-  var disasterCancelID = 'disasterCancel';
-  var disasterOKID = 'disasterOK';
-  var disasterFormID = 'disasterForm';
+  var disasterSelectID = '#disasterSelect';
+  var disasterCancelID = '#disasterCancel';
+  var disasterOKID = '#disasterOK';
+  var disasterFormID = '#disasterForm';
 
 
   var DisasterWindow = ModalWindow(function() {
-    $('#' + disasterFormID).on('submit', submit.bind(this));
-    $('#' + disasterCancelID).on('click', cancel.bind(this));
+    $(disasterFormID).on('submit', submit.bind(this));
+    $(disasterCancelID).on('click', cancel.bind(this));
   }, disasterSelectID);
 
 
@@ -41,7 +41,7 @@ define(['Messages', 'MiscUtils', 'ModalWindow'],
     e.preventDefault();
 
     // Get element values
-    var requestedDisaster = $('#' + disasterSelectID)[0].value;
+    var requestedDisaster = $(disasterSelectID)[0].value;
     this.close(requestedDisaster);
   };
 

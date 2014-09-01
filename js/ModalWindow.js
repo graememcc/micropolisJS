@@ -7,17 +7,17 @@
  *
  */
 
-define(['EventEmitter'],
-       function(EventEmitter) {
+define(['EventEmitter', 'MiscUtils'],
+       function(EventEmitter, MiscUtils) {
   "use strict";
 
 
   var ModalWindow = function(constructorFunction, focusID) {
-    focusID = focusID || null;
+    focusID = focusID ? MiscUtils.normaliseDOMid(focusID) : null;
 
     var newConstructor = function(opacityLayerID, windowID) {
-      this._opacityLayer =  '#' + opacityLayerID;
-      this._windowID = '#' + windowID;
+      this._opacityLayer =  MiscUtils.normaliseDOMid(opacityLayerID);
+      this._windowID = MiscUtils.normaliseDOMid(windowID);
       constructorFunction.call(this);
     };
 
@@ -37,7 +37,7 @@ define(['EventEmitter'],
       modalWindow.toggle();
 
       if (focusID !== null)
-        $('#' + focusID).focus();
+        $(focusID).focus();
       else
         $(this._windowID + ' input[type="submit"]').focus()
     };
