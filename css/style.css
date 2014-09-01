@@ -100,7 +100,7 @@ nav li {
    margin-left: 7px
 }
 
-.cancel, #pauseRequest {
+.cancel, #debugRequest, #pauseRequest {
   background-color: darkslategray;
   color: white;
 }
@@ -322,7 +322,7 @@ nav li {
   padding: 0 5px;
 }
 
-#fps {
+#debug {
   position: absolute;
   top: 280px;
   width: 280px;

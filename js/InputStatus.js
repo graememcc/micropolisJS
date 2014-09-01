@@ -60,6 +60,7 @@ define(['EventEmitter', 'GameCanvas', 'GameTools', 'Messages', 'MiscUtils'],
     $('#evalRequest').click(evalHandler.bind(this));
     $('#disasterRequest').click(disasterHandler.bind(this));
     $('#pauseRequest').click(this.speedChangeHandler.bind(this));
+    $('#debugRequest').click(debugHandler.bind(this));
   });
 
 
@@ -265,6 +266,11 @@ define(['EventEmitter', 'GameCanvas', 'GameTools', 'Messages', 'MiscUtils'],
 
   var evalHandler = function(e) {
     this._emitEvent(Messages.EVAL_REQUESTED);
+  };
+
+
+  var debugHandler = function(e) {
+    this._emitEvent(Messages.DEBUG_WINDOW_REQUESTED);
   };
 
 

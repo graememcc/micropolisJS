@@ -124,7 +124,14 @@
             <button id="parkButton" data-size="1" data-tool="park" data-colour="darkgreen" class="toolButton unselected">Park $10</button>
           </div>
         </div>
-        <div id="fps" class="alignCenter z1 rightedge padding10 mintcream shadow open"><span id="fpsValue">0</span> FPS</div>
+        <div id="debug" class="alignCenter z1 rightedge padding10 mintcream shadow open">
+          <div id="fps" class="">
+            <span id="fpsValue">0</span> FPS
+          </div>
+          <div class="">
+            <button id="debugRequest" class="">Debug</button>
+          </div>
+        </div>
         <div id="notifications" class="initialHidden neutral z1 rightedge alignCenter padding10 shadow"></div>
         <div id="tooSmall" class="mintcream open"><div id="tooSmallInner" class="centred alignCenter"><h2 class="chunk">Uh-oh!</h2><p>It looks like your screen is too small for micropolisJS. Sorry!</p></div></div>
       </main>
@@ -302,6 +309,22 @@
           <div id="congratsMessage" class="alignCenter">Congratulations!</div>
           <form id="congratsForm" class="alignCenter margin10">
             <input type="submit" id="congratsOK" class="dialogOK" value="OK">
+          </form>
+        </div>
+      </div>
+      <div class="hidden modal shadow" id="debugWindow">
+        <header id="debugHeader" class="debugHeader white padding10 chunk alignCenter">
+           Debug
+        </header>
+        <div id="debugContainer" class="padding10 open">
+          <form id="debugForm" class="alignCenter margin10">
+            <div id="debugFundContainer">
+              Add funds:
+              <input type="radio" class="debugAdd" name="debugAdd" id="fundsYes" value="true" checked="checked"><label for="fundsYes">Yes</label>
+              <input type="radio" class="debugAdd" name="debugAdd" id="fundsNo" value="false" checked="checked"><label for="fundsNo">No</label>
+            </div>
+            <button id="debugCancel" class="cancel">Cancel</button>
+            <input type="submit" id="debugOK" class="dialogOK" value="OK">
           </form>
         </div>
       </div>

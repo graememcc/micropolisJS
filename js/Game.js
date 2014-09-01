@@ -7,8 +7,8 @@
  *
  */
 
-define(['BudgetWindow', 'Config', 'CongratsWindow', 'DisasterWindow', 'GameCanvas', 'EvaluationWindow', 'InfoBar', 'InputStatus', 'Messages', 'Notification', 'QueryWindow', 'RCI', 'Simulation', 'Text'],
-       function(BudgetWindow, Config, CongratsWindow, DisasterWindow, GameCanvas, EvaluationWindow, InfoBar, InputStatus, Messages, Notification, QueryWindow, RCI, Simulation, Text) {
+define(['BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', 'DisasterWindow', 'GameCanvas', 'EvaluationWindow', 'InfoBar', 'InputStatus', 'Messages', 'Notification', 'QueryWindow', 'RCI', 'Simulation', 'Text'],
+       function(BudgetWindow, Config, CongratsWindow, DebugWindow, DisasterWindow, GameCanvas, EvaluationWindow, InfoBar, InputStatus, Messages, Notification, QueryWindow, RCI, Simulation, Text) {
   "use strict";
 
 
@@ -47,6 +47,12 @@ define(['BudgetWindow', 'Config', 'CongratsWindow', 'DisasterWindow', 'GameCanva
     this.disasterWindow = new DisasterWindow(opacityLayerID, 'disasterWindow');
     this.disasterWindow.addEventListener(Messages.DISASTER_WINDOW_CLOSED, this.handleDisasterWindowClosure.bind(this));
     this.inputStatus.addEventListener(Messages.DISASTER_REQUESTED, this.handleDisasterRequest.bind(this));
+
+    // ... the debug window
+    this.debugShowing = false;
+    this.debugWindow = new DebugWindow(opacityLayerID, 'debugWindow');
+    this.debugWindow.addEventListener(Messages.DEBUG_WINDOW_CLOSED, this.handleDebugWindowClosure.bind(this));
+    this.inputStatus.addEventListener(Messages.DEBUG_WINDOW_REQUESTED, this.handleDebugRequest.bind(this));
 
     // ... and finally the query window
     this.queryShowing = false;
@@ -92,7 +98,7 @@ define(['BudgetWindow', 'Config', 'CongratsWindow', 'DisasterWindow', 'GameCanva
     // Paint the map
     var debug = Config.debug || Config.gameDebug;
     if (debug) {
-      $('#fps').toggle();
+      $('#debug').toggle();
       this.frameCount = 0;
       this.animStart = new Date();
       this.lastElapsed = -1;
@@ -160,6 +166,24 @@ define(['BudgetWindow', 'Config', 'CongratsWindow', 'DisasterWindow', 'GameCanva
   };
 
 
+  Game.prototype.handleDebugWindowClosure = function(actions) {
+    this.debugShowing = false;
+
+    for (var i = 0, l = actions.length; i < l; i++) {
+      var a = actions[i];
+
+      switch (a.action) {
+        case DebugWindow.ADD_FUNDS:
+          this.simulation.budget.spend(-20000);
+          break;
+
+        default:
+          console.warn('Unexpected action', a);
+      }
+    }
+  };
+
+
   Game.prototype.handleQueryWindowClosure = function() {
     this.queryShowing = false;
   };
@@ -190,6 +214,18 @@ define(['BudgetWindow', 'Config', 'CongratsWindow', 'DisasterWindow', 'GameCanva
 
     this.disasterShowing = true;
     this.disasterWindow.open();
+    window.setTimeout(this.tick, 0);
+  };
+
+
+  Game.prototype.handleDebugRequest = function() {
+    if (this.debugShowing) {
+      console.warn('Request was made to open debug window. It is already open!');
+      return;
+    }
+
+    this.debugShowing = true;
+    this.debugWindow.open();
     window.setTimeout(this.tick, 0);
   };
 
@@ -307,9 +343,10 @@ define(['BudgetWindow', 'Config', 'CongratsWindow', 'DisasterWindow', 'GameCanva
       this.gameCanvas.moveSouth();
     else if (this.inputStatus.escape) {
       // We need to handle escape, as InputStatus won't know what dialogs are showing
+
       if (this.queryShowing)
         this.queryWindow.close();
-      if (this.evalShowing)
+      else if (this.evalShowing)
         this.evalWindow.close();
       else if (this.disasterShowing)
         this.disasterWindow.close();
@@ -317,6 +354,8 @@ define(['BudgetWindow', 'Config', 'CongratsWindow', 'DisasterWindow', 'GameCanva
         this.budgetWindow.close();
       else if (this.congratsShowing)
         this.congratsWindow.close();
+      else if (this.debugShowing)
+        this.debugWindow.close();
       else
         this.inputStatus.clearTool();
     }
@@ -469,7 +508,7 @@ define(['BudgetWindow', 'Config', 'CongratsWindow', 'DisasterWindow', 'GameCanva
     // Don't run on blur - bad things seem to happen
     // when switching back to our tab in Fx
     if (this.budgetShowing || this.queryShowing ||
-        this.disasterShowing || this.evalShowing) {
+        this.disasterShowing || this.evalShowing || this.debugShowing) {
       nextFrame(this.animate);
       return;
     }
