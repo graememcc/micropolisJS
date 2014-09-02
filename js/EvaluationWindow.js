@@ -38,7 +38,7 @@ define(['ModalWindow', 'Messages', 'Text'],
     $('#evalNo').text(100 - evaluation.cityYes);
     for (var i = 0; i < 4; i++) {
       var problemNo = evaluation.getProblemNumber(i);
-      if (problemNo !== -1) {
+      if (problemNo !== null) {
         var text = Text.problems[problemNo];
         $('#evalProb' + (i + 1)).text(text);
         $('#evalProb' + (i + 1)).show();

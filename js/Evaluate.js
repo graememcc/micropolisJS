@@ -15,6 +15,7 @@ define(['EventEmitter', 'Messages', 'MiscUtils', 'Random'],
                   'CVP_TRAFFIC', 'CVP_UNEMPLOYMENT', 'CVP_FIRE'];
   var NUMPROBLEMS = PROBLEMS.length;
   var NUM_COMPLAINTS = 4;
+  var problemData = [];
 
 
   var Evaluation = EventEmitter(function(gameLevel) {
@@ -29,14 +30,13 @@ define(['EventEmitter', 'Messages', 'MiscUtils', 'Random'],
     var census = simData.census;
 
     if (census.totalPop > 0) {
-        var problemTable = [];
-        for (var i = 0; i < NUMPROBLEMS; i++)
-          problemTable.push(0);
+      for (var i = 0; i < NUMPROBLEMS; i++)
+        problemData.push(0);
 
       this.getAssessedValue(census);
       this.doPopNum(census);
-      this.doProblems(simData.census, simData.budget, simData.blockMaps, problemTable);
-      this.getScore(simData, problemTable);
+      this.doProblems(simData.census, simData.budget, simData.blockMaps);
+      this.getScore(simData);
       this.doVotes();
     } else {
       this.evalInit();
@@ -54,7 +54,7 @@ define(['EventEmitter', 'Messages', 'MiscUtils', 'Random'],
     this.cityScore = 500;
     this.cityScoreDelta = 0;
     for (var i = 0; i < NUMPROBLEMS; i++)
-      this.problemVotes[i] = 0;
+      this.problemVotes[i] = {index: i, voteCount: 0};
 
     for (i = 0; i < NUM_COMPLAINTS; i++)
       this.problemOrder[i] = NUMPROBLEMS;
@@ -128,25 +128,26 @@ define(['EventEmitter', 'Messages', 'MiscUtils', 'Random'],
   };
 
 
-  Evaluation.prototype.voteProblems = function(problemTable) {
-    for (var i = 0; i < NUMPROBLEMS; i++)
-      this.problemVotes[i] = 0;
+  Evaluation.prototype.voteProblems = function() {
+    for (var i = 0; i < NUMPROBLEMS; i++) {
+      this.problemVotes[i].index = i;
+      this.problemVotes[i].voteCount = 0;
+    }
 
     var problem = 0;
     var voteCount = 0;
     var loopCount = 0;
 
+    // Try to acquire up to 100 votes on problems, but bail if it takes too long
     while (voteCount < 100 && loopCount < 600) {
-      if (Random.getRandom(300) < problemTable[problem]) {
-        this.problemVotes[problem]++;
+      var voterProblemTolerance = Random.getRandom(300);
+      if (problemData[problem] > voterProblemTolerance) {
+        // The voter is upset about this problem
+        this.problemVotes[problem].voteCount += 1;
         voteCount++;
       }
 
-      problem++;
-      if (problem > NUMPROBLEMS) {
-        problem = 0;
-      }
-
+      problem = (problem + 1) % NUMPROBLEMS;
       loopCount++;
     }
   };
@@ -193,114 +194,105 @@ define(['EventEmitter', 'Messages', 'MiscUtils', 'Random'],
   };
 
 
-  Evaluation.prototype.doProblems = function(census, budget, blockMaps, problemTable) {
-    var problemTaken = [];
+  Evaluation.prototype.doProblems = function(census, budget, blockMaps) {
+    problemData[Evaluation.CRIME]        = census.crimeAverage;
+    problemData[Evaluation.POLLUTION]    = census.pollutionAverage;
+    problemData[Evaluation.HOUSING]      = census.landValueAverage * 7 / 10;
+    problemData[Evaluation.TAXES]        = budget.cityTax * 10;
+    problemData[Evaluation.TRAFFIC]      = getTrafficAverage(blockMaps);
+    problemData[Evaluation.UNEMPLOYMENT] = getUnemployment(census);
+    problemData[Evaluation.FIRE]         = getFireSeverity(census);
 
-    for (var i = 0; i < NUMPROBLEMS; i++) {
-      problemTaken[i] = false;
-      problemTable[i] = 0;
-    }
+    this.voteProblems();
 
-    problemTable[Evaluation.CRIME]        = census.crimeAverage;
-    problemTable[Evaluation.POLLUTION]    = census.pollutionAverage;
-    problemTable[Evaluation.HOUSING]      = census.landValueAverage * 7 / 10;
-    problemTable[Evaluation.TAXES]        = budget.cityTax * 10;
-    problemTable[Evaluation.TRAFFIC]      = getTrafficAverage(blockMaps);
-    problemTable[Evaluation.UNEMPLOYMENT] = getUnemployment(census);
-    problemTable[Evaluation.FIRE]         = getFireSeverity(census);
+    // Rank the problems
+    this.problemVotes.sort(function(a, b) {
+      return b.voteCount - a.voteCount;
+    });
 
-    this.voteProblems(problemTable);
+    this.problemOrder = this.problemVotes.map(function(pv, i) {
+      if (i >= NUM_COMPLAINTS || pv.voteCount === 0)
+        return null;
 
-    for (i = 0; i < NUM_COMPLAINTS; i++) {
-      // Find biggest problem not taken yet
-      var maxVotes = 0;
-      var bestProblem = NUMPROBLEMS;
-      for (var j = 0; j < NUMPROBLEMS; j++) {
-        if ((this.problemVotes[j] > maxVotes) && (!problemTaken[j])) {
-          bestProblem = j;
-          maxVotes = this.problemVotes[j];
-        }
-      }
-
-      // bestProblem == NUMPROBLEMS means no problem found
-      this.problemOrder[i] = bestProblem;
-      if (bestProblem < NUMPROBLEMS) {
-        problemTaken[bestProblem] = true;
-      }
-    }
+      return pv.index;
+    });
   };
 
 
-  Evaluation.prototype.getScore = function(simData, problemTable) {
+  Evaluation.prototype.getScore = function(simData) {
     var census = simData.census;
     var budget = simData.budget;
     var valves = simData.valves;
 
-    var cityScoreLast;
-
-    cityScoreLast = this.cityScore;
+    var cityScoreLast = this.cityScore;
     var score = 0;
 
     for (var i = 0; i < NUMPROBLEMS; i++)
-        score += problemTable[i];
+      score += problemData[i];
 
     score = Math.floor(score / 3);
-    score = Math.min(score, 256);
+    score = (250 - Math.min(score, 250)) * 4;
 
-    score = MiscUtils.clamp((256 - score) * 4, 0, 1000);
+    // Penalise the player by 15% if demand for any type of zone is capped due
+    // to lack of suitable buildings
+    var demandPenalty = 0.85;
 
     if (valves.resCap)
-        score = Math.round(score * 0.85);
+      score = Math.round(score * demandPenalty);
 
     if (valves.comCap)
-        score = Math.round(score * 0.85);
+      score = Math.round(score * demandPenalty);
 
     if (valves.indCap)
-        score = Math.round(score * 0.85);
+      score = Math.round(score * demandPenalty);
 
+    // Penalize if roads/rail underfunded
     if (budget.roadEffect < budget.MAX_ROAD_EFFECT)
-        score -= budget.MAX_ROAD_EFFECT - budget.roadEffect;
+      score -= budget.MAX_ROAD_EFFECT - budget.roadEffect;
 
-    if (budget.policeEffect < budget.MAX_POLICE_STATION_EFFECT) {
-        score = Math.round(score * (0.9 + (budget.policeEffect / (10.0001 * budget.MAX_POLICE_STATION_EFFECT))));
-    }
+    // Penalize player by up to 10% for underfunded police and fire services
+    if (budget.policeEffect < budget.MAX_POLICE_STATION_EFFECT)
+      score = Math.round(score * (0.9 + (budget.policeEffect / (10 * budget.MAX_POLICE_STATION_EFFECT))));
 
-    if (budget.fireEffect < budget.MAX_FIRE_STATION_EFFECT) {
-        score = Math.round(score * (0.9 + (budget.fireEffect / (10.0001 * budget.MAX_FIRE_STATION_EFFECT))));
-    }
+    if (budget.fireEffect < budget.MAX_FIRE_STATION_EFFECT)
+      score = Math.round(score * (0.9 + (budget.fireEffect / (10 * budget.MAX_FIRE_STATION_EFFECT))));
 
+    // Penalise the player by 15% if demand for any type of zone has collapsed due
+    // to overprovision
     if (valves.resValve < -1000)
-        score = Math.round(score * 0.85);
-
+      score = Math.round(score * 0.85);
 
     if (valves.comValve < -1000)
-        score = Math.round(score * 0.85);
-
+      score = Math.round(score * 0.85);
 
     if (valves.indValve < -1000)
-        score = Math.round(score * 0.85);
-
+      score = Math.round(score * 0.85);
 
     var scale = 1.0;
-    if (this.cityPop === 0 || this.cityPopDelta === 0) {
-      scale = 1.0; // there is nobody or no migration happened
-    } else if (this.cityPopDelta == this.cityPop) {
-      scale = 1.0; // city sprang into existence or doubled in size
+    if (this.cityPop === 0 || this.cityPopDelta === 0 || this.cityPopDelta === this.cityPop) {
+      // Leave score unchanged if city is empty, if there hasn't been any migration, if the
+      // initial settlers have just arrived, or if the city has doubled in size
+      scale = 1.0;
     } else if (this.cityPopDelta > 0) {
+      // If the city is growing, scale score by percentage growth in population
       scale = (this.cityPopDelta / this.cityPop) + 1.0;
     } else if (this.cityPopDelta < 0) {
+      // If the city is shrinking, scale down by up to 5% based on level of outward migration
       scale = 0.95 + Math.floor(this.cityPopDelta / (this.cityPop - this.cityPopDelta));
     }
 
     score = Math.round(score * scale);
-    score = score - getFireSeverity(census) - budget.cityTax; // dec score for fires and tax
 
-    scale = census.unpoweredZoneCount + census.poweredZoneCount;   // dec score for unpowered zones
-    if (scale > 0.0)
+    // Penalize player for having fires and a burdensome tax rate
+    score = score - getFireSeverity(census) - budget.cityTax;
+
+    // Penalize player based on ratio of unpowered zones to total zones
+    scale = census.unpoweredZoneCount + census.poweredZoneCount;
+    if (scale > 0)
       score = Math.round(score * (census.poweredZoneCount / scale));
 
+    // Force in to range 0-1000. New score is average of last score and new computed value
     score = MiscUtils.clamp(score, 0, 1000);
-
     this.cityScore = Math.round((this.cityScore + score) / 2);
 
     this.cityScoreDelta = this.cityScore - cityScoreLast;
@@ -311,42 +303,22 @@ define(['EventEmitter', 'Messages', 'MiscUtils', 'Random'],
 
 
   Evaluation.prototype.doVotes = function() {
-    var i;
-
+    // Survey 100 voters on the mayor's performance
     this.cityYes = 0;
 
-    for (i = 0; i < 100; i++) {
-      if (Random.getRandom(1000) < this.cityScore)
+    for (var i = 0; i < 100; i++) {
+      var voterExpectation = Random.getRandom(1000);
+      if (this.cityScore > voterExpectation)
         this.cityYes++;
     }
   };
 
 
-  Evaluation.prototype.countProblems = function() {
-    var i;
-    for (i = 0; i < NUM_COMPLAINTS; i++) {
-      if (this.problemOrder[i] === NUMPROBLEMS)
-        break;
-    }
-
-    return i;
-  };
-
   Evaluation.prototype.getProblemNumber = function(i) {
-    if (i < 0 || i >= NUM_COMPLAINTS ||
-        this.problemOrder[i] === NUMPROBLEMS)
-        return -1;
-    else
-      return this.problemOrder[i];
-  };
+    if (i < 0 || i >= NUM_COMPLAINTS)
+      return null;
 
-
-  Evaluation.prototype.getProblemVotes = function(i) {
-    if (i < 0 || i >= NUM_COMPLAINTS ||
-        this.problemOrder[i] == NUMPROBLEMS)
-      return -1;
-    else
-      return this.problemVotes[this.problemOrder[i]];
+    return this.problemOrder[i];
   };
 
 
