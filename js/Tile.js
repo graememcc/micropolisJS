@@ -127,11 +127,10 @@ define([],
 
 
   Tile.prototype.set = function(tileValue, bitMask) {
-    if (arguments.length < 2 || typeof(tileValue) !== 'number' || typeof(bitMask) !== 'number' || tileValue >= Tile.TILE_COUNT)
-      throw new Error('Invalid parameter');
-
-    this.setValue(tileValue);
-    this.setFlags(bitMask);
+    if (tileValue instanceof Tile)
+      this._value = tileValue._value;
+    else
+      this._value = tileValue | bitMask;
   };
 
 

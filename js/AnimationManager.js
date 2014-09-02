@@ -12,8 +12,13 @@ define(['Tile', 'TileHistory', 'TileUtils'],
   "use strict";
 
 
-  // Create a tile now that map.getTile can fill, to avoid repeatedly creating it in the animation loop
-  var animTile = new Tile();
+  var BIT_MASK = Tile.BIT_MASK;
+  var POWERBIT = Tile.POWERBIT;
+  var ANIMBIT = Tile.ANIMBIT;
+  var ZONEBIT = Tile.ZONEBIT;
+  var INVALID = Tile.INVALID;
+  var LIGHTNINGBOLT = Tile.LIGHTNINGBOLT;
+  var LASTTINYEXP = Tile.LASTTINYEXP;
 
 
   function AnimationManager(map, animationPeriod, blinkPeriod) {
@@ -101,17 +106,22 @@ define(['Tile', 'TileHistory', 'TileUtils'],
         if (mapX < 0 || mapX >= this._map.width || mapY < 0 || mapY >= this._map.height)
           continue;
 
-        this._map.getTile(mapX, mapY, animTile);
-        if (shouldBlink && animTile.isZone() && !animTile.isPowered()) {
-          row[x] = Tile.LIGHTNINGBOLT;
+        var tile = row[x];
+        if (tile === INVALID)
+          continue;
+
+        if (shouldBlink && (tile & ZONEBIT) && !(tile & POWERBIT)) {
+          row[x] = LIGHTNINGBOLT;
           continue;
         }
 
-        if (!animTile.isAnimated())
+        if (!(tile & ANIMBIT)) {
+          row[x] = tile & BIT_MASK;
           continue;
+        }
 
-        var tileValue = row[x];
-        var newTile = Tile.TILE_INVALID;
+        var tileValue = tile & BIT_MASK;
+        var newTile = INVALID;
         var last;
         if (this._lastPainted)
           last = this._lastPainted.getTile(x, y);
@@ -122,7 +132,7 @@ define(['Tile', 'TileHistory', 'TileUtils'],
             // To ensure demolition explosions are animated smoothly, we adjust the map here when we have run to the
             // end of the animation. We would otherwise have to wait on MapScan running and picking up the explosion
             // tile, which may not happen for several frames
-            if (last === Tile.LASTTINYEXP) {
+            if (last === LASTTINYEXP) {
               this._map.setTo(mapX, mapY, TileUtils.randomRubble());
               newTile = this._map.getTileValue(mapX, mapY);
             } else {
@@ -139,8 +149,10 @@ define(['Tile', 'TileHistory', 'TileUtils'],
             newTile = last;
         }
 
-        if (newTile === Tile.TILE_INVALID)
+        if (newTile === INVALID) {
+          row[x] = tileValue;
           continue;
+        }
 
         row[x] = newTile;
         newPainted.setTile(x, y, newTile);

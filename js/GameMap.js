@@ -98,7 +98,8 @@ define(['Direction', 'MiscUtils', 'PositionMaker', 'Tile'],
     if (!newTile)
       return tile;
 
-    newTile.set(tile.getValue(), tile.getFlags());
+    newTile.set(tile);
+    return tile;
   };
 
 
@@ -201,7 +202,7 @@ define(['Direction', 'MiscUtils', 'PositionMaker', 'Tile'],
         var tileIndex =  b + a * width;
         if (!(tileIndex in this._data))
           this._data[tileIndex] = new Tile(this.defaultValue);
-        row.push(this._data[tileIndex].getValue());
+        row.push(this._data[tileIndex].getRawValue());
       }
     }
 
