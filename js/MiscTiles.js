@@ -73,20 +73,11 @@ define(['Random', 'Tile', 'TileUtils', 'ZoneUtils'],
   };
 
 
-  var explosionFound = function(map, x, y, simData) {
-    var tileValue = map.getTileValue(x, y);
-
-    map.setTo(x, y, TileUtils.randomRubble());
-    return;
-  };
-
-
   var MiscTiles = {
     registerHandlers: function(mapScanner, repairManager) {
       mapScanner.addAction(TileUtils.isFire, fireFound, true);
       mapScanner.addAction(Tile.RADTILE, radiationFound, true);
       mapScanner.addAction(TileUtils.isFlood, floodFound, true);
-      mapScanner.addAction(TileUtils.isManualExplosion, explosionFound, true);
     }
   };
 

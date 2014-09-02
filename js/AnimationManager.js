@@ -7,8 +7,8 @@
  *
  */
 
-define(['Tile', 'TileHistory'],
-       function(Tile, TileHistory) {
+define(['Tile', 'TileHistory', 'TileUtils'],
+       function(Tile, TileHistory, TileUtils) {
   "use strict";
 
 
@@ -119,7 +119,15 @@ define(['Tile', 'TileHistory'],
         if (shouldChangeAnimation) {
           // Have we painted any of this sequence before? If so, paint the next tile
           if (last && this.inSequence(tileValue, last)) {
-            newTile = this._data[last];
+            // To ensure demolition explosions are animated smoothly, we adjust the map here when we have run to the
+            // end of the animation. We would otherwise have to wait on MapScan running and picking up the explosion
+            // tile, which may not happen for several frames
+            if (last === Tile.LASTTINYEXP) {
+              this._map.setTo(mapX, mapY, TileUtils.randomRubble());
+              newTile = this._map.getTileValue(mapX, mapY);
+            } else {
+              newTile = this._data[last];
+            }
           } else {
             // Either we haven't painted anything here before, or the last tile painted
             // there belongs to a different tile's animation sequence
@@ -206,6 +214,7 @@ define(['Tile', 'TileHistory'],
     this.registerSingleAnimation([832, 833, 834, 835, 836, 837, 838, 839, 832]);
     this.registerSingleAnimation([840, 841, 842, 843, 840]);
     this.registerSingleAnimation([844, 845, 846, 847, 848, 849, 850, 851, 844]);
+    this.registerSingleAnimation([860, 861, 862, 863, 864, 865, 866, 867]);
     this.registerSingleAnimation([932, 933, 934, 935, 936, 937, 938, 939, 932]);
     this.registerSingleAnimation([940, 941, 942, 943, 944, 945, 946, 947, 940]);
   };

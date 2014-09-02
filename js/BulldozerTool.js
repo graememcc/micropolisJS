@@ -120,19 +120,19 @@ define(['BaseTool', 'EventEmitter', 'Messages', 'Random', 'Tile', 'TileUtils', '
       }
 
       this.result = this.TOOLRESULT_OK;
-    }
-
-    var toolResult;
-    if (tileValue === Tile.RIVER || tileValue === Tile.REDGE || tileValue === Tile.CHANNEL) {
-      toolResult = this.layDoze(x, y);
-
-      if (tileValue !== this._worldEffects.getTileValue(x, y))
-        this.addCost(5);
     } else {
-      toolResult =  this.layDoze(x, y);
-    }
+      var toolResult;
+      if (tileValue === Tile.RIVER || tileValue === Tile.REDGE || tileValue === Tile.CHANNEL) {
+        toolResult = this.layDoze(x, y);
 
-    this.result = toolResult;
+        if (tileValue !== this._worldEffects.getTileValue(x, y))
+          this.addCost(5);
+      } else {
+        toolResult =  this.layDoze(x, y);
+      }
+
+      this.result = toolResult;
+    }
   };
 
 
