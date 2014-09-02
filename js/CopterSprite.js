@@ -96,7 +96,7 @@ define(['BaseSprite', 'Messages', 'MiscUtils', 'Random', 'SpriteConstants', 'Spr
   CopterSprite.prototype.explodeSprite = function() {
     this.frame = 0;
     this.spriteManager.makeExplosionAt(this.x, this.y);
-    this._emitEvent(Messages.HELICOPTER_CRASHED);
+    this._emitEvent(Messages.HELICOPTER_CRASHED, {x: this.worldX, y: this.worldY});
   };
 
 
