@@ -233,7 +233,7 @@ define(['EventEmitter', 'Messages', 'MiscUtils', 'Random', 'SpriteConstants', 'T
 
     var dY, dX;
 
-    // Whole power plant is at fire
+    // Whole power plant is on fire
     for (dX = x - 1; dX < x + 3; dX++) {
       for (dY = y - 1; dY < y + 3; dY++) {
         this._map.setTo(dX, dY, TileUtils.randomFire());

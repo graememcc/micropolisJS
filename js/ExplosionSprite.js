@@ -25,8 +25,8 @@ define(['BaseSprite', 'Messages', 'MiscUtils', 'Random', 'SpriteConstants', 'Spr
 
 
   ExplosionSprite.prototype.startFire = function(x, y) {
-    x = SpriteUtils.pixToWorld(x);
-    y = SpriteUtils.pixToWorld(y);
+    x = this.worldX;
+    y = this.worldY;
 
     if (!this.map.testBounds(x, y))
       return;
@@ -48,8 +48,8 @@ define(['BaseSprite', 'Messages', 'MiscUtils', 'Random', 'SpriteConstants', 'Spr
     if ((spriteCycle & 1) === 0) {
       if (this.frame === 1) {
         // Convert sprite coordinates to tile coordinates.
-        var explosionX = SpriteUtils.pixToWorld(this.x);
-        var explosionY = SpriteUtils.pixToWorld(this.y);
+        var explosionX = this.worldX;
+        var explosionY = this.worldY;
         this._emitEvent(Messages.SOUND_EXPLOSIONHIGH);
         this._emitEvent(Messages.EXPLOSION_REPORTED, {x: explosionX, y: explosionY});
       }

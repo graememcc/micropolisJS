@@ -108,8 +108,8 @@ define(['BaseSprite', 'Messages', 'MiscUtils', 'Random', 'SpriteConstants', 'Spr
         if (frame === this.dir)
           continue;
 
-        x = SpriteUtils.pixToWorld(this.x) + tileDeltaX[frame];
-        y = SpriteUtils.pixToWorld(this.y) + tileDeltaY[frame];
+        x = this.worldX + tileDeltaX[frame];
+        y = this.worldY + tileDeltaY[frame];
 
         if (this.map.testBounds(x, y)) {
           var tileValue = this.map.getTileValue(x, y);
@@ -164,7 +164,7 @@ define(['BaseSprite', 'Messages', 'MiscUtils', 'Random', 'SpriteConstants', 'Spr
   BoatSprite.prototype.explodeSprite = function() {
     this.frame = 0;
     this.spriteManager.makeExplosionAt(this.x, this.y);
-    this._emitEvent(Messages.SHIP_CRASHED);
+    this._emitEvent(Messages.SHIP_CRASHED, {x: this.worldX, y: this.worldY});
   };
 
 
