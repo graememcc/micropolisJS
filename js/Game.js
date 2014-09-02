@@ -17,7 +17,7 @@ define(['BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', 'DisasterWind
 
     this.gameMap = gameMap;
     this.tileSet = tileSet;
-    this.simulation = new Simulation(this.gameMap, difficulty, 1);
+    this.simulation = new Simulation(this.gameMap, difficulty, Simulation.SPEED_SLOW);
     this.rci = new RCI('RCIContainer', this.simulation);
 
     this.name = name;
