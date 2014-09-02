@@ -67,7 +67,7 @@ define(['BaseSprite', 'Messages', 'MiscUtils', 'Random', 'SpriteConstants', 'Spr
       for (var i = 0; i < spriteList.length; i++) {
         var s = spriteList[i];
 
-        if (s.frame === 0 || s === sprite)
+        if (s.frame === 0 || s === this)
           continue;
 
         if ((s.type === SpriteConstants.SPRITE_HELICOPTER ||
@@ -93,7 +93,7 @@ define(['BaseSprite', 'Messages', 'MiscUtils', 'Random', 'SpriteConstants', 'Spr
   AirplaneSprite.prototype.explodeSprite = function() {
     this.frame = 0;
     this.spriteManager.makeExplosionAt(this.x, this.y);
-    this._emitEvent(Messages.PLANE_CRASHED);
+    this._emitEvent(Messages.PLANE_CRASHED, {x: this.worldX, y: this.worldY});
   };
 
 

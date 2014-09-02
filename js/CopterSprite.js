@@ -68,8 +68,8 @@ define(['BaseSprite', 'Messages', 'MiscUtils', 'Random', 'SpriteConstants', 'Spr
     }
 
     if (this.soundCount === 0) {
-        var x = SpriteUtils.pixToWorld(this.x);
-        var y = SpriteUtils.pixToWorld(this.y);
+        var x = this.worldX;
+        var y = this.worldY;
 
         if (x >= 0 && x < this.map.width && y >= 0 && y < this.map.height) {
           if (blockMaps.trafficDensityMap.worldGet(x, y) > 170 && (Random.getRandom16() & 7) === 0) {

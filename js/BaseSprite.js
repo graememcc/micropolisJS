@@ -15,8 +15,61 @@ define(['EventEmitter', 'SpriteUtils'],
     this.type = type;
     this.map = map;
     this.spriteManager = spriteManager;
-    this.x = x;
-    this.y = y;
+
+    var pixX = x;
+    var pixY = y;
+    var worldX = x >> 4;
+    var worldY = y >> 4;
+
+    Object.defineProperty(this, 'x',
+      {configurable: false,
+       enumerable: true,
+       set: function(val) {
+         // XXX These getters have implicit knowledge of tileWidth: need to decide whether to disallow non 16px tiles
+         pixX = val;
+         worldX = val >> 4;
+       },
+       get: function() {
+        return pixX;
+       }
+    });
+
+    Object.defineProperty(this, 'y',
+      {configurable: false,
+       enumerable: true,
+       set: function(val) {
+         pixY = val;
+         worldY = val >> 4;
+       },
+       get: function() {
+        return pixY;
+       }
+    });
+
+    Object.defineProperty(this, 'worldX',
+      {configurable: false,
+       enumerable: true,
+       set: function(val) {
+         worldX = val;
+         pixX = val << 4;
+       },
+       get: function() {
+        return worldX;
+       }
+    });
+
+    Object.defineProperty(this, 'worldY',
+      {configurable: false,
+       enumerable: true,
+       set: function(val) {
+         worldY = val;
+         pixY = val << 4;
+       },
+       get: function() {
+        return worldY;
+       }
+    });
+
     this.origX = 0;
     this.origY = 0;
     this.destX = 0;
@@ -39,8 +92,8 @@ define(['EventEmitter', 'SpriteUtils'],
 
 
   var spriteNotInBounds = function() {
-    var x = SpriteUtils.pixToWorld(this.x);
-    var y = SpriteUtils.pixToWorld(this.y);
+    var x = this.worldX;
+    var y = this.worldY;
 
     return x < 0 || y < 0 || x >= this.map.width || y >= this.map.height;
   };

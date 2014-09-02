@@ -63,7 +63,6 @@ define(['MiscUtils', 'Text'],
   Notification.prototype.createMessage = function(message) {
 
     if (message.hasOwnProperty('data') && message.data !== undefined && message.data.hasOwnProperty('x') && message.data.hasOwnProperty('y')) {
-      console.log(messsage);
       this._displayLink(Text.messageText[message.subject], message.data.x, message.data.y);
       return;
     }
