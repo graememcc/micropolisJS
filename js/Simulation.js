@@ -30,7 +30,7 @@ define(['BlockMap', 'BlockMapUtils', 'Budget', 'Census', 'Commercial', 'Disaster
     this._phaseCycle = 0;
     this._simCycle = 0;
     this._doInitialEval = true;
-    this._cityTime = 50;
+    this._cityTime = 0;
     this._cityPopLast = 0;
     this._messageLast = Messages.VILLAGE_REACHED;
     this._startingYear = 1900;
