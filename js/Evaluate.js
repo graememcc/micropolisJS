@@ -99,32 +99,30 @@ define(['EventEmitter', 'Messages', 'MiscUtils', 'Random'],
 
     this.cityPopDelta = this.cityPop - oldCityPop;
     this.cityClass = this.getCityClass(this.cityPop);
-
-    if (this.cityClass !== oldCityClass)
-      this._emitEvent(Messages.CLASSIFICATION_UPDATED, this.cityClass);
   };
 
 
   Evaluation.prototype.getCityClass = function(cityPopulation) {
-    this.cityClassification = Evaluation.CC_VILLAGE;
+    this.cityClass = Evaluation.CC_VILLAGE;
 
     if (cityPopulation > 2000)
-        this.cityClassification = Evaluation.CC_TOWN;
+        this.cityClass = Evaluation.CC_TOWN;
 
     if (this.cityPopulation > 10000)
-        this.cityClassification = Evaluation.CC_CITY;
+        this.cityClass = Evaluation.CC_CITY;
 
     if (this.cityPopulation > 50000)
-        this.cityClassification = Evaluation.CC_CAPITAL;
+        this.cityClass = Evaluation.CC_CAPITAL;
 
     if (this.cityPopulation > 100000)
-        this.cityClassification = Evaluation.CC_METROPOLIS;
+        this.cityClass = Evaluation.CC_METROPOLIS;
 
     if (this.cityPopulation > 500000)
-        this.cityClassification = Evaluation.CC_MEGALOPOLIS;
+        this.cityClass = Evaluation.CC_MEGALOPOLIS;
 
+    this._emitEvent(Messages.CLASSIFICATION_UPDATED, this.cityClass);
 
-    return this.cityClassification;
+    return this.cityClass;
   };
 
 
