@@ -1,6 +1,7 @@
-define(['Game', 'MapGenerator', 'SplashCanvas'],
-       function(Game, MapGenerator, SplashCanvas) {
+define(['Config', 'Game', 'MapGenerator', 'SplashCanvas'],
+       function(Config, Game, MapGenerator, SplashCanvas) {
   "use strict";
+
 
   function SplashScreen(tileSet, spriteSheet) {
     this.tileSet = tileSet;
@@ -35,7 +36,11 @@ define(['Game', 'MapGenerator', 'SplashCanvas'],
 
     $('#playForm').submit(this.playMap.bind(this));
     $('#start').toggle();
-    $('#name').focus();
+
+    if (Config.debug)
+      $('#nameForm').removeAttr('required');
+
+    $('#nameForm').focus();
   };
 
 
