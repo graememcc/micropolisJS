@@ -11,6 +11,20 @@ define(['EventEmitter', 'Messages', 'MiscUtils'],
        function(EventEmitter, Messages, MiscUtils) {
   "use strict";
 
+
+  // Cost of maintaining 1 police station
+  var policeMaintenanceCost = 100;
+
+  // Cost of maintaining 1 fire station
+  var fireMaintenanceCost = 100;
+
+  // Cost of maintaining 1 road tile
+  var roadMaintenanceCost = 1;
+
+  // Cost of maintaining 1 rail tile
+  var railMaintenanceCost = 2;
+
+
   var Budget = EventEmitter(function() {
     Object.defineProperties(this,
      {MAX_ROAD_EFFECT: MiscUtils.makeConstantDescriptor(32),
@@ -25,22 +39,22 @@ define(['EventEmitter', 'Messages', 'MiscUtils'],
     this.cashFlow = 0;
     this.taxFund = 0;
 
-    // The 'fund's respresent the cost of funding all these services on
-    // the map 100%
-    this.roadFund = 0;
-    this.fireFund = 0;
-    this.policeFund = 0;
+    // These values denote how much money is required to fully maintain the relevant services
+    this.roadMaintenanceBudget = 0;
+    this.fireMaintenanceBudget = 0;
+    this.policeMaintenanceBudget = 0;
 
     // Percentage of budget used
     this.roadPercent = 1;
     this.firePercent = 1;
     this.policePercent = 1;
 
-    // Cash value of spending. Should equal Math.round(_Fund * _Percent)
+    // Cash value of spending. Should equal Math.round(_MaintenanceBudget * _Percent)
     this.roadSpend = 0;
     this.fireSpend = 0;
     this.policeSpend = 0;
 
+    this.awaitingValues = false;
     this.autoBudget = true;
   });
 
@@ -48,22 +62,18 @@ define(['EventEmitter', 'Messages', 'MiscUtils'],
   var RLevels = [0.7, 0.9, 1.2];
   var FLevels = [1.4, 1.2, 0.8];
 
-  Budget.prototype.doBudget = function() {
-    return this.doBudgetNow(false);
-  };
-
-
-  // User initiated budget
-  Budget.prototype.doBudgetMenu = function() {
-    return this.doBudgetNow(false);
-  };
-
-
-  Budget.prototype.doBudgetNow = function(fromWindow) {
+  // Calculates the best possible outcome in terms of funding the various services
+  // given the player's current funds and tax yield. On entry, roadPercent etc. are
+  // assumed to contain the desired percentage level, and taxFunds should contain the
+  // most recent tax collected. On exit, the *Percent members will be updated with what
+  // we can actually afford to spend. Returns an object containing the amount of cash
+  // that would be spent on each service.
+  Budget.prototype._calculateBestPercentages = function() {
     // How much would we be spending based on current percentages?
-    this.roadSpend = Math.round(this.roadFund * this.roadPercent);
-    this.fireSpend = Math.round(this.fireFund * this.firePercent);
-    this.policeSpend = Math.round(this.policeFund * this.policePercent);
+    // Note: the *Budget items are updated every January by collectTax
+    this.roadSpend = Math.round(this.roadMaintenanceBudget * this.roadPercent);
+    this.fireSpend = Math.round(this.fireMaintenanceBudget * this.firePercent);
+    this.policeSpend = Math.round(this.policeMaintenanceBudget * this.policePercent);
     var total = this.roadSpend + this.fireSpend + this.policeSpend;
 
     // If we don't have any services on the map, we can bail early
@@ -71,83 +81,98 @@ define(['EventEmitter', 'Messages', 'MiscUtils'],
       this.roadPercent = 1;
       this.firePercent = 1;
       this.policePercent = 1;
-      this.roadEffect = this.MAX_ROAD_EFFECT;
-      this.policeEffect = this.MAX_POLICESTATION_EFFECT;
-      this.fireEffect = this.MAX_FIRESTATION_EFFECT;
+      return {road: 1, fire: 1, police: 1};
     }
 
-    var cashAvailable = this.totalFunds + this.taxFund;
-    var cashRemaining = cashAvailable;
-
     // How much are we actually going to spend?
-    var roadValue = 0;
-    var fireValue = 0;
-    var policeValue = 0;
+    var roadCost = 0;
+    var fireCost = 0;
+    var policeCost = 0;
+
+    var cashRemaining = this.totalFunds + this.taxFund;
 
     // Spending priorities: road, fire, police
     if (cashRemaining >= this.roadSpend)
-      roadValue = this.roadSpend;
+      roadCost = this.roadSpend;
     else
-      roadValue = cashRemaining;
-    cashRemaining -= roadValue;
+      roadCost = cashRemaining;
+    cashRemaining -= roadCost;
 
     if (cashRemaining >= this.fireSpend)
-      fireValue = this.fireSpend;
+      fireCost = this.fireSpend;
     else
-      fireValue = cashRemaining;
-    cashRemaining -= fireValue;
+      fireCost = cashRemaining;
+    cashRemaining -= fireCost;
 
     if (cashRemaining >= this.policeSpend)
-      policeValue = this.policeSpend;
+      policeCost = this.policeSpend;
     else
-      policeValue = cashRemaining;
-    cashRemaining -= policeValue;
+      policeCost = cashRemaining;
+    cashRemaining -= policeCost;
 
-    if (this.roadFund > 0)
-      this.roadPercent = new Number(roadValue / this.roadFund).toPrecision(2) - 0;
+    if (this.roadMaintenanceBudget > 0)
+      this.roadPercent = (roadCost / this.roadMaintenanceBudget).toPrecision(2) - 0;
     else
       this.roadPercent = 1;
 
-    if (this.fireFund > 0)
-      this.firePercent = new Number(fireValue / this.fireFund).toPrecision(2) - 0;
+    if (this.fireMaintenanceBudget > 0)
+      this.firePercent = (fireCost / this.fireMaintenanceBudget).toPrecision(2) - 0;
     else
-      this.fireFund = 1;
+      this.firePercent = 1;
 
-    if (this.policeFund > 0)
-      this.policePercent = new Number(policeValue / this.policeFund).toPrecision(2) - 0;
+    if (this.policeMaintenanceBudget > 0)
+      this.policePercent = (policeCost / this.policeMaintenanceBudget).toPrecision(2) - 0;
     else
-      this.policeFund = 1;
+      this.policePercent = 1;
 
-    if (!this.autoBudget || fromWindow) {
-      // If we were called as the result of a manual budget,
-      // go ahead and spend the money
-      if (!fromWindow) {
-        this.doBudgetSpend(roadValue, fireValue, policeValue, this.cityTax);
-      }
+    return {road: roadCost, police: policeCost, fire: fireCost};
+  };
+
+
+  // User initiated budget
+  Budget.prototype.doBudgetWindow = function() {
+    return this.doBudgetNow(true);
+  };
+
+
+  Budget.prototype.doBudgetNow = function(fromWindow) {
+    var costs = this._calculateBestPercentages();
+
+    if (!this.autoBudget && !fromWindow) {
+      this.autoBudget = false;
+      this.awaitingValues = true;
+      this._emitEvent(Messages.BUDGET_NEEDED);
       return;
     }
 
+    var roadCost = costs.road;
+    var policeCost = costs.police;
+    var fireCost = costs.fire;
+    var totalCost = roadCost + policeCost + fireCost;
+    var cashRemaining = this.totalFunds + this.taxFund - totalCost;
+
     // Autobudget
-    if (cashAvailable >= total) {
-      // We were able to fully fund services. Go ahead and spend
-      this.doBudgetSpend(roadValue, fireValue, policeValue, this.cityTax);
+    if ((cashRemaining > 0 && this.autoBudget) || fromWindow) {
+      // Either we were able to fully fund services, or we have just normalised user input. Go ahead and spend.
+      this.awaitingValues = false;
+      this.doBudgetSpend(roadCost, fireCost, policeCost);
       return;
     }
 
     // Uh-oh. Not enough money. Make this the user's problem.
     // They don't know it yet, but they're about to get a budget window.
     this.autoBudget = false;
+    this.awaitingValues = true;
     this._emitEvent(Messages.AUTOBUDGET_CHANGED, this.autoBudget);
     this._emitEvent(Messages.BUDGET_NEEDED);
     this._emitEvent(Messages.NO_MONEY);
   };
 
 
-  Budget.prototype.doBudgetSpend = function(roadValue, fireValue, policeValue, taxRate) {
+  Budget.prototype.doBudgetSpend = function(roadValue, fireValue, policeValue) {
     this.roadSpend = roadValue;
     this.fireSpend = fireValue;
     this.policeSpend = policeValue;
-    this.setTax(taxRate);
     var total = this.roadSpend + this.fireSpend + this.policeSpend;
 
     this.spend(-(this.taxFund - total));
@@ -156,33 +181,43 @@ define(['EventEmitter', 'Messages', 'MiscUtils'],
 
 
   Budget.prototype.updateFundEffects = function() {
-    // Update effects
+    // The caller is assumed to have correctly set the percentage spend
+    this.roadSpend = Math.round(this.roadMaintenanceBudget * this.roadPercent);
+    this.fireSpend = Math.round(this.fireMaintenanceBudget * this.firePercent);
+    this.policeSpend = Math.round(this.policeMaintenanceBudget * this.policePercent);
+
+    // Update the effect this level of spending will have on infrastructure deterioration
     this.roadEffect = this.MAX_ROAD_EFFECT;
     this.policeEffect = this.MAX_POLICESTATION_EFFECT;
     this.fireEffect = this.MAX_FIRESTATION_EFFECT;
 
-    if (this.roadFund > 0)
-      this.roadEffect = Math.floor(this.roadEffect * this.roadSpend / this.roadFund);
+    if (this.roadMaintenanceBudget > 0)
+      this.roadEffect = Math.floor(this.roadEffect * this.roadSpend / this.roadMaintenanceBudget);
 
-    if (this.fireFund > 0)
-      this.fireEffect = Math.floor(this.fireEffect * this.fireSpend / this.fireFund);
+    if (this.fireMaintenanceBudget > 0)
+      this.fireEffect = Math.floor(this.fireEffect * this.fireSpend / this.fireMaintenanceBudget);
 
-    if (this.policeFund > 0)
-      this.policeEffect = Math.floor(this.policeEffect * this.policeSpend / this.policeFund);
+    if (this.policeMaintenanceBudget > 0)
+      this.policeEffect = Math.floor(this.policeEffect * this.policeSpend / this.policeMaintenanceBudget);
   };
 
 
   Budget.prototype.collectTax = function(gameLevel, census) {
     this.cashFlow = 0;
 
-    this.policeFund = census.policeStationPop * 100;
-    this.fireFund = census.fireStationPop * 100;
-    this.roadFund = Math.floor((census.roadTotal + (census.railTotal * 2)) * RLevels[gameLevel]);
+    // How much would it cost to fully fund every service?
+    this.policeMaintenanceBudget = census.policeStationPop * policeMaintenanceCost;
+    this.fireMaintenanceBudget = census.fireStationPop * fireMaintenanceCost;
+
+    var roadCost = census.roadTotal * roadMaintenanceCost;
+    var railCost = census.railTotal * railMaintenanceCost;
+    this.roadMaintenanceBudget = Math.floor((roadCost + railCost) * RLevels[gameLevel]);
+
     this.taxFund = Math.floor(Math.floor(census.totalPop * census.landValueAverage / 120) * this.cityTax * FLevels[gameLevel]);
 
     if (census.totalPop > 0) {
-      this.cashFlow = this.taxFund - (this.policeFund + this.fireFund + this.roadFund);
-      this.doBudget();
+      this.cashFlow = this.taxFund - (this.policeMaintenanceBudget + this.fireMaintenanceBudget + this.roadMaintenanceBudget);
+      this.doBudgetNow(false);
     } else {
       // We don't want roads etc deteriorating when population hasn't yet been established
       // (particularly early game)
@@ -208,6 +243,8 @@ define(['EventEmitter', 'Messages', 'MiscUtils'],
     this.totalFunds = Math.max(0, amount);
 
     this._emitEvent(Messages.FUNDS_CHANGED, this.totalFunds);
+    if (this.totalFunds === 0)
+      this._emitEvent(Messages.NO_MONEY);
   };
 
 

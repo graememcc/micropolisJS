@@ -18,7 +18,7 @@ define(['Messages', 'MiscUtils', 'ModalWindow'],
   });
 
 
-  var dataKeys = ['roadFund', 'fireFund', 'policeFund'];
+  var dataKeys = ['roadMaintenanceBudget', 'fireMaintenanceBudget', 'policeMaintenanceBudget'];
   var spendKeys = ['roadRate', 'fireRate', 'policeRate'];
 
   var budgetResetID = '#budgetReset';
@@ -97,14 +97,14 @@ define(['Messages', 'MiscUtils', 'ModalWindow'],
     // Store max funding levels
     for (i = 0; i < dataKeys.length; i++) {
       if (budgetData[dataKeys[i]] === undefined)
-        throw new Error('Missing budget data');
+        throw new Error('Missing budget data ('  + dataKeys[i] + ')');
       this[dataKeys[i]] = budgetData[dataKeys[i]];
     }
 
     // Update form elements with percentages, and set up listeners
     for (i = 0; i < spendKeys.length; i++) {
       if (budgetData[spendKeys[i]] === undefined)
-        throw new Error('Missing budget data');
+        throw new Error('Missing budget data (' + spendKeys[i] + ')');
 
       elem = spendKeys[i];
       this['original' + elem] = budgetData[elem];
@@ -116,7 +116,7 @@ define(['Messages', 'MiscUtils', 'ModalWindow'],
     }
 
     if (budgetData.taxRate === undefined)
-      throw new Error('Missing budget data');
+      throw new Error('Missing budget data (taxRate)');
 
     this.originalTaxRate = budgetData.taxRate;
     elem = $('#taxRate');
@@ -128,13 +128,13 @@ define(['Messages', 'MiscUtils', 'ModalWindow'],
     // Update static parts
     var previousFunds = budgetData.totalFunds;
     if (previousFunds === undefined)
-      throw new Error('Missing budget data');
+      throw new Error('Missing budget data (previousFunds)');
 
     var taxesCollected = budgetData.taxesCollected;
     if (taxesCollected === undefined)
-      throw new Error('Missing budget data');
+      throw new Error('Missing budget data (taxesCollected)');
 
-    var cashFlow = taxesCollected - this.roadFund - this.fireFund - this.policeFund;
+    var cashFlow = taxesCollected - this.roadMaintenanceBudget - this.fireMaintenanceBudget - this.policeMaintenanceBudget;
     var currentFunds = previousFunds + cashFlow;
     $('#taxesCollected').text('$' + taxesCollected);
     $('#cashFlow').text((cashFlow < 0 ? '-$' : '$') + cashFlow);

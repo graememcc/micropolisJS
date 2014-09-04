@@ -78,6 +78,7 @@ define(['BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', 'DisasterWind
     this.mouse = null;
     this.sprites = null;
     this.lastCoord = null;
+    this.simNeededBudget = false;
 
     this._notificationBar = new Notification('#notifications', this.gameCanvas, Text.messageText[Messages.WELCOME]);
 
@@ -199,7 +200,7 @@ define(['BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', 'DisasterWind
       this.simulation.budget.policePercent = data.policePercent / 100;
       this.simulation.budget.setTax(data.taxPercent);
       if (this.simNeededBudget) {
-        this.simulation.budget.doBudget();
+        this.simulation.budget.doBudgetWindow();
         this.simNeededBudget = false;
       } else {
         this.simulation.budget.updateFundEffects();
@@ -265,11 +266,11 @@ define(['BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', 'DisasterWind
     this.budgetShowing = true;
 
     var budgetData = {
-      roadFund: this.simulation.budget.roadFund,
+      roadMaintenanceBudget: this.simulation.budget.roadMaintenanceBudget,
       roadRate: Math.floor(this.simulation.budget.roadPercent * 100),
-      fireFund: this.simulation.budget.fireFund,
+      fireMaintenanceBudget: this.simulation.budget.fireMaintenanceBudget,
       fireRate: Math.floor(this.simulation.budget.firePercent * 100),
-      policeFund: this.simulation.budget.policeFund,
+      policeMaintenanceBudget: this.simulation.budget.policeMaintenanceBudget,
       policeRate: Math.floor(this.simulation.budget.policePercent * 100),
       taxRate: this.simulation.budget.cityTax,
       totalFunds: this.simulation.budget.totalFunds,
