@@ -26,7 +26,6 @@ define(['Messages', 'MiscUtils', 'Tile', 'TileUtils', 'WorldEffects'],
   var clear = function() {
     this._applicationCost = 0;
     this._worldEffects.clear();
-    this.result = null;
   };
 
 

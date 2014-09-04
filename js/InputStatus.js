@@ -144,10 +144,11 @@ define(['EventEmitter', 'GameCanvas', 'GameTools', 'Messages', 'MiscUtils'],
       return;
 
     $(this.canvasID).on('mousemove', this.mouseMoveHandler);
-    $(this.canvasID).on('click', this.canvasClickHandler);
 
     if (this.currentTool.isDraggable)
       $(this.canvasID).on('mousedown', this.mouseDownHandler);
+    else
+      $(this.canvasID).on('click', this.canvasClickHandler);
   };
 
 
