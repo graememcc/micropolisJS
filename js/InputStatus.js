@@ -247,7 +247,14 @@ define(['EventEmitter', 'GameCanvas', 'GameTools', 'Messages', 'MiscUtils'],
     this.currentTool = this.gameTools[this.toolName];
     this.toolColour = $(e.target).attr('data-colour');
 
-    $(this.canvasID).addClass('game');
+    if (this.toolName !== 'query') {
+      $(this.canvasID).removeClass('helpPointer');
+      $(this.canvasID).addClass('pointer');
+    } else {
+      $(this.canvasID).removeClass('pointer');
+      $(this.canvasID).addClass('helpPointer');
+    }
+
     e.preventDefault();
   };
 

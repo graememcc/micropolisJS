@@ -132,13 +132,13 @@ nav li {
   font-size: 36px;
 }
 
-.game, .pointer {
-  cursor: pointer;
-}
-
 .good {
   background-color: LightGreen;
   color: black;
+}
+
+.helpPointer {
+  cursor: help;
 }
 
 .inline {
@@ -198,6 +198,10 @@ nav li {
 
 .padding10 {
   padding: 10px;
+}
+
+.pointer {
+  cursor: pointer;
 }
 
 .queryItem, .statisticsItem {
