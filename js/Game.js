@@ -335,16 +335,23 @@ define(['BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', 'DisasterWind
 
 
   Game.prototype.handleInput = function() {
-    // Handle keyboard movement
-    if (this.inputStatus.left)
-      this.gameCanvas.moveWest();
-    else if (this.inputStatus.up)
-      this.gameCanvas.moveNorth();
-    else if (this.inputStatus.right)
-      this.gameCanvas.moveEast();
-    else if (this.inputStatus.down)
-      this.gameCanvas.moveSouth();
-    else if (this.inputStatus.escape) {
+    var dialogShowing = this.queryShowing || this.evalShowing || this.disasterShowing || this.budgetShowing ||
+                        this.congratsShowing || this.debugShowing;
+
+    if (!dialogShowing) {
+      // Handle keyboard movement
+
+      if (this.inputStatus.left)
+        this.gameCanvas.moveWest();
+      else if (this.inputStatus.up)
+        this.gameCanvas.moveNorth();
+      else if (this.inputStatus.right)
+        this.gameCanvas.moveEast();
+      else if (this.inputStatus.down)
+        this.gameCanvas.moveSouth();
+    }
+
+    if (this.inputStatus.escape) {
       // We need to handle escape, as InputStatus won't know what dialogs are showing
 
       if (this.queryShowing)
