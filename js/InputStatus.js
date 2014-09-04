@@ -183,6 +183,14 @@ define(['EventEmitter', 'GameCanvas', 'GameTools', 'Messages', 'MiscUtils'],
     $(this.canvasID).off('mousedown');
     $(this.canvasID).off('mousemove');
     $(this.canvasID).off('mouseup');
+
+    // Watch out: we might have been mid-drag
+    if (this._dragging) {
+      this._dragging = false;
+      this._lastDragX = -1;
+      this._lastDragY = -1;
+    }
+
     $(this.canvasID).off('click');
 
     this.mouseX = -1;
