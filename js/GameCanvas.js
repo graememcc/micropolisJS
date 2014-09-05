@@ -350,29 +350,31 @@ define(['AnimationManager', 'GameMap', 'MiscUtils', 'MouseBox', 'Tile', 'TileSet
 
 
 
-  GameCanvas.prototype.takeScreenshot = function(onlyVisible) {
-    // XXX FIXME
-    var e = new Error('Invalid parameter');
-
-    if (arguments.length < 1)
-      throw e;
-
-    if (!this.ready)
-      throw new Error("Not ready!");
-
+  GameCanvas.prototype._screenshot = function(onlyVisible) {
     if (onlyVisible)
       return this._canvas.toDataURL();
 
     var tempCanvas = document.createElement('canvas');
     tempCanvas.width = this._map.width * this._tileSet.tileWidth;
     tempCanvas.height = this._map.height * this._tileSet.tileWidth;
+    var ctx = tempCanvas.getContext('2d');
 
     for (var x = 0; x < this._map.width; x++) {
       for (var y = 0; y < this._map.height; y++) {
-        this._paintTile(this._map.getTileValue(x, y), x * this._tileSet.tileWidth, y * this._tileSet.tileWidth, tempCanvas);
+        this._paintOne(ctx, this._map.getTileValue(x, y), x, y);
       }
     }
     return tempCanvas.toDataURL();
+  };
+
+
+  GameCanvas.prototype.screenshotMap = function() {
+    return this._screenshot(false);
+  };
+
+
+  GameCanvas.prototype.screenshotVisible = function() {
+    return this._screenshot(true);
   };
 
 

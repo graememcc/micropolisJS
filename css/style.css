@@ -209,11 +209,6 @@ nav li {
   width: 200px;
 }
 
-.statisticsRight {
-  display: inline-block;
-  width: 150px;
-}
-
 .queryList dt {
   font-weight: 600;
 }
@@ -228,6 +223,11 @@ nav li {
 
 .row button {
   display: inline-block;
+}
+
+.screenshotHeader, #screenshotRequest {
+  background-color: tomato;
+  color: white;
 }
 
 .selected {
@@ -249,6 +249,11 @@ nav li {
 .statisticsItem {
   display: inline-block;
   width: 200px;
+}
+
+.statisticsRight {
+  display: inline-block;
+  width: 150px;
 }
 
 .toolButton {
@@ -342,7 +347,7 @@ nav li {
 #miscButtons {
   position: absolute;
   top: 250px;
-  height: 100px;
+  height: 120px;
 }
 
 #nameForm {
@@ -383,10 +388,15 @@ nav li {
 
 #RCIContainer {
   position: absolute;
-  top: 410px;
+  top: 430px;
   width: 140px;
   height: 140px;
   margin: 0px;
+}
+
+#screenshotLink, #screenshotLink:link, #screenshotLink:visited, #screenshotLink:hover {
+  text-decoration: none;
+  color: dodgerblue;
 }
 
 #splash {
@@ -604,7 +614,7 @@ nav li {
   }
 
   #RCIContainer {
-    top: 380px;
+    top: 400px;
   }
 }
 
@@ -626,7 +636,7 @@ nav li {
   }
 
   #RCIContainer {
-    top: 350px;
+    top: 370px;
   }
 }
 
@@ -664,7 +674,7 @@ nav li {
   }
 
   #RCIContainer {
-    top: 320px;
+    top: 340px;
     -ms-box-shadow: unset;
     -webkit-box-shadow: unset;
     -moz-box-shadow: unset;
@@ -690,7 +700,7 @@ nav li {
   }
 
   #RCIContainer {
-    top: 290px;
+    top: 310px;
   }
 }
 

@@ -60,6 +60,7 @@ define(['EventEmitter', 'GameCanvas', 'GameTools', 'Messages', 'MiscUtils'],
     $('#evalRequest').click(evalHandler.bind(this));
     $('#disasterRequest').click(disasterHandler.bind(this));
     $('#pauseRequest').click(this.speedChangeHandler.bind(this));
+    $('#screenshotRequest').click(screenshotHandler.bind(this));
     $('#debugRequest').click(debugHandler.bind(this));
   });
 
@@ -275,24 +276,20 @@ define(['EventEmitter', 'GameCanvas', 'GameTools', 'Messages', 'MiscUtils'],
   };
 
 
-  var disasterHandler = function(e) {
-    this._emitEvent(Messages.DISASTER_REQUESTED);
+  var makeHandler = function(message) {
+    var m = Messages[message];
+
+    return function(e) {
+      this._emitEvent(m);
+    };
   };
 
 
-  var evalHandler = function(e) {
-    this._emitEvent(Messages.EVAL_REQUESTED);
-  };
-
-
-  var debugHandler = function(e) {
-    this._emitEvent(Messages.DEBUG_WINDOW_REQUESTED);
-  };
-
-
-  var budgetHandler = function(e) {
-    this._emitEvent(Messages.BUDGET_REQUESTED);
-  };
+  var screenshotHandler = makeHandler('SCREENSHOT_WINDOW_REQUESTED');
+  var disasterHandler = makeHandler('DISASTER_REQUESTED');
+  var evalHandler = makeHandler('EVAL_REQUESTED');
+  var debugHandler = makeHandler('DEBUG_REQUESTED');
+  var budgetHandler = makeHandler('BUDGET_REQUESTED');
 
 
   return InputStatus;

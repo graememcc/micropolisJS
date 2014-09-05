@@ -7,8 +7,8 @@
  *
  */
 
-define(['BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', 'DisasterWindow', 'GameCanvas', 'EvaluationWindow', 'InfoBar', 'InputStatus', 'Messages', 'Notification', 'QueryWindow', 'RCI', 'Simulation', 'Text'],
-       function(BudgetWindow, Config, CongratsWindow, DebugWindow, DisasterWindow, GameCanvas, EvaluationWindow, InfoBar, InputStatus, Messages, Notification, QueryWindow, RCI, Simulation, Text) {
+define(['BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', 'DisasterWindow', 'GameCanvas', 'EvaluationWindow', 'InfoBar', 'InputStatus', 'Messages', 'Notification', 'QueryWindow', 'RCI', 'ScreenshotLinkWindow', 'ScreenshotWindow', 'Simulation', 'Text'],
+       function(BudgetWindow, Config, CongratsWindow, DebugWindow, DisasterWindow, GameCanvas, EvaluationWindow, InfoBar, InputStatus, Messages, Notification, QueryWindow, RCI, ScreenshotLinkWindow, ScreenshotWindow, Simulation, Text) {
   "use strict";
 
 
@@ -30,34 +30,60 @@ define(['BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', 'DisasterWind
 
     var opacityLayerID = 'opaque';
 
+    this.genericDialogClosure = genericDialogClosure.bind(this);
+
     // Hook up listeners to open/close evaluation window
-    this.evalShowing = false;
+    this.handleEvalRequest = makeWindowOpenHandler('eval', function() {
+      return [this.simulation.evaluation];
+    }.bind(this));
+
     this.evalWindow = new EvaluationWindow(opacityLayerID, 'evalWindow');
-    this.evalWindow.addEventListener(Messages.EVAL_WINDOW_CLOSED, this.handleEvalWindowClosure.bind(this));
+    this.evalWindow.addEventListener(Messages.EVAL_WINDOW_CLOSED, this.genericDialogClosure);
     this.inputStatus.addEventListener(Messages.EVAL_REQUESTED, this.handleEvalRequest.bind(this));
 
     // ... and similarly for the budget window
-    this.budgetShowing = false;
+    this.handleBudgetRequest = makeWindowOpenHandler('budget', function() {
+      var budgetData = {
+        roadMaintenanceBudget: this.simulation.budget.roadMaintenanceBudget,
+        roadRate: Math.floor(this.simulation.budget.roadPercent * 100),
+        fireMaintenanceBudget: this.simulation.budget.fireMaintenanceBudget,
+        fireRate: Math.floor(this.simulation.budget.firePercent * 100),
+        policeMaintenanceBudget: this.simulation.budget.policeMaintenanceBudget,
+        policeRate: Math.floor(this.simulation.budget.policePercent * 100),
+        taxRate: this.simulation.budget.cityTax,
+        totalFunds: this.simulation.budget.totalFunds,
+        taxesCollected: this.simulation.budget.taxFund
+      };
+
+      return [budgetData];
+    }.bind(this));
+
     this.budgetWindow = new BudgetWindow(opacityLayerID, 'budget');
     this.budgetWindow.addEventListener(Messages.BUDGET_WINDOW_CLOSED, this.handleBudgetWindowClosure.bind(this));
     this.inputStatus.addEventListener(Messages.BUDGET_REQUESTED, this.handleBudgetRequest.bind(this));
 
     // ... and also the disaster window
-    this.disasterShowing = false;
     this.disasterWindow = new DisasterWindow(opacityLayerID, 'disasterWindow');
     this.disasterWindow.addEventListener(Messages.DISASTER_WINDOW_CLOSED, this.handleDisasterWindowClosure.bind(this));
     this.inputStatus.addEventListener(Messages.DISASTER_REQUESTED, this.handleDisasterRequest.bind(this));
 
     // ... the debug window
-    this.debugShowing = false;
     this.debugWindow = new DebugWindow(opacityLayerID, 'debugWindow');
     this.debugWindow.addEventListener(Messages.DEBUG_WINDOW_CLOSED, this.handleDebugWindowClosure.bind(this));
     this.inputStatus.addEventListener(Messages.DEBUG_WINDOW_REQUESTED, this.handleDebugRequest.bind(this));
 
+    // ... the screenshot window
+    this.screenshotWindow = new ScreenshotWindow(opacityLayerID, 'screenshotWindow');
+    this.screenshotWindow.addEventListener(Messages.SCREENSHOT_WINDOW_CLOSED, this.handleScreenshotWindowClosure.bind(this));
+    this.inputStatus.addEventListener(Messages.SCREENSHOT_WINDOW_REQUESTED, this.handleScreenshotRequest.bind(this));
+
+    // ... the screenshot link window
+    this.screenshotLinkWindow = new ScreenshotLinkWindow(opacityLayerID, 'screenshotLinkWindow');
+    this.screenshotLinkWindow.addEventListener(Messages.SCREENSHOT_LINK_CLOSED, this.genericDialogClosure);
+
     // ... and finally the query window
-    this.queryShowing = false;
     this.queryWindow = new QueryWindow(opacityLayerID, 'queryWindow');
-    this.queryWindow.addEventListener(Messages.QUERY_WINDOW_CLOSED, this.handleQueryWindowClosure.bind(this));
+    this.queryWindow.addEventListener(Messages.QUERY_WINDOW_CLOSED, this.genericDialogClosure);
     this.inputStatus.addEventListener(Messages.QUERY_WINDOW_NEEDED, this.handleQueryRequest.bind(this));
 
     // Listen for front end messages
@@ -75,6 +101,8 @@ define(['BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', 'DisasterWind
     this.infoBar = InfoBar('cclass', 'population', 'score', 'funds', 'date');
     this.infoBar(this.simulation);
 
+    this.dialogOpen = false;
+    this._openWindow = null;
     this.mouse = null;
     this.sprites = null;
     this.lastCoord = null;
@@ -86,7 +114,7 @@ define(['BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', 'DisasterWind
     this._reachedTown = this._reachedCity = this._reachedCapital = this._reachedMetropolis = this._reacedMegalopolis = false;
     this.congratsShowing = false;
     this.congratsWindow = new CongratsWindow(opacityLayerID, 'congratsWindow');
-    this.congratsWindow.addEventListener(Messages.CONGRATS_WINDOW_CLOSED, this.handleCongratsWindowClosure.bind(this));
+    this.congratsWindow.addEventListener(Messages.CONGRATS_WINDOW_CLOSED, this.genericDialogClosure);
 
     // Unhide controls
     this.revealControls();
@@ -127,8 +155,14 @@ define(['BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', 'DisasterWind
   };
 
 
+  var genericDialogClosure = function() {
+    this.dialogOpen = false;
+  };
+
+
   Game.prototype.handleDisasterWindowClosure = function(request) {
-    this.disasterShowing = false;
+    this.dialogOpen = false;
+
     if (request === DisasterWindow.DISASTER_NONE)
       return;
 
@@ -159,18 +193,8 @@ define(['BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', 'DisasterWind
   };
 
 
-  Game.prototype.handleEvalWindowClosure = function() {
-    this.evalShowing = false;
-  };
-
-
-  Game.prototype.handleCongratsWindowClosure = function() {
-    this.congratsShowing = false;
-  };
-
-
   Game.prototype.handleDebugWindowClosure = function(actions) {
-    this.debugShowing = false;
+    this.dialogOpen = false;
 
     for (var i = 0, l = actions.length; i < l; i++) {
       var a = actions[i];
@@ -187,13 +211,27 @@ define(['BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', 'DisasterWind
   };
 
 
-  Game.prototype.handleQueryWindowClosure = function() {
-    this.queryShowing = false;
+  Game.prototype.handleScreenshotWindowClosure = function(action) {
+    this.dialogOpen = false;
+
+    if (action === null)
+      return;
+
+    var dataURI;
+    if (action === ScreenshotWindow.SCREENSHOT_VISIBLE)
+      dataURI = this.gameCanvas.screenshotVisible();
+    else if (action === ScreenshotWindow.SCREENSHOT_ALL)
+      dataURI = this.gameCanvas.screenshotMap();
+
+    this.dialogOpen = true;
+    this._openWindow = 'screenshotLinkWindow';
+    this.screenshotLinkWindow.open(dataURI);
   };
 
 
   Game.prototype.handleBudgetWindowClosure = function(data) {
-    this.budgetShowing = false;
+    this.dialogOpen = false;
+
     if (!data.cancelled) {
       this.simulation.budget.roadPercent = data.roadPercent / 100;
       this.simulation.budget.firePercent = data.firePercent / 100;
@@ -209,76 +247,33 @@ define(['BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', 'DisasterWind
   };
 
 
-  Game.prototype.handleDisasterRequest = function() {
-    if (this.disasterShowing) {
-      console.warn('Request was made to open disaster window. It is already open!');
-      return;
-    }
+  var makeWindowOpenHandler = function(winName, customFn) {
+    customFn = customFn || null;
 
-    this.disasterShowing = true;
-    this.disasterWindow.open();
-    window.setTimeout(this.tick, 0);
+    return function() {
+      if (this.dialogOpen) {
+        console.warn('Request made to open ' + winName + ' window. There is a dialog open!');
+        return;
+      }
+
+      this.dialogOpen = true;
+      this._openWindow = winName + 'Window';
+      var win = winName + 'Window';
+      var data = [];
+
+      if (customFn)
+        data = customFn();
+
+      this[win].open.apply(this[win], data);
+      window.setTimeout(this.tick, 0);
+    };
   };
 
 
-  Game.prototype.handleDebugRequest = function() {
-    if (this.debugShowing) {
-      console.warn('Request was made to open debug window. It is already open!');
-      return;
-    }
-
-    this.debugShowing = true;
-    this.debugWindow.open();
-    window.setTimeout(this.tick, 0);
-  };
-
-
-  Game.prototype.handleEvalRequest = function() {
-    if (this.evalShowing) {
-      console.warn('Request was made to open eval window. It is already open!');
-      return;
-    }
-
-    this.evalShowing = true;
-    this.evalWindow.open(this.simulation.evaluation);
-    window.setTimeout(this.tick, 0);
-  };
-
-
-  Game.prototype.handleQueryRequest = function() {
-    if (this.queryShowing) {
-      console.warn('Request was made to open query window. It is already open!');
-      return;
-    }
-
-    this.queryShowing = true;
-    this.queryWindow.open();
-    window.setTimeout(this.tick, 0);
-  };
-
-
-  Game.prototype.handleBudgetRequest = function() {
-    if (this.budgetShowing) {
-      console.warn('Request was made to open budget window. It is already open!');
-      return;
-    }
-
-    this.budgetShowing = true;
-
-    var budgetData = {
-      roadMaintenanceBudget: this.simulation.budget.roadMaintenanceBudget,
-      roadRate: Math.floor(this.simulation.budget.roadPercent * 100),
-      fireMaintenanceBudget: this.simulation.budget.fireMaintenanceBudget,
-      fireRate: Math.floor(this.simulation.budget.firePercent * 100),
-      policeMaintenanceBudget: this.simulation.budget.policeMaintenanceBudget,
-      policeRate: Math.floor(this.simulation.budget.policePercent * 100),
-      taxRate: this.simulation.budget.cityTax,
-      totalFunds: this.simulation.budget.totalFunds,
-      taxesCollected: this.simulation.budget.taxFund};
-
-    this.budgetWindow.open(budgetData);
-    window.setTimeout(this.tick, 0);
-  };
+  Game.prototype.handleDebugRequest = makeWindowOpenHandler('debug');
+  Game.prototype.handleDisasterRequest = makeWindowOpenHandler('disaster');
+  Game.prototype.handleQueryRequest = makeWindowOpenHandler('query');
+  Game.prototype.handleScreenshotRequest = makeWindowOpenHandler('screenshot');
 
 
   Game.prototype.handleMandatoryBudget = function() {
@@ -334,11 +329,16 @@ define(['BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', 'DisasterWind
   };
 
 
-  Game.prototype.handleInput = function() {
-    var dialogShowing = this.queryShowing || this.evalShowing || this.disasterShowing || this.budgetShowing ||
-                        this.congratsShowing || this.debugShowing;
+  Game.prototype.toolEscapeHandler = function() {
+    if (this.dialogOpen)
+      this[this._openWindow].close();
+    else
+      this.inputStatus.clearTool();
+  };
 
-    if (!dialogShowing) {
+
+  Game.prototype.handleInput = function() {
+    if (!this.dialogOpen) {
       // Handle keyboard movement
 
       if (this.inputStatus.left)
@@ -353,19 +353,8 @@ define(['BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', 'DisasterWind
 
     if (this.inputStatus.escape) {
       // We need to handle escape, as InputStatus won't know what dialogs are showing
-
-      if (this.queryShowing)
-        this.queryWindow.close();
-      else if (this.evalShowing)
-        this.evalWindow.close();
-      else if (this.disasterShowing)
-        this.disasterWindow.close();
-      else if (this.budgetShowing)
-        this.budgetWindow.close();
-      else if (this.congratsShowing)
-        this.congratsWindow.close();
-      else if (this.debugShowing)
-        this.debugWindow.close();
+      if (this.dialogOpen)
+        this[this._openWindow].close();
       else
         this.inputStatus.clearTool();
     }
@@ -479,8 +468,7 @@ define(['BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', 'DisasterWind
   var tick = function() {
     this.handleInput();
 
-    if (this.budgetShowing || this.queryShowing || this.disasterShowing ||
-        this.evalShowing) {
+    if (this.dialogOpen) {
       window.setTimeout(this.tick, 0);
       return;
     }

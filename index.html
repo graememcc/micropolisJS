@@ -98,6 +98,9 @@
               <button id="disasterRequest" class="miscButton">Disasters</button>
             </div>
             <div class="">
+              <button id="screenshotRequest" class="miscButton">Take Picture</button>
+            </div>
+            <div class="">
               <button id="pauseRequest" class="miscButton">Pause</button>
             </div>
           </div>
@@ -312,6 +315,35 @@
           </form>
         </div>
       </div>
+      <div class="hidden modal shadow" id="screenshotLinkWindow">
+        <header id="screenshotLinkHeader" class="screenshotHeader padding10 chunk alignCenter">
+           Take Picture
+        </header>
+        <div id="screenshotLinkContainer" class="padding10 open">
+          <div id="screenshotLinkMessage" class="alignCenter">
+            Click <a id="screenshotLink" target="_blank">here</a> to view your picture (right-click to save)
+          </div>
+          <form id="screenshotLinkForm" class="alignCenter margin10">
+            <input type="submit" id="screenshotLinkOK" class="dialogOK" value="OK">
+          </form>
+        </div>
+      </div>
+      <div class="hidden modal shadow" id="screenshotWindow">
+        <header id="screenshotHeader" class="screenshotHeader white padding10 chunk alignCenter">
+           Take Picture
+        </header>
+        <div id="screenshotContainer" class="padding10 open">
+          <form id="screenshotForm" class="alignCenter margin10">
+            <div id="screenshotContainer">
+              Area to take picture of:
+              <input type="radio" class="screenshotType" name="screenshotType" id="screenshotVisible" value="visible" checked="checked"><label for="screenshotVisible">Visible Map</label>
+              <input type="radio" class="screenshotType" name="screenshotType" id="screenshotAll" value="all"><label for="screenshotAll">Full map</label>
+            </div>
+            <button id="screenshotCancel" class="cancel">Cancel</button>
+            <input type="submit" id="screenshotOK" class="dialogOK" value="OK">
+          </form>
+        </div>
+      </div>
       <div class="hidden modal shadow" id="debugWindow">
         <header id="debugHeader" class="debugHeader white padding10 chunk alignCenter">
            Debug
@@ -321,7 +353,7 @@
             <div id="debugFundContainer">
               Add funds:
               <input type="radio" class="debugAdd" name="debugAdd" id="fundsYes" value="true" checked="checked"><label for="fundsYes">Yes</label>
-              <input type="radio" class="debugAdd" name="debugAdd" id="fundsNo" value="false" checked="checked"><label for="fundsNo">No</label>
+              <input type="radio" class="debugAdd" name="debugAdd" id="fundsNo" value="false"><label for="fundsNo">No</label>
             </div>
             <button id="debugCancel" class="cancel">Cancel</button>
             <input type="submit" id="debugOK" class="dialogOK" value="OK">
