@@ -122,7 +122,7 @@ define(['AirplaneSprite', 'BoatSprite', 'CopterSprite', 'EventEmitter', 'Explosi
 
 
   SpriteManager.prototype.generateTrain = function(census, x, y) {
-    if (census.totalPop > 20 &&
+    if (census.totalPop > 10 &&
         this.getSprite(SpriteConstants.SPRITE_TRAIN) === null &&
         Random.getRandom(25) === 0)
       this.makeSprite(SpriteConstants.SPRITE_TRAIN,
