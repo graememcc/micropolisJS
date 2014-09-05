@@ -416,6 +416,10 @@ define(['BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', 'DisasterWind
       return;
     }
 
+    // Show disaster if applicable
+    if (message.data && message.data.showable)
+      this.monsterTV.show(message.data.x, message.data.y);
+
     if (Text.badMessages[subject] !== undefined) {
       this._notificationBar.badNews(message);
       return;

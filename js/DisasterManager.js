@@ -134,7 +134,7 @@ define(['EventEmitter', 'Messages', 'MiscUtils', 'Random', 'SpriteConstants', 'T
         var lowerLimit = zonesOnly ? Tile.LHTHR : Tile.TREEBASE;
         if (tile > lowerLimit && tile < Tile.LASTZONE) {
           this._map.setTo(x, y, TileUtils.randomFire());
-          this._emitEvent(Messages.FIRE_REPORTED, {x: x, y: y});
+          this._emitEvent(Messages.FIRE_REPORTED, {showable: true, x: x, y: y});
           return;
         }
       }
@@ -187,7 +187,7 @@ define(['EventEmitter', 'Messages', 'MiscUtils', 'Random', 'SpriteConstants', 'T
           if (tile === Tile.DIRT || (tile.isBulldozable() && tile.isCombustible)) {
             this._map.setTile(xx, yy, Tile.FLOOD, 0);
             this._floodCount = 30;
-            this._emitEvent(Messages.FLOODING_REPORTED, {x: xx, y: yy});
+            this._emitEvent(Messages.FLOODING_REPORTED, {showable: true, x: xx, y: yy});
             return;
           }
         }
@@ -258,7 +258,7 @@ define(['EventEmitter', 'Messages', 'MiscUtils', 'Random', 'SpriteConstants', 'T
     }
 
     // Report disaster to the user
-    this._emitEvent(Messages.NUCLEAR_MELTDOWN, {x: x, y: y});
+    this._emitEvent(Messages.NUCLEAR_MELTDOWN, {showable: true, x: x, y: y});
   };
 
 
