@@ -61,7 +61,9 @@ define(['AnimationManager', 'GameMap', 'MiscUtils', 'MouseBox', 'Tile', 'TileSet
   }
 
 
-  GameCanvas.prototype.init = function(map, tileSet, spriteSheet) {
+  GameCanvas.prototype.init = function(map, tileSet, spriteSheet, animationManager) {
+    animationManager = animationManager || new AnimationManager(map);
+
     var e = new Error('Invalid parameter');
 
     if (arguments.length < 3)
@@ -70,12 +72,11 @@ define(['AnimationManager', 'GameMap', 'MiscUtils', 'MouseBox', 'Tile', 'TileSet
     if (!tileSet.loaded)
       throw new Error('TileSet not ready!');
 
-
     this._spriteSheet = spriteSheet;
     this._tileSet = tileSet;
     var w = this._tileSet.tileWidth;
     this._map = map;
-    this._animationManager = new AnimationManager(map);
+    this.animationManager = new AnimationManager(map);
 
     if (this._canvas.width < w || this._canvas.height < w)
       throw new Error('Canvas too small!');
@@ -540,7 +541,7 @@ define(['AnimationManager', 'GameMap', 'MiscUtils', 'MouseBox', 'Tile', 'TileSet
     var tileValues = this._map.getTileValuesForPainting(this._originX, this._originY, this._totalTilesInViewX, this._totalTilesInViewY, this._currentPaintedTiles);
 
     // Adjust for animations
-    this._animationManager.getTiles(tileValues, this._originX, this._originY, this._totalTilesInViewX, this._totalTilesInViewY, isPaused);
+    this.animationManager.getTiles(tileValues, this._originX, this._originY, this._totalTilesInViewX, this._totalTilesInViewY, isPaused);
 
     var ctx = this._canvas.getContext('2d');
 
