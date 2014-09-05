@@ -81,6 +81,9 @@ define(['AnimationManager', 'GameMap', 'MiscUtils', 'MouseBox', 'Tile', 'TileSet
     if (this._canvas.width < w || this._canvas.height < w)
       throw new Error('Canvas too small!');
 
+    // Whether to allow off-map scrolling
+    this._allowScrolling = true;
+
     // An array indexed by tile offset containing the tileValue last painted there
     this._lastPaintedTiles = null;
     this._currentPaintedTiles = null; // for future use
@@ -120,18 +123,32 @@ define(['AnimationManager', 'GameMap', 'MiscUtils', 'MouseBox', 'Tile', 'TileSet
 
     var w = this._tileSet.tileWidth;
 
-    // The min/max properties denote how far we will let the canvas' origin move: the map
-    // should be visible in at least half the canvas
-    this.minX = 0 - Math.ceil(Math.floor(canvasWidth/w) / 2);
-    this.maxX = (this._map.width - 1) - Math.ceil(Math.floor(canvasWidth/w) / 2);
-    this.minY = 0 - Math.ceil(Math.floor(canvasHeight/w) / 2);
-    this.maxY = (this._map.height - 1) - Math.ceil(Math.floor(canvasHeight/w) / 2);
-
     // How many tiles fit?
     this._wholeTilesInViewX = Math.floor(canvasWidth / w);
     this._wholeTilesInViewY = Math.floor(canvasHeight / w);
     this._totalTilesInViewX = Math.ceil(canvasWidth / w);
-    this._totalTilesInViewY = Math.ceil(canvasHeight / w);
+
+    if (this._allowScrolling) {
+      // The min/max properties denote how far we will let the canvas' origin move: the map
+      // should be visible in at least half the canvas
+      this.minX = 0 - Math.ceil(Math.floor(canvasWidth/w) / 2);
+      this.maxX = (this._map.width - 1) - Math.ceil(Math.floor(canvasWidth/w) / 2);
+      this.minY = 0 - Math.ceil(Math.floor(canvasHeight/w) / 2);
+      this.maxY = (this._map.height - 1) - Math.ceil(Math.floor(canvasHeight/w) / 2);
+      this._totalTilesInViewY = Math.ceil(canvasHeight / w);
+    } else {
+      this.minX = 0;
+      this.minY = 0;
+      this.maxX = this._map.width - this._totalTilesInViewX;
+      this.maxY = this._map.height - this._totalTilesInViewY;
+    }
+  };
+
+
+  // NOTE: Canvas must be visible when this is called
+  GameCanvas.prototype.disallowOffMap = function() {
+    this._allowScrolling = false;
+    this._calculateDimensions();
   };
 
 
@@ -203,6 +220,8 @@ define(['AnimationManager', 'GameMap', 'MiscUtils', 'MouseBox', 'Tile', 'TileSet
       x = x.x;
     }
 
+    // XXX Need to fix so that centres on best point if bounds fall outside
+    // XXX min/max
     this._originX = Math.floor(x) - Math.ceil(this._wholeTilesInViewX / 2);
     this._originY = Math.floor(y) - Math.ceil(this._wholeTilesInViewY / 2);
   };

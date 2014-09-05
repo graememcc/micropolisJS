@@ -83,6 +83,7 @@ define(['BaseSprite', 'Messages', 'MiscUtils', 'Random', 'SpriteConstants', 'Spr
           this.destY = this.origY;
         } else {
           this.frame = 0;
+          this._emitEvent(Messages.SPRITE_DYING);
           return;
         }
       }
@@ -154,8 +155,11 @@ define(['BaseSprite', 'Messages', 'MiscUtils', 'Random', 'SpriteConstants', 'Spr
         s.explodeSprite();
     }
 
+    if (this.frame === 0)
+      this._emitEvent(Messages.SPRITE_DYING);
+
     SpriteUtils.destroyMapTile(this.spriteManager, this.map, blockMaps, this.x, this.y);
-    this._emitEvent(Messages.SPRITE_MOVED, {x: this.x, y: this.y});
+    this._emitEvent(Messages.SPRITE_MOVED, {x: this.worldX, y: this.worldY});
   };
 
 

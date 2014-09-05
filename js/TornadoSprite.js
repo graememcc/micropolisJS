@@ -78,6 +78,9 @@ define(['BaseSprite', 'Messages', 'MiscUtils', 'Random', 'SpriteConstants', 'Spr
     if (this.count !== 0 && Random.getRandom(500) === 0)
       this.frame = 0;
 
+    if (this.frame === 0)
+      this._emitEvent(Messages.SPRITE_DYING);
+
     SpriteUtils.destroyMapTile(this.spriteManager, this.map, blockMaps, this.x, this.y);
     this._emitEvent(Messages.SPRITE_MOVED, {x: this.worldX, y: this.worldY});
   };

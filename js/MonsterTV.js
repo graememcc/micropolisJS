@@ -7,16 +7,25 @@
  *
  */
 
-define(['EventEmitter', 'GameCanvas'],
-       function(EventEmitter, GameCanvas) {
+define(['EventEmitter', 'GameCanvas', 'Messages'],
+       function(EventEmitter, GameCanvas, Messages) {
   "use strict";
 
 
   var MonsterTV = function(map, tileSet, spriteSheet, animationManager) {
     this.isOpen = false;
+    this._tracking = null;
+
+    // Need to quickly flick on the canvas container so the canvas picks up the correct dimensions (this is a bit of a
+    // hack as we're reusing the same GameCanvas that paints the main map, but it avoids a lot of duplication)
     $(monsterTVID).toggle();
+
     this.canvas = new GameCanvas(monsterTVCanvasID, monsterTVContainerID);
     this.canvas.init(map, tileSet, spriteSheet, animationManager);
+    this.canvas.disallowOffMap();
+
+    this._onMove = onMove.bind(this);
+    this._onDie = onDie.bind(this);
 
     $(monsterTVID).toggle();
     $(monsterTVFormID).on('submit', close.bind(this));
@@ -43,6 +52,40 @@ define(['EventEmitter', 'GameCanvas'],
       return;
 
     this.canvas.paint(null, sprite, isPaused);
+  };
+
+
+  onMove = function(event) {
+    var min = this.canvas.getTileOrigin();
+    var max = this.canvas.getMaxTile();
+
+    if (event.x < min.x || event.y < min.y || event.x >= max.x || event.y >= max.y)
+      this.canvas.centreOn(event.x, event.y);
+  };
+
+
+  onDie = function(event) {
+    this._tracking.removeEventListener(Messages.SPRITE_MOVE, this._onMove);
+    this._tracking.removeEventListener(Messages.SPRITE_DYING, this._onDie);
+    this._tracking = null;
+  };
+
+
+  MonsterTV.prototype.track = function(x, y, sprite) {
+    if (this._tracking !== null) {
+      this._tracking.removeEventListener(Messages.SPRITE_MOVE, this._onMove);
+      this._tracking.removeEventListener(Messages.SPRITE_DYING, this._onDie);
+    }
+
+    this._tracking = sprite;
+    sprite.addEventListener(Messages.SPRITE_MOVED, this._onMove);
+    sprite.addEventListener(Messages.SPRITE_DYING, this._onDie);
+    this.canvas.centreOn(x, y);
+
+    if (this.isOpen)
+      return;
+
+    this.open();
   };
 
 

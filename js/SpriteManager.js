@@ -80,6 +80,7 @@ define(['AirplaneSprite', 'BoatSprite', 'CopterSprite', 'EventEmitter', 'Explosi
       newSprite.addEventListener(Messages.HEAVY_TRAFFIC, MiscUtils.reflectEvent.bind(this, Messages.HEAVY_TRAFFIC));
 
     this.spriteList.push(newSprite);
+    return newSprite;
   };
 
 
@@ -87,14 +88,15 @@ define(['AirplaneSprite', 'BoatSprite', 'CopterSprite', 'EventEmitter', 'Explosi
     var sprite = this.getSprite(SpriteConstants.SPRITE_TORNADO);
     if (sprite !== null) {
       sprite.count = 200;
+      this._emitEvent(Messages.TORNADO_SIGHTED, {trackable: true, x: sprite.worldX, y: sprite.worldY, sprite: sprite});
       return;
     }
 
     var x = Random.getRandom(SpriteUtils.worldToPix(this.map.width) - 800) + 400;
     var y = Random.getRandom(SpriteUtils.worldToPix(this.map.height) - 200) + 100;
 
-    this.makeSprite(SpriteConstants.SPRITE_TORNADO, x, y);
-    this._emitEvent(Messages.TORNADO_SIGHTED, {x: SpriteUtils.pixToWorld(x), y: SpriteUtils.pixToWorld(y)});
+    sprite = this.makeSprite(SpriteConstants.SPRITE_TORNADO, x, y);
+    this._emitEvent(Messages.TORNADO_SIGHTED, {trackable: true, x: sprite.worldX, y: sprite.worldY, sprite: sprite});
   };
 
 
@@ -208,10 +210,10 @@ define(['AirplaneSprite', 'BoatSprite', 'CopterSprite', 'EventEmitter', 'Explosi
 
 
   SpriteManager.prototype.makeMonsterAt = function(x, y) {
-    this.makeSprite(SpriteConstants.SPRITE_MONSTER,
+    var sprite = this.makeSprite(SpriteConstants.SPRITE_MONSTER,
                     SpriteUtils.worldToPix(x),
                     SpriteUtils.worldToPix(y));
-    this._emitEvent(Messages.MONSTER_SIGHTED, {x: x, y: y});
+    this._emitEvent(Messages.MONSTER_SIGHTED, {trackable: true, x: x, y: y, sprite: sprite});
   };
 
 

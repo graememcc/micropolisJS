@@ -353,7 +353,7 @@ nav li {
 #monstertv {
   position: absolute;
   top: 300px;
-  width: 160px;
+  width: 200px;
   background-color: red;
 }
 
@@ -470,8 +470,8 @@ nav li {
 }
 
 #tvContainer {
-  width: 145px;
-  height: 96px;
+  width: 177px;
+  height: 128px;
   margin: 0 auto;
 }
 
