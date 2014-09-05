@@ -486,8 +486,7 @@ define(['BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', 'DisasterWind
 
 
   var animate = function() {
-    if (this.budgetShowing || this.queryShowing ||
-        this.disasterShowing || this.evalShowing) {
+    if (this.dialogShowing)
       nextFrame(this.animate);
       return;
     }
@@ -503,22 +502,19 @@ define(['BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', 'DisasterWind
 
 
   var debugAnimate = function() {
-    // Don't run on blur - bad things seem to happen
-    // when switching back to our tab in Fx
-    if (this.budgetShowing || this.queryShowing ||
-        this.disasterShowing || this.evalShowing || this.debugShowing) {
-      nextFrame(this.animate);
-      return;
-    }
-
-    this.frameCount++;
-
     var date = new Date();
     var elapsed = Math.floor((date - this.animStart) / 1000);
 
     if (elapsed > this.lastElapsed && this.frameCount > 0) {
       $('#fpsValue').text(Math.floor(this.frameCount/elapsed));
       this.lastElapsed = elapsed;
+    }
+
+    this.frameCount++;
+
+    if (this.dialogShowing) {
+      nextFrame(this.animate);
+      return;
     }
 
     if (!this.isPaused)
