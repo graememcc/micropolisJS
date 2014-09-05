@@ -333,7 +333,7 @@ nav li {
 
 #debug {
   position: absolute;
-  top: 280px;
+  top: 500px;
   width: 280px;
   display: none;
 }
@@ -348,6 +348,17 @@ nav li {
   position: absolute;
   top: 250px;
   height: 120px;
+}
+
+#monstertv {
+  position: absolute;
+  top: 300px;
+  width: 160px;
+  background-color: red;
+}
+
+#monsterTVForm {
+  margin-top: 5px;
 }
 
 #nameForm {
@@ -456,6 +467,12 @@ nav li {
   right: 0;
   display: none;
   z-index: 200;
+}
+
+#tvContainer {
+  width: 145px;
+  height: 96px;
+  margin: 0 auto;
 }
 
 #wrapper {

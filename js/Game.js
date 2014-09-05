@@ -7,8 +7,8 @@
  *
  */
 
-define(['BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', 'DisasterWindow', 'GameCanvas', 'EvaluationWindow', 'InfoBar', 'InputStatus', 'Messages', 'Notification', 'QueryWindow', 'RCI', 'ScreenshotLinkWindow', 'ScreenshotWindow', 'Simulation', 'Text'],
-       function(BudgetWindow, Config, CongratsWindow, DebugWindow, DisasterWindow, GameCanvas, EvaluationWindow, InfoBar, InputStatus, Messages, Notification, QueryWindow, RCI, ScreenshotLinkWindow, ScreenshotWindow, Simulation, Text) {
+define(['BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', 'DisasterWindow', 'GameCanvas', 'EvaluationWindow', 'InfoBar', 'InputStatus', 'Messages', 'MonsterTV', 'Notification', 'QueryWindow', 'RCI', 'ScreenshotLinkWindow', 'ScreenshotWindow', 'Simulation', 'Text'],
+       function(BudgetWindow, Config, CongratsWindow, DebugWindow, DisasterWindow, GameCanvas, EvaluationWindow, InfoBar, InputStatus, Messages, MonsterTV, Notification, QueryWindow, RCI, ScreenshotLinkWindow, ScreenshotWindow, Simulation, Text) {
   "use strict";
 
 
@@ -27,6 +27,9 @@ define(['BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', 'DisasterWind
     this.gameCanvas = new GameCanvas('canvasContainer');
     this.gameCanvas.init(this.gameMap, this.tileSet, spriteSheet);
     this.inputStatus = new InputStatus(this.gameMap, tileSet.tileWidth);
+
+    // Initialise monsterTV
+    this.monsterTV = new MonsterTV(this.gameMap, tileSet, spriteSheet, this.gameCanvas.animationManager);
 
     var opacityLayerID = 'opaque';
 
@@ -104,7 +107,6 @@ define(['BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', 'DisasterWind
     this.dialogOpen = false;
     this._openWindow = null;
     this.mouse = null;
-    this.sprites = null;
     this.lastCoord = null;
     this.simNeededBudget = false;
 
@@ -453,9 +455,9 @@ define(['BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', 'DisasterWind
   };
 
 
-  Game.prototype.calculateSpritesForPaint = function() {
-    var origin = this.gameCanvas.getTileOrigin();
-    var end = this.gameCanvas.getMaxTile();
+  Game.prototype.calculateSpritesForPaint = function(canvas) {
+    var origin = canvas.getTileOrigin();
+    var end = canvas.getMaxTile();
     var spriteList = this.simulation.spriteManager.getSpritesInView(origin.x, origin.y, end.x + 1, end.y + 1);
 
     if (spriteList.length === 0)
@@ -486,7 +488,7 @@ define(['BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', 'DisasterWind
 
 
   var animate = function() {
-    if (this.dialogShowing)
+    if (this.dialogShowing) {
       nextFrame(this.animate);
       return;
     }
@@ -494,8 +496,11 @@ define(['BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', 'DisasterWind
     if (!this.isPaused)
       this.simulation.spriteManager.moveObjects(this.simulation._constructSimData());
 
-    this.sprite = this.calculateSpritesForPaint();
-    this.gameCanvas.paint(this.mouse, this.sprite, this.isPaused);
+    var sprites = this.calculateSpritesForPaint(this.gameCanvas);
+    this.gameCanvas.paint(this.mouse, sprites, this.isPaused);
+
+    sprites = this.calculateSpritesForPaint(this.monsterTV.canvas);
+    this.monsterTV.paint(null, sprites, this.isPaused);
 
     nextFrame(this.animate);
   };
@@ -520,8 +525,13 @@ define(['BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', 'DisasterWind
     if (!this.isPaused)
       this.simulation.spriteManager.moveObjects(this.simulation._constructSimData());
 
-    this.sprite = this.calculateSpritesForPaint();
-    this.gameCanvas.paint(this.mouse, this.sprite, this.isPaused);
+    var sprites = this.calculateSpritesForPaint(this.gameCanvas);
+    this.gameCanvas.paint(this.mouse, sprites, this.isPaused);
+
+    if (this.monsterTV.isOpen) {
+      sprites = this.calculateSpritesForPaint(this.monsterTV.canvas);
+      this.monsterTV.paint(sprites, this.isPaused);
+    }
 
     nextFrame(this.animate);
   };
