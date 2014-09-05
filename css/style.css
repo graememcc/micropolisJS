@@ -90,12 +90,6 @@ nav li {
   border-bottom: 1px solid black;
 }
 
-.budgetData, .statisticsRight {
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-
 .budgetRight {
    margin-left: 7px
 }
@@ -126,6 +120,12 @@ nav li {
 
 .difficulty {
   margin-left: 10px;
+}
+
+.elided {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .fontlarge {
@@ -373,10 +373,7 @@ nav li {
   border: 1px solid black;
   width: 400px;
   height: 19px;
-  text-overflow: ellipsis;
   transform: translateX(-50%);
-  overflow: hidden;
-  white-space: nowrap;
 }
 
 #opaque {

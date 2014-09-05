@@ -72,17 +72,17 @@
             <div class="">
               <span id="date">Jan 1900</span>
             </div>
-            <div class="">
+            <div class="elided">
               Funds $<span id="funds">20000</span>
             </div>
-            <div class="">
+            <div class="elided">
               Score: <span id="score">0</span>
             </div>
             <div class="">
               <span id="cclass">VILLAGE</span>
             </div>
-            <div class="">
-              Population <span id="population">0</span>
+            <div class="elided">
+              Population:<br /> <span id="population">0</span>
             </div>
           </div>
         </div>
@@ -144,7 +144,7 @@
             <button id="debugRequest" class="">Debug</button>
           </div>
         </div>
-        <div id="notifications" class="initialHidden neutral z1 rightedge alignCenter padding10 shadow"></div>
+        <div id="notifications" class="initialHidden neutral z1 rightedge alignCenter elided padding10 shadow"></div>
         <div id="tooSmall" class="mintcream open"><div id="tooSmallInner" class="centred alignCenter"><h2 class="chunk">Uh-oh!</h2><p>It looks like your screen is too small for micropolisJS. Sorry!</p></div></div>
       </main>
       <footer id="footer" class="alignCenter chunk white padding10">
@@ -157,36 +157,36 @@
         </header>
         <div id="budgetFormContainer" class="padding10 open">
           <form id="budgetForm" class="">
-            <div id="taxInfo" class="budgetData">Tax Collected: <span id="taxesCollected"></span></div>
-            <div id="cashInfo" class="budgetRight budgetData">Cashflow: <span id="cashFlow"></span></div>
-            <div id="previousInfo" class="budgetData">Previous funds: <span id="previousFunds"></span></div>
-            <div id="currentInfo" class="budgetRight budgetData">Current funds: <span id="currentFunds"></span></div>
+            <div id="taxInfo" class="elided budgetData">Tax Collected: <span id="taxesCollected"></span></div>
+            <div id="cashInfo" class="elided budgetRight budgetData">Cashflow: <span id="cashFlow"></span></div>
+            <div id="previousInfo" class="elided budgetData">Previous funds: <span id="previousFunds"></span></div>
+            <div id="currentInfo" class="elided budgetRight budgetData">Current funds: <span id="currentFunds"></span></div>
             <fieldset class="">
               <legend>Roads</legend>
               <input type="range" id="roadRate" min="0" max="100" step="1" data-source="roadMaintenanceBudget">
               <div>
-                <label for="roadRate" class="budgetData" id="roadRateLabel">100% of $100 = $100</label>
+                <label for="roadRate" class="elided budgetData" id="roadRateLabel">100% of $100 = $100</label>
               </div>
             </fieldset>
             <fieldset class="budgetRight">
               <legend>Fire</legend>
               <input type="range" id="fireRate" min="0" max="100" step="1" data-source="fireMaintenanceBudget">
               <div>
-                <label for="fireRate" class="budgetData" id="fireRateLabel">100% of $100 = $100</label>
+                <label for="fireRate" class="elided budgetData" id="fireRateLabel">100% of $100 = $100</label>
               </div>
             </fieldset>
             <fieldset class="">
               <legend>Police</legend>
               <input type="range" id="policeRate" min="0" max="100" step="1" data-source="policeMaintenanceBudget">
               <div>
-                <label for="policeRate" class="budgetData" id="policeRateLabel">100% of $100 = $100</label>
+                <label for="policeRate" class="elided budgetData" id="policeRateLabel">100% of $100 = $100</label>
               </div>
             </fieldset>
             <fieldset class="budgetRight">
               <legend>Tax</legend>
               <input type="range" id="taxRate" min="0" max="20" step="1">
               <div>
-                <label for="taxRate" class="budgetData" id="taxRateLabel">100% of $100 = $100</label>
+                <label for="taxRate" class="elided budgetData" id="taxRateLabel">100% of $100 = $100</label>
               </div>
             </fieldset>
             <div id="budgetButtons" class="alignCenter">
@@ -217,13 +217,13 @@
           <section id="statistics">
             <h2 class="alignCenter">Statistics</h2>
             <div id="statisticsList">
-              <dt class="evalItem statisticsItem">Population:</dt><dd class="statisticsRight evalItem evalRight" id="evalPopulation"></dd>
-              <dt class="evalItem statisticsItem">Net Migration:</dt><dd class="statisticsRight evalItem evalRight" id="evalMigration"></dd>
-              <dt class="evalItem statisticsItem">Assessed Value:</dt><dd class="statisticsRight evalItem evalRight" id="evalValue"></dd>
-              <dt class="evalItem statisticsItem">Category:</dt><dd class="statisticsRight evalItem evalRight" id="evalClass"></dd>
-              <dt class="evalItem statisticsItem">Game Level:</dt><dd class="statisticsRight evalItem evalRight" id="evalLevel"></dd>
-              <dt class="evalItem statisticsItem">Score:</dt><dd class="statisticsRight evalItem evalRight" id="evalScore"></dd>
-              <dt class="evalItem statisticsItem">Annual change:</dt><dd class="statisticsRight evalItem evalRight" id="evalScoreDelta"></dd>
+              <dt class="evalItem statisticsItem">Population:</dt><dd class="elided statisticsRight evalItem evalRight" id="evalPopulation"></dd>
+              <dt class="evalItem statisticsItem">Net Migration:</dt><dd class="elided statisticsRight evalItem evalRight" id="evalMigration"></dd>
+              <dt class="evalItem statisticsItem">Assessed Value:</dt><dd class="elided statisticsRight evalItem evalRight" id="evalValue"></dd>
+              <dt class="evalItem statisticsItem">Category:</dt><dd class="elided statisticsRight evalItem evalRight" id="evalClass"></dd>
+              <dt class="evalItem statisticsItem">Game Level:</dt><dd class="elided statisticsRight evalItem evalRight" id="evalLevel"></dd>
+              <dt class="evalItem statisticsItem">Score:</dt><dd class="elided statisticsRight evalItem evalRight" id="evalScore"></dd>
+              <dt class="evalItem statisticsItem">Annual change:</dt><dd class=" elided statisticsRight evalItem evalRight" id="evalScoreDelta"></dd>
           </div>
           <form id="evalButtons" class="alignCenter margin10">
             <input type="submit" id="evalOK" class="width140 dialogOK" value="OK">
