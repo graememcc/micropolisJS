@@ -155,6 +155,7 @@ define(['BaseSprite', 'Messages', 'MiscUtils', 'Random', 'SpriteConstants', 'Spr
     }
 
     SpriteUtils.destroyMapTile(this.spriteManager, this.map, blockMaps, this.x, this.y);
+    this._emitEvent(Messages.SPRITE_MOVED, {x: this.x, y: this.y});
   };
 
 
