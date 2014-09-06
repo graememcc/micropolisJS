@@ -7,8 +7,8 @@
  *
  */
 
-define(['BlockMap', 'Direction', 'EventEmitter', 'Messages', 'Tile'],
-       function(BlockMap, Direction, EventEmitter, Messages, Tile) {
+define(['BlockMap', 'Direction', 'EventEmitter', 'Messages', 'Random', 'Tile'],
+       function(BlockMap, Direction, EventEmitter, Messages, Random, Tile) {
   "use strict";
 
   var COAL_POWER_STRENGTH = 700;
