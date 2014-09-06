@@ -7,8 +7,8 @@
  *
  */
 
-define(['Messages', 'ModalWindow', 'MiscUtils'],
-       function(Messages, ModalWindow, MiscUtils) {
+define(['Messages', 'ModalWindow', 'MiscUtils', 'Simulation'],
+       function(Messages, ModalWindow, MiscUtils, Simulation) {
   "use strict";
 
   var SettingsWindow = ModalWindow(function() {
@@ -24,6 +24,9 @@ define(['Messages', 'ModalWindow', 'MiscUtils'],
   var autoBudgetNoID = '#autoBudgetNo';
   var autoBulldozeYesID = '#autoBulldozeYes';
   var autoBulldozeNoID = '#autoBulldozeNo';
+  var speedSlowID = '#speedSlow';
+  var speedMedID = '#speedMed';
+  var speedFastID = '#speedFast';
 
 
   SettingsWindow.prototype.close = function(actions) {
@@ -44,19 +47,22 @@ define(['Messages', 'ModalWindow', 'MiscUtils'],
 
     var actions = [];
 
-    var shouldAutoBudget = $('.autoBudgetSetting:checked').val() && true;
+    var shouldAutoBudget = $('.autoBudgetSetting:checked').val();
     if (shouldAutoBudget === 'true')
       shouldAutoBudget = true;
     else
       shouldAutoBudget = false;
     actions.push({action: SettingsWindow.AUTOBUDGET, data: shouldAutoBudget});
 
-    var shouldAutoBulldoze = $('.autoBulldozeSetting:checked').val() && true;
+    var shouldAutoBulldoze = $('.autoBulldozeSetting:checked').val();
     if (shouldAutoBulldoze === 'true')
       shouldAutoBulldoze = true;
     else
       shouldAutoBulldoze = false;
     actions.push({action: SettingsWindow.AUTOBULLDOZE, data: shouldAutoBulldoze});
+
+    var speed = $('.speedSetting:checked').val() - 0;
+    actions.push({action: SettingsWindow.SPEED, data: speed});
 
     this.close(actions);
   };
@@ -72,6 +78,13 @@ define(['Messages', 'ModalWindow', 'MiscUtils'],
       $(autoBulldozeYesID).prop('checked', true);
     else
       $(autoBulldozeNoID).prop('checked', true);
+
+    if (settingsData.speed === Simulation.SPEED_SLOW)
+      $(speedSlowID).prop('checked', true);
+    else if (settingsData.speed === Simulation.SPEED_MED)
+      $(speedMedID).prop('checked', true);
+    else
+      $(speedFastID).prop('checked', true);
 
     this._toggleDisplay();
   };

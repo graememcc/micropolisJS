@@ -28,6 +28,14 @@ define(['BaseTool', 'BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', '
     this.gameCanvas.init(this.gameMap, this.tileSet, spriteSheet);
     this.inputStatus = new InputStatus(this.gameMap, tileSet.tileWidth);
 
+    this.dialogOpen = false;
+    this._openWindow = null;
+    this.mouse = null;
+    this.lastCoord = null;
+    this.simNeededBudget = false;
+    this.defaultSpeed = Simulation.SPEED_SLOW;
+    this.isPaused = false;
+
     // Initialise monsterTV
     this.monsterTV = new MonsterTV(this.gameMap, tileSet, spriteSheet, this.gameCanvas.animationManager);
 
@@ -77,7 +85,7 @@ define(['BaseTool', 'BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', '
 
     // ... the settings window
     this.handleSettingsRequest = makeWindowOpenHandler('settings', function() {
-      return [{autoBudget: this.simulation.budget.autoBudget, autoBulldoze: BaseTool.getAutoBulldoze()}];
+      return [{autoBudget: this.simulation.budget.autoBudget, autoBulldoze: BaseTool.getAutoBulldoze(), speed: this.defaultSpeed}];
     }.bind(this));
     this.settingsWindow = new SettingsWindow(opacityLayerID, 'settingsWindow');
     this.settingsWindow.addEventListener(Messages.SETTINGS_WINDOW_CLOSED, this.handleSettingsWindowClosure.bind(this));
@@ -107,30 +115,20 @@ define(['BaseTool', 'BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', '
     this.inputStatus.addEventListener(Messages.TOOL_CLICKED, this.handleTool.bind(this));
 
     // And pauses
-    this.inputStatus.addEventListener(Messages.SPEED_CHANGE, this.handleSpeedChange.bind(this));
+    this.inputStatus.addEventListener(Messages.SPEED_CHANGE, this.handlePause.bind(this));
 
     this.infoBar = InfoBar('cclass', 'population', 'score', 'funds', 'date');
     this.infoBar(this.simulation);
-
-    this.dialogOpen = false;
-    this._openWindow = null;
-    this.mouse = null;
-    this.lastCoord = null;
-    this.simNeededBudget = false;
 
     this._notificationBar = new Notification('#notifications', this.gameCanvas, Text.messageText[Messages.WELCOME]);
 
     // Track when various milestones are first reached
     this._reachedTown = this._reachedCity = this._reachedCapital = this._reachedMetropolis = this._reacedMegalopolis = false;
-    this.congratsShowing = false;
     this.congratsWindow = new CongratsWindow(opacityLayerID, 'congratsWindow');
     this.congratsWindow.addEventListener(Messages.CONGRATS_WINDOW_CLOSED, this.genericDialogClosure);
 
     // Unhide controls
     this.revealControls();
-
-    this.simNeedsBudget = false;
-    this.isPaused = false;
 
     // Run the sim
     this.tick = tick.bind(this);
@@ -211,11 +209,17 @@ define(['BaseTool', 'BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', '
 
       switch (a.action) {
         case SettingsWindow.AUTOBUDGET:
+          console.log('AUTOBUDGET:',a.data, typeof(a.data));
           this.simulation.budget.setAutoBudget(a.data);
           break;
 
         case SettingsWindow.AUTOBULLDOZE:
           BaseTool.setAutoBulldoze(a.data);
+          break;
+
+        case SettingsWindow.SPEED_CHANGE:
+          this.defaultSpeed = a.data;
+          this.simulation.setSpeed(this.defaultSpeed);
           break;
 
         default:
@@ -348,7 +352,7 @@ define(['BaseTool', 'BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', '
   };
 
 
-  Game.prototype.handleSpeedChange = function() {
+  Game.prototype.handlePause = function() {
     // XXX Currently only offer pause and run to the user
     // No real difference among the speeds until we optimise
     // the sim
@@ -357,7 +361,7 @@ define(['BaseTool', 'BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', '
     if (this.isPaused)
       this.simulation.setSpeed(Simulation.SPEED_PAUSED);
     else
-      this.simulation.setSpeed(Simulation.SPEED_SLOW);
+      this.simulation.setSpeed(this.defaultSpeed);
   };
 
 

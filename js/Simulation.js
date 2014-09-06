@@ -117,11 +117,11 @@ define(['BlockMap', 'BlockMapUtils', 'Budget', 'Census', 'Commercial', 'Disaster
         break;
 
       case Simulation.SPEED_NORMAL:
-        threshold = 25;
+        threshold = 50;
         break;
 
       case Simulation.SPEED_FAST:
-        threshold = 1;
+        threshold = 10;
         break;
 
       default:
