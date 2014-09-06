@@ -17,10 +17,7 @@ define(['ConnectingTool', 'Tile', 'TileUtils'],
 
 
   RoadTool.prototype.layRoad = function(x, y) {
-    var result = this.doAutoBulldoze(x, y);
-    if (!result)
-      return this.TOOLRESULT_NEEDS_BULLDOZE;
-
+    this.doAutoBulldoze(x, y);
     var tile = this._worldEffects.getTileValue(x, y);
     var cost = 10;
 

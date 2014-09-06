@@ -7,8 +7,8 @@
  *
  */
 
-define(['BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', 'DisasterWindow', 'GameCanvas', 'EvaluationWindow', 'InfoBar', 'InputStatus', 'Messages', 'MonsterTV', 'Notification', 'QueryWindow', 'RCI', 'ScreenshotLinkWindow', 'ScreenshotWindow', 'SettingsWindow', 'Simulation', 'Text'],
-       function(BudgetWindow, Config, CongratsWindow, DebugWindow, DisasterWindow, GameCanvas, EvaluationWindow, InfoBar, InputStatus, Messages, MonsterTV, Notification, QueryWindow, RCI, ScreenshotLinkWindow, ScreenshotWindow, SettingsWindow, Simulation, Text) {
+define(['BaseTool', 'BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', 'DisasterWindow', 'GameCanvas', 'EvaluationWindow', 'InfoBar', 'InputStatus', 'Messages', 'MonsterTV', 'Notification', 'QueryWindow', 'RCI', 'ScreenshotLinkWindow', 'ScreenshotWindow', 'SettingsWindow', 'Simulation', 'Text'],
+       function(BaseTool, BudgetWindow, Config, CongratsWindow, DebugWindow, DisasterWindow, GameCanvas, EvaluationWindow, InfoBar, InputStatus, Messages, MonsterTV, Notification, QueryWindow, RCI, ScreenshotLinkWindow, ScreenshotWindow, SettingsWindow, Simulation, Text) {
   "use strict";
 
 
@@ -77,7 +77,7 @@ define(['BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', 'DisasterWind
 
     // ... the settings window
     this.handleSettingsRequest = makeWindowOpenHandler('settings', function() {
-      return [{autoBudget: this.simulation.budget.autoBudget}];
+      return [{autoBudget: this.simulation.budget.autoBudget, autoBulldoze: BaseTool.getAutoBulldoze()}];
     }.bind(this));
     this.settingsWindow = new SettingsWindow(opacityLayerID, 'settingsWindow');
     this.settingsWindow.addEventListener(Messages.SETTINGS_WINDOW_CLOSED, this.handleSettingsWindowClosure.bind(this));
@@ -212,6 +212,10 @@ define(['BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', 'DisasterWind
       switch (a.action) {
         case SettingsWindow.AUTOBUDGET:
           this.simulation.budget.setAutoBudget(a.data);
+          break;
+
+        case SettingsWindow.AUTOBULLDOZE:
+          BaseTool.setAutoBulldoze(a.data);
           break;
 
         default:

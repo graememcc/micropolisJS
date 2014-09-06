@@ -22,6 +22,8 @@ define(['Messages', 'ModalWindow', 'MiscUtils'],
   var settingsOKID = '#settingsOK';
   var autoBudgetYesID = '#autoBudgetYes';
   var autoBudgetNoID = '#autoBudgetNo';
+  var autoBulldozeYesID = '#autoBulldozeYes';
+  var autoBulldozeNoID = '#autoBulldozeNo';
 
 
   SettingsWindow.prototype.close = function(actions) {
@@ -42,13 +44,19 @@ define(['Messages', 'ModalWindow', 'MiscUtils'],
 
     var actions = [];
 
-    // Get element values
     var shouldAutoBudget = $('.autoBudgetSetting:checked').val() && true;
     if (shouldAutoBudget === 'true')
       shouldAutoBudget = true;
     else
       shouldAutoBudget = false;
     actions.push({action: SettingsWindow.AUTOBUDGET, data: shouldAutoBudget});
+
+    var shouldAutoBulldoze = $('.autoBulldozeSetting:checked').val() && true;
+    if (shouldAutoBulldoze === 'true')
+      shouldAutoBulldoze = true;
+    else
+      shouldAutoBulldoze = false;
+    actions.push({action: SettingsWindow.AUTOBULLDOZE, data: shouldAutoBulldoze});
 
     this.close(actions);
   };
@@ -59,6 +67,11 @@ define(['Messages', 'ModalWindow', 'MiscUtils'],
       $(autoBudgetYesID).prop('checked', true);
     else
       $(autoBudgetNoID).prop('checked', true);
+
+    if (settingsData.autoBulldoze)
+      $(autoBulldozeYesID).prop('checked', true);
+    else
+      $(autoBulldozeNoID).prop('checked', true);
 
     this._toggleDisplay();
   };
@@ -75,6 +88,7 @@ define(['Messages', 'ModalWindow', 'MiscUtils'],
 
 
   defineAction('AUTOBUDGET');
+  defineAction('AUTOBULLDOZE');
 
 
   return SettingsWindow;

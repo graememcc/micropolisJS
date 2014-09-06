@@ -35,9 +35,6 @@ define(['Messages', 'MiscUtils', 'Tile', 'TileUtils', 'WorldEffects'],
 
 
   var doAutoBulldoze = function(x, y) {
-    if (!this._shouldAutoBulldoze)
-      return false;
-
     var tile = this._worldEffects.getTile(x, y);
     if (tile.isBulldozable()) {
       tile = TileUtils.normalizeRoad(tile);
@@ -47,8 +44,6 @@ define(['Messages', 'MiscUtils', 'Tile', 'TileUtils', 'WorldEffects'],
         this._worldEffects.setTile(x, y, Tile.DIRT);
       }
     }
-
-    return true;
   };
 
 
@@ -102,6 +97,9 @@ define(['Messages', 'MiscUtils', 'Tile', 'TileUtils', 'WorldEffects'],
     makeTool: makeTool,
     setAutoBulldoze: function(value) {
       BaseTool.autoBulldoze = value;
+    },
+    getAutoBulldoze: function() {
+      return BaseTool.autoBulldoze;
     }
   };
 });
