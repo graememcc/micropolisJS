@@ -36,7 +36,7 @@ define(['Messages', 'MiscUtils', 'Tile', 'TileUtils', 'WorldEffects'],
 
   var doAutoBulldoze = function(x, y) {
     if (!this._shouldAutoBulldoze)
-      return;
+      return false;
 
     var tile = this._worldEffects.getTile(x, y);
     if (tile.isBulldozable()) {
@@ -47,6 +47,8 @@ define(['Messages', 'MiscUtils', 'Tile', 'TileUtils', 'WorldEffects'],
         this._worldEffects.setTile(x, y, Tile.DIRT);
       }
     }
+
+    return true;
   };
 
 

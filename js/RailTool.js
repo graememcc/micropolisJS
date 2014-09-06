@@ -17,7 +17,10 @@ define(['ConnectingTool', 'Tile', 'TileUtils'],
 
 
   RailTool.prototype.layRail = function(x, y) {
-    this.doAutoBulldoze(x, y);
+    var result = this.doAutoBulldoze(x, y);
+    if (!result)
+      return this.TOOLRESULT_NEEDS_BULLDOZE;
+
     var cost = 20;
 
     var tile = this._worldEffects.getTileValue(x, y);
