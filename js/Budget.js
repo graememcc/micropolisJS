@@ -59,6 +59,12 @@ define(['EventEmitter', 'Messages', 'MiscUtils'],
   });
 
 
+  Budget.prototype.setAutoBudget = function(value) {
+    this.autoBudget = value;
+    this._emitEvent(Messages.AUTOBUDGET_CHANGED, this.autoBudget);
+  };
+
+
   var RLevels = [0.7, 0.9, 1.2];
   var FLevels = [1.4, 1.2, 0.8];
 
@@ -161,9 +167,8 @@ define(['EventEmitter', 'Messages', 'MiscUtils'],
 
     // Uh-oh. Not enough money. Make this the user's problem.
     // They don't know it yet, but they're about to get a budget window.
-    this.autoBudget = false;
+    this.setAutoBudget(false);
     this.awaitingValues = true;
-    this._emitEvent(Messages.AUTOBUDGET_CHANGED, this.autoBudget);
     this._emitEvent(Messages.BUDGET_NEEDED);
     this._emitEvent(Messages.NO_MONEY);
   };

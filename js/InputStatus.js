@@ -61,6 +61,7 @@ define(['EventEmitter', 'GameCanvas', 'GameTools', 'Messages', 'MiscUtils'],
     $('#disasterRequest').click(disasterHandler.bind(this));
     $('#pauseRequest').click(this.speedChangeHandler.bind(this));
     $('#screenshotRequest').click(screenshotHandler.bind(this));
+    $('#settingsRequest').click(settingsHandler.bind(this));
     $('#debugRequest').click(debugHandler.bind(this));
   });
 
@@ -285,11 +286,12 @@ define(['EventEmitter', 'GameCanvas', 'GameTools', 'Messages', 'MiscUtils'],
   };
 
 
-  var screenshotHandler = makeHandler('SCREENSHOT_WINDOW_REQUESTED');
+  var budgetHandler = makeHandler('BUDGET_REQUESTED');
+  var debugHandler = makeHandler('DEBUG_REQUESTED');
   var disasterHandler = makeHandler('DISASTER_REQUESTED');
   var evalHandler = makeHandler('EVAL_REQUESTED');
-  var debugHandler = makeHandler('DEBUG_REQUESTED');
-  var budgetHandler = makeHandler('BUDGET_REQUESTED');
+  var screenshotHandler = makeHandler('SCREENSHOT_WINDOW_REQUESTED');
+  var settingsHandler = makeHandler('SETTINGS_WINDOW_REQUESTED');
 
 
   return InputStatus;

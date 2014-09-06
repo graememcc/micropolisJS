@@ -225,11 +225,6 @@ nav li {
   display: inline-block;
 }
 
-.screenshotHeader, #screenshotRequest {
-  background-color: tomato;
-  color: white;
-}
-
 .selected {
   font-weight: bold;
   border: 1px solid black;
@@ -347,7 +342,7 @@ nav li {
 #miscButtons {
   position: absolute;
   top: 250px;
-  height: 120px;
+  height: 143px;
 }
 
 #monstertv {
@@ -396,7 +391,7 @@ nav li {
 
 #RCIContainer {
   position: absolute;
-  top: 430px;
+  top: 453px;
   width: 140px;
   height: 140px;
   margin: 0px;
@@ -495,6 +490,16 @@ nav li {
 
 #evalRequest, #evalHeader {
   background-color: forestgreen;
+  color: white;
+}
+
+#screenshotHeader, #screenshotRequest {
+  background-color: tomato;
+  color: white;
+}
+
+#settingsHeader, #settingsRequest {
+  background-color: #663399;
   color: white;
 }
 
@@ -598,7 +603,7 @@ nav li {
   #notifications {
     bottom: unset;
     border: none;
-    top: 531px;
+    top: 574px;
   }
 
   #wrapper {
@@ -624,11 +629,11 @@ nav li {
   }
 
   #notifications {
-    top: 501px;
+    top: 544px;
   }
 
   #RCIContainer {
-    top: 400px;
+    top: 423px;
   }
 }
 
@@ -646,11 +651,11 @@ nav li {
   }
 
   #notifications {
-    top: 471px;
+    top: 514px;
   }
 
   #RCIContainer {
-    top: 370px;
+    top: 393px;
   }
 }
 
@@ -680,7 +685,7 @@ nav li {
   }
 
   #notifications {
-    top: 441px;
+    top: 464px;
     -ms-box-shadow: unset;
     -webkit-box-shadow: unset;
     -moz-box-shadow: unset;
@@ -688,7 +693,7 @@ nav li {
   }
 
   #RCIContainer {
-    top: 340px;
+    top: 363px;
     -ms-box-shadow: unset;
     -webkit-box-shadow: unset;
     -moz-box-shadow: unset;
@@ -710,15 +715,15 @@ nav li {
   }
 
   #notifications {
-    top: 411px;
+    top: 424px;
   }
 
   #RCIContainer {
-    top: 310px;
+    top: 333px;
   }
 }
 
-@media (max-height: 520px) {
+@media (max-height: 528px) {
   #tooSmall {
     display: block;
   }

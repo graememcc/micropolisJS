@@ -98,6 +98,9 @@
               <button id="disasterRequest" class="miscButton">Disasters</button>
             </div>
             <div class="">
+              <button id="settingsRequest" class="miscButton">Settings</button>
+            </div>
+            <div class="">
               <button id="screenshotRequest" class="miscButton">Take Picture</button>
             </div>
             <div class="">
@@ -350,6 +353,24 @@
             </div>
             <button id="screenshotCancel" class="cancel">Cancel</button>
             <input type="submit" id="screenshotOK" class="dialogOK" value="OK">
+          </form>
+        </div>
+      </div>
+      <div class="hidden modal shadow" id="settingsWindow">
+        <header id="settingsHeader" class="settingsHeader white padding10 chunk alignCenter">
+           Settings
+        </header>
+        <div id="settingsContainer" class="padding10 open">
+          <form id="settingsForm" class="alignCenter margin10">
+            <div id="settingsFundContainer">
+              <div id="autoBudgetSelect">
+                Autobudget:
+                <input type="radio" class="autoBudgetSetting" name="autoBudgetSetting" id="autoBudgetYes" value="true" checked="checked"><label for="autoBudgetYes">Yes</label>
+                <input type="radio" class="autoBudgetSetting" name="autoBudgetSetting" id="autoBudgetNo" value="false"><label for="autoBudgetNo">No</label>
+              </div>
+            </div>
+            <button id="settingsCancel" class="cancel">Cancel</button>
+            <input type="submit" id="settingsOK" class="dialogOK" value="OK">
           </form>
         </div>
       </div>

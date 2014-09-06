@@ -49,7 +49,7 @@ define(['Messages', 'ModalWindow', 'MiscUtils'],
   };
 
 
-  DebugWindow.prototype.open = function(debugData) {
+  DebugWindow.prototype.open = function() {
     this._toggleDisplay();
   };
 

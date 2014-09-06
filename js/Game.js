@@ -7,8 +7,8 @@
  *
  */
 
-define(['BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', 'DisasterWindow', 'GameCanvas', 'EvaluationWindow', 'InfoBar', 'InputStatus', 'Messages', 'MonsterTV', 'Notification', 'QueryWindow', 'RCI', 'ScreenshotLinkWindow', 'ScreenshotWindow', 'Simulation', 'Text'],
-       function(BudgetWindow, Config, CongratsWindow, DebugWindow, DisasterWindow, GameCanvas, EvaluationWindow, InfoBar, InputStatus, Messages, MonsterTV, Notification, QueryWindow, RCI, ScreenshotLinkWindow, ScreenshotWindow, Simulation, Text) {
+define(['BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', 'DisasterWindow', 'GameCanvas', 'EvaluationWindow', 'InfoBar', 'InputStatus', 'Messages', 'MonsterTV', 'Notification', 'QueryWindow', 'RCI', 'ScreenshotLinkWindow', 'ScreenshotWindow', 'SettingsWindow', 'Simulation', 'Text'],
+       function(BudgetWindow, Config, CongratsWindow, DebugWindow, DisasterWindow, GameCanvas, EvaluationWindow, InfoBar, InputStatus, Messages, MonsterTV, Notification, QueryWindow, RCI, ScreenshotLinkWindow, ScreenshotWindow, SettingsWindow, Simulation, Text) {
   "use strict";
 
 
@@ -74,6 +74,14 @@ define(['BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', 'DisasterWind
     this.debugWindow = new DebugWindow(opacityLayerID, 'debugWindow');
     this.debugWindow.addEventListener(Messages.DEBUG_WINDOW_CLOSED, this.handleDebugWindowClosure.bind(this));
     this.inputStatus.addEventListener(Messages.DEBUG_WINDOW_REQUESTED, this.handleDebugRequest.bind(this));
+
+    // ... the settings window
+    this.handleSettingsRequest = makeWindowOpenHandler('settings', function() {
+      return [{autoBudget: this.simulation.budget.autoBudget}];
+    }.bind(this));
+    this.settingsWindow = new SettingsWindow(opacityLayerID, 'settingsWindow');
+    this.settingsWindow.addEventListener(Messages.SETTINGS_WINDOW_CLOSED, this.handleSettingsWindowClosure.bind(this));
+    this.inputStatus.addEventListener(Messages.SETTINGS_WINDOW_REQUESTED, this.handleSettingsRequest.bind(this));
 
     // ... the screenshot window
     this.screenshotWindow = new ScreenshotWindow(opacityLayerID, 'screenshotWindow');
@@ -191,6 +199,24 @@ define(['BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', 'DisasterWind
 
       case DisasterWindow.DISASTER_TORNADO:
         this.simulation.spriteManager.makeTornado();
+    }
+  };
+
+
+  Game.prototype.handleSettingsWindowClosure = function(actions) {
+    this.dialogOpen = false;
+
+    for (var i = 0, l = actions.length; i < l; i++) {
+      var a = actions[i];
+
+      switch (a.action) {
+        case SettingsWindow.AUTOBUDGET:
+          this.simulation.budget.setAutoBudget(a.data);
+          break;
+
+        default:
+          console.warn('Unexpected action', a);
+      }
     }
   };
 
