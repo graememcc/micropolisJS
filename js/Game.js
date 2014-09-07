@@ -161,7 +161,7 @@ define(['BaseTool', 'BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', '
    });
 
    this._notificationBar.news({subject: Messages.WELCOME});
-   this.rci.update({residential: 0, commerical: 0, industrial: 0});
+   this.rci.update({residential: 750, commercial: 750, industrial: 750});
   };
 
 
