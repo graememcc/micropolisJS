@@ -157,6 +157,17 @@ nav li {
   left: 50px;
 }
 
+.loadSave {
+  background-color: cadetblue;
+  color: white;
+}
+
+.loadSave:disabled {
+  background-color: darkgray;
+  color: silver;
+  cursor: not-allowed;
+}
+
 .margin10 {
   margin: 10px 0;
 }
@@ -234,7 +245,7 @@ nav li {
   font-weight: 600px;
 }
 
-.shadow {
+.shadow, .controlShadow {
   -ms-box-shadow: 10px 0px 35px 0px rgba(31,28,31, 0.8);
   -webkit-box-shadow: 10px 0px 35px 0px rgba(31,28,31, 0.8);
   -moz-box-shadow: 10px 0px 35px 0px rgba(31,28,31, 0.8);
@@ -328,7 +339,7 @@ nav li {
 
 #debug {
   position: absolute;
-  top: 500px;
+  top: 516px;
   width: 280px;
   display: none;
 }
@@ -342,7 +353,7 @@ nav li {
 #miscButtons {
   position: absolute;
   top: 250px;
-  height: 143px;
+  height: 162px;
 }
 
 #monstertv {
@@ -391,7 +402,7 @@ nav li {
 
 #RCIContainer {
   position: absolute;
-  top: 453px;
+  top: 472px;
   width: 140px;
   height: 140px;
   margin: 0px;
@@ -415,7 +426,7 @@ nav li {
 #splashButtons {
   position: absolute;
   left: 10px;
-  top: 120px;
+  top: 105px;
 }
 
 #splashButtonContainer {
@@ -575,7 +586,7 @@ nav li {
   background-color: khaki;
 }
 
-@media (max-height: 720px) {
+@media (max-height: 742px) {
  footer {
     height: 15px;
   }
@@ -603,7 +614,7 @@ nav li {
   #notifications {
     bottom: unset;
     border: none;
-    top: 574px;
+    top: 593px;
   }
 
   #wrapper {
@@ -611,17 +622,21 @@ nav li {
   }
 }
 
-@media (max-height: 680px) {
+@media (max-height: 702px) {
   #controls {
     top: 30px;
   }
 
-  #fps {
-    display: none;
+  #debug {
+    top: 486px;
   }
 
   #infobar {
     top: 30px;
+  }
+
+  #monstertv {
+    top: 280px;
   }
 
   #miscButtons {
@@ -629,21 +644,29 @@ nav li {
   }
 
   #notifications {
-    top: 544px;
+    top: 563px;
   }
 
   #RCIContainer {
-    top: 423px;
+    top: 442px;
   }
 }
 
-@media (max-height: 640px) {
+@media (max-height: 672px) {
   #controls {
     top: 20px;
   }
 
+  #debug {
+    top: 456px;
+  }
+
   #infobar {
     top: 20px;
+  }
+
+  #monstertv {
+    top: 260px;
   }
 
   #miscButtons {
@@ -651,59 +674,58 @@ nav li {
   }
 
   #notifications {
-    top: 514px;
+    top: 533px;
   }
 
   #RCIContainer {
-    top: 393px;
+    top: 412px;
   }
 }
 
-@media (max-height: 600px) {
-  #controls {
-    top: 10px;
+@media (max-height: 642px) {
+  .controlShadow {
     -ms-box-shadow: unset;
     -webkit-box-shadow: unset;
     -moz-box-shadow: unset;
     box-shadow: unset;
+  }
+
+  #controls {
+    top: 10px;
+  }
+
+  #debug {
+    top: 426px;
   }
 
   #infobar {
     top: 10px;
-    -ms-box-shadow: unset;
-    -webkit-box-shadow: unset;
-    -moz-box-shadow: unset;
-    box-shadow: unset;
   }
 
   #miscButtons {
     top: 190px;
-    -ms-box-shadow: unset;
-    -webkit-box-shadow: unset;
-    -moz-box-shadow: unset;
-    box-shadow: unset;
+  }
+
+  #monstertv {
+    top: 240px;
   }
 
   #notifications {
-    top: 464px;
-    -ms-box-shadow: unset;
-    -webkit-box-shadow: unset;
-    -moz-box-shadow: unset;
-    box-shadow: unset;
+    top: 503px;
   }
 
   #RCIContainer {
-    top: 363px;
-    -ms-box-shadow: unset;
-    -webkit-box-shadow: unset;
-    -moz-box-shadow: unset;
-    box-shadow: unset;
+    top: 382px;
   }
 }
 
-@media (max-height: 560px) {
+@media (max-height: 612px) {
   #controls {
     top: 0px;
+  }
+
+  #debug {
+    top: 396px;
   }
 
   #infobar {
@@ -714,16 +736,20 @@ nav li {
     top: 170px;
   }
 
+  #monstertv {
+    top: 220px;
+  }
+
   #notifications {
-    top: 424px;
+    top: 473px;
   }
 
   #RCIContainer {
-    top: 333px;
+    top: 352px;
   }
 }
 
-@media (max-height: 528px) {
+@media (max-height: 582px) {
   #tooSmall {
     display: block;
   }
@@ -736,10 +762,6 @@ nav li {
 
   .rightedge {
     right: 20px;
-  }
-
-  #fps {
-    display: none;
   }
 
   #notifications {

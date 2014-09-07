@@ -45,7 +45,8 @@
           </div>
           <div id="splashButtonContainer">
             <div id="splashButtons">
-              <button id="splashPlay" class="width140 block splashButton">Play this map</button>
+              <button id="splashLoad" class="width140 block loadSave splashButton" disabled>Load game</button>
+              <button id="splashPlay" class="width140 block margin10 splashButton">Play this map</button>
               <button id="splashGenerate" class="width140 block margin10 splashButton">Generate another</button>
             </div>
           </div>
@@ -64,7 +65,7 @@
             </div>
           </form>
         </div>
-        <div id="infobar" class="alignCenter leftedge open width140 padding10 shadow mintcream z1 initialHidden">
+        <div id="infobar" class="alignCenter leftedge open width140 padding10 controlShadow mintcream z1 initialHidden">
           <div class="inner">
             <div class="semibold chunk">
               <span id="name">Your Name Here</span>
@@ -86,7 +87,7 @@
             </div>
           </div>
         </div>
-        <div id="miscButtons" class="alignCenter leftedge open shadow width140 padding10 mintcream z1 initialHidden">
+        <div id="miscButtons" class="alignCenter leftedge open controlShadow width140 padding10 mintcream z1 initialHidden">
           <div class="inner">
             <div class="">
               <button id="budgetRequest" class="miscButton">Budget</button>
@@ -96,6 +97,9 @@
             </div>
             <div class="">
               <button id="disasterRequest" class="miscButton">Disasters</button>
+            </div>
+            <div class="">
+              <button id="saveRequest" class="miscButton loadSave" disabled>Save</button>
             </div>
             <div class="">
               <button id="settingsRequest" class="miscButton">Settings</button>
@@ -108,8 +112,8 @@
             </div>
           </div>
         </div>
-        <div id="RCIContainer" class="shadow leftedge width140 padding10 mintcream z1 initialHidden"></div>
-        <div id="controls" class="shadow mintcream z1 initialHidden rightedge open">
+        <div id="RCIContainer" class="controlShadow leftedge width140 padding10 mintcream z1 initialHidden"></div>
+        <div id="controls" class="controlShadow mintcream z1 initialHidden rightedge open">
           <div id="toolInfo" class="alignCenter"><span id="toolOutput">Tools</span></div>
           <div id="buttons" class="">
             <button id="residentialButton" data-size="3" data-tool="residential" data-colour="lime" class="toolButton unselected">Residential $100</button>
@@ -130,7 +134,7 @@
             <button id="parkButton" data-size="1" data-tool="park" data-colour="darkgreen" class="toolButton unselected">Park $10</button>
           </div>
         </div>
-        <div id="monstertv" class="alignCenter z1 hidden rightedge padding10 shadow open">
+        <div id="monstertv" class="alignCenter z1 hidden rightedge padding10 controlShadow open">
           <div id="monsterTVContainer">
             <div id="tvContainer" class="">
             </div>
@@ -139,7 +143,7 @@
             </form>
           </div>
         </div>
-        <div id="debug" class="alignCenter z1 rightedge padding10 mintcream shadow open">
+        <div id="debug" class="alignCenter z1 rightedge padding10 mintcream controlShadow open">
           <div id="fps" class="">
             <span id="fpsValue">0</span> FPS
           </div>
@@ -147,7 +151,7 @@
             <button id="debugRequest" class="">Debug</button>
           </div>
         </div>
-        <div id="notifications" class="initialHidden neutral z1 rightedge alignCenter elided padding10 shadow"></div>
+        <div id="notifications" class="initialHidden neutral z1 rightedge alignCenter elided padding10 controlShadow"></div>
         <div id="tooSmall" class="mintcream open"><div id="tooSmallInner" class="centred alignCenter"><h2 class="chunk">Uh-oh!</h2><p>It looks like your screen is too small for micropolisJS. Sorry!</p></div></div>
       </main>
       <footer id="footer" class="alignCenter chunk white padding10">
