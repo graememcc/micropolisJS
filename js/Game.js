@@ -144,7 +144,8 @@ define(['BaseTool', 'BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', '
       this.lastElapsed = -1;
     }
 
-    this.animate = (debug ? debugAnimate : animate).bind(this);
+    this.commonAnimate = commonAnimate.bind(this);
+    this.animate = (debug ? debugAnimate : this.commonAnimate).bind(this);
     this.animate();
   }
 
@@ -533,7 +534,7 @@ define(['BaseTool', 'BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', '
   };
 
 
-  var animate = function() {
+  var commonAnimate = function() {
     if (this.dialogShowing) {
       nextFrame(this.animate);
       return;
@@ -546,7 +547,7 @@ define(['BaseTool', 'BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', '
     this.gameCanvas.paint(this.mouse, sprites, this.isPaused);
 
     sprites = this.calculateSpritesForPaint(this.monsterTV.canvas);
-    this.monsterTV.paint(null, sprites, this.isPaused);
+    this.monsterTV.paint(sprites, this.isPaused);
 
     nextFrame(this.animate);
   };
@@ -562,24 +563,7 @@ define(['BaseTool', 'BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', '
     }
 
     this.frameCount++;
-
-    if (this.dialogShowing) {
-      nextFrame(this.animate);
-      return;
-    }
-
-    if (!this.isPaused)
-      this.simulation.spriteManager.moveObjects(this.simulation._constructSimData());
-
-    var sprites = this.calculateSpritesForPaint(this.gameCanvas);
-    this.gameCanvas.paint(this.mouse, sprites, this.isPaused);
-
-    if (this.monsterTV.isOpen) {
-      sprites = this.calculateSpritesForPaint(this.monsterTV.canvas);
-      this.monsterTV.paint(sprites, this.isPaused);
-    }
-
-    nextFrame(this.animate);
+    this.commonAnimate();
   };
 
 
