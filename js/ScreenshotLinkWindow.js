@@ -40,7 +40,6 @@ define(['Messages', 'ModalWindow', 'MiscUtils'],
 
 
   ScreenshotLinkWindow.prototype.open = function(screenshotLink) {
-    console.log('Setting link to ', screenshotLink);
     $(screenshotLinkID).attr('href', screenshotLink);
     this._toggleDisplay();
   };

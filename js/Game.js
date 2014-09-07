@@ -210,7 +210,6 @@ define(['BaseTool', 'BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', '
 
       switch (a.action) {
         case SettingsWindow.AUTOBUDGET:
-          console.log('AUTOBUDGET:',a.data, typeof(a.data));
           this.simulation.budget.setAutoBudget(a.data);
           break;
 
