@@ -55,10 +55,10 @@
           <form id="playForm">
             <label for="nameForm">City name (max 15 letters)</label>
             <input id="nameForm" autofocus required class="margin10" type="text" maxlength="15">
-            <label for="difficulty" id="difficultyLabel">Difficulty:</label>
-            <input type="radio" class="difficulty" name="difficulty" value="0" checked="checked">Easy</input>
-            <input type="radio" class="difficulty" name="difficulty" value="1">Medium</input>
-            <input type="radio" class="difficulty" name="difficulty" value="2">Hard</input>
+            Difficulty
+            <input type="radio" class="difficulty" name="difficulty" id="difficultyEasy" value="0" checked="checked"><label for="difficultyEasy">Easy</label></input>
+            <input type="radio" class="difficulty" name="difficulty" id="difficultyMed" value="1"><label for="difficultyMed">Medium</label></input>
+            <input type="radio" class="difficulty" name="difficulty" id="difficultyHard" value="2"><label for="difficultyHard">Hard</label></input>
             <div id="playSubmitDiv">
               <input id="playit" type="submit" value="Play!">
             </div>
