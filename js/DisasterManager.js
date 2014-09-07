@@ -18,14 +18,11 @@ define(['EventEmitter', 'Messages', 'MiscUtils', 'Random', 'SpriteConstants', 'T
     this._gameLevel = gameLevel;
 
     this._floodCount = 0;
-
-    // TODO enable disasters
-    Object.defineProperty(this, 'disastersEnabled',
-                          MiscUtils.makeConstantDescriptor(false));
+    this.disastersEnabled = false;
   });
 
 
-  var DisChance = [4800, 2400, 60];
+  var DisChance = [479, 239, 59];
 
   DisasterManager.prototype.doDisasters = function(census) {
     if (this._floodCount)
@@ -36,8 +33,7 @@ define(['EventEmitter', 'Messages', 'MiscUtils', 'Random', 'SpriteConstants', 'T
     if (!this.disastersEnabled)
         return;
 
-
-    if (Random.getRandom(DisChance[this._gameLevel])) {
+    if (!Random.getRandom(DisChance[this._gameLevel])) {
       switch (Random.getRandom(8)) {
         case 0:
         case 1:

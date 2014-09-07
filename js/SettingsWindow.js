@@ -27,6 +27,8 @@ define(['Messages', 'ModalWindow', 'MiscUtils', 'Simulation'],
   var speedSlowID = '#speedSlow';
   var speedMedID = '#speedMed';
   var speedFastID = '#speedFast';
+  var disastersYesID = '#disastersYes';
+  var disastersNoID = '#disastersNo';
 
 
   SettingsWindow.prototype.close = function(actions) {
@@ -64,6 +66,13 @@ define(['Messages', 'ModalWindow', 'MiscUtils', 'Simulation'],
     var speed = $('.speedSetting:checked').val() - 0;
     actions.push({action: SettingsWindow.SPEED, data: speed});
 
+    var shouldEnableDisasters = $('.enableDisastersSetting:checked').val();
+    if (shouldEnableDisasters === 'true')
+      shouldEnableDisasters = true;
+    else
+      shouldEnableDisasters = false;
+    actions.push({action: SettingsWindow.DISASTERS_CHANGED, data: shouldEnableDisasters});
+
     this.close(actions);
   };
 
@@ -86,6 +95,11 @@ define(['Messages', 'ModalWindow', 'MiscUtils', 'Simulation'],
     else
       $(speedFastID).prop('checked', true);
 
+    if (settingsData.diasters)
+      $(disastersYesID).prop('checked', true);
+    else
+      $(disastersNoID).prop('checked', true);
+
     this._toggleDisplay();
   };
 
@@ -102,6 +116,8 @@ define(['Messages', 'ModalWindow', 'MiscUtils', 'Simulation'],
 
   defineAction('AUTOBUDGET');
   defineAction('AUTOBULLDOZE');
+  defineAction('SPEED');
+  defineAction('DISASTERS_CHANGED');
 
 
   return SettingsWindow;

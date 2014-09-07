@@ -85,7 +85,8 @@ define(['BaseTool', 'BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', '
 
     // ... the settings window
     this.handleSettingsRequest = makeWindowOpenHandler('settings', function() {
-      return [{autoBudget: this.simulation.budget.autoBudget, autoBulldoze: BaseTool.getAutoBulldoze(), speed: this.defaultSpeed}];
+      return [{autoBudget: this.simulation.budget.autoBudget, autoBulldoze: BaseTool.getAutoBulldoze(),
+               speed: this.defaultSpeed, disasters: this.simulation.disasterManager.disastersEnabled}];
     }.bind(this));
     this.settingsWindow = new SettingsWindow(opacityLayerID, 'settingsWindow');
     this.settingsWindow.addEventListener(Messages.SETTINGS_WINDOW_CLOSED, this.handleSettingsWindowClosure.bind(this));
@@ -220,6 +221,10 @@ define(['BaseTool', 'BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', '
         case SettingsWindow.SPEED:
           this.defaultSpeed = a.data;
           this.simulation.setSpeed(this.defaultSpeed);
+          break;
+
+        case SettingsWindow.DISASTERS_CHANGED:
+          this.simulation.disasterManager.disastersEnabled = a.data;
           break;
 
         default:
