@@ -217,7 +217,7 @@ define(['BaseTool', 'BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', '
           BaseTool.setAutoBulldoze(a.data);
           break;
 
-        case SettingsWindow.SPEED_CHANGE:
+        case SettingsWindow.SPEED:
           this.defaultSpeed = a.data;
           this.simulation.setSpeed(this.defaultSpeed);
           break;
