@@ -110,12 +110,14 @@ define(['AnimationManager', 'GameMap', 'MiscUtils', 'MouseBox', 'Tile', 'TileSet
   };
 
 
-  GameCanvas.prototype._calculateDimensions = function() {
+  GameCanvas.prototype._calculateDimensions = function(force) {
+    force = force || false;
+
     // The canvas is assumed to fill its container on-screen
     var canvasWidth = this._canvasWidth = this._canvas.parentNode.clientWidth;
     var canvasHeight = this._canvasHeight = this._canvas.parentNode.clientHeight;
 
-    if (canvasHeight === this._lastCanvasHeight && canvasWidth === this._lastCanvasWidth)
+    if (canvasHeight === this._lastCanvasHeight && canvasWidth === this._lastCanvasWidth && !force)
       return;
 
     this._canvas.width = canvasWidth;
@@ -127,6 +129,7 @@ define(['AnimationManager', 'GameMap', 'MiscUtils', 'MouseBox', 'Tile', 'TileSet
     this._wholeTilesInViewX = Math.floor(canvasWidth / w);
     this._wholeTilesInViewY = Math.floor(canvasHeight / w);
     this._totalTilesInViewX = Math.ceil(canvasWidth / w);
+    this._totalTilesInViewY = Math.ceil(canvasHeight / w);
 
     if (this._allowScrolling) {
       // The min/max properties denote how far we will let the canvas' origin move: the map
@@ -148,7 +151,8 @@ define(['AnimationManager', 'GameMap', 'MiscUtils', 'MouseBox', 'Tile', 'TileSet
   // NOTE: Canvas must be visible when this is called
   GameCanvas.prototype.disallowOffMap = function() {
     this._allowScrolling = false;
-    this._calculateDimensions();
+    this._lastPaintedTiles = null;
+    this._calculateDimensions(true);
   };
 
 
@@ -222,8 +226,20 @@ define(['AnimationManager', 'GameMap', 'MiscUtils', 'MouseBox', 'Tile', 'TileSet
 
     // XXX Need to fix so that centres on best point if bounds fall outside
     // XXX min/max
-    this._originX = Math.floor(x) - Math.ceil(this._wholeTilesInViewX / 2);
-    this._originY = Math.floor(y) - Math.ceil(this._wholeTilesInViewY / 2);
+    var originX = Math.floor(x) - Math.ceil(this._wholeTilesInViewX / 2);
+    var originY = Math.floor(y) - Math.ceil(this._wholeTilesInViewY / 2);
+
+    if (originX > this.maxX)
+      originX = this.maxX;
+    if (originX < this.minX)
+      originX = this.minX;
+    if (originY > this.maxY)
+      originY = this.maxY;
+    if (originY < this.minY)
+      originY = this.minY;
+
+    this._originX = originX;
+    this._originY = originY;
   };
 
 
