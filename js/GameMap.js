@@ -51,8 +51,10 @@ define(['Direction', 'MiscUtils', 'PositionMaker', 'Tile'],
       {width: MiscUtils.makeConstantDescriptor(width),
        height:MiscUtils.makeConstantDescriptor(height)});
 
-    this.defaultValue = defaultValue;
-    this._data = [];
+    var data = [];
+    for (var i = 0, l = width * height; i < l; i++)
+      data[i] = new Tile(defaultValue);
+    this._data = data;
 
     // Generally set externally
     this.cityCentreX = Math.floor(this.width / 2);
@@ -88,11 +90,7 @@ define(['Direction', 'MiscUtils', 'PositionMaker', 'Tile'],
     }
 
     var tileIndex = x + y * width;
-    var tile;
-    if (!(tileIndex in this._data))
-      tile = this._data[tileIndex] = new Tile(this.defaultValue);
-    else
-      tile = this._data[tileIndex];
+    var tile = this._data[tileIndex];
 
     // Return the original tile if we're not given a tile to fill
     if (!newTile)
@@ -117,8 +115,6 @@ define(['Direction', 'MiscUtils', 'PositionMaker', 'Tile'],
       throw invalid;
 
     var tileIndex = this._calculateIndex(x, y);
-    if (!(tileIndex in this._data))
-      this._data[tileIndex] = new Tile(this.defaultValue);
     return this._data[tileIndex].getValue();
   };
 
@@ -137,8 +133,6 @@ define(['Direction', 'MiscUtils', 'PositionMaker', 'Tile'],
       throw invalid;
 
     var tileIndex = this._calculateIndex(x, y);
-    if (!(tileIndex in this._data))
-      this._data[tileIndex] = new Tile(this.defaultValue);
     return this._data[tileIndex].getFlags();
   };
 
@@ -163,8 +157,6 @@ define(['Direction', 'MiscUtils', 'PositionMaker', 'Tile'],
       res[a - y] = [];
       for (var b = x, xlim = x + w; b < xlim; b++) {
         var tileIndex = this._calculateIndex(b, a);
-        if (!(tileIndex in this._data))
-          this._data[tileIndex] = new Tile(this.defaultValue);
         res[a-y].push(this._data[tileIndex]);
       }
     }
@@ -200,8 +192,6 @@ define(['Direction', 'MiscUtils', 'PositionMaker', 'Tile'],
         }
 
         var tileIndex =  b + a * width;
-        if (!(tileIndex in this._data))
-          this._data[tileIndex] = new Tile(this.defaultValue);
         row.push(this._data[tileIndex].getRawValue());
       }
     }
@@ -257,8 +247,6 @@ define(['Direction', 'MiscUtils', 'PositionMaker', 'Tile'],
       throw invalid;
 
     var tileIndex = this._calculateIndex(x, y);
-    if (!(tileIndex in this._data))
-      this._data[tileIndex] = new Tile(this.defaultValue);
     this._data[tileIndex].set(value, flags);
   };
 
@@ -297,8 +285,6 @@ define(['Direction', 'MiscUtils', 'PositionMaker', 'Tile'],
       throw invalid;
 
     var tileIndex = this._calculateIndex(x, y);
-    if (!(tileIndex in this._data))
-      this._data[tileIndex] = new Tile(this.defaultValue);
     this._data[tileIndex].setValue(value);
   };
 
@@ -318,8 +304,6 @@ define(['Direction', 'MiscUtils', 'PositionMaker', 'Tile'],
       throw invalid;
 
     var tileIndex = this._calculateIndex(x, y);
-    if (!(tileIndex in this._data))
-      this._data[tileIndex] = new Tile(this.defaultValue);
     this._data[tileIndex].setFlags(flags);
   };
 
@@ -339,8 +323,6 @@ define(['Direction', 'MiscUtils', 'PositionMaker', 'Tile'],
       throw invalid;
 
     var tileIndex = this._calculateIndex(x, y);
-    if (!(tileIndex in this._data))
-      this._data[tileIndex] = new Tile(this.defaultValue);
     this._data[tileIndex].addFlags(flags);
   };
 
@@ -360,8 +342,6 @@ define(['Direction', 'MiscUtils', 'PositionMaker', 'Tile'],
       throw invalid;
 
     var tileIndex = this._calculateIndex(x, y);
-    if (!(tileIndex in this._data))
-      this._data[tileIndex] = new Tile(this.defaultValue);
     this._data[tileIndex].removeFlags(flags);
   };
 
