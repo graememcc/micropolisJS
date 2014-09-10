@@ -32,6 +32,22 @@ define(['EventEmitter', 'Messages', 'MiscUtils'],
     -150, -200, -250, -300, -350, -400, -450, -500, -550, -600];
   var extMarketParamTable = [1.2, 1.1, 0.98];
 
+  Valves.prototype.save = function(saveData) {
+    saveData['resValve'] = this.resValve;
+    saveData['comValve'] = this.comValve;
+    saveData['indValve'] = this.indValve;
+  };
+
+
+  Valves.prototype.load = function(saveData) {
+    this.resValve = saveData['resValve'];
+    this.comValve = saveData['comValve'];
+    this.indValve = saveData['indValve'];
+
+    this._emitEvent(Messages.VALVES_UPDATED);
+  };
+
+
   Valves.prototype.setValves = function(gameLevel, census, budget) {
     var resPopDenom = 8;
     var birthRate = 0.02;

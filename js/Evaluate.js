@@ -61,6 +61,20 @@ define(['EventEmitter', 'Messages', 'MiscUtils', 'Random'],
   };
 
 
+  var saveProps = ['cityClass', 'cityScore'];
+
+  Evaluation.prototype.save = function(saveData) {
+    for (var i = 0, l = saveProps.length; i < l; i++)
+      saveData[saveProps[i]] = this[saveProps[i]];
+  };
+
+
+  Evaluation.prototype.load = function(saveData) {
+    for (var i = 0, l = saveProps.length; i < l; i++)
+      this[saveProps[i]] = saveData[saveProps[i]];
+  };
+
+
   Evaluation.prototype.getAssessedValue = function(census) {
     var value;
 

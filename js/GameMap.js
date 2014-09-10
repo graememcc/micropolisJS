@@ -64,6 +64,24 @@ define(['Direction', 'MiscUtils', 'PositionMaker', 'Tile'],
   }
 
 
+  var saveProps = ['_cityCentreX', '_cityCentreY', '_pollutionMaxX', '_pollutionMaxY', 'width', 'height'];
+
+  GameMap.prototype.save = function(saveData) {
+    for (var i = 0, l = saveProps.length; i < l; i++)
+      saveData[saveProps[i]] = this[saveProps[i]];
+
+    saveData['map'] = this._data;
+  };
+
+
+  GameMap.prototype.load = function(saveData) {
+    for (var i = 0, l = saveProps.length; i < l; i++)
+      this[saveProps[i]] = saveData[saveProps[i]];
+
+    this._data = saveData['map'];
+  };
+
+
   GameMap.prototype._calculateIndex = function(x, y) {
     return x + y * this.width;
   };

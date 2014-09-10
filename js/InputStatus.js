@@ -62,6 +62,7 @@ define(['EventEmitter', 'GameCanvas', 'GameTools', 'Messages', 'MiscUtils'],
     $('#pauseRequest').click(this.speedChangeHandler.bind(this));
     $('#screenshotRequest').click(screenshotHandler.bind(this));
     $('#settingsRequest').click(settingsHandler.bind(this));
+    $('#saveRequest').click(saveHandler.bind(this));
     $('#debugRequest').click(debugHandler.bind(this));
   });
 
@@ -292,6 +293,7 @@ define(['EventEmitter', 'GameCanvas', 'GameTools', 'Messages', 'MiscUtils'],
   var evalHandler = makeHandler('EVAL_REQUESTED');
   var screenshotHandler = makeHandler('SCREENSHOT_WINDOW_REQUESTED');
   var settingsHandler = makeHandler('SETTINGS_WINDOW_REQUESTED');
+  var saveHandler = makeHandler('SAVE_REQUESTED');
 
 
   return InputStatus;

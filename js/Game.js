@@ -7,8 +7,8 @@
  *
  */
 
-define(['BaseTool', 'BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', 'DisasterWindow', 'GameCanvas', 'EvaluationWindow', 'InfoBar', 'InputStatus', 'Messages', 'MonsterTV', 'Notification', 'QueryWindow', 'RCI', 'ScreenshotLinkWindow', 'ScreenshotWindow', 'SettingsWindow', 'Simulation', 'Text'],
-       function(BaseTool, BudgetWindow, Config, CongratsWindow, DebugWindow, DisasterWindow, GameCanvas, EvaluationWindow, InfoBar, InputStatus, Messages, MonsterTV, Notification, QueryWindow, RCI, ScreenshotLinkWindow, ScreenshotWindow, SettingsWindow, Simulation, Text) {
+define(['BaseTool', 'BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', 'DisasterWindow', 'GameCanvas', 'EvaluationWindow', 'InfoBar', 'InputStatus', 'Messages', 'MonsterTV', 'Notification', 'QueryWindow', 'RCI', 'SaveWindow', 'ScreenshotLinkWindow', 'ScreenshotWindow', 'SettingsWindow', 'Simulation', 'Storage', 'Text'],
+       function(BaseTool, BudgetWindow, Config, CongratsWindow, DebugWindow, DisasterWindow, GameCanvas, EvaluationWindow, InfoBar, InputStatus, Messages, MonsterTV, Notification, QueryWindow, RCI, SaveWindow, ScreenshotLinkWindow, ScreenshotWindow, SettingsWindow, Simulation, Storage, Text) {
   "use strict";
 
 
@@ -101,10 +101,17 @@ define(['BaseTool', 'BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', '
     this.screenshotLinkWindow = new ScreenshotLinkWindow(opacityLayerID, 'screenshotLinkWindow');
     this.screenshotLinkWindow.addEventListener(Messages.SCREENSHOT_LINK_CLOSED, this.genericDialogClosure);
 
+    // ... the save confirmation window
+    this.saveWindow = new SaveWindow(opacityLayerID, 'saveWindow');
+    this.saveWindow.addEventListener(Messages.SAVE_WINDOW_CLOSED, this.genericDialogClosure);
+
     // ... and finally the query window
     this.queryWindow = new QueryWindow(opacityLayerID, 'queryWindow');
     this.queryWindow.addEventListener(Messages.QUERY_WINDOW_CLOSED, this.genericDialogClosure);
     this.inputStatus.addEventListener(Messages.QUERY_WINDOW_NEEDED, this.handleQueryRequest.bind(this));
+
+    // Listen for clicks on the save button
+    this.inputStatus.addEventListener(Messages.SAVE_REQUESTED, this.handleSave.bind(this));
 
     // Listen for front end messages
     this.simulation.addEventListener(Messages.FRONT_END_MESSAGE, this.processFrontEndMessage.bind(this));
@@ -148,6 +155,20 @@ define(['BaseTool', 'BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', '
     this.animate = (debug ? debugAnimate : this.commonAnimate).bind(this);
     this.animate();
   }
+
+
+  Game.prototype.save = function() {
+    var saveData = {name: this.name};
+    BaseTool.save(saveData);
+    this.simulation.save(saveData);
+
+    Storage.saveGame(saveData);
+  };
+
+
+  Game.prototype.load = function(saveData) {
+    // XXX TBC
+  };
 
 
   var nextFrame =
@@ -354,6 +375,14 @@ define(['BaseTool', 'BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', '
       default:
         $('#toolOutput').html('Tools');
     }
+  };
+
+
+  Game.prototype.handleSave = function() {
+    this.save();
+    this.dialogOpen = true;
+    this._openWindow = 'saveWindow';
+    this.saveWindow.open();
   };
 
 

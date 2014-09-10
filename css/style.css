@@ -157,7 +157,7 @@ nav li {
   left: 50px;
 }
 
-.loadSave {
+.loadSave, .saveHeader {
   background-color: cadetblue;
   color: white;
 }

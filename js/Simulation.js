@@ -95,6 +95,27 @@ define(['BlockMap', 'BlockMapUtils', 'Budget', 'Census', 'Commercial', 'Disaster
   };
 
 
+  var saveProps = ['_cityTime', '_speed', '_gameLevel'];
+
+  Simulation.prototype.save = function(saveData) {
+    for (var i = 0, l = saveProps.length; i < l; i++)
+      saveData[saveProps[i]] = this[saveProps[i]];
+
+    this._map.save(saveData);
+    this.evaluation.save(saveData);
+    this._valves.save(saveData);
+    this.budget.save(saveData);
+    this._census.save(saveData);
+  };
+
+
+  Simulation.prototype.load = function(saveData) {
+    for (var i = 0, l = saveProps.length; i < l; i++)
+      this[props[i]] = saveData[props[i]];
+    // XXX TBC
+  };
+
+
   Simulation.prototype.simTick = function() {
     this._simFrame();
     this._updateTime();

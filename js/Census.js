@@ -80,6 +80,23 @@ define(['MiscUtils'],
   };
 
 
+  var saveProps = ['resPop', 'comPop', 'indPop', 'crimeRamp', 'pollutionRamp', 'landValueAverage', 'pollutionAverage',
+               'crimeAverage', 'totalPop', 'resHist10', 'resHist120', 'comHist10', 'comHist120', 'indHist10',
+               'indHist120', 'crimeHist10', 'crimeHist120', 'moneyHist10', 'moneyHist120', 'pollutionHist10',
+               'pollutionHist120'];
+
+  Census.prototype.save = function(saveData) {
+    for (var i = 0, l = saveProps.length; i < l; i++)
+      saveData[saveProps[i]] = this[saveProps[i]];
+  };
+
+
+  Census.prototype.load = function(saveData) {
+    for (var i = 0, l = saveProps.length; i < l; i++)
+      this[saveProps[i]] = saveData[saveProps[i]];
+  };
+
+
   Census.prototype.take10Census = function(budget) {
     var resPopDenom = 8;
 

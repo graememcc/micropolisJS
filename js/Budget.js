@@ -59,6 +59,25 @@ define(['EventEmitter', 'Messages', 'MiscUtils'],
   });
 
 
+  var saveProps = ['autoBudget', 'totalFunds', 'policePercent', 'roadPercent', 'firePercent', 'roadSpend',
+                   'policeSpend', 'fireSpend', 'roadMaintenanceBudget', 'policeMaintenanceBudget',
+                   'fireMaintenanceBudget', 'cityTax', 'roadEffect', 'policeEffect', 'fireEffect'];
+
+  Budget.prototype.save = function(saveData) {
+    for (var i = 0, l = saveProps.length; i < l; i++)
+      saveData[saveProps[i]] = this[saveProps[i]];
+  };
+
+
+  Budget.prototype.load = function(saveData) {
+    for (var i = 0, l = saveProps.length; i < l; i++)
+      this[saveProps[i]] = saveData[saveProps[i]];
+
+    this._emitEvent(Messages.AUTOBUDGET_CHANGED, this.autoBudget);
+    this._emitEvent(Messages.FUNDS_CHANGED, this.totalFunds);
+  };
+
+
   Budget.prototype.setAutoBudget = function(value) {
     this.autoBudget = value;
     this._emitEvent(Messages.AUTOBUDGET_CHANGED, this.autoBudget);

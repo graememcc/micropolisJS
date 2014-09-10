@@ -88,10 +88,21 @@ define(['Messages', 'MiscUtils', 'Tile', 'TileUtils', 'WorldEffects'],
   };
 
 
+  var save = function(saveData) {
+    saveData['autoBulldoze'] = BaseTool.autoBulldoze;
+  };
+
+
+  var load = function(saveData) {
+    BaseTool.autoBulldoze = saveData.autoBulldoze;
+  };
+
+
   var makeTool = function(toolConstructor) {
     toolConstructor.prototype = Object.create(BaseTool);
     return toolConstructor;
   };
+
 
   return {
     makeTool: makeTool,
@@ -100,6 +111,8 @@ define(['Messages', 'MiscUtils', 'Tile', 'TileUtils', 'WorldEffects'],
     },
     getAutoBulldoze: function() {
       return BaseTool.autoBulldoze;
-    }
+    },
+    save: save,
+    load: load
   };
 });
