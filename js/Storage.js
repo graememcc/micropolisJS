@@ -16,6 +16,9 @@ define(['MiscUtils'],
         this.transitionOldSave(savedGame);
     }
 
+    // Flag as a saved game for Game/Simulation etc...
+    savedGame.isSavedGame = true;
+
     return savedGame;
   };
 
@@ -33,16 +36,17 @@ define(['MiscUtils'],
   };
 
 
-  var Persistence = {
+  var Storage = {
     getSavedGame: getSavedGame,
     saveGame: saveGame,
     transitionOldSave: transitionOldSave
   };
 
 
-  Object.defineProperty(Persistence, 'CURRENT_VERSION', MiscUtils.makeConstantDescriptor(1));
-  Object.defineProperty(Persistence, 'KEY', MiscUtils.makeConstantDescriptor('micropolisJSGame'));
+  Object.defineProperty(Storage, 'CURRENT_VERSION', MiscUtils.makeConstantDescriptor(1));
+  Object.defineProperty(Storage, 'KEY', MiscUtils.makeConstantDescriptor('micropolisJSGame'));
+  Object.defineProperty(Storage, 'canStore', MiscUtils.makeConstantDescriptor(window['localStorage'] !== undefined));
 
 
-  return Persistence;
+  return Storage;
 });
