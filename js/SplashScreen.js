@@ -1,5 +1,5 @@
-define(['Config', 'Game', 'MapGenerator', 'SplashCanvas'],
-       function(Config, Game, MapGenerator, SplashCanvas) {
+define(['Config', 'Game', 'MapGenerator', 'SplashCanvas', 'Storage'],
+       function(Config, Game, MapGenerator, SplashCanvas, Storage) {
   "use strict";
 
 
@@ -12,6 +12,10 @@ define(['Config', 'Game', 'MapGenerator', 'SplashCanvas'],
     $('#splashPlay').click(this.acquireNameAndDifficulty.bind(this));
 
     this.splashCanvas = new SplashCanvas(SplashCanvas.DEFAULT_ID, 'splashContainer');
+
+    // Conditionally enable load/save buttons
+    $('.loadSave').prop('disabled', !Storage.canStore);
+
     this.splashCanvas.init(this.map, tileSet);
     $('.awaitGeneration').toggle();
     $('#splashPlay').focus();
