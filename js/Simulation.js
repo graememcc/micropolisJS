@@ -29,7 +29,6 @@ define(['BlockMap', 'BlockMapUtils', 'Budget', 'Census', 'Commercial', 'Disaster
     this._speed = speed;
     this._phaseCycle = 0;
     this._simCycle = 0;
-    this._doInitialEval = true;
     this._cityTime = 0;
     this._cityPopLast = 0;
     this._messageLast = Messages.VILLAGE_REACHED;
@@ -225,7 +224,7 @@ define(['BlockMap', 'BlockMapUtils', 'Budget', 'Census', 'Commercial', 'Disaster
   var TAX_FREQUENCY = 48;
 
 
-  Simulation.prototype._simulate = function(simData) {
+  var simulate = function(simData) {
     this._phaseCycle &= 15;
     var speedIndex = this._speed - 1;
 
@@ -233,11 +232,6 @@ define(['BlockMap', 'BlockMapUtils', 'Budget', 'Census', 'Commercial', 'Disaster
       case 0:
         if (++this._simCycle > 1023)
             this._simCycle = 0;
-
-        if (this._doInitialEval) {
-          this._doInitialEval = false;
-          this.evaluation.cityEvaluation(simData);
-        }
 
         this._cityTime++;
 
@@ -311,6 +305,16 @@ define(['BlockMap', 'BlockMapUtils', 'Budget', 'Census', 'Commercial', 'Disaster
 
     // Go on the the next phase.
     this._phaseCycle = (this._phaseCycle + 1) & 15;
+  };
+
+
+  Simulation.prototype._simulate = function(simData) {
+    // This is actually a wrapper function that will only be called once, to perform the initial
+    // evaluation. Once that has completed, it will supplant itself with the standard "simulate"
+    // procedure defined above
+    this.evaluation.cityEvaluation(simData);
+    this._simulate = simulate;
+    this._simulate(simData);
   };
 
 
