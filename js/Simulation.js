@@ -75,6 +75,7 @@ define(['BlockMap', 'BlockMapUtils', 'Budget', 'Census', 'Commercial', 'Disaster
     };
 
 
+    this._clearCensus();
     this.init();
   });
 
@@ -204,8 +205,6 @@ define(['BlockMap', 'BlockMapUtils', 'Budget', 'Census', 'Commercial', 'Disaster
 
     this.budget.setFunds(20000);
     var simData = this._constructSimData();
-    this.evaluation.evalInit();
-    this._clearCensus();
     this._mapScanner.mapScan(0, this._map.width, simData);
     this._powerManager.doPowerScan(this._census);
     BlockMapUtils.pollutionTerrainLandValueScan(this._map, this._census, this.blockMaps);
