@@ -205,7 +205,6 @@ define(['BlockMap', 'BlockMapUtils', 'Budget', 'Census', 'Commercial', 'Disaster
     this.budget.setFunds(20000);
     var simData = this._constructSimData();
     this.evaluation.evalInit();
-    this._valves.setValves(this._gameLevel, this._census, this.budget);
     this._clearCensus();
     this._mapScanner.mapScan(0, this._map.width, simData);
     this._powerManager.doPowerScan(this._census);
