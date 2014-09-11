@@ -7,13 +7,12 @@
  *
  */
 
-define(['Config', 'Messages', 'ModalWindow'],
-       function(Config, Messages, ModalWindow) {
+define(['Messages', 'ModalWindow'],
+       function(Messages, ModalWindow) {
   "use strict";
 
 
   var CongratsWindow = ModalWindow(function() {
-    this._debugToggled = false;
     $(congratsFormID).on('submit', submit.bind(this));
   });
 
