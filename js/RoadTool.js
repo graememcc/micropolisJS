@@ -19,7 +19,7 @@ define(['ConnectingTool', 'Tile', 'TileUtils'],
   RoadTool.prototype.layRoad = function(x, y) {
     this.doAutoBulldoze(x, y);
     var tile = this._worldEffects.getTileValue(x, y);
-    var cost = 10;
+    var cost = this.toolCost;
 
     switch (tile) {
       case Tile.DIRT:

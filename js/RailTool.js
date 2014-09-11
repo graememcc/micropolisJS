@@ -20,6 +20,7 @@ define(['ConnectingTool', 'Tile', 'TileUtils'],
     this.doAutoBulldoze(x, y);
     var tile = this._worldEffects.getTileValue(x, y);
     tile = TileUtils.normalizeRoad(tile);
+    var cost = this.toolCost;
 
     switch (tile) {
       case Tile.DIRT:

@@ -12,13 +12,13 @@ define(['ConnectingTool', 'Tile', 'TileUtils'],
   "use strict";
 
   var WireTool = ConnectingTool(function(map) {
-    this.init(20, map, true, true);
+    this.init(5, map, true, true);
   });
 
 
   WireTool.prototype.layWire = function(x, y) {
     this.doAutoBulldoze(x, y);
-    var cost = 5;
+    var cost = this.toolCost;
 
     var tile = this._worldEffects.getTileValue(x, y);
     tile = TileUtils.normalizeRoad(tile);
