@@ -350,6 +350,10 @@ nav li {
   height: 150px;
 }
 
+#loadingBanner[data-hasscript=false] {
+  display: none;
+}
+
 #miscButtons {
   position: absolute;
   top: 250px;
@@ -750,7 +754,7 @@ nav li {
 }
 
 @media (max-height: 582px) {
-  #tooSmall {
+  #tooSmall[data-hasscript=true] {
     display: block;
   }
 }
@@ -793,7 +797,7 @@ nav li {
 }
 
 @media (max-width: 590px) {
-  #tooSmall {
+  #tooSmall[data-hasscript=true] {
     display: block;
   }
 }

@@ -13,6 +13,11 @@ require(['Config', 'SplashScreen', 'SpriteLoader', 'TileSet', 'TileSetURI'],
 
   var i, tileSet;
 
+  // If we got here, then we have script
+  $('[data-hasscript]').each(function() {
+    $(this).attr('data-hasscript', 'true');
+  });
+
   var spritesLoaded = function(spriteImages) {
     $('#loadingBanner').css('display', 'none');
     var s = new SplashScreen(tileSet, spriteImages);

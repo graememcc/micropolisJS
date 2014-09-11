@@ -34,7 +34,7 @@
     <div id="wrapper">
       <main id="canvasContainer">
         <div class="hidden" id="opaque"></div>
-        <div id="loadingBanner" class="alignCenter padding10 mintcream chunk shadow centred">Loading</div>
+        <div data-hasscript="false" id="loadingBanner" class="alignCenter padding10 mintcream chunk shadow centred">Loading</div>
         <div id="splash" class="mintcream awaitGeneration open shadow padding10 centred">
           <h2 class="chunk alignCenter">Welcome!</h2>
           <p>micropolisJS is a Javascript port of the open-source city simulator <cite>Micropolis</cite></p>
@@ -152,7 +152,14 @@
           </div>
         </div>
         <div id="notifications" class="initialHidden neutral z1 rightedge alignCenter elided padding10 controlShadow"></div>
-        <div id="tooSmall" class="mintcream open"><div id="tooSmallInner" class="centred alignCenter"><h2 class="chunk">Uh-oh!</h2><p>It looks like your screen is too small for micropolisJS. Sorry!</p></div></div>
+        <div id="tooSmall" data-hasscript="false" class="mintcream open"><div id="tooSmallInner" class="centred alignCenter"><h2 class="chunk">Uh-oh!</h2><p>It looks like your screen is too small for micropolisJS. Sorry!</p></div></div>
+        <noscript>
+          <div id="noscript" class="open mintcream centred padding10">
+            <h1 class="chunk alignCenter">micropolisJS</h1>
+            <p class="padding10">Hey, thanks for your interest in micropolisJS!</p>
+            <p class="padding10">Unfortunately, the <abbr title="Javascript">JS</a> stands for "<em>Javascript</em>", which appears to be disabled on your system. Consult your browser's documentation on how to enable Javascript!</p>
+          </div>
+        </noscript>
       </main>
       <footer id="footer" class="alignCenter chunk white padding10">
         Support micropolisJS: <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=TV83GP5CJGL3Q&lc=GB&item_name=micropolisJS&no_note=1&no_shipping=1&currency_code=GBP&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted">Click here and buy me a beer!</a>
