@@ -7,12 +7,11 @@
  *
  */
 
-define(['BaseTool', 'EventEmitter', 'Messages', 'Random', 'Tile', 'TileUtils', 'ZoneUtils'],
-       function(BaseTool, EventEmitter, Messages, Random, Tile, TileUtils, ZoneUtils) {
+define(['ConnectingTool', 'EventEmitter', 'Messages', 'Random', 'Tile', 'TileUtils', 'ZoneUtils'],
+       function(ConnectingTool, EventEmitter, Messages, Random, Tile, TileUtils, ZoneUtils) {
   "use strict";
 
-  var makeTool = BaseTool.makeTool;
-  var BulldozerTool = EventEmitter(makeTool(function(map) {
+  var BulldozerTool = EventEmitter(ConnectingTool(function(map) {
     this.init(10, map, true);
   }));
 
@@ -129,6 +128,7 @@ define(['BaseTool', 'EventEmitter', 'Messages', 'Random', 'Tile', 'TileUtils', '
           this.addCost(5);
       } else {
         toolResult =  this.layDoze(x, y);
+        this.checkZoneConnections(x, y);
       }
 
       this.result = toolResult;
