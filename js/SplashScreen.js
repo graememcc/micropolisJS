@@ -1,5 +1,5 @@
-define(['Config', 'Game', 'MapGenerator', 'SplashCanvas', 'Storage'],
-       function(Config, Game, MapGenerator, SplashCanvas, Storage) {
+define(['Config', 'Game', 'MapGenerator', 'Simulation', 'SplashCanvas', 'Storage'],
+       function(Config, Game, MapGenerator, Simulation, SplashCanvas, Storage) {
   "use strict";
 
 
@@ -17,6 +17,8 @@ define(['Config', 'Game', 'MapGenerator', 'SplashCanvas', 'Storage'],
     $('.loadSave').prop('disabled', !Storage.canStore);
 
     this.splashCanvas.init(this.map, tileSet);
+
+    $('#splashLoad').click(this.handleLoad.bind(this));
     $('.awaitGeneration').toggle();
     $('#splashPlay').focus();
   }
@@ -31,9 +33,26 @@ define(['Config', 'Game', 'MapGenerator', 'SplashCanvas', 'Storage'],
   };
 
 
+  SplashScreen.prototype.handleLoad = function(e) {
+    e.preventDefault();
+
+    var savedGame = Storage.getSavedGame();
+
+    if (savedGame === null)
+      return;
+
+    $('#splashLoad').off('click');
+    $('#splashGenerate').off('click');
+    $('#splashPlay').off('click');
+    $('#splash').toggle();
+    var g = new Game(savedGame, this.tileSet, this.spriteSheet, Simulation.LEVEL_EASY, name);
+  };
+
+
   SplashScreen.prototype.acquireNameAndDifficulty = function(e) {
     e.preventDefault();
 
+    $('#splashLoad').off('click');
     $('#splashGenerate').off('click');
     $('#splashPlay').off('click');
     $('#splash').toggle();

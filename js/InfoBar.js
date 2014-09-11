@@ -14,14 +14,22 @@ define(['Messages', 'MiscUtils', 'Text'],
 
   // TODO L20N
 
-  var InfoBar = function(classification, population, score, funds, date) {
+  var InfoBar = function(classification, population, score, funds, date, name) {
     var classificationSelector = MiscUtils.normaliseDOMid(classification);
     var populationSelector = MiscUtils.normaliseDOMid(population);
     var scoreSelector = MiscUtils.normaliseDOMid(score);
     var fundsSelector = MiscUtils.normaliseDOMid(funds);
     var dateSelector = MiscUtils.normaliseDOMid(date);
+    var nameSelector = MiscUtils.normaliseDOMid(name);
 
-    return function(dataSource) {
+    return function(dataSource, initialValues) {
+      $(classificationSelector).text(initialValues.classification);
+      $(populationSelector).text(initialValues.population);
+      $(scoreSelector).text(initialValues.score);
+      $(fundsSelector).text(initialValues.funds);
+      $(dateSelector).text([Text.months[initialValues.date.month], initialValues.date.year].join(' '));
+      $(nameSelector).text(initialValues.name);
+
       // Add the various listeners
       dataSource.addEventListener(Messages.CLASSIFICATION_UPDATED, function(classification) {
         $(classificationSelector).text(classification);

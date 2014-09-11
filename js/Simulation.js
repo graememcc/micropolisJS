@@ -11,33 +11,17 @@ define(['BlockMap', 'BlockMapUtils', 'Budget', 'Census', 'Commercial', 'Disaster
         function(BlockMap, BlockMapUtils, Budget, Census, Commercial, DisasterManager, EventEmitter, EmergencyServices, Evaluate, Industrial, MapScanner, Messages, MiscTiles, MiscUtils, PowerManager, RepairManager, Residential, Road, SpriteManager, Stadia, Traffic, Transport, Valves) {
   "use strict";
 
-  var Simulation = EventEmitter(function (gameMap, gameLevel, speed) {
-    if (gameLevel !== Simulation.LEVEL_EASY &&
-        gameLevel !== Simulation.LEVEL_MED &&
-        gameLevel !== Simulation.LEVEL_HARD)
-      throw new Error('Invalid level!');
-
-    if (speed !== Simulation.SPEED_PAUSED &&
-        speed !== Simulation.SPEED_SLOW &&
-        speed !== Simulation.SPEED_MED &&
-        speed !== Simulation.SPEED_FAST)
-      throw new Error('Invalid speed!');
-
+  var Simulation = EventEmitter(function (gameMap, gameLevel, speed, savedGame) {
     this._map = gameMap;
-    this._gameLevel = gameLevel;
+    this.setLevel(gameLevel);
+    this.setSpeed(speed);
 
-    this._speed = speed;
     this._phaseCycle = 0;
     this._simCycle = 0;
     this._cityTime = 0;
     this._cityPopLast = 0;
     this._messageLast = Messages.VILLAGE_REACHED;
     this._startingYear = 1900;
-
-    // Last valves updated to the user
-    this._resValveLast = 0;
-    this._comValveLast = 0;
-    this._indValveLast = 0;
 
     // Last date sent to front end
     this._cityYearLast = -1;
@@ -73,17 +57,34 @@ define(['BlockMap', 'BlockMapUtils', 'Budget', 'Census', 'Commercial', 'Disaster
       trafficDensityMap: new BlockMap(this._map.width, this._map.height, 2, 0)
     };
 
-
     this._clearCensus();
+
+    if (savedGame) {
+      this.load(savedGame);
+    } else {
+      this.budget.setFunds(20000);
+      this._census.totalPop = 1;
+    }
+
     this.init();
   });
 
 
+  Simulation.prototype.setLevel = function(l) {
+    if (l !== Simulation.LEVEL_EASY &&
+        l !== Simulation.LEVEL_MED &&
+        l !== Simulation.LEVEL_HARD)
+      throw new Error('Invalid level!');
+
+    this._gameLevel = l;
+  };
+
+
   Simulation.prototype.setSpeed = function(s) {
-    if (s!== Simulation.SPEED_PAUSED &&
-        s!== Simulation.SPEED_SLOW &&
-        s!== Simulation.SPEED_MED &&
-        s!== Simulation.SPEED_FAST)
+    if (s !== Simulation.SPEED_PAUSED &&
+        s !== Simulation.SPEED_SLOW &&
+        s !== Simulation.SPEED_MED &&
+        s !== Simulation.SPEED_FAST)
       throw new Error('Invalid speed!');
 
     this._speed = s;
@@ -111,8 +112,13 @@ define(['BlockMap', 'BlockMapUtils', 'Budget', 'Census', 'Commercial', 'Disaster
 
   Simulation.prototype.load = function(saveData) {
     for (var i = 0, l = saveProps.length; i < l; i++)
-      this[props[i]] = saveData[props[i]];
-    // XXX TBC
+      this[saveProps[i]] = saveData[saveProps[i]];
+
+    this._map.load(saveData);
+    this.evaluation.load(saveData);
+    this._valves.load(saveData);
+    this.budget.load(saveData);
+    this._census.load(saveData);
   };
 
 
@@ -223,7 +229,6 @@ define(['BlockMap', 'BlockMapUtils', 'Budget', 'Census', 'Commercial', 'Disaster
     Stadia.registerHandlers(this._mapScanner, this._repairManager);
     Transport.registerHandlers(this._mapScanner, this._repairManager);
 
-    this.budget.setFunds(20000);
     var simData = this._constructSimData();
     this._mapScanner.mapScan(0, this._map.width, simData);
     this._powerManager.doPowerScan(this._census);
@@ -231,7 +236,6 @@ define(['BlockMap', 'BlockMapUtils', 'Budget', 'Census', 'Commercial', 'Disaster
     BlockMapUtils.crimeScan(this._census, this.blockMaps);
     BlockMapUtils.populationDensityScan(this._map, this.blockMaps);
     BlockMapUtils.fireAnalysis(this.blockMaps);
-    this._census.totalPop = 1;
   };
 
 
@@ -517,16 +521,20 @@ define(['BlockMap', 'BlockMapUtils', 'Budget', 'Census', 'Commercial', 'Disaster
 
 
   Simulation.prototype._onValveChange  = function() {
-    // XXX Examine whether we need to keep the previous values
     this._resLast = this._valves.resValve;
     this._comLast = this._valves.comValve;
     this._indLast = this._valves.indValve;
 
-    // XXX When this was in updateFrontEnd it had a comment that updating
-    // the valves updated the population. It seems I was talking nonsense
     this._emitEvent(Messages.VALVES_UPDATED, {residential: this._valves.resValve,
                                               commercial: this._valves.comValve,
                                               industrial: this._valves.indValve});
+  };
+
+
+  Simulation.prototype.getDate = function() {
+    var year = Math.floor(this._cityTime / 48) + this._startingYear;
+    var month = Math.floor(this._cityTime % 48) >> 2;
+    return {month: month, year: year};
   };
 
 

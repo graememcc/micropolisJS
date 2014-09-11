@@ -7,21 +7,33 @@
  *
  */
 
-define(['BaseTool', 'BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', 'DisasterWindow', 'GameCanvas', 'EvaluationWindow', 'InfoBar', 'InputStatus', 'Messages', 'MonsterTV', 'Notification', 'QueryWindow', 'RCI', 'SaveWindow', 'ScreenshotLinkWindow', 'ScreenshotWindow', 'SettingsWindow', 'Simulation', 'Storage', 'Text'],
-       function(BaseTool, BudgetWindow, Config, CongratsWindow, DebugWindow, DisasterWindow, GameCanvas, EvaluationWindow, InfoBar, InputStatus, Messages, MonsterTV, Notification, QueryWindow, RCI, SaveWindow, ScreenshotLinkWindow, ScreenshotWindow, SettingsWindow, Simulation, Storage, Text) {
+define(['BaseTool', 'BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', 'DisasterWindow', 'EvaluationWindow', 'GameCanvas', 'GameMap', 'InfoBar', 'InputStatus', 'Messages', 'MonsterTV', 'Notification', 'QueryWindow', 'RCI', 'SaveWindow', 'ScreenshotLinkWindow', 'ScreenshotWindow', 'SettingsWindow', 'Simulation', 'Storage', 'Text'],
+       function(BaseTool, BudgetWindow, Config, CongratsWindow, DebugWindow, DisasterWindow, EvaluationWindow, GameCanvas, GameMap, InfoBar, InputStatus, Messages, MonsterTV, Notification, QueryWindow, RCI, SaveWindow, ScreenshotLinkWindow, ScreenshotWindow, SettingsWindow, Simulation, Storage, Text) {
   "use strict";
 
 
   function Game(gameMap, tileSet, spriteSheet, difficulty, name) {
     difficulty = difficulty || 0;
+    var savedGame;
 
-    this.gameMap = gameMap;
+    if (!gameMap.isSavedGame) {
+      this.gameMap = gameMap;
+      savedGame = null;
+    } else {
+      this.gameMap = new GameMap(120, 100);
+      savedGame = gameMap;
+    }
+
     this.tileSet = tileSet;
-    this.simulation = new Simulation(this.gameMap, difficulty, Simulation.SPEED_SLOW);
-    this.rci = new RCI('RCIContainer', this.simulation);
+    this.simulation = new Simulation(this.gameMap, difficulty, Simulation.SPEED_SLOW, savedGame);
 
     this.name = name;
-    $('#name').text(name || 'MyTown');
+
+    if (savedGame)
+      this.load(savedGame);
+
+    this.rci = new RCI('RCIContainer', this.simulation);
+
 
     // Note: must init canvas before inputStatus
     this.gameCanvas = new GameCanvas('canvasContainer');
@@ -125,8 +137,16 @@ define(['BaseTool', 'BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', '
     // And pauses
     this.inputStatus.addEventListener(Messages.SPEED_CHANGE, this.handlePause.bind(this));
 
-    this.infoBar = InfoBar('cclass', 'population', 'score', 'funds', 'date');
-    this.infoBar(this.simulation);
+    this.infoBar = InfoBar('cclass', 'population', 'score', 'funds', 'date', 'name');
+    var initialValues = {
+      classification: this.simulation.evaluation.cityClass,
+      population: this.simulation.evaluation.cityPop,
+      score: this.simulation.evaluation.cityScore,
+      funds: this.simulation.budget.totalFunds,
+      date: this.simulation.getDate(),
+      name: this.name
+    };
+    this.infoBar(this.simulation, initialValues);
 
     this._notificationBar = new Notification('#notifications', this.gameCanvas, Text.messageText[Messages.WELCOME]);
 
@@ -167,7 +187,9 @@ define(['BaseTool', 'BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', '
 
 
   Game.prototype.load = function(saveData) {
-    // XXX TBC
+    this.name = saveData.name;
+    BaseTool.load(saveData);
+    this.simulation.load(saveData);
   };
 
 

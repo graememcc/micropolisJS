@@ -70,7 +70,9 @@ define(['Direction', 'MiscUtils', 'PositionMaker', 'Tile'],
     for (var i = 0, l = saveProps.length; i < l; i++)
       saveData[saveProps[i]] = this[saveProps[i]];
 
-    saveData['map'] = this._data;
+    saveData['map'] = this._data.map(function(t) {
+      return {value: t.getRawValue()};
+    });
   };
 
 
@@ -78,7 +80,9 @@ define(['Direction', 'MiscUtils', 'PositionMaker', 'Tile'],
     for (var i = 0, l = saveProps.length; i < l; i++)
       this[saveProps[i]] = saveData[saveProps[i]];
 
-    this._data = saveData['map'];
+    var map = saveData.map;
+    for (i = 0, l = map.length; i < l; i++)
+      this.setTileValue(i % this.width, Math.floor(i / this.width), map[i].value);
   };
 
 
