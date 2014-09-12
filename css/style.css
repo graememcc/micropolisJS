@@ -51,7 +51,7 @@ main {
   overflow: hidden;
 }
 
-nav a, nav a:link, nav a:visited, nav a:hover, footer a, footer a:link, footer a:visited, footer a:hover {
+nav a, nav a:link, nav a:visited, nav a:hover, footer a, footer a:link, footer a:visited, footer a:hover #aboutHeader a, #aboutHeader a:link, #aboutHeader a:visited, #aboutHeader a:hover{
   text-decoration: none;
   color: white;
 }
@@ -802,19 +802,53 @@ nav li {
   }
 }
 
+/* About page styles */
+
+#aboutMain {
+  position: relative;
+  top: 50px;
+  margin-bottom: 100px;
+}
+
+#aboutContainer {
+  position: relative;
+  left: 50%;
+  border: 1px solid black;
+  width: 75%;
+  line-height: 1.5em;
+  text-align: justify;
+  transform: translate(-50%);
+}
+
+#aboutContainer p, #aboutContainer li, #aboutContainer h3 {
+  margin: 10px;
+}
+
+#aboutContainer ul {
+  margin-left: 50px;
+}
+
+#aboutFooter {
+  position: static;
+}
+
+#appeal {
+  border: 1px dotted grey;
+  font-size: 12px;
+  width: 50%;
+  margin: auto;
+  line-height: 1.5em;
+  background-color: lightyellow;
+}
+
+#aboutMain a, #aboutMain a:link, #aboutMain a:visited, #aboutMain a:hover {
+  text-decoration: none;
+  color: dodgerblue;
+}
+
 /* Pre refactoring below */
 
 .info {
   width: 20%;
   text-align: centre;
-}
-
-#appeal {
-  border: 1px solid gray;
-  padding: 10px;
-  font-size: 12px;
-}
-
-#appeal h2 {
-  color: yellow;
 }

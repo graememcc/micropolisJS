@@ -10,6 +10,7 @@ module.exports = function(grunt) {
           {expand: true, cwd: 'thirdparty', src: '**/*', dest: 'dist/thirdparty'},
           {src: ['COPYING'], dest: 'dist/'},
           {src: ['LICENSE'], dest: 'dist/'},
+          {src: ['about.html'], dest: 'dist/'},
           {src: ['index.html'], dest: 'dist/'}
         ]
       }
@@ -26,7 +27,7 @@ module.exports = function(grunt) {
     },
 
     watch: {
-      files: ['index.html', 'css/*', 'sprites/*', 'thirdparty/*', 'images/*', 'js/*', 'COPYING', 'LICENSE'],
+      files: ['index.html', 'about.html', 'css/*', 'sprites/*', 'thirdparty/*', 'images/*', 'js/*', 'COPYING', 'LICENSE'],
       tasks: ['copy', 'requirejs']
     }
   });
