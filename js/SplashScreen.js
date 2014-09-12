@@ -23,7 +23,8 @@ define(['Config', 'Game', 'MapGenerator', 'Simulation', 'SplashCanvas', 'Storage
     this.splashCanvas = new SplashCanvas(SplashCanvas.DEFAULT_ID, 'splashContainer');
 
     // Conditionally enable load/save buttons
-    $('.loadSave').prop('disabled', !Storage.canStore);
+    $('#saveRequest').prop('disabled', !Storage.canStore);
+    $('#splashLoad').prop('disabled', !(Storage.canStore && Storage.getSavedGame() !== null));
 
     this.splashCanvas.init(this.map, tileSet);
 

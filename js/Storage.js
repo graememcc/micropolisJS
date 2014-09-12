@@ -18,15 +18,15 @@ define(['MiscUtils'],
   var getSavedGame = function() {
     var savedGame = window.localStorage.getItem(this.KEY);
 
-    if (savedGame) {
+    if (savedGame !== null) {
       savedGame = JSON.parse(savedGame);
 
       if (savedGame.version !== this.CURRENT_VERSION)
         this.transitionOldSave(savedGame);
-    }
 
-    // Flag as a saved game for Game/Simulation etc...
-    savedGame.isSavedGame = true;
+      // Flag as a saved game for Game/Simulation etc...
+      savedGame.isSavedGame = true;
+    }
 
     return savedGame;
   };
