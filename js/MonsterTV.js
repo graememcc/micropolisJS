@@ -12,6 +12,9 @@ define(['EventEmitter', 'GameCanvas', 'Messages'],
   "use strict";
 
 
+  var TIMEOUT_SECS = 20;
+
+
   var MonsterTV = function(map, tileSet, spriteSheet, animationManager) {
     this.isOpen = false;
     this._tracking = null;
@@ -26,9 +29,11 @@ define(['EventEmitter', 'GameCanvas', 'Messages'],
 
     this._onMove = onMove.bind(this);
     this._onDie = onDie.bind(this);
+    this._timeout = null;
 
     $(monsterTVID).toggle();
-    $(monsterTVFormID).on('submit', close.bind(this));
+    this.close = close.bind(this);
+    $(monsterTVFormID).on('submit', this.close);
   };
 
 
@@ -68,6 +73,8 @@ define(['EventEmitter', 'GameCanvas', 'Messages'],
     this._tracking.removeEventListener(Messages.SPRITE_MOVE, this._onMove);
     this._tracking.removeEventListener(Messages.SPRITE_DYING, this._onDie);
     this._tracking = null;
+
+    this._timeout = window.setTimeout(function() {this._timeout = null; this.close();}.bind(this), TIMEOUT_SECS * 1000);
   };
 
 
@@ -82,6 +89,11 @@ define(['EventEmitter', 'GameCanvas', 'Messages'],
     sprite.addEventListener(Messages.SPRITE_DYING, this._onDie);
     this.canvas.centreOn(x, y);
 
+    if (this._timeout !== null) {
+      window.clearTimeout(this._timeout);
+      this._timeout = null;
+    }
+
     if (this.isOpen)
       return;
 
@@ -91,6 +103,11 @@ define(['EventEmitter', 'GameCanvas', 'Messages'],
 
   MonsterTV.prototype.show = function(x, y) {
     this.canvas.centreOn(x, y);
+
+    if (this._timeout !== null) {
+      window.clearTimeout(this._timeout);
+      this._timeout = null;
+    }
 
     if (this.isOpen)
       return;
