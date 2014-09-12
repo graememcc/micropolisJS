@@ -1,4 +1,4 @@
-/* micropolisJS. Adapted from Micropolis by Graeme McCutcheon.
+/* micropolisJS. Adapted by Graeme McCutcheon from Micropolis.
  *
  * This code is released under the GNU GPL v3, with some additional terms.
  * Please see the files LICENSE and COPYING for details. Alternatively,
@@ -10,7 +10,9 @@
 define(['MiscUtils'],
        function(MiscUtils) {
 
+
   // Split out to avoid circular dependency hell
+
   var SpriteConstants = {};
   Object.defineProperties(SpriteConstants,
      {SPRITE_TRAIN: MiscUtils.makeConstantDescriptor(1),

@@ -1,4 +1,4 @@
-/* micropolisJS. Adapted from Micropolis by Graeme McCutcheon.
+/* micropolisJS. Adapted by Graeme McCutcheon from Micropolis.
  *
  * This code is released under the GNU GPL v3, with some additional terms.
  * Please see the files LICENSE and COPYING for details. Alternatively,
@@ -10,6 +10,7 @@
 define(['MiscUtils', 'MouseBox', 'TileSet'],
        function(MiscUtils, MouseBox, TileSet) {
   "use strict";
+
 
   function SplashCanvas(id, parentNode) {
     if (!(this instanceof SplashCanvas))
@@ -88,7 +89,7 @@ define(['MiscUtils', 'MouseBox', 'TileSet'],
 
   SplashCanvas.DEFAULT_WIDTH = 360;
   SplashCanvas.DEFAULT_HEIGHT = 300;
-  SplashCanvas.DEFAULT_ID = "SplashCanvas";
+  SplashCanvas.DEFAULT_ID = 'SplashCanvas';
 
   return SplashCanvas;
 });

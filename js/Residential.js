@@ -1,4 +1,4 @@
-/* micropolisJS. Adapted from Micropolis by Graeme McCutcheon.
+/* micropolisJS. Adapted by Graeme McCutcheon from Micropolis.
  *
  * This code is released under the GNU GPL v3, with some additional terms.
  * Please see the files LICENSE and COPYING for details. Alternatively,
@@ -155,8 +155,8 @@ define(['Random', 'Tile', 'TileUtils', 'Traffic', 'ZoneUtils'],
         for (xx = x - 1; xx <= x + 1; xx++) {
           if (xx === x && yy === y) continue;
           map.setTile(x, y, Tile.LHTHR + lpValue + Random.getRandom(2), Tile.BLBNCNBIT);
-        } 
-      } 
+        }
+      }
 
       ZoneUtils.incRateOfGrowth(blockMaps, x, y, -8);
       return;
@@ -173,10 +173,10 @@ define(['Random', 'Tile', 'TileUtils', 'Traffic', 'ZoneUtils'],
           // We've found a house. Replace it with the normal free zone tile
           map.setTile(xx, yy, freeZone[i] + Tile.RESBASE, Tile.BLBNCNBIT);
          return;
-        } 
+        }
         i += 1;
-      } 
-    } 
+      }
+    }
   };
 
 
@@ -255,7 +255,7 @@ define(['Random', 'Tile', 'TileUtils', 'Traffic', 'ZoneUtils'],
       ZoneUtils.putZone(map, x, y, Tile.HOSPITAL, zonePower);
       simData.census.needHospital = 0;
       return;
-    } 
+    }
   };
 
 

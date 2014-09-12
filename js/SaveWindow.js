@@ -1,4 +1,4 @@
-/* micropolisJS. Adapted from Micropolis by Graeme McCutcheon.
+/* micropolisJS. Adapted by Graeme McCutcheon from Micropolis.
  *
  * This code is released under the GNU GPL v3, with some additional terms.
  * Please see the files LICENSE and COPYING for details. Alternatively,
@@ -17,8 +17,8 @@ define(['Messages', 'ModalWindow'],
   });
 
 
-  var saveFormID = "#saveForm";
-  var saveOKID = "#saveOK";
+  var saveFormID = '#saveForm';
+  var saveOKID = '#saveOK';
 
 
   var submit = function(e) {

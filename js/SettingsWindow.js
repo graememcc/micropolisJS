@@ -1,4 +1,4 @@
-/* micropolisJS. Adapted from Micropolis by Graeme McCutcheon.
+/* micropolisJS. Adapted by Graeme McCutcheon from Micropolis.
  *
  * This code is released under the GNU GPL v3, with some additional terms.
  * Please see the files LICENSE and COPYING for details. Alternatively,
@@ -10,6 +10,7 @@
 define(['Messages', 'ModalWindow', 'MiscUtils', 'Simulation'],
        function(Messages, ModalWindow, MiscUtils, Simulation) {
   "use strict";
+
 
   var SettingsWindow = ModalWindow(function() {
     $(settingsCancelID).on('click', cancel.bind(this));

@@ -1,4 +1,4 @@
-/* micropolisJS. Adapted from Micropolis by Graeme McCutcheon.
+/* micropolisJS. Adapted by Graeme McCutcheon from Micropolis.
  *
  * This code is released under the GNU GPL v3, with some additional terms.
  * Please see the files LICENSE and COPYING for details. Alternatively,
@@ -10,6 +10,7 @@
 define(['BlockMap', 'BlockMapUtils', 'Budget', 'Census', 'Commercial', 'DisasterManager', 'EventEmitter', 'EmergencyServices', 'Evaluate', 'Industrial', 'MapScanner', 'Messages', 'MiscTiles', 'MiscUtils', 'PowerManager', 'RepairManager', 'Residential', 'Road', 'SpriteManager', 'Stadia', 'Traffic', 'Transport', 'Valves'],
         function(BlockMap, BlockMapUtils, Budget, Census, Commercial, DisasterManager, EventEmitter, EmergencyServices, Evaluate, Industrial, MapScanner, Messages, MiscTiles, MiscUtils, PowerManager, RepairManager, Residential, Road, SpriteManager, Stadia, Traffic, Transport, Valves) {
   "use strict";
+
 
   var Simulation = EventEmitter(function (gameMap, gameLevel, speed, savedGame) {
     this._map = gameMap;

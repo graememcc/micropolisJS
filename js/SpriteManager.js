@@ -1,4 +1,4 @@
-/* micropolisJS. Adapted from Micropolis by Graeme McCutcheon.
+/* micropolisJS. Adapted by Graeme McCutcheon from Micropolis.
  *
  * This code is released under the GNU GPL v3, with some additional terms.
  * Please see the files LICENSE and COPYING for details. Alternatively,
@@ -10,6 +10,7 @@
 define(['AirplaneSprite', 'BoatSprite', 'CopterSprite', 'EventEmitter', 'ExplosionSprite', 'Messages', 'MiscUtils', 'MonsterSprite', 'Random', 'SpriteConstants', 'SpriteUtils', 'Tile', 'TornadoSprite', 'TrainSprite'],
        function(AirplaneSprite, BoatSprite, CopterSprite, EventEmitter, ExplosionSprite, Messages, MiscUtils, MonsterSprite, Random, SpriteConstants, SpriteUtils, Tile, TornadoSprite, TrainSprite) {
   "use strict";
+
 
   var SpriteManager = EventEmitter(function(map) {
     this.spriteList = [];

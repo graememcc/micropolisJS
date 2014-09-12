@@ -1,4 +1,4 @@
-/* micropolisJS. Adapted from Micropolis by Graeme McCutcheon.
+/* micropolisJS. Adapted by Graeme McCutcheon from Micropolis.
  *
  * This code is released under the GNU GPL v3, with some additional terms.
  * Please see the files LICENSE and COPYING for details. Alternatively,
@@ -10,6 +10,7 @@
 define(['Direction', 'MiscUtils', 'Random', 'SpriteConstants', 'SpriteUtils', 'Tile', 'TileUtils'],
        function(Direction, MiscUtils, Random, SpriteConstants, SpriteUtils, Tile, TileUtils) {
   "use strict";
+
 
   function Traffic(map, spriteManager) {
     this._map = map;

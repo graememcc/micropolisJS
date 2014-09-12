@@ -1,4 +1,4 @@
-/* micropolisJS. Adapted from Micropolis by Graeme McCutcheon.
+/* micropolisJS. Adapted by Graeme McCutcheon from Micropolis.
  *
  * This code is released under the GNU GPL v3, with some additional terms.
  * Please see the files LICENSE and COPYING for details. Alternatively,
@@ -10,6 +10,7 @@
 define(['Random', 'Tile', 'TileUtils', 'Traffic', 'ZoneUtils'],
        function(Random, Tile, TileUtils, Traffic, ZoneUtils) {
   "use strict";
+
 
   // Commercial tiles have 'populations' from 1 to 5,
   // and value from 0 to 3. The tiles are laid out in

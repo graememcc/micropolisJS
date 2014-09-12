@@ -1,4 +1,4 @@
-/* micropolisJS. Adapted from Micropolis by Graeme McCutcheon.
+/* micropolisJS. Adapted by Graeme McCutcheon from Micropolis.
  *
  * This code is released under the GNU GPL v3, with some additional terms.
  * Please see the files LICENSE and COPYING for details. Alternatively,
@@ -10,6 +10,7 @@
 define([],
        function() {
   "use strict";
+
 
   var MouseBox = {
     draw: function(c, pos, width, height, options) {
@@ -28,11 +29,11 @@ define([],
       width = width + endModifier * lineWidth;
       var startY = pos.y + startModifier * lineWidth / 2;
       height = height + endModifier * lineWidth;
- 
+
       var ctx = c.getContext('2d');
       ctx.lineWidth = lineWidth;
       ctx.strokeStyle = strokeStyle;
-      ctx.strokeRect(startX, startY, width, height); 
+      ctx.strokeRect(startX, startY, width, height);
     }
   };
 

@@ -1,4 +1,4 @@
-/* micropolisJS. Adapted from Micropolis by Graeme McCutcheon.
+/* micropolisJS. Adapted by Graeme McCutcheon from Micropolis.
  *
  * This code is released under the GNU GPL v3, with some additional terms.
  * Please see the files LICENSE and COPYING for details. Alternatively,
@@ -10,6 +10,7 @@
 define(['Tile'],
        function(Tile) {
   "use strict";
+
 
   function TileSet(src, loadCallback, errorCallback) {
     if (!(this instanceof TileSet))
@@ -54,7 +55,7 @@ define(['Tile'],
 
     // Don't allow overwriting an already loaded tileset
     if (this.loaded)
-      throw new Error("TileSet already loaded");
+      throw new Error('TileSet already loaded');
 
     this._successCallback = loadCallback;
     this._errorCallback = errorCallback;

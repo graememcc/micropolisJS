@@ -1,4 +1,4 @@
-/* micropolisJS. Adapted from Micropolis by Graeme McCutcheon.
+/* micropolisJS. Adapted by Graeme McCutcheon from Micropolis.
  *
  * This code is released under the GNU GPL v3, with some additional terms.
  * Please see the files LICENSE and COPYING for details. Alternatively,
@@ -10,6 +10,7 @@
 define(['ConnectingTool', 'EventEmitter', 'Messages', 'Random', 'Tile', 'TileUtils', 'ZoneUtils'],
        function(ConnectingTool, EventEmitter, Messages, Random, Tile, TileUtils, ZoneUtils) {
   "use strict";
+
 
   var BulldozerTool = EventEmitter(ConnectingTool(function(map) {
     this.init(10, map, true);

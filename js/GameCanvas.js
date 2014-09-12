@@ -1,4 +1,4 @@
-/* micropolisJS. Adapted from Micropolis by Graeme McCutcheon.
+/* micropolisJS. Adapted by Graeme McCutcheon from Micropolis.
  *
  * This code is released under the GNU GPL v3, with some additional terms.
  * Please see the files LICENSE and COPYING for details. Alternatively,
@@ -10,6 +10,7 @@
 define(['AnimationManager', 'GameMap', 'MiscUtils', 'MouseBox', 'Tile', 'TileSet'],
        function(AnimationManager, GameMap, MiscUtils, MouseBox, Tile, TileSet) {
   "use strict";
+
 
   function GameCanvas(id, parentNode) {
     if (!(this instanceof GameCanvas))
@@ -158,7 +159,7 @@ define(['AnimationManager', 'GameMap', 'MiscUtils', 'MouseBox', 'Tile', 'TileSet
 
   GameCanvas.prototype.moveNorth = function() {
     if (!this.ready)
-      throw new Error("Not ready!");
+      throw new Error('Not ready!');
 
     if (this._originY > this.minY)
       this._originY--;
@@ -167,7 +168,7 @@ define(['AnimationManager', 'GameMap', 'MiscUtils', 'MouseBox', 'Tile', 'TileSet
 
   GameCanvas.prototype.moveEast = function() {
     if (!this.ready)
-      throw new Error("Not ready!");
+      throw new Error('Not ready!');
 
     if (this._originX < this.maxX)
       this._originX++;
@@ -176,7 +177,7 @@ define(['AnimationManager', 'GameMap', 'MiscUtils', 'MouseBox', 'Tile', 'TileSet
 
   GameCanvas.prototype.moveSouth = function() {
     if (!this.ready)
-      throw new Error("Not ready!");
+      throw new Error('Not ready!');
 
     if (this._originY < this.maxY)
       this._originY++;
@@ -185,7 +186,7 @@ define(['AnimationManager', 'GameMap', 'MiscUtils', 'MouseBox', 'Tile', 'TileSet
 
   GameCanvas.prototype.moveWest = function() {
     if (!this.ready)
-      throw new Error("Not ready!");
+      throw new Error('Not ready!');
 
     if (this._originX > this.minX)
       this._originX--;
@@ -199,7 +200,7 @@ define(['AnimationManager', 'GameMap', 'MiscUtils', 'MouseBox', 'Tile', 'TileSet
       throw e;
 
     if (!this.ready)
-      throw new Error("Not ready!");
+      throw new Error('Not ready!');
 
     if (x < this.minX || x > this.maxX ||
         y < this.minY || y > this.maxY)
@@ -217,7 +218,7 @@ define(['AnimationManager', 'GameMap', 'MiscUtils', 'MouseBox', 'Tile', 'TileSet
       throw e;
 
     if (!this.ready)
-      throw new Error("Not ready!");
+      throw new Error('Not ready!');
 
     if (y === undefined) {
       y = x.y;
@@ -270,7 +271,7 @@ define(['AnimationManager', 'GameMap', 'MiscUtils', 'MouseBox', 'Tile', 'TileSet
       throw e;
 
     if (!this.ready)
-      throw new Error("Not ready!");
+      throw new Error('Not ready!');
 
     return {x: Math.floor(x / this._tileSet.tileWidth),
             y: Math.floor(y / this._tileSet.tileWidth)};
@@ -284,7 +285,7 @@ define(['AnimationManager', 'GameMap', 'MiscUtils', 'MouseBox', 'Tile', 'TileSet
       throw e;
 
     if (!this.ready)
-      throw new Error("Not ready!");
+      throw new Error('Not ready!');
 
     if (x >= this._canvasWidth || y >= this._canvasHeight)
       return null;
@@ -301,7 +302,7 @@ define(['AnimationManager', 'GameMap', 'MiscUtils', 'MouseBox', 'Tile', 'TileSet
       throw e;
 
     if (!this.ready)
-      throw new Error("Not ready!");
+      throw new Error('Not ready!');
 
     if (x >= this._canvasWidth || y >= this._canvasHeight)
       return null;
@@ -337,7 +338,7 @@ define(['AnimationManager', 'GameMap', 'MiscUtils', 'MouseBox', 'Tile', 'TileSet
       throw e;
 
     if (!this.ready)
-      throw new Error("Not ready!");
+      throw new Error('Not ready!');
 
     if (y === undefined) {
       y = x.y;
@@ -366,7 +367,7 @@ define(['AnimationManager', 'GameMap', 'MiscUtils', 'MouseBox', 'Tile', 'TileSet
       throw e;
 
     if (!this.ready)
-      throw new Error("Not ready!");
+      throw new Error('Not ready!');
 
     if (!tileSet.loaded)
       throw new Error('new tileset not loaded');
@@ -557,7 +558,7 @@ define(['AnimationManager', 'GameMap', 'MiscUtils', 'MouseBox', 'Tile', 'TileSet
 
   GameCanvas.prototype.paint = function(mouse, sprites, isPaused) {
     if (!this.ready)
-      throw new Error("Not ready!");
+      throw new Error('Not ready!');
 
     // Change tileSet if necessary
     var tileSetChanged = false;
@@ -625,7 +626,7 @@ define(['AnimationManager', 'GameMap', 'MiscUtils', 'MouseBox', 'Tile', 'TileSet
   };
 
 
-  GameCanvas.DEFAULT_ID = "MicropolisCanvas";
+  GameCanvas.DEFAULT_ID = 'MicropolisCanvas';
 
 
   return GameCanvas;

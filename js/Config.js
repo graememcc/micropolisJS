@@ -1,4 +1,4 @@
-/* micropolisJS. Adapted from Micropolis by Graeme McCutcheon.
+/* micropolisJS. Adapted by Graeme McCutcheon from Micropolis.
  *
  * This code is released under the GNU GPL v3, with some additional terms.
  * Please see the files LICENSE and COPYING for details. Alternatively,
@@ -10,6 +10,7 @@
 define([],
        function() {
   "use strict";
+
 
   // All areas of micropolisJS that provide debug options should also check the debug
   // value as well as their individual value. The debug flag is intended to switch on all

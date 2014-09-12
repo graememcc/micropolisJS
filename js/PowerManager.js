@@ -1,4 +1,4 @@
-/* micropolisJS. Adapted from Micropolis by Graeme McCutcheon.
+/* micropolisJS. Adapted by Graeme McCutcheon from Micropolis.
  *
  * This code is released under the GNU GPL v3, with some additional terms.
  * Please see the files LICENSE and COPYING for details. Alternatively,
@@ -10,6 +10,7 @@
 define(['BlockMap', 'Direction', 'EventEmitter', 'Messages', 'Random', 'Tile'],
        function(BlockMap, Direction, EventEmitter, Messages, Random, Tile) {
   "use strict";
+
 
   var COAL_POWER_STRENGTH = 700;
   var NUCLEAR_POWER_STRENGTH = 2000;
@@ -111,7 +112,7 @@ define(['BlockMap', 'Direction', 'EventEmitter', 'Messages', 'Random', 'Tile'],
     var dY = [-1, -1, 0, 0];
 
     for (var i = 0; i < 4; i++)
-      map.addTileFlags(x + dX[i], y + dY[i], Tile.ANIMBIT); 
+      map.addTileFlags(x + dX[i], y + dY[i], Tile.ANIMBIT);
   };
 
 

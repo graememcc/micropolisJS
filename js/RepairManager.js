@@ -1,4 +1,4 @@
-/* micropolisJS. Adapted from Micropolis by Graeme McCutcheon.
+/* micropolisJS. Adapted by Graeme McCutcheon from Micropolis.
  *
  * This code is released under the GNU GPL v3, with some additional terms.
  * Please see the files LICENSE and COPYING for details. Alternatively,
@@ -10,6 +10,7 @@
 define(['Tile'],
        function(Tile) {
   "use strict";
+
 
   function RepairManager(map) {
     this._map = map;
@@ -51,7 +52,7 @@ define(['Tile'],
     for (var i = 0, l = this._actions.length; i < l; i++) {
       var current = this._actions[i];
       var period = current.period;
-      
+
       if ((cityTime & period) !== 0)
         continue;
 

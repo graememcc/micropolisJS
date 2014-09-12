@@ -1,4 +1,4 @@
-/* micropolisJS. Adapted from Micropolis by Graeme McCutcheon.
+/* micropolisJS. Adapted by Graeme McCutcheon from Micropolis.
  *
  * This code is released under the GNU GPL v3, with some additional terms.
  * Please see the files LICENSE and COPYING for details. Alternatively,
@@ -11,18 +11,19 @@ define([],
        function() {
   "use strict";
 
+
   var Direction = {
-    "INVALID": -1,
-    "NORTH": 0,
-    "NORTHEAST": 1,
-    "EAST": 2,
-    "SOUTHEAST": 3,
-    "SOUTH": 4,
-    "SOUTHWEST": 5,
-    "WEST": 6,
-    "NORTHWEST": 7,
-    "BEGIN": 0,
-    "END": 8,
+    'INVALID': -1,
+    'NORTH': 0,
+    'NORTHEAST': 1,
+    'EAST': 2,
+    'SOUTHEAST': 3,
+    'SOUTH': 4,
+    'SOUTHWEST': 5,
+    'WEST': 6,
+    'NORTHWEST': 7,
+    'BEGIN': 0,
+    'END': 8,
 
     // Move direction clockwise by 45 degrees. No bounds checking
     // i.e. result could be >= END. Has no effect on INVALID. Undefined
