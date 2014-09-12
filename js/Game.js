@@ -236,6 +236,7 @@ define(['BaseTool', 'BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', '
 
   var genericDialogClosure = function() {
     this.dialogOpen = false;
+    this._openWindow = null;
   };
 
 
@@ -447,14 +448,6 @@ define(['BaseTool', 'BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', '
   };
 
 
-  Game.prototype.toolEscapeHandler = function() {
-    if (this.dialogOpen)
-      this[this._openWindow].close();
-    else
-      this.inputStatus.clearTool();
-  };
-
-
   Game.prototype.handleInput = function() {
     if (!this.dialogOpen) {
       // Handle keyboard movement
@@ -471,9 +464,11 @@ define(['BaseTool', 'BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', '
 
     if (this.inputStatus.escape) {
       // We need to handle escape, as InputStatus won't know what dialogs are showing
-      if (this.dialogOpen)
+      if (this.dialogOpen) {
+        this.dialogOpen = false;
         this[this._openWindow].close();
-      else
+        this._openWindow = null;
+      } else
         this.inputStatus.clearTool();
     }
   };
