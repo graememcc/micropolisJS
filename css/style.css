@@ -314,6 +314,13 @@ nav li {
   height: 220px;
 }
 
+#debug {
+  position: absolute;
+  top: 580px;
+  width: 280px;
+  display: none;
+}
+
 #difficultyLabel {
   margin-right: 5px;
 }
@@ -337,13 +344,6 @@ nav li {
   padding: 0 5px;
 }
 
-#debug {
-  position: absolute;
-  top: 516px;
-  width: 280px;
-  display: none;
-}
-
 #infobar {
   position: absolute;
   top: 40px;
@@ -362,7 +362,7 @@ nav li {
 
 #monstertv {
   position: absolute;
-  top: 300px;
+  top: 364px;
   width: 200px;
   background-color: red;
 }
@@ -474,6 +474,11 @@ nav li {
   right: 0;
   display: none;
   z-index: 200;
+}
+
+#tw {
+  position: absolute;
+  top: 300px;
 }
 
 #tvContainer {
@@ -632,7 +637,7 @@ nav li {
   }
 
   #debug {
-    top: 486px;
+    top: 544px;
   }
 
   #infobar {
@@ -640,7 +645,7 @@ nav li {
   }
 
   #monstertv {
-    top: 280px;
+    top: 324px;
   }
 
   #miscButtons {
@@ -654,6 +659,10 @@ nav li {
   #RCIContainer {
     top: 442px;
   }
+
+  #tw {
+    top: 280px;
+  }
 }
 
 @media (max-height: 672px) {
@@ -662,7 +671,7 @@ nav li {
   }
 
   #debug {
-    top: 456px;
+    top: 504px;
   }
 
   #infobar {
@@ -670,7 +679,7 @@ nav li {
   }
 
   #monstertv {
-    top: 260px;
+    top: 304px;
   }
 
   #miscButtons {
@@ -683,6 +692,10 @@ nav li {
 
   #RCIContainer {
     top: 412px;
+  }
+
+  #tw {
+    top: 260px;
   }
 }
 
@@ -699,7 +712,7 @@ nav li {
   }
 
   #debug {
-    top: 426px;
+    top: 460px;
   }
 
   #infobar {
@@ -711,7 +724,7 @@ nav li {
   }
 
   #monstertv {
-    top: 240px;
+    top: 274px;
   }
 
   #notifications {
@@ -720,6 +733,10 @@ nav li {
 
   #RCIContainer {
     top: 382px;
+  }
+
+  #tw {
+    top: 240px;
   }
 }
 
@@ -750,6 +767,10 @@ nav li {
 
   #RCIContainer {
     top: 352px;
+  }
+
+  #tw {
+    display: none;
   }
 }
 
