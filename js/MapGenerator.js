@@ -15,7 +15,7 @@ define(['Direction', 'GameMap', 'Random', 'Tile'],
   var TERRAIN_CREATE_ISLAND;
   var TERRAIN_TREE_LEVEL = -1;
   var TERRAIN_LAKE_LEVEL = -1;
-  var TERRAIN_CURVE_LEVEL = 0;
+  var TERRAIN_CURVE_LEVEL = -1;
   var ISLAND_RADIUS = 18;
 
   var generateMap = function(w, h) {
@@ -235,7 +235,7 @@ define(['Direction', 'GameMap', 'Random', 'Tile'],
           if (temp !== Tile.RIVER && Random.getRandom(1))
             temp++;
 
-          map.setTileValue(x, y, temp);
+          map.setTileValue(x, y, temp, 0);
         }
       }
     }
@@ -288,7 +288,7 @@ define(['Direction', 'GameMap', 'Random', 'Tile'],
       map.setTile(x, y, temp, Tile.BLBNBIT);
     } else {
       if (!preserve)
-        map.setTileValue(x, y, temp);
+        map.setTileValue(x, y, temp, 0);
     }
   };
 
