@@ -272,6 +272,11 @@ define(['EventEmitter', 'GameCanvas', 'GameTools', 'Messages', 'MiscUtils'],
 
 
   InputStatus.prototype.clearTool = function() {
+    if (this.toolName === 'query') {
+      $(this.canvasID).removeClass('helpPointer');
+      $(this.canvasID).addClass('pointer');
+    }
+
     this.currentTool = null;
     this.toolWidth = 0;
     this.toolColour = '';
