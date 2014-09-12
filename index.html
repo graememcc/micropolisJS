@@ -162,7 +162,7 @@
         </noscript>
       </main>
       <footer id="footer" class="alignCenter chunk white padding10">
-        Support micropolisJS: <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=TV83GP5CJGL3Q&lc=GB&item_name=micropolisJS&no_note=1&no_shipping=1&currency_code=GBP&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted">Click here and buy me a beer!</a>
+        Support micropolisJS: <a class="nag" href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=TV83GP5CJGL3Q&lc=GB&item_name=micropolisJS&no_note=1&no_shipping=1&currency_code=GBP&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted" target="_blank">Click here, buy me a beer!</a>
         <div id="author" class="open">Brought to you by <a rel="author" href="http://www.graememcc.co.uk">Graeme McCutcheon</a></div>
       </footer>
       <div class="hidden modal shadow" id="budget">
@@ -335,6 +335,19 @@
           <div id="congratsMessage" class="alignCenter">Congratulations!</div>
           <form id="congratsForm" class="alignCenter margin10">
             <input type="submit" id="congratsOK" class="dialogOK" value="OK">
+          </form>
+        </div>
+      </div>
+      <div class="hidden modal shadow" id="nagWindow">
+        <header id="nagHeader" class="nagHeader padding10 chunk white alignCenter">
+           micropolisJS
+        </header>
+        <div id="nagContainer" class="padding10 open">
+          <div id="nagMessage" class="alignCenter">
+            Whoa! You've been playing this thing for an hour?!? Please consider <a class="nag" href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=TV83GP5CJGL3Q&lc=GB&item_name=micropolisJS&no_note=1&no_shipping=1&currency_code=GBP&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted" target="_blank">supporting micropolisJS</a> so it can become even better!
+          </div>
+          <form id="nagForm" class="alignCenter margin10">
+            <input type="submit" id="nagOK" class="dialogOK" value="OK">
           </form>
         </div>
       </div>

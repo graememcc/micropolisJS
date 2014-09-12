@@ -802,7 +802,7 @@ nav li {
   }
 }
 
-/* About page styles */
+/* About/nag page styles */
 
 #aboutMain {
   position: relative;
@@ -841,7 +841,7 @@ nav li {
   background-color: lightyellow;
 }
 
-#aboutMain a, #aboutMain a:link, #aboutMain a:visited, #aboutMain a:hover {
+#aboutMain a, #aboutMain a:link, #aboutMain a:visited, #aboutMain a:hover #nagContainer a, #nagContainer a:link, #nagContainer a:visited, #nagContainer a:hover {
   text-decoration: none;
   color: dodgerblue;
 }

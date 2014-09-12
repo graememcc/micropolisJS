@@ -32,6 +32,11 @@ define(['MiscUtils'],
 
 
   var transitionOldSave = function(savedGame) {
+    if (savedGame.version === 1) {
+      savedGame.everClicked = false;
+      return;
+    }
+
     throw new Error('Unknown save version!');
   };
 
@@ -43,7 +48,7 @@ define(['MiscUtils'],
   };
 
 
-  Object.defineProperty(Storage, 'CURRENT_VERSION', MiscUtils.makeConstantDescriptor(1));
+  Object.defineProperty(Storage, 'CURRENT_VERSION', MiscUtils.makeConstantDescriptor(2));
   Object.defineProperty(Storage, 'KEY', MiscUtils.makeConstantDescriptor('micropolisJSGame'));
   Object.defineProperty(Storage, 'canStore', MiscUtils.makeConstantDescriptor(window['localStorage'] !== undefined));
 

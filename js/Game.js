@@ -7,8 +7,8 @@
  *
  */
 
-define(['BaseTool', 'BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', 'DisasterWindow', 'EvaluationWindow', 'GameCanvas', 'GameMap', 'InfoBar', 'InputStatus', 'Messages', 'MonsterTV', 'Notification', 'QueryWindow', 'RCI', 'SaveWindow', 'ScreenshotLinkWindow', 'ScreenshotWindow', 'SettingsWindow', 'Simulation', 'Storage', 'Text'],
-       function(BaseTool, BudgetWindow, Config, CongratsWindow, DebugWindow, DisasterWindow, EvaluationWindow, GameCanvas, GameMap, InfoBar, InputStatus, Messages, MonsterTV, Notification, QueryWindow, RCI, SaveWindow, ScreenshotLinkWindow, ScreenshotWindow, SettingsWindow, Simulation, Storage, Text) {
+define(['BaseTool', 'BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', 'DisasterWindow', 'EvaluationWindow', 'GameCanvas', 'GameMap', 'InfoBar', 'InputStatus', 'Messages', 'MonsterTV', 'NagWindow', 'Notification', 'QueryWindow', 'RCI', 'SaveWindow', 'ScreenshotLinkWindow', 'ScreenshotWindow', 'SettingsWindow', 'Simulation', 'Storage', 'Text'],
+       function(BaseTool, BudgetWindow, Config, CongratsWindow, DebugWindow, DisasterWindow, EvaluationWindow, GameCanvas, GameMap, InfoBar, InputStatus, Messages, MonsterTV, NagWindow, Notification, QueryWindow, RCI, SaveWindow, ScreenshotLinkWindow, ScreenshotWindow, SettingsWindow, Simulation, Storage, Text) {
   "use strict";
 
 
@@ -28,12 +28,12 @@ define(['BaseTool', 'BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', '
     this.simulation = new Simulation(this.gameMap, difficulty, Simulation.SPEED_SLOW, savedGame);
 
     this.name = name;
+    this.everClicked = false;
 
     if (savedGame)
       this.load(savedGame);
 
     this.rci = new RCI('RCIContainer', this.simulation);
-
 
     // Note: must init canvas before inputStatus
     this.gameCanvas = new GameCanvas('canvasContainer');
@@ -47,6 +47,27 @@ define(['BaseTool', 'BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', '
     this.simNeededBudget = false;
     this.defaultSpeed = Simulation.SPEED_SLOW;
     this.isPaused = false;
+
+    var self = this;
+    if (!this.everClicked) {
+      this.nagger = window.setTimeout(function() {
+        self.dialogOpen = true;
+        self._openWindow = 'nagWindow';
+        self.nagWindow.open();
+      }, 60 * 60 * 1000);
+
+      $('.nag').each(function() {
+        $(this).click(function(e) {
+          if (self.nagger !== null) {
+            window.clearTimeout(self.nagger);
+          self.nagger = null;
+          self.everClicked = true;
+        }
+
+        return true;
+        });
+      });
+    }
 
     // Initialise monsterTV
     this.monsterTV = new MonsterTV(this.gameMap, tileSet, spriteSheet, this.gameCanvas.animationManager);
@@ -117,6 +138,10 @@ define(['BaseTool', 'BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', '
     this.saveWindow = new SaveWindow(opacityLayerID, 'saveWindow');
     this.saveWindow.addEventListener(Messages.SAVE_WINDOW_CLOSED, this.genericDialogClosure);
 
+    // ... the nag confirmation window
+    this.nagWindow = new NagWindow(opacityLayerID, 'nagWindow');
+    this.nagWindow.addEventListener(Messages.NAG_WINDOW_CLOSED, this.genericDialogClosure);
+
     // ... and finally the query window
     this.queryWindow = new QueryWindow(opacityLayerID, 'queryWindow');
     this.queryWindow.addEventListener(Messages.QUERY_WINDOW_CLOSED, this.genericDialogClosure);
@@ -178,7 +203,7 @@ define(['BaseTool', 'BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', '
 
 
   Game.prototype.save = function() {
-    var saveData = {name: this.name};
+    var saveData = {name: this.name, everClicked: this.everClicked};
     BaseTool.save(saveData);
     this.simulation.save(saveData);
 
@@ -188,6 +213,7 @@ define(['BaseTool', 'BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', '
 
   Game.prototype.load = function(saveData) {
     this.name = saveData.name;
+    this.everClicked = saveData.everClicked;
     BaseTool.load(saveData);
     this.simulation.load(saveData);
   };
