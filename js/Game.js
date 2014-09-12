@@ -12,6 +12,9 @@ define(['BaseTool', 'BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', '
   "use strict";
 
 
+  var disasterTimeout = 20 * 1000;
+
+
   function Game(gameMap, tileSet, spriteSheet, difficulty, name) {
     difficulty = difficulty || 0;
     var savedGame;
@@ -47,6 +50,7 @@ define(['BaseTool', 'BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', '
     this.simNeededBudget = false;
     this.defaultSpeed = Simulation.SPEED_SLOW;
     this.isPaused = false;
+    this.lastBadMessageTime = null;
 
     var self = this;
     if (!this.everClicked) {
@@ -476,6 +480,7 @@ define(['BaseTool', 'BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', '
 
   Game.prototype.processFrontEndMessage = function(message) {
     var subject = message.subject;
+    var d = new Date();
 
     if (Text.goodMessages[subject] !== undefined) {
       var cMessage = this.name + ' is now a ';
@@ -517,7 +522,10 @@ define(['BaseTool', 'BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', '
           break;
       }
 
-      this._notificationBar.goodNews(message);
+      if (this.lastBadMessageTime === null || d - this.lastBadMessageTime > disasterTimeout) {
+        this.lastBadMessageTime = null;
+        this._notificationBar.goodNews(message);
+      }
 
       if (cMessage !== (this.name + ' is now a ')) {
         this.congratsShowing = true;
@@ -537,11 +545,15 @@ define(['BaseTool', 'BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', '
 
     if (Text.badMessages[subject] !== undefined) {
       this._notificationBar.badNews(message);
+      this.lastBadMessageTime = d;
       return;
     }
 
     if (Text.neutralMessages[subject] !== undefined) {
-      this._notificationBar.news(message);
+      if (this.lastBadMessageTime === null || d - this.lastBadMessageTime > disasterTimeout) {
+        this.lastBadMessageTime = null;
+        this._notificationBar.news(message);
+      }
       return;
     }
 
