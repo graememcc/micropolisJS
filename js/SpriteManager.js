@@ -52,7 +52,7 @@ define(['AirplaneSprite', 'BoatSprite', 'CopterSprite', 'EventEmitter', 'Explosi
       var leftInBounds = spriteLeft >= startX && spriteLeft < lastX;
       var rightInBounds = spriteRight >= startX && spriteRight < lastX;
       var topInBounds = spriteTop >= startY && spriteTop < lastY;
-      var bottomInBounds = spriteRight >= startY && spriteBottom < lastY;
+      var bottomInBounds = spriteBottom >= startY && spriteBottom < lastY;
 
       return (leftInBounds || rightInBounds) && (topInBounds || bottomInBounds);
     });
