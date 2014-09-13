@@ -589,8 +589,7 @@ define(['BaseTool', 'BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', '
 
   Game.prototype.calculateSpritesForPaint = function(canvas) {
     var origin = canvas.getTileOrigin();
-    var end = canvas.getMaxTile();
-    var spriteList = this.simulation.spriteManager.getSpritesInView(origin.x, origin.y, end.x + 1, end.y + 1);
+    var spriteList = this.simulation.spriteManager.getSpritesInView(origin.x, origin.y, canvas.canvasWidth, canvas.canvasHeight);
 
     if (spriteList.length === 0)
       return null;

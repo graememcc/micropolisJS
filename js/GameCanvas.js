@@ -115,8 +115,8 @@ define(['AnimationManager', 'GameMap', 'MiscUtils', 'MouseBox', 'Tile', 'TileSet
     force = force || false;
 
     // The canvas is assumed to fill its container on-screen
-    var canvasWidth = this._canvasWidth = this._canvas.parentNode.clientWidth;
-    var canvasHeight = this._canvasHeight = this._canvas.parentNode.clientHeight;
+    var canvasWidth = this.canvasWidth = this._canvas.parentNode.clientWidth;
+    var canvasHeight = this.canvasHeight = this._canvas.parentNode.clientHeight;
 
     if (canvasHeight === this._lastCanvasHeight && canvasWidth === this._lastCanvasWidth && !force)
       return;
@@ -287,7 +287,7 @@ define(['AnimationManager', 'GameMap', 'MiscUtils', 'MouseBox', 'Tile', 'TileSet
     if (!this.ready)
       throw new Error('Not ready!');
 
-    if (x >= this._canvasWidth || y >= this._canvasHeight)
+    if (x >= this.canvasWidth || y >= this.canvasHeight)
       return null;
 
     return {x: this._originX + Math.floor(x/this._tileSet.tileWidth),
@@ -304,7 +304,7 @@ define(['AnimationManager', 'GameMap', 'MiscUtils', 'MouseBox', 'Tile', 'TileSet
     if (!this.ready)
       throw new Error('Not ready!');
 
-    if (x >= this._canvasWidth || y >= this._canvasHeight)
+    if (x >= this.canvasWidth || y >= this.canvasHeight)
       return null;
 
     x = this._originX + Math.floor(x / this._tileSet.tileWidth);
@@ -376,8 +376,8 @@ define(['AnimationManager', 'GameMap', 'MiscUtils', 'MouseBox', 'Tile', 'TileSet
       throw new Error('dimensions have changed');
 
     var w = tileSet.tileWidth;
-    var canvasWidth = this._pendingWidth === null ? this._canvasWidth : this._pendingWidth;
-    var canvasHeight = this._pendingHeight === null ? this._canvasHeight : this._pendingHeight;
+    var canvasWidth = this._pendingWidth === null ? this.canvasWidth : this._pendingWidth;
+    var canvasHeight = this._pendingHeight === null ? this.canvasHeight : this._pendingHeight;
 
     if (canvasWidth < w || canvasHeight < w)
       throw new Error('canvas too small');
@@ -581,8 +581,8 @@ define(['AnimationManager', 'GameMap', 'MiscUtils', 'MouseBox', 'Tile', 'TileSet
 
     var ctx = this._canvas.getContext('2d');
 
-    if (this._canvasWidth !== this._lastCanvasWidth || this._canvasHeight !== this._lastCanvasHeight) {
-      ctx.clearRect(0, 0, this._canvasWidth, this._canvasHeight);
+    if (this.canvasWidth !== this._lastCanvasWidth || this.canvasHeight !== this._lastCanvasHeight) {
+      ctx.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
       for (var y = 0, l = (this._lastPaintedTiles !== null ? this._lastPaintedTiles.length : 0); y < l; y++) {
         var row = this._lastPaintedTiles[y];
         for (var x = 0, l2 = row.length; x < l2; x++)
@@ -593,8 +593,8 @@ define(['AnimationManager', 'GameMap', 'MiscUtils', 'MouseBox', 'Tile', 'TileSet
     this._paintTiles(ctx, tileValues);
 
     // Stash various values for next paint
-    this._lastCanvasWidth = this._canvasWidth;
-    this._lastCanvasHeight = this._canvasHeight;
+    this._lastCanvasWidth = this.canvasWidth;
+    this._lastCanvasHeight = this.canvasHeight;
 
     if (!mouse && !sprites) {
       return;

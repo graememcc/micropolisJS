@@ -36,15 +36,25 @@ define(['AirplaneSprite', 'BoatSprite', 'CopterSprite', 'EventEmitter', 'Explosi
   };
 
 
-  SpriteManager.prototype.getSpritesInView = function(startX, startY, lastX, lastY) {
+  SpriteManager.prototype.getSpritesInView = function(startX, startY, pixelWidth, pixelHeight) {
     var sprites = [];
     startX = SpriteUtils.worldToPix(startX);
     startY = SpriteUtils.worldToPix(startY);
-    lastX = SpriteUtils.worldToPix(lastX);
-    lastY = SpriteUtils.worldToPix(lastY);
+    lastX = startX + pixelWidth;
+    lastY = startY + pixelHeight;
+
     return this.spriteList.filter(function(s) {
-      return s.x + s.xOffset >= startX && s.y + s.yOffset >= startY &&
-             s.x + s.xOffset < lastX && s.y + s.yOffset < lastY;
+      var spriteLeft = s.x + s.xOffset;
+      var spriteTop = s.y + s.yOffset;
+      var spriteRight = s.x + s.xOffset + s.width;
+      var spriteBottom = s.y + s.yOffset + s.width;
+
+      var leftInBounds = spriteLeft >= startX && spriteLeft < lastX;
+      var rightInBounds = spriteRight >= startX && spriteRight < lastX;
+      var topInBounds = spriteTop >= startY && spriteTop < lastY;
+      var bottomInBounds = spriteRight >= startY && spriteBottom < lastY;
+
+      return (leftInBounds || rightInBounds) && (topInBounds || bottomInBounds);
     });
   };
 
