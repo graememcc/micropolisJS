@@ -30,7 +30,7 @@ define(['BaseTool', 'BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', '
     this.tileSet = tileSet;
     this.simulation = new Simulation(this.gameMap, difficulty, Simulation.SPEED_SLOW, savedGame);
 
-    this.name = name;
+    this.name = name || 'MyTown';
     this.everClicked = false;
 
     if (savedGame)
