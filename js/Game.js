@@ -547,7 +547,8 @@ define(['BaseTool', 'BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', '
 
     if (Text.badMessages[subject] !== undefined) {
       this._notificationBar.badNews(message);
-      this.lastBadMessageTime = d;
+      if (Messages.disasterMessages.indexOf(message.subject) !== -1)
+        this.lastBadMessageTime = d;
       return;
     }
 
