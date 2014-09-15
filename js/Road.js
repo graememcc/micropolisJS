@@ -19,7 +19,7 @@ define(['Random', 'Tile', 'TileUtils'],
 
       if (map.testBounds(x, y)) {
         if (map.getTileValue(x, y) === (oldTiles[i] & Tile.BIT_MASK))
-          map.setTileValue(newTiles[i]);
+          map.setTileValue(x, y, newTiles[i]);
       }
     }
   };
@@ -33,7 +33,7 @@ define(['Random', 'Tile', 'TileUtils'],
       if (map.testBounds(x, y)) {
         var tileValue = map.getTileValue(x, y);
         if (tileValue === Tile.CHANNEL || (tileValue & 15) === (oldTiles[i] & 15))
-          map.setTileValue(newTiles[i]);
+          map.setTileValue(x, y, newTiles[i]);
       }
     }
   };
