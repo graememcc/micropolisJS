@@ -150,7 +150,7 @@ define(['AirplaneSprite', 'BoatSprite', 'CopterSprite', 'EventEmitter', 'Explosi
     if (Random.getChance(3)) {
       for (x = 4; x < this.map.width - 2; x++) {
         if (this.map.getTileValue(x, 0) === Tile.CHANNEL)  {
-          makeShipHere(x, 0);
+          this.makeShipHere(x, 0);
           return;
         }
       }
@@ -159,7 +159,7 @@ define(['AirplaneSprite', 'BoatSprite', 'CopterSprite', 'EventEmitter', 'Explosi
     if (Random.getChance(3)) {
       for (y = 1; y < this.map.height - 2; y++) {
         if (this.map.getTileValue(0, y) === Tile.CHANNEL)  {
-          makeShipHere(0, y);
+          this.makeShipHere(0, y);
           return;
         }
       }
@@ -168,7 +168,7 @@ define(['AirplaneSprite', 'BoatSprite', 'CopterSprite', 'EventEmitter', 'Explosi
     if (Random.getChance(3)) {
       for (x = 4; x < this.map.width - 2; x++) {
         if (this.map.getTileValue(x, this.map.height - 1) === Tile.CHANNEL)  {
-          makeShipHere(x, this.map.height - 1);
+          this.makeShipHere(x, this.map.height - 1);
           return;
         }
       }
@@ -177,7 +177,7 @@ define(['AirplaneSprite', 'BoatSprite', 'CopterSprite', 'EventEmitter', 'Explosi
     if (Random.getChance(3)) {
       for (y = 1; y < this.map.height - 2; y++) {
         if (this.map.getTileValue(this.map.width - 1, y) === Tile.CHANNEL)  {
-          makeShipHere(this.map.width - 1, y);
+          this.makeShipHere(this.map.width - 1, y);
           return;
         }
       }
@@ -193,8 +193,8 @@ define(['AirplaneSprite', 'BoatSprite', 'CopterSprite', 'EventEmitter', 'Explosi
     for (var i = 0, l = this.spriteList.length; i < l; i++) {
       var sprite = this.spriteList[i];
       if (sprite.type === SpriteConstants.SPRITE_SHIP && sprite.frame !== 0) {
-        var sprDist = SpriteUtils.absoluteValue(sprite.x - pixelX) +
-                      SpriteUtils.absoluteValue(sprite.y - pixelY);
+        var sprDist = SpriteUtils.absoluteDistance(sprite.x - pixelX) +
+                      SpriteUtils.absoluteDistance(sprite.y - pixelY);
 
         dist = Math.min(dist, sprDist);
       }
