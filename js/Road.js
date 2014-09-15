@@ -62,6 +62,7 @@ define(['Random', 'Tile', 'TileUtils'],
       Tile.HBRIDGE | Tile.BULLBIT, Tile.HBRIDGE | Tile.BULLBIT
   ];
 
+
   var doBridge = function(map, x, y, currentTile, simData) {
     if (currentTile === Tile.BRWV) {
       // We have an open vertical bridge. Possibly close it.
@@ -93,7 +94,7 @@ define(['Random', 'Tile', 'TileUtils'],
         if (y > 0) {
           if (map.getTileValue(x, y - 1) === Tile.CHANNEL) {
             // We have a closed horizontal bridge. Open it.
-            openBridge(map, x, y, horizontalDeltaX, horizontalDeltaY, openVertical, closeVertical);
+            openBridge(map, x, y, horizontalDeltaX, horizontalDeltaY, closeHorizontal, openHorizontal);
             return true;
           }
         }

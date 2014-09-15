@@ -193,8 +193,7 @@ define(['AirplaneSprite', 'BoatSprite', 'CopterSprite', 'EventEmitter', 'Explosi
     for (var i = 0, l = this.spriteList.length; i < l; i++) {
       var sprite = this.spriteList[i];
       if (sprite.type === SpriteConstants.SPRITE_SHIP && sprite.frame !== 0) {
-        var sprDist = SpriteUtils.absoluteDistance(sprite.x - pixelX) +
-                      SpriteUtils.absoluteDistance(sprite.y - pixelY);
+        var sprDist = Math.abs(sprite.x - pixelX) + Math.abs(sprite.y - pixelY);
 
         dist = Math.min(dist, sprDist);
       }
