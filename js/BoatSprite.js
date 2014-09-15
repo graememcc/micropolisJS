@@ -88,6 +88,7 @@ define(['BaseSprite', 'Messages', 'MiscUtils', 'Random', 'SpriteConstants', 'Spr
     if (this.count > 0)
         this.count--;
 
+
     if (this.count === 0) {
       // Ships turn slowly: only 45° every 9 cycles
       this.count = 9;
@@ -113,11 +114,11 @@ define(['BaseSprite', 'Messages', 'MiscUtils', 'Random', 'SpriteConstants', 'Spr
         y = this.worldY + tileDeltaY[frame];
 
         if (this.map.testBounds(x, y)) {
-          var tileValue = this.map.getTileValue(x, y);
+          tile = this.map.getTileValue(x, y);
 
           // Test for a suitable water tile
-          if (tileValue === Tile.CHANNEL || tileValue === Tile.BRWH ||
-             tileValue === Tile.BRWV || oppositeAndUnderwater(tileValue, this.dir, frame)) {
+          if (tile === Tile.CHANNEL || tile === Tile.BRWH ||
+              tile === Tile.BRWV || oppositeAndUnderwater(tile, this.dir, frame)) {
             this.newDir = frame;
             this.frame = SpriteUtils.turnTo(this.frame, this.newDir);
             this.dir = frame + 4;
@@ -150,7 +151,7 @@ define(['BaseSprite', 'Messages', 'MiscUtils', 'Random', 'SpriteConstants', 'Spr
     // If we didn't find a new direction, we might explode
     // depending on the last tile we looked at.
     for (i = 0; i < 8; i++) {
-      if (t === tileWhiteList[i]) {
+      if (tile === tileWhiteList[i]) {
         break;
       }
 
