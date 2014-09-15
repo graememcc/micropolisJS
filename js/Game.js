@@ -529,7 +529,8 @@ define(['BaseTool', 'BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', '
       }
 
       if (cMessage !== (this.name + ' is now a ')) {
-        this.congratsShowing = true;
+        this.dialogOpen = true;
+        this._openWindow = 'congratsWindow';
         this.congratsWindow.open(cMessage);
       }
 
