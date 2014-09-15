@@ -16,7 +16,7 @@ define(['Tile', 'TileHistory', 'TileUtils'],
   var POWERBIT = Tile.POWERBIT;
   var ANIMBIT = Tile.ANIMBIT;
   var ZONEBIT = Tile.ZONEBIT;
-  var INVALID = Tile.INVALID;
+  var INVALID = Tile.TILE_INVALID;
   var LIGHTNINGBOLT = Tile.LIGHTNINGBOLT;
   var LASTTINYEXP = Tile.LASTTINYEXP;
 

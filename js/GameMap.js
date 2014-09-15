@@ -108,7 +108,7 @@ define(['Direction', 'MiscUtils', 'PositionMaker', 'Tile'],
 
     if (x < 0 || y < 0 || x >= width || y >= height) {
       console.warn('getTile called with bad bounds', x, y);
-      return new Tile(Tile.INVALID);
+      return new Tile(Tile.TILE_INVALID);
     }
 
     var tileIndex = x + y * width;

@@ -28,7 +28,7 @@ define([],
 
     if (arguments.length &&
         (typeof(tileValue) !== 'number' || (arguments.length > 1 && typeof(bitMask) !== 'number') ||
-         tileValue < 0))
+         tileValue < Tile.TILE_INVALID))
       throw new Error('Invalid parameter');
 
     if (arguments.length > 1 &&
