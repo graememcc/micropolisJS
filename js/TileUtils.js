@@ -85,7 +85,7 @@ define(['Random', 'Tile'],
 
 
   var isRoad = unwrapTile(function(tile) {
-    return tile >= Tile.ROADBASE && tile <= Tile.POWERBASE;
+    return tile >= Tile.ROADBASE && tile < Tile.POWERBASE;
   });
 
 
