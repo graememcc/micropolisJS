@@ -191,6 +191,7 @@ define(['AirplaneSprite', 'BoatSprite', 'CopterSprite', 'EventEmitter', 'Explosi
     var pixelY = SpriteUtils.worldToPix(y) + 8;
 
     for (var i = 0, l = this.spriteList.length; i < l; i++) {
+      var sprite = this.spriteList[i];
       if (sprite.type === SpriteConstants.SPRITE_SHIP && sprite.frame !== 0) {
         var sprDist = SpriteUtils.absoluteValue(sprite.x - pixelX) +
                       SpriteUtils.absoluteValue(sprite.y - pixelY);
