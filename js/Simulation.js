@@ -473,11 +473,11 @@ define(['BlockMap', 'BlockMapUtils', 'Budget', 'Census', 'Commercial', 'Disaster
   Simulation.prototype._checkGrowth = function() {
     if ((this._cityTime & 3) === 0) {
       var message = '';
-      var thisCityPop = this.evaluation.getPopulation(this._census);
+      var cityPop = this.evaluation.getPopulation(this._census);
 
       if (this._cityPopLast > 0) {
         var lastClass = this.evaluation.getCityClass(this._cityPopLast);
-        var newClass = this.evaluation.getCityClass(thisCityPop);
+        var newClass = this.evaluation.getCityClass(cityPop);
 
         if (lastClass !== newClass) {
           switch (newClass) {
@@ -516,7 +516,7 @@ define(['BlockMap', 'BlockMapUtils', 'Budget', 'Census', 'Commercial', 'Disaster
         this._messageLast = message;
       }
 
-      this._cityPopLast = thisCityPop;
+      this._cityPopLast = cityPop;
     }
   };
 
