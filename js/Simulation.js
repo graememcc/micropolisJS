@@ -383,7 +383,7 @@ define(['BlockMap', 'BlockMapUtils', 'Budget', 'Census', 'Commercial', 'Disaster
         break;
 
       case 22:
-        if (totalZonePop > 10 && powerPop == 0)
+        if (totalZonePop > 10 && powerPop === 0)
           this._emitEvent(Messages.FRONT_END_MESSAGE, {subject: Messages.NEED_ELECTRICITY});
         break;
 
@@ -417,7 +417,7 @@ define(['BlockMap', 'BlockMapUtils', 'Budget', 'Census', 'Commercial', 'Disaster
       case 32:
         var zoneCount = this._census.unpoweredZoneCount + this._census.poweredZoneCount;
         if (zoneCount > 0) {
-          if (this._census.poweredZoneCount / zoneCount < 0.7)
+          if (this._census.poweredZoneCount / zoneCount < 0.7 && powerPop > 0)
             this._emitEvent(Messages.FRONT_END_MESSAGE, {subject: Messages.BLACKOUTS_REPORTED});
         }
         break;
