@@ -294,7 +294,7 @@ define(['EventEmitter', 'GameCanvas', 'GameTools', 'Messages', 'MiscUtils'],
 
 
   var budgetHandler = makeHandler('BUDGET_REQUESTED');
-  var debugHandler = makeHandler('DEBUG_REQUESTED');
+  var debugHandler = makeHandler('DEBUG_WINDOW_REQUESTED');
   var disasterHandler = makeHandler('DISASTER_REQUESTED');
   var evalHandler = makeHandler('EVAL_REQUESTED');
   var screenshotHandler = makeHandler('SCREENSHOT_WINDOW_REQUESTED');
