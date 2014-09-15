@@ -117,7 +117,7 @@ define(['BaseSprite', 'Messages', 'MiscUtils', 'Random', 'SpriteConstants', 'Spr
 
           // Test for a suitable water tile
           if (tileValue === Tile.CHANNEL || tileValue === Tile.BRWH ||
-             tileValue === Tile.BRWV || underwaterOrOpposite(tileValue, this.dir, frame)) {
+             tileValue === Tile.BRWV || oppositeAndUnderwater(tileValue, this.dir, frame)) {
             this.newDir = frame;
             this.frame = SpriteUtils.turnTo(this.frame, this.newDir);
             this.dir = frame + 4;
