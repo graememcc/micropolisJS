@@ -35,7 +35,7 @@ define(['EventEmitter', 'Messages', 'MiscUtils', 'Random'],
         problemData.push(0);
 
       this.getAssessedValue(census);
-      this.doPopNum(census);
+      this.getPopulation(census);
       this.doProblems(simData.census, simData.budget, simData.blockMaps);
       this.getScore(simData);
       this.doVotes();
@@ -52,6 +52,7 @@ define(['EventEmitter', 'Messages', 'MiscUtils', 'Random'],
     this.cityPopDelta = 0;
     this.cityAssessedValue = 0;
     this.cityClass = Evaluation.CC_VILLAGE;
+    this.cityClassLast = Evaluation.CC_VILLAGE;
     this.cityScore = 500;
     this.cityScoreDelta = 0;
     for (var i = 0; i < NUMPROBLEMS; i++)
@@ -95,25 +96,14 @@ define(['EventEmitter', 'Messages', 'MiscUtils', 'Random'],
 
 
   Evaluation.prototype.getPopulation = function(census) {
-    var population = (census.resPop + (census.comPop + census.indPop) * 8) * 20;
+    var oldPopulation = this.cityPop;
+    this.cityPop = (census.resPop + (census.comPop + census.indPop) * 8) * 20;
+    this.cityPopDelta = this.cityPop - oldPopulation;
 
-    // Emit population now, to avoid inconsistency with front-end messages
-    this._emitEvent(Messages.POPULATION_UPDATED, population);
-    return population;
-  };
+    if (this.cityPopDelta !== 0)
+      this._emitEvent(Messages.POPULATION_UPDATED, this.cityPop);
 
-
-  Evaluation.prototype.doPopNum = function(census) {
-    var oldCityPop = this.cityPop;
-    var oldCityClass = this.getCityClass(this.cityPop);
-
-    this.cityPop = this.getPopulation(census);
-
-    if (oldCityPop == -1)
-        oldCityPop = this.cityPop;
-
-    this.cityPopDelta = this.cityPop - oldCityPop;
-    this.cityClass = this.getCityClass(this.cityPop);
+    return this.cityPop;
   };
 
 
@@ -123,19 +113,22 @@ define(['EventEmitter', 'Messages', 'MiscUtils', 'Random'],
     if (cityPopulation > 2000)
         this.cityClass = Evaluation.CC_TOWN;
 
-    if (this.cityPopulation > 10000)
+    if (cityPopulation > 10000)
         this.cityClass = Evaluation.CC_CITY;
 
-    if (this.cityPopulation > 50000)
+    if (cityPopulation > 50000)
         this.cityClass = Evaluation.CC_CAPITAL;
 
-    if (this.cityPopulation > 100000)
+    if (cityPopulation > 100000)
         this.cityClass = Evaluation.CC_METROPOLIS;
 
-    if (this.cityPopulation > 500000)
+    if (cityPopulation > 500000)
         this.cityClass = Evaluation.CC_MEGALOPOLIS;
 
-    this._emitEvent(Messages.CLASSIFICATION_UPDATED, this.cityClass);
+    if (this.cityClass !== this.cityClassLast) {
+      this.cityClassLast = this.cityClass;
+      this._emitEvent(Messages.CLASSIFICATION_UPDATED, this.cityClass);
+    }
 
     return this.cityClass;
   };

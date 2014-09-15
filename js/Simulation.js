@@ -471,53 +471,54 @@ define(['BlockMap', 'BlockMapUtils', 'Budget', 'Census', 'Commercial', 'Disaster
 
 
   Simulation.prototype._checkGrowth = function() {
-    if ((this._cityTime & 3) === 0) {
-      var message = '';
-      var cityPop = this.evaluation.getPopulation(this._census);
+    if ((this._cityTime & 3) !== 0)
+      return;
 
-      if (this._cityPopLast > 0) {
-        var lastClass = this.evaluation.getCityClass(this._cityPopLast);
-        var newClass = this.evaluation.getCityClass(cityPop);
+    var message = '';
+    var cityPop = this.evaluation.getPopulation(this._census);
 
-        if (lastClass !== newClass) {
-          switch (newClass) {
-            case Evaluate.CC_VILLAGE:
-              // Don't mention it.
+    if (cityPop !== this._cityPopLast) {
+      var lastClass = this.evaluation.getCityClass(this._cityPopLast);
+      var newClass = this.evaluation.getCityClass(cityPop);
+
+      if (lastClass !== newClass) {
+        switch (newClass) {
+          case Evaluate.CC_VILLAGE:
+            // Don't mention it.
+            break;
+
+          case Evaluate.CC_TOWN:
+            message = Messages.REACHED_TOWN;
+            break;
+
+          case Evaluate.CC_CITY:
+            message = Messages.REACHED_CITY;
+            break;
+
+          case Evaluate.CC_CAPITAL:
+            message = Messages.REACHED_CAPITAL;
               break;
 
-            case Evaluate.CC_TOWN:
-              message = Messages.REACHED_TOWN;
-              break;
+          case Evaluate.CC_METROPOLIS:
+            message = Messages.REACHED_METROPOLIS;
+            break;
 
-            case Evaluate.CC_CITY:
-              message = Messages.REACHED_CITY;
-              break;
+          case Evaluate.CC_MEGALOPOLIS:
+            message = Messages.REACHED_MEGALOPOLIS;
+            break;
 
-            case Evaluate.CC_CAPITAL:
-              message = Messages.REACHED_CAPITAL;
-                break;
-
-            case Evaluate.CC_METROPOLIS:
-              message = Messages.REACHED_METROPOLIS;
-              break;
-
-            case Evaluate.CC_MEGALOPOLIS:
-              message = Messages.REACHED_MEGALOPOLIS;
-              break;
-
-            default:
-                break;
-          }
+          default:
+            break;
         }
       }
-
-      if (message !== '' && message !== this._messageLast) {
-        this._emitEvent(Messages.FRONT_END_MESSAGE, {subject: message});
-        this._messageLast = message;
-      }
-
-      this._cityPopLast = cityPop;
     }
+
+    if (message !== '' && message !== this._messageLast) {
+      this._emitEvent(Messages.FRONT_END_MESSAGE, {subject: message});
+      this._messageLast = message;
+    }
+
+    this._cityPopLast = cityPop;
   };
 
 
