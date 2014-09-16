@@ -7,8 +7,8 @@
  *
  */
 
-define(['BaseTool', 'BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', 'DisasterWindow', 'EvaluationWindow', 'GameCanvas', 'GameMap', 'InfoBar', 'InputStatus', 'Messages', 'MonsterTV', 'NagWindow', 'Notification', 'QueryWindow', 'RCI', 'SaveWindow', 'ScreenshotLinkWindow', 'ScreenshotWindow', 'SettingsWindow', 'Simulation', 'Storage', 'Text'],
-       function(BaseTool, BudgetWindow, Config, CongratsWindow, DebugWindow, DisasterWindow, EvaluationWindow, GameCanvas, GameMap, InfoBar, InputStatus, Messages, MonsterTV, NagWindow, Notification, QueryWindow, RCI, SaveWindow, ScreenshotLinkWindow, ScreenshotWindow, SettingsWindow, Simulation, Storage, Text) {
+define(['BaseTool', 'BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', 'DisasterWindow', 'EvaluationWindow', 'GameCanvas', 'GameMap', 'InfoBar', 'InputStatus', 'Messages', 'MonsterTV', 'NagWindow', 'Notification', 'QueryWindow', 'RCI', 'SaveWindow', 'ScreenshotLinkWindow', 'ScreenshotWindow', 'SettingsWindow', 'Simulation', 'Storage', 'Text', 'TouchWarnWindow'],
+       function(BaseTool, BudgetWindow, Config, CongratsWindow, DebugWindow, DisasterWindow, EvaluationWindow, GameCanvas, GameMap, InfoBar, InputStatus, Messages, MonsterTV, NagWindow, Notification, QueryWindow, RCI, SaveWindow, ScreenshotLinkWindow, ScreenshotWindow, SettingsWindow, Simulation, Storage, Text, TouchWarnWindow) {
   "use strict";
 
 
@@ -146,6 +146,10 @@ define(['BaseTool', 'BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', '
     this.nagWindow = new NagWindow(opacityLayerID, 'nagWindow');
     this.nagWindow.addEventListener(Messages.NAG_WINDOW_CLOSED, this.genericDialogClosure);
 
+    // ... the touch warn window
+    this.touchWindow = new TouchWarnWindow(opacityLayerID, 'touchWarnWindow');
+    this.touchWindow.addEventListener(Messages.TOUCH_WINDOW_CLOSED, this.genericDialogClosure);
+
     // ... and finally the query window
     this.queryWindow = new QueryWindow(opacityLayerID, 'queryWindow');
     this.queryWindow.addEventListener(Messages.QUERY_WINDOW_CLOSED, this.genericDialogClosure);
@@ -183,6 +187,10 @@ define(['BaseTool', 'BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', '
     this._reachedTown = this._reachedCity = this._reachedCapital = this._reachedMetropolis = this._reacedMegalopolis = false;
     this.congratsWindow = new CongratsWindow(opacityLayerID, 'congratsWindow');
     this.congratsWindow.addEventListener(Messages.CONGRATS_WINDOW_CLOSED, this.genericDialogClosure);
+
+    // Listen for touches, so we can warn tablet users
+    this.touchListener = touchListener.bind(this);
+    window.addEventListener('touchstart', this.touchListener, false);
 
     // Unhide controls
     this.revealControls();
@@ -476,6 +484,15 @@ define(['BaseTool', 'BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', '
       } else
         this.inputStatus.clearTool();
     }
+  };
+
+
+  // Will be bound on construction
+  var touchListener = function(e) {
+    window.removeEventListener('touchstart', this.touchListener, false);
+    this._openWindow = 'touchWindow';
+    this.dialogOpen = true;
+    this.touchWindow.open();
   };
 
 

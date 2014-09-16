@@ -445,6 +445,26 @@
           </form>
         </div>
       </div>
+      <div class="hidden modal shadow" id="touchWarnWindow">
+        <header id="touchHeader" class="touchHeader white padding10 chunk alignCenter">
+           Hello, touchscreen user!
+        </header>
+        <div id="touchContainer" class="padding10 open">
+          <h2 class="alignCenter">Hi!</h2>
+          <p class="padding10">
+             It seems you're using a touchscreen device!
+          </p>
+          <p class="padding10">
+            Just to warn you, micropolisJS isn't really geared towards touch devices&mdash;I don't have a tablet to test on&mdash;so you might be in for a bad time.
+          </p>
+          <p class="padding10">
+            However, if you're wanting to give it a shot, I won't stop you!
+          </p>
+          <form id="touchForm" class="alignCenter margin10">
+            <input type="submit" id="touchOK" class="dialogOK" value="OK">
+          </form>
+        </div>
+      </div>
     </div>
   </body>
 </html>
