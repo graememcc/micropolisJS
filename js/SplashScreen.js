@@ -13,6 +13,10 @@ define(['Config', 'Game', 'MapGenerator', 'Simulation', 'SplashCanvas', 'Storage
 
 
   function SplashScreen(tileSet, spriteSheet) {
+    // Don't generate anything on small screens. Not great if on desktop and the user resizes though...
+    if ($('#tooSmall').is(':visible'))
+      return;
+
     this.tileSet = tileSet;
     this.spriteSheet = spriteSheet;
     this.map = MapGenerator();

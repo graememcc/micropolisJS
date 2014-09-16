@@ -13,9 +13,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <script src="thirdparty/jquery/jquery-2.1.1.min.js"></script>
-    <script src="js/polyfills.js"></script>
-    <script data-main="js/Main.js" src="thirdparty/requirejs/require.js"></script>
+    <meta name="viewport" content="width=device-width, height=device-height, user-scalable=no">
     <link rel="stylesheet" media="screen" type="text/css" href="css/style.css">
     <title>micropolisJS</title>
   </head>
@@ -155,7 +153,7 @@
           </div>
         </div>
         <div id="notifications" class="initialHidden neutral z1 rightedge alignCenter elided padding10 controlShadow"></div>
-        <div id="tooSmall" data-hasscript="false" class="mintcream open"><div id="tooSmallInner" class="centred alignCenter"><h2 class="chunk">Uh-oh!</h2><p>It looks like your screen is too small for micropolisJS. Sorry!</p></div></div>
+        <div id="tooSmall" data-hasscript="false" class="mintcream open"><div id="tooSmallInner" class="alignCenter padding10"><h2 class="chunk">Uh-oh!</h2><p>It looks like your screen is too small for micropolisJS. Sorry!</p></div></div>
         <noscript>
           <div id="noscript" class="open mintcream centred padding10">
             <h1 class="chunk alignCenter">micropolisJS</h1>
@@ -466,5 +464,8 @@
         </div>
       </div>
     </div>
+    <script defer src="js/polyfills.js"></script>
+    <script defer src="thirdparty/jquery/jquery-2.1.1.min.js"></script>
+    <script defer data-main="js/Main.js" src="thirdparty/requirejs/require.js"></script>
   </body>
 </html>
