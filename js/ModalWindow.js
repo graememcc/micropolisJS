@@ -26,12 +26,12 @@ define(['EventEmitter', 'MiscUtils'],
       var opacityLayer = $(this._opacityLayer);
       opacityLayer = opacityLayer.length === 0 ? null : opacityLayer;
       if (opacityLayer === null)
-        throw new Error('Node ' + orig + ' not found');
+        throw new Error('Node ' + this._opacityLayer + ' not found');
 
       var modalWindow = $(this._windowID);
       modalWindow = modalWindow.length === 0 ? null : modalWindow;
       if (modalWindow === null)
-        throw new Error('Node ' + orig + ' not found');
+        throw new Error('Node ' + this._windowID + ' not found');
 
       opacityLayer.toggle();
       modalWindow.toggle();
