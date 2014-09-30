@@ -103,6 +103,15 @@ define(['AnimationManager', 'GameMap', 'MiscUtils', 'MouseBox', 'Tile', 'TileSet
 
     this._calculateDimensions();
 
+    // Have the dimensions changed since the last paint?
+    this._pendingDimensionChange = false;
+    var onResize = function(e) {
+      this._pendingDimensionChange = true;
+    }.bind(this);
+
+    // Recompute canvas dimensions on resize
+    window.addEventListener('resize', onResize, false);
+
     // Order is important here. ready must be set before the call to centreOn below
     this.ready = true;
     this.centreOn(Math.floor(this._map.width / 2), Math.floor(this._map.height / 2));
@@ -146,6 +155,8 @@ define(['AnimationManager', 'GameMap', 'MiscUtils', 'MouseBox', 'Tile', 'TileSet
       this.maxX = this._map.width - this._totalTilesInViewX;
       this.maxY = this._map.height - this._totalTilesInViewY;
     }
+
+    this._pendingDimensionChange = true;
   };
 
 
@@ -502,10 +513,17 @@ define(['AnimationManager', 'GameMap', 'MiscUtils', 'MouseBox', 'Tile', 'TileSet
 
   GameCanvas.prototype._paintTiles = function(ctx, paintData) {
     if (this._lastPaintedTiles !== null) {
+      // We have painted the canvas before. There are 3 possibilities:
+      //  - The canvas is exactly the same size as last time we painted
+      //  - The canvas has been enlarged
+      //  - The canvas has shrunk
+      //
+      // In any case, we want to find the minimal area that was onscreen last paint
+      // and this paint, and iterate over those tiles, repainting where necessary
       var xBound = Math.min(this._lastPaintedWidth, this._totalTilesInViewX);
       var yBound = Math.min(this._lastPaintedHeight, this._totalTilesInViewY);
 
-      // Loop, comparing the current value with what was there last time
+      // Loop over the common area that we painted last time. Compare the current value against what was there last time
       for (var y = 0; y < yBound; y++) {
         var row = paintData[y];
         var lastRow = this._lastPaintedTiles[y];
@@ -519,7 +537,7 @@ define(['AnimationManager', 'GameMap', 'MiscUtils', 'MouseBox', 'Tile', 'TileSet
         }
       }
 
-      // Do we have more tiles than before?
+      // Do we have more tiles than before? Paint the extra width and/or the extra height
       if (this._totalTilesInViewX > this._lastPaintedWidth) {
         for (y = 0; y < this._totalTilesInViewY; y++) {
           row = paintData[y];
@@ -527,7 +545,9 @@ define(['AnimationManager', 'GameMap', 'MiscUtils', 'MouseBox', 'Tile', 'TileSet
           for (x = this._lastPaintedWidth; x < this._totalTilesInViewX; x++)
               this._paintOne(ctx, row[x], x, y);
         }
-      } else if (this._totalTilesInViewY > this._lastPaintedHeight) {
+      }
+
+      if (this._totalTilesInViewY > this._lastPaintedHeight) {
         for (y = this._lastPaintedHeight; y < this._totalTilesInViewY; y++) {
           row = paintData[y];
 
@@ -571,24 +591,30 @@ define(['AnimationManager', 'GameMap', 'MiscUtils', 'MouseBox', 'Tile', 'TileSet
       this._lastCanvasData = null;
     }
 
-    this._calculateDimensions();
+    var ctx = this._canvas.getContext('2d');
+
+    // Recompute our dimensions if there has been a resize since last paint
+    if (this._pendingDimensionChange) {
+      this._calculateDimensions();
+      this._pendingDimensionChange = false;
+
+      // If the dimensions have changed, set each entry in lastPaintedTiles to a bogus value to force a repaint.
+      // Note: we use -2 as our bogus value; -1 would paint the black void
+      if (this.canvasWidth !== this._lastCanvasWidth || this.canvasHeight !== this._lastCanvasHeight) {
+        ctx.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
+        for (var y = 0, l = (this._lastPaintedTiles !== null ? this._lastPaintedTiles.length : 0); y < l; y++) {
+          var row = this._lastPaintedTiles[y];
+          for (var x = 0, l2 = row.length; x < l2; x++)
+            row[x] = -2;
+        }
+      }
+    }
 
     // Fill an array with the values we need to paint
     var tileValues = this._map.getTileValuesForPainting(this._originX, this._originY, this._totalTilesInViewX, this._totalTilesInViewY, this._currentPaintedTiles);
 
     // Adjust for animations
     this.animationManager.getTiles(tileValues, this._originX, this._originY, this._totalTilesInViewX, this._totalTilesInViewY, isPaused);
-
-    var ctx = this._canvas.getContext('2d');
-
-    if (this.canvasWidth !== this._lastCanvasWidth || this.canvasHeight !== this._lastCanvasHeight) {
-      ctx.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
-      for (var y = 0, l = (this._lastPaintedTiles !== null ? this._lastPaintedTiles.length : 0); y < l; y++) {
-        var row = this._lastPaintedTiles[y];
-        for (var x = 0, l2 = row.length; x < l2; x++)
-          row[x] = -2;
-      }
-    }
 
     this._paintTiles(ctx, tileValues);
 
