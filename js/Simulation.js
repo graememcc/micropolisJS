@@ -134,17 +134,18 @@ define(['BlockMap', 'BlockMapUtils', 'Budget', 'Census', 'Commercial', 'Disaster
     if (this.budget.awaitingValues)
       return;
 
-    var threshold = 0;
+    // Default to slow speed
+    var threshold = 100;
 
     switch (this._speed) {
       case Simulation.SPEED_PAUSED:
         return;
 
       case Simulation.SPEED_SLOW:
-        threshold = 100;
+        // We've already set the threshold correctly
         break;
 
-      case Simulation.SPEED_NORMAL:
+      case Simulation.SPEED_MED:
         threshold = 50;
         break;
 
@@ -153,7 +154,7 @@ define(['BlockMap', 'BlockMapUtils', 'Budget', 'Census', 'Commercial', 'Disaster
         break;
 
       default:
-        console.warn('Unexpected speed', this._speed);
+        console.warn('Unexpected speed ('  + this._speed + '): defaulting to slow');
     }
 
     var d = new Date();
