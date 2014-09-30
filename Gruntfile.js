@@ -39,5 +39,7 @@ module.exports = function(grunt) {
   });
 
 
-  grunt.registerTask('default', ['requirejs', 'copy']);
+  grunt.registerTask('init', ['requirejs', 'copy']);
+  grunt.registerTask('build', ['init']);
+  grunt.registerTask('default', ['watch']);
 };
