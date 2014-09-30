@@ -60,7 +60,7 @@ define(['EventEmitter', 'GameCanvas', 'Messages'],
   };
 
 
-  onMove = function(event) {
+  var onMove = function(event) {
     var min = this.canvas.getTileOrigin();
     var max = this.canvas.getMaxTile();
 
@@ -69,7 +69,7 @@ define(['EventEmitter', 'GameCanvas', 'Messages'],
   };
 
 
-  onDie = function(event) {
+  var onDie = function(event) {
     this._tracking.removeEventListener(Messages.SPRITE_MOVE, this._onMove);
     this._tracking.removeEventListener(Messages.SPRITE_DYING, this._onDie);
     this._tracking = null;
