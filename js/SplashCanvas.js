@@ -7,8 +7,8 @@
  *
  */
 
-define(['MiscUtils', 'MouseBox', 'TileSet'],
-       function(MiscUtils, MouseBox, TileSet) {
+define(['MiscUtils', 'TileSet'],
+       function(MiscUtils, TileSet) {
   "use strict";
 
 
