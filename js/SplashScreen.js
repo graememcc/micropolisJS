@@ -24,13 +24,13 @@ define(['Config', 'Game', 'MapGenerator', 'Simulation', 'SplashCanvas', 'Storage
     $('#splashGenerate').click(this.regenerateMap.bind(this));
     $('#splashPlay').click(this.acquireNameAndDifficulty.bind(this));
 
-    this.splashCanvas = new SplashCanvas(SplashCanvas.DEFAULT_ID, 'splashContainer');
-
     // Conditionally enable load/save buttons
     $('#saveRequest').prop('disabled', !Storage.canStore);
     $('#splashLoad').prop('disabled', !(Storage.canStore && Storage.getSavedGame() !== null));
 
-    this.splashCanvas.init(this.map, tileSet);
+    // Paint the minimap
+    this.splashCanvas = new SplashCanvas('splashContainer', tileSet);
+    this.splashCanvas.paint(this.map);
 
     $('#splashLoad').click(this.handleLoad.bind(this));
     $('.awaitGeneration').toggle();
@@ -41,7 +41,7 @@ define(['Config', 'Game', 'MapGenerator', 'Simulation', 'SplashCanvas', 'Storage
   SplashScreen.prototype.regenerateMap = function(e) {
     e.preventDefault();
 
-    this.splashCanvas.clearMap();
+    //this.splashCanvas.clearMap();
     this.map = MapGenerator();
     this.splashCanvas.paint(this.map);
   };
