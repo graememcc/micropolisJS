@@ -108,7 +108,7 @@ nav li {
   color: white;
 }
 
-.centred {
+.centred, #tooSmallInner {
   position: absolute;
   top: 50%;
   left: 50%;
