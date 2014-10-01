@@ -474,7 +474,6 @@ define([],
 
   Tile.TILE_INVALID   = -1; // Invalid tile (not used in the world map).
 
-  Tile.MIN_SIZE = 16; // Minimum size of tile in pixels
 
   return Tile;
 });

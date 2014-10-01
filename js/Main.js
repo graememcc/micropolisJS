@@ -7,47 +7,22 @@
  *
  */
 
-require(['Config', 'SplashScreen', 'SpriteLoader', 'TileSet', 'TileSetURI'],
-        function(Config, SplashScreen, SpriteLoader, TileSet, TileSetURI) {
+require(['Config', 'SplashScreen', 'TileSet', 'TileSetURI'],
+        function(Config, SplashScreen, TileSet, TileSetURI) {
   "use strict";
 
 
-  var i, tileSet;
-
-  // If we got here, then we have script
-  $('[data-hasscript]').each(function() {
-    $(this).attr('data-hasscript', 'true');
-  });
-
-  var spritesLoaded = function(spriteImages) {
+  var onTilesLoaded = function() {
+    // Kick things off properly
+    var sprites = $('#sprites')[0];
     $('#loadingBanner').css('display', 'none');
-    var s = new SplashScreen(tileSet, spriteImages);
+    var s = new SplashScreen(tileSet, sprites);
   };
 
 
-  var spriteError = function() {
-    alert('Failed to load sprites');
-  };
-
-
-  var loadSprites = function() {
-    var sl = new SpriteLoader();
-    sl.load(spritesLoaded, spriteError);
-  };
-
-
+  // XXX Replace with an error dialog
   var tileSetError = function() {
     alert('Failed to load tileset!');
-  };
-
-
-  var loadTileSet = function() {
-    tileSet = new TileSet(i, loadSprites, tileSetError);
-  };
-
-
-  var imgError = function() {
-    alert('Failed to load tile images!');
   };
 
 
@@ -56,8 +31,7 @@ require(['Config', 'SplashScreen', 'SpriteLoader', 'TileSet', 'TileSetURI'],
     return param.trim().toLowerCase() === 'debug=1';
   });
 
-  var i = new Image();
-  i.onload = loadTileSet;
-  i.onerror = imgError;
-  i.src = 'images/tiles.png';
+
+  var tiles = $('#tiles')[0];
+  var tileSet = new TileSet(tiles, onTilesLoaded, tileSetError);
 });

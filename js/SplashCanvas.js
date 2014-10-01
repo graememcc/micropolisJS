@@ -50,7 +50,7 @@ define(['MiscUtils', 'MouseBox', 'TileSet'],
 
 
   SplashCanvas.prototype.init = function(map, tileSet) {
-    if (!tileSet.loaded)
+    if (!tileSet.isValid)
       throw new Error('TileSet not ready!');
 
     this._tileSet = tileSet;

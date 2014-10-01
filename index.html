@@ -19,6 +19,8 @@
     <title>micropolisJS</title>
   </head>
   <body>
+    <img id="tiles" class="imageData" src="images/tiles.png">
+    <img id="sprites" class="imageData" src="images/sprites.png">
     <header id="header" class="chunk border-bottom padding10">
       <div class="left inlineblock">
         <h1 id="title" class="white fontlarge">micropolisJS</h1>
@@ -465,6 +467,12 @@
         </div>
       </div>
     </div>
+    <script>
+      // If we got here, then we have script. Note we don't necessarily have jQuery though
+      [].forEach.call(document.querySelectorAll('[data-hasscript]'), function(elem) {
+        elem.setAttribute('data-hasscript', 'true');
+      });
+    </script>
     <script defer src="js/polyfills.js"></script>
     <script defer src="thirdparty/jquery/jquery-2.1.1.min.js"></script>
     <script defer data-main="js/Main.js" src="thirdparty/requirejs/require.js"></script>

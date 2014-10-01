@@ -12,134 +12,78 @@ define(['Tile'],
   "use strict";
 
 
-  function TileSet(src, loadCallback, errorCallback) {
+  // Tiles must be 16px square
+  var TILE_SIZE = 16;
+  var TILES_PER_ROW = Math.sqrt(Tile.TILE_COUNT);
+  var ACCEPTABLE_DIMENSION = TILES_PER_ROW * TILE_SIZE;
+
+
+  function TileSet(image, callback, errorCallback) {
     if (!(this instanceof TileSet))
-      return new TileSet(src, loadCallback, errorCallback);
+      return new TileSet(image, callback, errorCallback);
 
     var e = new Error('Invalid parameter');
 
-    if (arguments.length < 3)
+    if (callback === undefined || errorCallback === undefined)
       throw e;
 
-    this.loaded = false;
-    this._successCallback = loadCallback;
-    this._errorCallback = errorCallback;
-    var self = this;
+    this.isValid = false;
 
-    if (src instanceof Image) {
-      // we need to spin event loop here for sake of callers
-      // to ensure constructor returns before callback called
-      setTimeout(function() {self._verifyImage(src);}, 0);
-    } else {
-      var img = new Image();
-
-      img.onload = function() {
-        self._verifyImage(img);
-      };
-
-      img.onerror = function() {
-        self._triggerCallback(false);
-      };
-
-      img.src = src;
+    if (!(image instanceof Image)) {
+      // Spin the event loop
+      window.setTimeout(errorCallback, 0);
+      return;
     }
+
+    this._verifyImage(image, callback, errorCallback);
   }
 
 
+  TileSet.prototype._verifyImage = function(image, callback, errorCallback) {
+    var width = image.width;
+    var height = image.height;
 
-  TileSet.prototype.load = function(src, loadCallback, errorCallback) {
-    var e = new Error('Invalid parameter');
-
-    if (arguments.length < 3)
-      throw e;
-
-    // Don't allow overwriting an already loaded tileset
-    if (this.loaded)
-      throw new Error('TileSet already loaded');
-
-    this._successCallback = loadCallback;
-    this._errorCallback = errorCallback;
-    if (src instanceof Image) {
-      this._verifyImage(src);
-    } else {
-      var img = new Image();
-      var self = this;
-
-      img.onload = function() {
-        self._verifyImage(img);
-      };
-
-      img.onerror = function() {
-        self._triggerCallback(false);
-      };
-
-      img.src = src;
-    }
-  };
-
-
-  TileSet.prototype._triggerCallback = function _triggerCallback(successful) {
-    if (!this._successCallback) // image supplied, no callbacks
-      return;
-
-    var cb = this._successCallback;
-    if (!successful)
-      cb = this._errorCallback;
-
-    delete this._successCallback;
-    delete this._errorCallback;
-
-    cb();
-  };
-
-
-  TileSet.prototype._verifyImage = function _verifyImage(img) {
-    var w = img.width, h = img.height;
-    var tilesPerRow = Math.sqrt(Tile.TILE_COUNT);
-
-    if (w !== h) {
-      this._triggerCallback(false);
-      return;
-    }
-    if ((w % tilesPerRow) !== 0) {
-      this._triggerCallback(false);
+    // We expect tilesets to be square, and of the required width/height
+    if (width !== height || width !== ACCEPTABLE_DIMENSION) {
+      // Spin the event loop
+      window.setTimeout(errorCallback, 0);
       return;
     }
 
-    this.tileWidth = w / tilesPerRow;
-    var tileWidth = this.tileWidth;
+    var tileWidth = this.tileWidth = TILE_SIZE;
 
-    if (tileWidth < Tile.MIN_SIZE) {
-      this._triggerCallback(false);
-      return;
-    }
+    // We paint the image onto a canvas so we can split it up
+    var c = document.createElement('canvas');
+    c.width = tileWidth;
+    c.height = tileWidth;
+    var cx = c.getContext('2d');
 
+    // Count how many tiles we have created
+    var tileCount = Tile.TILE_COUNT;
     var notifications = 0;
     var self = this;
 
-    // Paint the image onto a canvas so we can split it up
-    var c = document.createElement('canvas');
-    c.width = this.tileWidth;
-    c.height = this.tileWidth;
-
-    var cx = c.getContext('2d');
-
+    // Callback triggered by an image load. Checks to see if we are done creating images,
+    // and if so notifies the caller.
     var imageLoad = function() {
       notifications++;
 
-      if (notifications == Tile.TILE_COUNT) {
-        self.loaded = true;
-        self._triggerCallback(true);
+      if (notifications === tileCount) {
+        self.isValid = true;
+        // Spin the event loop
+        window.setTimeout(callback, 0);
+        return;
       }
     };
 
+    // Break up the source image into tiles by painting each tile onto a canvas, computing the dataURI
+    // of the canvas, and using that to create a new image, which we install on ourselves as a new property
+    for (var i = 0; i < tileCount; i++) {
+      cx.clearRect(0, 0, tileWidth, tileWidth);
 
-    for (var i = 0; i < Tile.TILE_COUNT; i++) {
-      cx.clearRect(0, 0, this.tileWidth, this.tileWidth);
-
-      var sourceX = i % tilesPerRow * tileWidth;
-      var sourceY = Math.floor(i / tilesPerRow) * tileWidth;
-      cx.drawImage(img, sourceX, sourceY, tileWidth, tileWidth, 0, 0, tileWidth, tileWidth);
+      var sourceX = i % TILES_PER_ROW * tileWidth;
+      var sourceY = Math.floor(i / TILES_PER_ROW) * tileWidth;
+      cx.drawImage(image, sourceX, sourceY, tileWidth, tileWidth, 0, 0, tileWidth, tileWidth);
 
       this[i] = new Image();
       this[i].onload = imageLoad;

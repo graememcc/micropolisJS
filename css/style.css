@@ -78,7 +78,7 @@ nav li {
   text-align: center;
 }
 
-.awaitGeneration, .hidden, .initialHidden {
+.awaitGeneration, .hidden, .initialHidden, .imageData {
   display: none;
 }
 

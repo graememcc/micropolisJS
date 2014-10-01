@@ -70,7 +70,7 @@ define(['AnimationManager', 'GameMap', 'MiscUtils', 'MouseBox', 'Tile', 'TileSet
     if (arguments.length < 3)
       throw e;
 
-    if (!tileSet.loaded)
+    if (!tileSet.isValid)
       throw new Error('TileSet not ready!');
 
     this._spriteSheet = spriteSheet;
