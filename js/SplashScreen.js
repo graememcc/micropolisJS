@@ -12,17 +12,44 @@ define(['Config', 'Game', 'MapGenerator', 'Simulation', 'SplashCanvas', 'Storage
   "use strict";
 
 
+  /*
+   *
+   * The SplashScreen is the first screen the player will see on launch. It is responsible for map generation,
+   * placing UI on screen to allow the player to select a map or load a game, and finally launching the game.
+   * This should not be called until the tiles and sprites have been loaded.
+   *
+   */
+
+  var onresize = null;
+
+
+  // If the window is initially too small, try and relaunch if it gets bigger
+  var makeResizeListener = function(tileSet, spriteSheet) {
+    return function(tileSet, spriteSheet, e) {
+      $(window).off('resize');
+      var s = new SplashScreen(tileSet, spriteSheet);
+    }.bind(null, tileSet, spriteSheet);
+  };
+
+
   function SplashScreen(tileSet, spriteSheet) {
-    // Don't generate anything on small screens. Not great if on desktop and the user resizes though...
-    if ($('#tooSmall').is(':visible'))
+    // We don't launch the game if the screen is too small, however, we should retain the right to do so
+    // should the situation change...
+    if ($('#tooSmall').is(':visible')) {
+      onresize = makeResizeListener(tileSet, spriteSheet);
+      $(window).on('resize', onresize);
       return;
+    }
 
     this.tileSet = tileSet;
     this.spriteSheet = spriteSheet;
     this.map = MapGenerator();
 
-    $('#splashGenerate').click(this.regenerateMap.bind(this));
-    $('#splashPlay').click(this.acquireNameAndDifficulty.bind(this));
+    // Set up listeners on buttons. When play is clicked, we will move on to get the player's desired
+    // difficulty level and city name before launching the game properly
+    $('#splashGenerate').click(regenerateMap.bind(this));
+    $('#splashPlay').click(acquireNameAndDifficulty.bind(this));
+    $('#splashLoad').click(handleLoad.bind(this));
 
     // Conditionally enable load/save buttons
     $('#saveRequest').prop('disabled', !Storage.canStore);
@@ -32,22 +59,23 @@ define(['Config', 'Game', 'MapGenerator', 'Simulation', 'SplashCanvas', 'Storage
     this.splashCanvas = new SplashCanvas('splashContainer', tileSet);
     this.splashCanvas.paint(this.map);
 
-    $('#splashLoad').click(this.handleLoad.bind(this));
+    // Let's get some bits on screen!
     $('.awaitGeneration').toggle();
     $('#splashPlay').focus();
   }
 
 
-  SplashScreen.prototype.regenerateMap = function(e) {
+  // Generate a new map at the user's request, and paint it
+  var regenerateMap = function(e) {
     e.preventDefault();
 
-    //this.splashCanvas.clearMap();
     this.map = MapGenerator();
     this.splashCanvas.paint(this.map);
   };
 
 
-  SplashScreen.prototype.handleLoad = function(e) {
+  // Fetches game data from the storage manager, and launches the game. We won't return from here
+  var handleLoad = function(e) {
     e.preventDefault();
 
     var savedGame = Storage.getSavedGame();
@@ -55,39 +83,59 @@ define(['Config', 'Game', 'MapGenerator', 'Simulation', 'SplashCanvas', 'Storage
     if (savedGame === null)
       return;
 
+    // Remove installed event listeners
     $('#splashLoad').off('click');
     $('#splashGenerate').off('click');
     $('#splashPlay').off('click');
+
+    // Hide the splashscreen UI
     $('#splash').toggle();
+
+    // Launch
     var g = new Game(savedGame, this.tileSet, this.spriteSheet, Simulation.LEVEL_EASY, name);
   };
 
 
-  SplashScreen.prototype.acquireNameAndDifficulty = function(e) {
+  // After a map has been selected, call this function to display a form asking the user for
+  // a city name and difficulty level.
+  var acquireNameAndDifficulty = function(e) {
     e.preventDefault();
 
+    // Remove the initial event listeners
     $('#splashLoad').off('click');
     $('#splashGenerate').off('click');
     $('#splashPlay').off('click');
+
+    // Get rid of the initial splash screen
     $('#splash').toggle();
 
-    $('#playForm').submit(this.playMap.bind(this));
-    $('#start').toggle();
-
+    // As a convenience, the city name is not mandatory in debug mode
     if (Config.debug)
       $('#nameForm').removeAttr('required');
 
+    // When the form is submitted, we'll be ready to launch the game
+    $('#playForm').submit(play.bind(this));
+
+    // Display the name and difficulty form
+    $('#start').toggle();
     $('#nameForm').focus();
   };
 
 
-  SplashScreen.prototype.playMap = function(e) {
+  // This function should be called after the name/difficulty form has been submitted. The game will now be launched
+  // with the map selected earlier.
+  var play = function(e) {
     e.preventDefault();
 
+    // As usual, uninstall event listeners, and hide the UI
     $('#playForm').off('submit');
     $('#start').toggle();
+
+    // What values did the player specify?
     var difficulty = $('.difficulty:checked').val() - 0;
     var name = $('#nameForm').val();
+
+    // Launch a new game
     var g = new Game(this.map, this.tileSet, this.spriteSheet, difficulty, name);
   };
 
