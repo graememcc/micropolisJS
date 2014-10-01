@@ -12,6 +12,16 @@ require(['Config', 'SplashScreen', 'TileSet', 'TileSetURI'],
   "use strict";
 
 
+  /*
+   *
+   * Our task in main is to load the tile image, create a TileSet from it, and then tell the SplashScreen to display
+   * itself. We will never return here.
+   *
+   */
+
+
+  var fallbackImage, tileSet;
+
   var onTilesLoaded = function() {
     // Kick things off properly
     var sprites = $('#sprites')[0];
@@ -21,8 +31,26 @@ require(['Config', 'SplashScreen', 'TileSet', 'TileSetURI'],
 
 
   // XXX Replace with an error dialog
-  var tileSetError = function() {
+  var onFallbackError = function() {
+    fallbackImage.onload = fallbackImage.onerror = null;
     alert('Failed to load tileset!');
+  };
+
+
+  var onFallbackLoad = function() {
+    fallbackImage.onload = fallbackImage.onerror = null;
+    tileSet = new TileSet(fallbackImage, onTilesLoaded, onFallbackError);
+  };
+
+
+  var tileSetError = function() {
+    // We might be running locally in Chrome, which handles the security context of file URIs differently, which makes
+    // things go awry when we try to create an image from a "tainted" canvas (one we've painted on). Let's try creating
+    // the tileset by URI instead
+    fallbackImage = new Image();
+    fallbackImage.onload = onFallbackLoad;
+    fallbackImage.onerror = onFallbackError;
+    fallbackImage.src = TileSetURI;
   };
 
 
@@ -33,5 +61,5 @@ require(['Config', 'SplashScreen', 'TileSet', 'TileSetURI'],
 
 
   var tiles = $('#tiles')[0];
-  var tileSet = new TileSet(tiles, onTilesLoaded, tileSetError);
+  tileSet = new TileSet(tiles, onTilesLoaded, tileSetError);
 });
