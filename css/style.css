@@ -522,7 +522,7 @@ nav li {
   color: white;
 }
 
-#screenshotHeader, #screenshotRequest {
+.screenshotHeader, #screenshotRequest {
   background-color: tomato;
   color: white;
 }
