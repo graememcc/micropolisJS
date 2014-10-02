@@ -8,6 +8,7 @@ module.exports = function(grunt) {
           {expand: true, cwd: 'images', src: '**/*', dest: 'dist/images'},
           {expand: true, cwd: 'sprites', src: '**/*', dest: 'dist/sprites'},
           {expand: true, cwd: 'thirdparty', src: '**/*', dest: 'dist/thirdparty'},
+          {src: ['js/polyfills.js'], dest: 'dist/'},
           {src: ['COPYING'], dest: 'dist/'},
           {src: ['LICENSE'], dest: 'dist/'},
           {src: ['about.html'], dest: 'dist/'},
