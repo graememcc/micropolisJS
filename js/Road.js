@@ -158,9 +158,9 @@ define(['Random', 'Tile', 'TileUtils'],
       density = 2;
     }
 
-    var currentDensity = simData.blockMaps.trafficDensityMap.worldGet(x, y) >> 6;
     // Force currentDensity in range 0-3 (trafficDensityMap values are capped at 240)
-    if (currentDensity >> 1)
+    var currentDensity = simData.blockMaps.trafficDensityMap.worldGet(x, y) >> 6;
+    if (currentDensity > 1)
       currentDensity -= 1;
 
     if (currentDensity === density)
