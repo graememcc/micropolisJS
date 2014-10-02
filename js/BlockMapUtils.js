@@ -149,7 +149,7 @@ define(['BlockMap', 'Commercial', 'Industrial', 'MiscUtils', 'Random', 'Resident
   };
 
 
-  // Compute the manhattan distance of the given point from the city centre, and force into the range 0-64
+  // Compute the Manhattan distance of the given point from the city centre, and force into the range 0-64
   var getCityCentreDistance = function(map, x, y) {
     var xDis, yDis;
 
@@ -310,15 +310,21 @@ define(['BlockMap', 'Commercial', 'Industrial', 'MiscUtils', 'Random', 'Resident
   };
 
 
-  var computeComRateMap = function(map, blockMaps) {
-    var comRateMap = blockMaps.comRateMap;
+  // Iterate over the map, and score each neighbourhood on its distance from the city centre. Scores are in the range
+  // -64 to 64. This affects the growth of commercial zones within that neighbourhood.
+  var fillCityCentreDistScoreMap = function(map, blockMaps) {
+    var cityCentreDistScoreMap = blockMaps.cityCentreDistScoreMap;
 
-    for (var x = 0; x < comRateMap.width; x++) {
-      for (var y = 0; y < comRateMap.height; y++) {
+    for (var x = 0, width = cityCentreDistScoreMap.width; x < width; x++) {
+      for (var y = 0, height = cityCentreDistScoreMap.height; y < height; y++) {
+        // First, we compute the Manhattan distance of the top-left hand corner of the neighbourhood to the city centre
+        // and half that value. This leaves us a value in the range 0 - 32
         var value = Math.floor(getCityCentreDistance(map, x * 8, y * 8) / 2);
+        // Now, we scale up by a factor of 4. We're in the range 0 - 128
         value = value * 4;
+        // And finally, subtract from 64, leaving us a score in the range -64 to 64
         value = 64 - value;
-        comRateMap.set(x, y, value);
+        cityCentreDistScoreMap.set(x, y, value);
       }
     }
   };
@@ -373,7 +379,7 @@ define(['BlockMap', 'Commercial', 'Industrial', 'MiscUtils', 'Random', 'Resident
     // Copy tempMap2 to populationDensityMap, multiplying by 2
     blockMaps.populationDensityMap.copyFrom(tempMap2, function(x) {return x * 2;});
 
-    computeComRateMap(map, blockMaps);
+    fillCityCentreDistScoreMap(map, blockMaps);
 
     // Compute new city center
     if (zoneTotal > 0) {

@@ -85,7 +85,7 @@ define(['BaseTool', 'Config', 'EventEmitter', 'Messages', 'Text', 'Tile'],
     $('#queryPoliceStationEffectRaw').text(blockMaps.policeStationEffectMap.worldGet(x, y));
     $('#queryTerrainDensityRaw').text(blockMaps.terrainDensityMap.worldGet(x, y));
     $('#queryTrafficDensityRaw').text(blockMaps.trafficDensityMap.worldGet(x, y));
-    $('#queryComRateRaw').text(blockMaps.comRateMap.worldGet(x, y));
+    $('#queryComRateRaw').text(blockMaps.cityCentreDistScoreMap.worldGet(x, y));
   };
 
 

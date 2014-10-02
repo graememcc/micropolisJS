@@ -42,7 +42,7 @@ define(['BlockMap', 'BlockMapUtils', 'Budget', 'Census', 'Commercial', 'Disaster
 
     this.blockMaps = {
       // Holds a "distance score" for the block from the city centre, range 0-64
-      comRateMap: new BlockMap(this._map.width, this._map.height, 8),
+      cityCentreDistScoreMap: new BlockMap(this._map.width, this._map.height, 8),
 
       // Holds a score representing how dangerous an area is, in range 0-250 (larger is worse)
       crimeRateMap: new BlockMap(this._map.width, this._map.height, 2),

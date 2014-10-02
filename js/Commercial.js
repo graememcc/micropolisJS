@@ -66,8 +66,8 @@ define(['Random', 'Tile', 'TileUtils', 'Traffic', 'ZoneUtils'],
     if (traffic === Traffic.NO_ROAD_FOUND)
       return -3000;
 
-    var comRate = blockMaps.comRateMap.worldGet(x, y);
-    return comRate;
+    var cityCentreDistScore = blockMaps.cityCentreDistScoreMap.worldGet(x, y);
+    return cityCentreDistScore;
   };
 
 
