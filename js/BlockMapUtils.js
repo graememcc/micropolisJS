@@ -297,8 +297,6 @@ define(['BlockMap', 'Commercial', 'Industrial', 'MiscUtils', 'Random', 'Resident
         census.crimeAverage = Math.floor(totalCrime / crimeZoneCount);
     else
         census.crimeAverage = 0;
-
-    blockMaps.policeStationEffectMap = new BlockMap(policeStationMap);
   };
 
 
@@ -362,7 +360,7 @@ define(['BlockMap', 'Commercial', 'Industrial', 'MiscUtils', 'Random', 'Resident
     smoothMap(tempMap1, tempMap2, SMOOTH_ALL_THEN_CLAMP);
 
     // Copy tempMap2 to populationDensityMap, multiplying by 2
-    blockMaps.populationDensityMap = new BlockMap(tempMap2, function(x) {return 2 * x;});
+    blockMaps.populationDensityMap.copyFrom(tempMap2, function(x) {return x * 2;});
 
     computeComRateMap(map, blockMaps);
 
@@ -384,8 +382,6 @@ define(['BlockMap', 'Commercial', 'Industrial', 'MiscUtils', 'Random', 'Resident
     smoothMap(fireStationMap, fireStationEffectMap, SMOOTH_NEIGHBOURS_THEN_BLOCK);
     smoothMap(fireStationEffectMap, fireStationMap, SMOOTH_NEIGHBOURS_THEN_BLOCK);
     smoothMap(fireStationMap, fireStationEffectMap, SMOOTH_NEIGHBOURS_THEN_BLOCK);
-
-    blockMaps.fireStationEffectMap = new BlockMap(fireStationMap);
   };
 
 

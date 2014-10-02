@@ -19,7 +19,7 @@ define(['BlockMap', 'Direction', 'EventEmitter', 'Messages', 'Random', 'Tile'],
   var PowerManager = EventEmitter(function(map) {
     this._map = map;
     this._powerStack = [];
-    this.powerGridMap = new BlockMap(this._map.width, this._map.height, 1, 0);
+    this.powerGridMap = new BlockMap(this._map.width, this._map.height, 1);
   });
 
 

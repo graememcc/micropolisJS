@@ -12,67 +12,52 @@ define(['MiscUtils'],
   "use strict";
 
 
-  function BlockMap(gameMapWidth, gameMapHeight, blockSize, defaultValue) {
-    var sourceMap;
-    var sourceFunction;
-    var id = function(x) {return x;};
+  /*
+   *
+   * BlockMaps are data maps where each entry corresponds to data representing a block of tiles in the original
+   * game map.
+   *
+   */
 
-    var e = new Error('Invalid parameters');
-    if (arguments.length < 3) {
-      if (!(gameMapWidth instanceof BlockMap) ||
-          (arguments.length === 2 && typeof(gameMapHeight) !== 'function'))
-        throw e;
-      sourceMap = gameMapWidth;
-      sourceFunction = gameMapHeight === undefined ? id : gameMapHeight;
-    }
 
-    if (sourceMap !== undefined) {
-      gameMapWidth = sourceMap.gameMapWidth;
-      gameMapHeight = sourceMap.gameMapHeight;
-      blockSize = sourceMap.blockSize;
-      defaultValue = sourceMap.defaultValue;
-    }
+  // Construct a block map. Takes three integers: the game map's width and height, and the block size (i.e. how many
+  // tiles in each direction should map to the same block). The BlockMap entries will be initialised to zero.
+  function BlockMap(gameMapWidth, gameMapHeight, blockSize) {
+    if (gameMapWidth === undefined || gameMapHeight === undefined || blockSize === undefined)
+      throw new Error('Invalid dimensions for block map');
 
     Object.defineProperties(this,
       {gameMapWidth: MiscUtils.makeConstantDescriptor(gameMapWidth),
        gameMapHeight: MiscUtils.makeConstantDescriptor(gameMapHeight),
-       width: MiscUtils.makeConstantDescriptor(Math.floor((gameMapWidth  + 1) / blockSize)),
-       height: MiscUtils.makeConstantDescriptor(Math.floor((gameMapHeight + 1)/ blockSize)),
-       blockSize: MiscUtils.makeConstantDescriptor(blockSize),
-       defaultValue: MiscUtils.makeConstantDescriptor(defaultValue)});
+       width: MiscUtils.makeConstantDescriptor(Math.floor((gameMapWidth  + blockSize - 1) / blockSize)),
+       height: MiscUtils.makeConstantDescriptor(Math.floor((gameMapHeight + blockSize - 1)/ blockSize)),
+       blockSize: MiscUtils.makeConstantDescriptor(blockSize)});
 
     this.data = [];
 
-    if (sourceMap)
-      copyFrom.call(this, sourceMap, sourceFunction);
-    else
-      this.clear();
+    for (var y = 0, height = this.height; y < height; y++)
+      this.data[y] = [];
+    this.clear();
   }
 
 
-  var copyFrom = function(sourceMap, sourceFn) {
-    var mapFn = function(elem) {
-      return sourceFn(elem);
-    };
-
-    for (var y = 0, l = sourceMap.data.length; y < l; y++)
-      this.data[y] = sourceMap.data[y].map(mapFn);
-  };
-
-
-  var makeArrayOf = function(length, value) {
-    var result = [];
-    for (var a = 0; a < length; a++)
-      result[a] = value;
-    return result;
-  };
-
-
   BlockMap.prototype.clear = function() {
-    var maxY = Math.floor(this.gameMapHeight / this.blockSize) + 1;
-    var maxX = Math.floor(this.gameMapWidth / this.blockSize) + 1;
-    for (var y = 0; y < maxY; y++)
-      this.data[y] = makeArrayOf(maxX, this.defaultValue);
+    for (var y = 0, height = this.height; y < height; y++) {
+      var row = this.data[y];
+      for (var x = 0, width = this.width; x < width; x++)
+        row[x] = 0;
+    }
+  };
+
+
+  BlockMap.prototype.copyFrom = function(sourceMap, sourceFn) {
+    if (sourceMap.width !== this.width || sourceMap.height !== this.height || sourceMap.blockSize !== this.blockSize)
+      console.warn('Copying from incompatible blockMap!');
+
+    for (var y = 0, height = sourceMap.height; y < height; y++) {
+      for (var x = 0, width = sourceMap.width; x < width; x++)
+        this.data[y][x] = sourceFn(sourceMap.data[y][x]);
+    }
   };
 
 
