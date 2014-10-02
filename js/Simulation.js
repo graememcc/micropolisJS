@@ -41,21 +41,46 @@ define(['BlockMap', 'BlockMapUtils', 'Budget', 'Census', 'Commercial', 'Disaster
     this.disasterManager = new DisasterManager(this._map, this.spriteManager, this._gameLevel);
 
     this.blockMaps = {
+      // Holds a "distance score" for the block from the city centre, range 0-64
       comRateMap: new BlockMap(this._map.width, this._map.height, 8, 0),
+
+      // Holds a score representing how dangerous an area is, in range 0-250 (larger is worse)
       crimeRateMap: new BlockMap(this._map.width, this._map.height, 2, 0),
+
+      // A map used to note positions of fire stations during the map scan, range 0-1000
       fireStationMap: new BlockMap(this._map.width, this._map.height, 8, 0),
+
+      // Holds a value containing a score representing the effect of fire cover in this neighborhood, range 0-1000
       fireStationEffectMap: new BlockMap(this._map.width, this._map.height, 8, 0),
+
+      // Holds scores representing the land value in the range 0-250
       landValueMap: new BlockMap(this._map.width, this._map.height, 2, 0),
+
+      // A map used to note positions of police stations during the map scan, range 0-1000
       policeStationMap: new BlockMap(this._map.width, this._map.height, 8, 0),
+
+      // Holds a value containing a score representing how much crime is dampened in this block, range 0-1000
       policeStationEffectMap: new BlockMap(this._map.width, this._map.height, 8, 0),
+
+      // Holds a value representing the amount of pollution in a neighbourhood, in the range 0-255
       pollutionDensityMap: new BlockMap(this._map.width, this._map.height, 2, 0),
+
+      // Holds a value representing population density of a block, in the range 0-254
       populationDensityMap: new BlockMap(this._map.width, this._map.height, 2, 0),
+
+      // Holds a value representing the rate of growth of a neighbourhood in the range -200 to +200
       rateOfGrowthMap: new BlockMap(this._map.width, this._map.height, 8, 0),
+
+      // Scores a block on how undeveloped/unspoilt it is, range 0-240
+      terrainDensityMap: new BlockMap(this._map.width, this._map.height, 4, 0),
+
+      // Scores the volume of traffic in this cluster, range 0-240
+      trafficDensityMap: new BlockMap(this._map.width, this._map.height, 2, 0),
+
+      // Temporary maps
       tempMap1: new BlockMap(this._map.width, this._map.height, 2, 0),
       tempMap2: new BlockMap(this._map.width, this._map.height, 2, 0),
-      tempMap3: new BlockMap(this._map.width, this._map.height, 4, 0),
-      terrainDensityMap: new BlockMap(this._map.width, this._map.height, 4, 0),
-      trafficDensityMap: new BlockMap(this._map.width, this._map.height, 2, 0)
+      tempMap3: new BlockMap(this._map.width, this._map.height, 4, 0)
     };
 
     this._clearCensus();
