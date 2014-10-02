@@ -12,6 +12,54 @@ define(['BlockMap', 'Commercial', 'Industrial', 'MiscUtils', 'Random', 'Resident
   "use strict";
 
 
+  // Smoothing styles for map smoothing
+  var SMOOTH_NEIGHBOURS_THEN_BLOCK = 0;
+  var SMOOTH_ALL_THEN_CLAMP = 1;
+
+
+  // Smooth the map src into dest. The way in which the map is smoothed depends on the value of smoothStyle.
+  // The meanings are as follows:
+  //
+  // SMOOTH_NEIGHBOURS_THEN_BLOCK
+  // ============================
+  // For each square in src, sum the values of its immediate neighbours, and take the average, then take the average of
+  // that result and the square's value. This result is the new value of the square in dest.
+  //
+  // SMOOTH_ALL_THEN_CLAMP
+  // =====================
+  // For each square in src, sum the values of that square and it's four immediate neighbours, and take an average
+  // rounding down. Clamp the resulting value in the range 0-255. This clamped value is the square's new value in dest.
+  var smoothMap = function(src, dest, smoothStyle) {
+    for (var x = 0, width = src.width; x < width; x++) {
+      for (var y = 0, height = src.height; y < height; y++) {
+        var edges = 0;
+
+        if (x > 0)
+          edges += src.get(x - 1, y);
+
+        if (x < src.width - 1)
+          edges += src.get(x + 1, y);
+
+        if (y > 0)
+          edges += src.get(x, y - 1);
+
+        if (y < src.height - 1)
+          edges += src.get(x, y + 1);
+
+        if (smoothStyle === SMOOTH_NEIGHBOURS_THEN_BLOCK) {
+          edges = src.get(x, y) + Math.floor(edges / 4);
+          dest.set(x, y, Math.floor(edges/2));
+        } else {
+          edges = (edges + src.get(x, y)) >> 2;
+          if (edges > 255)
+            edges = 255;
+          dest.set(x, y, edges);
+        }
+      }
+    }
+  };
+
+
   var decRateOfGrowthMap = function(blockMaps) {
     var rateOfGrowthMap = blockMaps.rateOfGrowthMap;
     for (var x = 0; x < rateOfGrowthMap.width; x++) {
@@ -109,48 +157,9 @@ define(['BlockMap', 'Commercial', 'Industrial', 'MiscUtils', 'Random', 'Resident
   };
 
 
-  // The original version of this function in the Micropolis code
-  // takes a ditherFlag. However, as far as I can tell, it was
-  // never called with a truthy value for the ditherFlag.
-  var smoothDitherMap = function(srcMap, destMap) {
-    for (var x = 0; x < srcMap.width; x++) {
-      for (var y = 0; y < srcMap.height; y++) {
-        var value = 0;
-
-        if (x > 0)
-          value += srcMap.get(x - 1, y);
-
-        if (x < srcMap.width - 1)
-          value += srcMap.get(x + 1, y);
-
-        if (y > 0)
-          value += srcMap.get(x, y - 1);
-
-        if (y < (srcMap.height - 1))
-          value += srcMap.get(x, y + 1);
-
-        value = (value + srcMap.get(x, y)) >> 2;
-        if (value > 255)
-          value = 255;
-
-        destMap.set(x, y, value);
-      }
-    }
-  };
-
-
-  var smoothTemp1ToTemp2 = function(blockMaps) {
-    smoothDitherMap(blockMaps.tempMap1, blockMaps.tempMap2);
-  };
-
-
-  var smoothTemp2ToTemp1 = function(blockMaps) {
-    smoothDitherMap(blockMaps.tempMap2, blockMaps.tempMap1);
-  };
-
-
   var pollutionTerrainLandValueScan = function(map, census, blockMaps) {
     var tempMap1 = blockMaps.tempMap1;
+    var tempMap2 = blockMaps.tempMap2;
     var tempMap3 = blockMaps.tempMap3;
     var landValueMap = blockMaps.landValueMap;
     var terrainDensityMap = blockMaps.terrainDensityMap;
@@ -216,9 +225,8 @@ define(['BlockMap', 'Commercial', 'Industrial', 'MiscUtils', 'Random', 'Resident
     else
       census.landValueAverage = 0;
 
-
-    smoothTemp1ToTemp2(blockMaps);
-    smoothTemp2ToTemp1(blockMaps);
+    smoothMap(tempMap1, tempMap2, SMOOTH_ALL_THEN_CLAMP);
+    smoothMap(tempMap2, tempMap1, SMOOTH_ALL_THEN_CLAMP);
 
     var maxPollution = 0;
     var pollutedTileCount = 0;
@@ -248,34 +256,7 @@ define(['BlockMap', 'Commercial', 'Industrial', 'MiscUtils', 'Random', 'Resident
     else
       census.pollutionAverage = 0;
 
-    smoothMap(tempMap3, terrainDensityMap);
-  };
-
-
-  // Smooth the map src into dest. Specifically, for each square in src, sum the values of its immediate neighbours,
-  // and take the average, then take the average of that result and the square's value. This result is the new value
-  // of the square in dest.
-  var smoothMap = function(src, dest) {
-    for (var x = 0, width = src.width; x < width; x++) {
-      for (var y = 0, height = src.height; y < height; y++) {
-        var edges = 0;
-
-        if (x > 0)
-          edges += src.get(x - 1, y);
-
-        if (x < src.width - 1)
-          edges += src.get(x + 1, y);
-
-        if (y > 0)
-          edges += src.get(x, y - 1);
-
-        if (y < src.height - 1)
-          edges += src.get(x, y + 1);
-
-        edges = src.get(x, y) + Math.floor(edges / 4);
-        dest.set(x, y, Math.floor(edges/2));
-      }
-    }
+    smoothMap(tempMap3, terrainDensityMap, SMOOTH_NEIGHBOURS_THEN_BLOCK);
   };
 
 
@@ -286,9 +267,9 @@ define(['BlockMap', 'Commercial', 'Industrial', 'MiscUtils', 'Random', 'Resident
     var landValueMap = blockMaps.landValueMap;
     var populationDensityMap = blockMaps.populationDensityMap;
 
-    smoothMap(policeStationMap, policeStationEffectMap);
-    smoothMap(policeStationEffectMap, policeStationMap);
-    smoothMap(policeStationMap, policeStationEffectMap);
+    smoothMap(policeStationMap, policeStationEffectMap, SMOOTH_NEIGHBOURS_THEN_BLOCK);
+    smoothMap(policeStationEffectMap, policeStationMap, SMOOTH_NEIGHBOURS_THEN_BLOCK);
+    smoothMap(policeStationMap, policeStationEffectMap, SMOOTH_NEIGHBOURS_THEN_BLOCK);
 
     var totalCrime = 0;
     var crimeZoneCount = 0;
@@ -376,9 +357,9 @@ define(['BlockMap', 'Commercial', 'Industrial', 'MiscUtils', 'Random', 'Resident
       }
     }
 
-    smoothTemp1ToTemp2(blockMaps);
-    smoothTemp2ToTemp1(blockMaps);
-    smoothTemp1ToTemp2(blockMaps);
+    smoothMap(tempMap1, tempMap2, SMOOTH_ALL_THEN_CLAMP);
+    smoothMap(tempMap2, tempMap1, SMOOTH_ALL_THEN_CLAMP);
+    smoothMap(tempMap1, tempMap2, SMOOTH_ALL_THEN_CLAMP);
 
     // Copy tempMap2 to populationDensityMap, multiplying by 2
     blockMaps.populationDensityMap = new BlockMap(tempMap2, function(x) {return 2 * x;});
@@ -400,9 +381,9 @@ define(['BlockMap', 'Commercial', 'Industrial', 'MiscUtils', 'Random', 'Resident
     var fireStationMap = blockMaps.fireStationMap;
     var fireStationEffectMap = blockMaps.fireStationEffectMap;
 
-    smoothMap(fireStationMap, fireStationEffectMap);
-    smoothMap(fireStationEffectMap, fireStationMap);
-    smoothMap(fireStationMap, fireStationEffectMap);
+    smoothMap(fireStationMap, fireStationEffectMap, SMOOTH_NEIGHBOURS_THEN_BLOCK);
+    smoothMap(fireStationEffectMap, fireStationMap, SMOOTH_NEIGHBOURS_THEN_BLOCK);
+    smoothMap(fireStationMap, fireStationEffectMap, SMOOTH_NEIGHBOURS_THEN_BLOCK);
 
     blockMaps.fireStationEffectMap = new BlockMap(fireStationMap);
   };
