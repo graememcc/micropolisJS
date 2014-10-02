@@ -81,24 +81,24 @@ define(['BlockMap', 'Commercial', 'Industrial', 'MiscUtils', 'Random', 'Resident
   };
 
 
-  var decTrafficMap = function(blockMaps) {
+  // Over time, traffic density should ease.
+  var neutraliseTrafficMap = function(blockMaps) {
     var trafficDensityMap = blockMaps.trafficDensityMap;
 
-    for (var x = 0; x < trafficDensityMap.gameMapWidth; x += trafficDensityMap.blockSize) {
-      for (var y = 0; y < trafficDensityMap.gameMapHeight; y += trafficDensityMap.blockSize) {
-        var trafficDensity = trafficDensityMap.worldGet(x, y);
+    for (var x = 0, width = trafficDensityMap.width; x < width; x++) {
+      for (var y = 0, height = trafficDensityMap.height; y < height; y++) {
+        var trafficDensity = trafficDensityMap.get(x, y);
         if (trafficDensity === 0)
           continue;
 
-        if (trafficDensity <= 24) {
-          trafficDensityMap.worldSet(x, y, 0);
-          continue;
-        }
-
-        if (trafficDensity > 200)
-          trafficDensityMap.worldSet(x, y, trafficDensity - 34);
+        if (trafficDensity <= 24)
+          trafficDensity = 0;
+        else if (trafficDensity > 200)
+          trafficDensity = trafficDensity - 34;
         else
-          trafficDensityMap.worldSet(x, y, trafficDensity - 24);
+          trafficDensity = trafficDensity - 24;
+
+        trafficDensityMap.set(x, y, trafficDensity);
       }
     }
   };
@@ -383,9 +383,9 @@ define(['BlockMap', 'Commercial', 'Industrial', 'MiscUtils', 'Random', 'Resident
 
   var BlockMapUtils = {
     crimeScan: crimeScan,
-    decTrafficMap: decTrafficMap,
     fireAnalysis: fireAnalysis,
     neutraliseRateOfGrowthMap: neutraliseRateOfGrowthMap,
+    neutraliseTrafficMap: neutraliseTrafficMap,
     pollutionTerrainLandValueScan: pollutionTerrainLandValueScan,
     populationDensityScan: populationDensityScan
   };
