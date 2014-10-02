@@ -104,31 +104,44 @@ define(['BlockMap', 'Commercial', 'Industrial', 'MiscUtils', 'Random', 'Resident
   };
 
 
+  // Given a tileValue, score it on the pollution it generates, in the range 0-255
   var getPollutionValue = function(tileValue) {
     if (tileValue < Tile.POWERBASE) {
+      // Roads, fires and radiation lie below POWERBASE
+
+      // Heavy traffic is bad
       if (tileValue >= Tile.HTRFBASE)
         return 75;
 
+      // Low traffic not so much
       if (tileValue >= Tile.LTRFBASE)
         return 50;
 
       if (tileValue <  Tile.ROADBASE) {
+        // Fire = carbon monoxide = a bad score for you
         if (tileValue > Tile.FIREBASE)
           return 90;
 
+        // Radiation. Top of the charts.
         if (tileValue >= Tile.RADTILE)
           return 255;
       }
 
+      // All other types of ground are pure.
       return 0;
     }
 
+    // If we've reached this point, we're classifying some form of zone tile
+
+    // Residential and commercial zones don't pollute
     if (tileValue <= Tile.LASTIND)
       return 0;
 
+    // Industrial zones, however...
     if (tileValue < Tile.PORTBASE)
       return 50;
 
+    // Coal power plants are bad
     if (tileValue <= Tile.LASTPOWERPLANT)
         return 100;
 
@@ -136,6 +149,7 @@ define(['BlockMap', 'Commercial', 'Industrial', 'MiscUtils', 'Random', 'Resident
   };
 
 
+  // Compute the manhattan distance of the given point from the city centre, and force into the range 0-64
   var getCityCentreDistance = function(map, x, y) {
     var xDis, yDis;
 
@@ -310,6 +324,7 @@ define(['BlockMap', 'Commercial', 'Industrial', 'MiscUtils', 'Random', 'Resident
   };
 
 
+  // Dispatch to the correct zone type to get the population value for that zone
   var getPopulationDensity = function(map, x, y, tile) {
     if (tile < Tile.COMBASE)
       return Residential.getZonePopulation(map, x, y, tile);
@@ -371,6 +386,7 @@ define(['BlockMap', 'Commercial', 'Industrial', 'MiscUtils', 'Random', 'Resident
   };
 
 
+  // Compute the radius of coverage for the firestations found during the map scan
   var fireAnalysis = function(blockMaps) {
     var fireStationMap = blockMaps.fireStationMap;
     var fireStationEffectMap = blockMaps.fireStationEffectMap;
