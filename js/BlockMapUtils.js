@@ -284,27 +284,28 @@ define(['BlockMap', 'Commercial', 'Industrial', 'MiscUtils', 'Random', 'Resident
   };
 
 
-  var smoothStationMap = function(map) {
-    var tempMap = new BlockMap(map);
-
-    for (var x = 0; x < tempMap.width; x++) {
-      for (var y = 0; y < tempMap.height; y++) {
-        var edge = 0;
+  // Smooth the map src into dest. Specifically, for each square in src, sum the values of its immediate neighbours,
+  // and take the average, then take the average of that result and the square's value. This result is the new value
+  // of the square in dest.
+  var smoothMap = function(src, dest) {
+    for (var x = 0, width = src.width; x < width; x++) {
+      for (var y = 0, height = src.height; y < height; y++) {
+        var edges = 0;
 
         if (x > 0)
-          edge += tempMap.get(x - 1, y);
+          edges += src.get(x - 1, y);
 
-        if (x < tempMap.width - 1)
-          edge += tempMap.get(x + 1, y);
+        if (x < src.width - 1)
+          edges += src.get(x + 1, y);
 
         if (y > 0)
-          edge += tempMap.get(x, y - 1);
+          edges += src.get(x, y - 1);
 
-        if (y < tempMap.height - 1)
-          edge += tempMap.get(x, y + 1);
+        if (y < src.height - 1)
+          edges += src.get(x, y + 1);
 
-        edge = tempMap.get(x, y) + Math.floor(edge / 4);
-        map.set(x, y, Math.floor(edge / 2));
+        edges = src.get(x, y) + Math.floor(edges / 4);
+        dest.set(x, y, Math.floor(edges/2));
       }
     }
   };
@@ -317,9 +318,9 @@ define(['BlockMap', 'Commercial', 'Industrial', 'MiscUtils', 'Random', 'Resident
     var landValueMap = blockMaps.landValueMap;
     var populationDensityMap = blockMaps.populationDensityMap;
 
-    smoothStationMap(policeStationMap);
-    smoothStationMap(policeStationMap);
-    smoothStationMap(policeStationMap);
+    smoothMap(policeStationMap, policeStationEffectMap);
+    smoothMap(policeStationEffectMap, policeStationMap);
+    smoothMap(policeStationMap, policeStationEffectMap);
 
     var totalCrime = 0;
     var crimeZoneCount = 0;
@@ -431,9 +432,9 @@ define(['BlockMap', 'Commercial', 'Industrial', 'MiscUtils', 'Random', 'Resident
     var fireStationMap = blockMaps.fireStationMap;
     var fireStationEffectMap = blockMaps.fireStationEffectMap;
 
-    smoothStationMap(fireStationMap);
-    smoothStationMap(fireStationMap);
-    smoothStationMap(fireStationMap);
+    smoothMap(fireStationMap, fireStationEffectMap);
+    smoothMap(fireStationEffectMap, fireStationMap);
+    smoothMap(fireStationMap, fireStationEffectMap);
 
     blockMaps.fireStationEffectMap = new BlockMap(fireStationMap);
   };
