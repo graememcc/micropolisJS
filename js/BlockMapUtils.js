@@ -270,6 +270,11 @@ define(['BlockMap', 'Commercial', 'Industrial', 'MiscUtils', 'Random', 'Resident
   };
 
 
+  // Computes the coverage radius of police stations, and scores each neighbourhood in the map on its crime rate.
+  // Factors that attract crime are:
+  //    * The zone has a low value
+  //    * The zone is a slum
+  //    * The zone is far away from those pesky police
   var crimeScan = function(census, blockMaps) {
     var policeStationMap = blockMaps.policeStationMap;
     var policeStationEffectMap = blockMaps.policeStationEffectMap;
@@ -284,17 +289,31 @@ define(['BlockMap', 'Commercial', 'Industrial', 'MiscUtils', 'Random', 'Resident
     var totalCrime = 0;
     var crimeZoneCount = 0;
 
-    for (var x = 0; x < crimeRateMap.gameMapWidth; x += crimeRateMap.blockSize) {
-      for (var y = 0; y < crimeRateMap.gameMapHeight; y += crimeRateMap.blockSize) {
+    // Scan the map, looking for developed land, as it can attract crime.
+    for (var x = 0, width = crimeRateMap.mapWidth, blockSize = crimeRateMap.blockSize; x < width; x += blockSize) {
+      for (var y = 0, height = crimeRateMap.mapHeight, b; y < height; y += blockSize) {
+        // Remember: landValueMap values are in the range 0-250
         var value = landValueMap.worldGet(x, y);
 
         if (value > 0) {
-          ++crimeZoneCount;
+          crimeZoneCount += 1;
+
+          // Force value in the range -122 to 128. Lower valued pieces of land attract more crime.
           value = 128 - value;
+
+          // Add population density (a value between 0 and 510). value now lies in range -260 - 382.
+          // Denser areas attract more crime.
           value += populationDensityMap.worldGet(x, y);
+
+          // Clamp in range -260 to 300
           value = Math.min(value, 300);
+
+          // If the police are nearby, there's no point committing the crime of the century
           value -= policeStationMap.worldGet(x, y);
+
+          // Force in to range 0-250
           value = MiscUtils.clamp(value, 0, 250);
+
           crimeRateMap.worldSet(x, y, value);
           totalCrime += value;
         } else {
