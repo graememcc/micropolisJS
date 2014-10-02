@@ -167,74 +167,106 @@ define(['BlockMap', 'Commercial', 'Industrial', 'MiscUtils', 'Random', 'Resident
   };
 
 
+  // This monster function fills up the landValueMap, the terrainDensityMap and the pollutionDensityMap based
+  // on values found by iterating over the map.
+  //
+  // Factors that affect land value:
+  //   * Distance from the city centre
+  //   * High crime
+  //   * High pollution
+  //   * Proximity to undeveloped terrain (who doesn't love a good view?)
+  //
+  // Pollution is completely determined by the tile types in the block
   var pollutionTerrainLandValueScan = function(map, census, blockMaps) {
+    // We record raw pollution readings for each tile into tempMap1, and then use tempMap2 and tempMap1 to smooth
+    // out the pollution in order to construct the new values for the populationDensityMap
     var tempMap1 = blockMaps.tempMap1;
     var tempMap2 = blockMaps.tempMap2;
+
+    // tempMap3 will be used to record raw terrain information, i.e. if the the land is developed. This will be
+    // smoothed in to terrainDensityMap later
     var tempMap3 = blockMaps.tempMap3;
+    tempMap3.clear();
+
     var landValueMap = blockMaps.landValueMap;
     var terrainDensityMap = blockMaps.terrainDensityMap;
     var pollutionDensityMap = blockMaps.pollutionDensityMap;
     var crimeRateMap = blockMaps.crimeRateMap;
+
     var x, y;
 
-    // tempMap3 is a map of development density, smoothed into terrainMap.
-    tempMap3.clear();
-
     var totalLandValue = 0;
-    var numLandValueTiles = 0;
+    var developedTileCount = 0;
 
-    for (x = 0; x < landValueMap.width; x++) {
-      for (y = 0; y < landValueMap.height; y++) {
+    for (x = 0, width = landValueMap.width; x < width; x++) {
+      for (y = 0, height = landValueMap.height; y < height; y++) {
         var pollutionLevel = 0;
         var developed = false;
+
+        // The land value map has a chunk size of 2
         var worldX = x * 2;
         var worldY = y * 2;
 
         for (var mapX = worldX; mapX <= worldX + 1; mapX++) {
           for (var mapY = worldY; mapY <= worldY + 1; mapY++) {
             var tileValue = map.getTileValue(mapX, mapY);
-            if (tileValue > Tile.DIRT) {
-              if (tileValue < Tile.RUBBLE) {
-                // Undeveloped land: record in tempMap3
-                var value = tempMap3.get(x >> 1, y >> 1);
-                tempMap3.set(x >> 1, y >> 1, value + 15);
-                continue;
-              }
 
-              pollutionLevel += getPollutionValue(tileValue);
-              if (tileValue >= Tile.ROADBASE) {
-                developed = true;
-              }
+            if (tileValue === Tile.DIRT)
+              continue;
+
+            if (tileValue < Tile.RUBBLE) {
+              // Undeveloped land: record in tempMap3. Each undeveloped piece of land scores 15.
+              // tempMap3 has a chunk size of 4, so each square in tempMap3 will ultimately contain a
+              // maximum value of 240
+              var terrainValue = tempMap3.worldGet(mapX, mapY);
+              tempMap3.worldSet(mapX, mapY, terrainValue + 15);
+              continue;
             }
+
+            pollutionLevel += getPollutionValue(tileValue);
+            if (tileValue >= Tile.ROADBASE)
+              developed = true;
           }
         }
 
+        // Clamp pollution in range 0-255 (at the moment it's range is 0-1020) and record it for later.
         pollutionLevel = Math.min(pollutionLevel, 255);
         tempMap1.set(x, y, pollutionLevel);
 
         if (developed) {
-          var dis = 34 - Math.floor(getCityCentreDistance(map, worldX, worldY) / 2);
-          dis = dis << 2;
-          dis += terrainDensityMap.get(x >> 1, y >> 1);
-          dis -= pollutionDensityMap.get(x, y);
-          if (crimeRateMap.get(x, y) > 190) {
-            dis -= 20;
-          }
-          dis = MiscUtils.clamp(dis, 1, 250);
-          landValueMap.set(x, y, dis);
-          totalLandValue += dis;
-          numLandValueTiles++;
+          // getCityCentreDistance returns a score in the range 0-64, so, after shifting, landValue will be in
+          // range 8-136
+          var landValue = 34 - Math.floor(getCityCentreDistance(map, worldX, worldY) / 2);
+          landValue = landValue << 2;
+
+          // Land in the same neighbourhood as unspoiled land is more valuable...
+          landValue += terrainDensityMap.get(x >> 1, y >> 1);
+
+          // ... and polluted land obviously is less valuable
+          landValue -= pollutionDensityMap.get(x, y);
+
+          // ... getting mugged won't help either
+          if (crimeRateMap.get(x, y) > 190)
+            landValue -= 20;
+
+          // Clamp in range 1-250 (0 represents undeveloped land)
+          landValue = MiscUtils.clamp(landValue, 1, 250);
+          landValueMap.set(x, y, landValue);
+
+          totalLandValue += landValue;
+          developedTileCount++;
         } else {
           landValueMap.set(x, y, 0);
         }
       }
     }
 
-    if (numLandValueTiles > 0)
-      census.landValueAverage = Math.floor(totalLandValue / numLandValueTiles);
+    if (developedTileCount > 0)
+      census.landValueAverage = Math.floor(totalLandValue / developedTileCount);
     else
       census.landValueAverage = 0;
 
+    // Smooth the pollution map twice
     smoothMap(tempMap1, tempMap2, SMOOTH_ALL_THEN_CLAMP);
     smoothMap(tempMap2, tempMap1, SMOOTH_ALL_THEN_CLAMP);
 
@@ -242,8 +274,11 @@ define(['BlockMap', 'Commercial', 'Industrial', 'MiscUtils', 'Random', 'Resident
     var pollutedTileCount = 0;
     var totalPollution = 0;
 
-    for (x = 0; x < pollutionDensityMap.gameMapWidth; x += pollutionDensityMap.blockSize) {
-      for (y = 0; y < pollutionDensityMap.gameMapHeight; y += pollutionDensityMap.blockSize)  {
+    // We iterate over the now-smoothed pollution map rather than using the block map's copy routines
+    // so that we can compute the average and total pollution en-route
+    for (x = 0, width = map.width; x < width; x += pollutionDensityMap.blockSize) {
+      for (y = 0, height = map.height; y < height; y += pollutionDensityMap.blockSize)  {
+        // Copy the values into pollutionDensityMap
         var pollution = tempMap1.worldGet(x, y);
         pollutionDensityMap.worldSet(x, y, pollution);
 
@@ -251,7 +286,8 @@ define(['BlockMap', 'Commercial', 'Industrial', 'MiscUtils', 'Random', 'Resident
           pollutedTileCount++;
           totalPollution += pollution;
 
-          // note location of max pollution for monster
+          // Note the most polluted location: any monsters will be drawn there (randomly choosing one
+          // if we have multiple competitors for most polluted)
           if (pollution > maxPollution || (pollution === maxPollution && Random.getChance(3))) {
             maxPollution = pollution;
             map.pollutionMaxX = x;
@@ -412,7 +448,7 @@ define(['BlockMap', 'Commercial', 'Industrial', 'MiscUtils', 'Random', 'Resident
     // swapped.
     fillCityCentreDistScoreMap(map, blockMaps);
 
-    // Compute new city center
+    // Compute new city centre
     if (zoneTotal > 0) {
       map.cityCentreX = Math.floor(xTot / zoneTotal);
       map.cityCentreY = Math.floor(yTot / zoneTotal);
