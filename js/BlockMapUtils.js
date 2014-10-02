@@ -149,38 +149,6 @@ define(['BlockMap', 'Commercial', 'Industrial', 'MiscUtils', 'Random', 'Resident
   };
 
 
-  // Again, the original version of this function in the Micropolis code
-  // reads donDither, which is always zero. The dead code has been culled
-  var smoothTerrain = function(blockMaps) {
-    // Sets each tile to the average of itself and the average of the
-    // 4 surrounding tiles
-
-    var tempMap3 = blockMaps.tempMap3;
-    var terrainDensityMap = blockMaps.terrainDensityMap;
-
-    for (var x = 0; x < terrainDensityMap.width; x++) {
-      for (var y = 0; y < terrainDensityMap.height; y++) {
-        var value = 0;
-
-        if (x > 0)
-          value += tempMap3.get(x - 1, y);
-
-        if (x < (terrainDensityMap.width - 1))
-          value += tempMap3.get(x + 1, y);
-
-        if (y > 0)
-          value += tempMap3.get(x, y - 1);
-
-        if (y < (terrainDensityMap.height - 1))
-          value += tempMap3.get(x, y + 1);
-
-        value = Math.floor((Math.floor(value / 4) + tempMap3.get(x, y)) / 2);
-        terrainDensityMap.set(x, y, value);
-      }
-    }
-  };
-
-
   var pollutionTerrainLandValueScan = function(map, census, blockMaps) {
     var tempMap1 = blockMaps.tempMap1;
     var tempMap3 = blockMaps.tempMap3;
@@ -280,7 +248,7 @@ define(['BlockMap', 'Commercial', 'Industrial', 'MiscUtils', 'Random', 'Resident
     else
       census.pollutionAverage = 0;
 
-    smoothTerrain(blockMaps);
+    smoothMap(tempMap3, terrainDensityMap);
   };
 
 
