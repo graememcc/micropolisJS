@@ -44,7 +44,8 @@ define(['MiscUtils'],
   var rotate10Arrays = function() {
     for (var i = 0; i < arrs.length; i++) {
       var name10 = arrs[i] + 'Hist10';
-      this[name10] = [0].concat(this[name10].slice(0, -1));
+      this[name10].pop();
+      this[name10].unshift(0);
     }
   };
 
@@ -52,7 +53,8 @@ define(['MiscUtils'],
   var rotate120Arrays = function() {
     for (var i = 0; i < arrs.length; i++) {
       var name120 = arrs[i] + 'Hist120';
-      this[name120] = [0].concat(this[name120].slice(0, -1));
+      this[name120].pop();
+      this[name120].unshift(0);
     }
   };
 
