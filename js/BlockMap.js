@@ -12,32 +12,32 @@ define(['MiscUtils'],
   "use strict";
 
 
-  function BlockMap(mapWidth, mapHeight, blockSize, defaultValue) {
+  function BlockMap(gameMapWidth, gameMapHeight, blockSize, defaultValue) {
     var sourceMap;
     var sourceFunction;
     var id = function(x) {return x;};
 
     var e = new Error('Invalid parameters');
     if (arguments.length < 3) {
-      if (!(mapWidth instanceof BlockMap) ||
-          (arguments.length === 2 && typeof(mapHeight) !== 'function'))
+      if (!(gameMapWidth instanceof BlockMap) ||
+          (arguments.length === 2 && typeof(gameMapHeight) !== 'function'))
         throw e;
-      sourceMap = mapWidth;
-      sourceFunction = mapHeight === undefined ? id : mapHeight;
+      sourceMap = gameMapWidth;
+      sourceFunction = gameMapHeight === undefined ? id : gameMapHeight;
     }
 
     if (sourceMap !== undefined) {
-      mapWidth = sourceMap.width;
-      mapHeight = sourceMap.height;
+      gameMapWidth = sourceMap.gameMapWidth;
+      gameMapHeight = sourceMap.gameMapHeight;
       blockSize = sourceMap.blockSize;
       defaultValue = sourceMap.defaultValue;
     }
 
     Object.defineProperties(this,
-      {mapWidth: MiscUtils.makeConstantDescriptor(mapWidth),
-       mapHeight: MiscUtils.makeConstantDescriptor(mapHeight),
-       width: MiscUtils.makeConstantDescriptor(Math.floor((mapWidth  + 1) / blockSize)),
-       height: MiscUtils.makeConstantDescriptor(Math.floor((mapHeight + 1)/ blockSize)),
+      {gameMapWidth: MiscUtils.makeConstantDescriptor(gameMapWidth),
+       gameMapHeight: MiscUtils.makeConstantDescriptor(gameMapHeight),
+       width: MiscUtils.makeConstantDescriptor(Math.floor((gameMapWidth  + 1) / blockSize)),
+       height: MiscUtils.makeConstantDescriptor(Math.floor((gameMapHeight + 1)/ blockSize)),
        blockSize: MiscUtils.makeConstantDescriptor(blockSize),
        defaultValue: MiscUtils.makeConstantDescriptor(defaultValue)});
 
@@ -69,8 +69,8 @@ define(['MiscUtils'],
 
 
   BlockMap.prototype.clear = function() {
-    var maxY = Math.floor(this.mapHeight / this.blockSize) + 1;
-    var maxX = Math.floor(this.mapWidth / this.blockSize) + 1;
+    var maxY = Math.floor(this.gameMapHeight / this.blockSize) + 1;
+    var maxX = Math.floor(this.gameMapWidth / this.blockSize) + 1;
     for (var y = 0; y < maxY; y++)
       this.data[y] = makeArrayOf(maxX, this.defaultValue);
   };

@@ -40,8 +40,8 @@ define(['BlockMap', 'Commercial', 'Industrial', 'MiscUtils', 'Random', 'Resident
   var decTrafficMap = function(blockMaps) {
     var trafficDensityMap = blockMaps.trafficDensityMap;
 
-    for (var x = 0; x < trafficDensityMap.mapWidth; x += trafficDensityMap.blockSize) {
-      for (var y = 0; y < trafficDensityMap.mapHeight; y += trafficDensityMap.blockSize) {
+    for (var x = 0; x < trafficDensityMap.gameMapWidth; x += trafficDensityMap.blockSize) {
+      for (var y = 0; y < trafficDensityMap.gameMapHeight; y += trafficDensityMap.blockSize) {
         var trafficDensity = trafficDensityMap.worldGet(x, y);
         if (trafficDensity === 0)
           continue;
@@ -256,8 +256,8 @@ define(['BlockMap', 'Commercial', 'Industrial', 'MiscUtils', 'Random', 'Resident
     var pollutedTileCount = 0;
     var totalPollution = 0;
 
-    for (x = 0; x < pollutionDensityMap.mapWidth; x += pollutionDensityMap.blockSize) {
-      for (y = 0; y < pollutionDensityMap.mapHeight; y += pollutionDensityMap.blockSize)  {
+    for (x = 0; x < pollutionDensityMap.gameMapWidth; x += pollutionDensityMap.blockSize) {
+      for (y = 0; y < pollutionDensityMap.gameMapHeight; y += pollutionDensityMap.blockSize)  {
         var pollution = tempMap1.worldGet(x, y);
         pollutionDensityMap.worldSet(x, y, pollution);
 
@@ -290,6 +290,7 @@ define(['BlockMap', 'Commercial', 'Industrial', 'MiscUtils', 'Random', 'Resident
     for (var x = 0; x < tempMap.width; x++) {
       for (var y = 0; y < tempMap.height; y++) {
         var edge = 0;
+
         if (x > 0)
           edge += tempMap.get(x - 1, y);
 
@@ -323,8 +324,8 @@ define(['BlockMap', 'Commercial', 'Industrial', 'MiscUtils', 'Random', 'Resident
     var totalCrime = 0;
     var crimeZoneCount = 0;
 
-    for (var x = 0; x < crimeRateMap.mapWidth; x += crimeRateMap.blockSize) {
-      for (var y = 0; y < crimeRateMap.mapHeight; y += crimeRateMap.blockSize) {
+    for (var x = 0; x < crimeRateMap.gameMapWidth; x += crimeRateMap.blockSize) {
+      for (var y = 0; y < crimeRateMap.gameMapHeight; y += crimeRateMap.blockSize) {
         var value = landValueMap.worldGet(x, y);
 
         if (value > 0) {
