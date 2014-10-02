@@ -174,7 +174,7 @@ define(['BlockMap', 'Commercial', 'Industrial', 'MiscUtils', 'Random', 'Resident
         if (y < (terrainDensityMap.height - 1))
           value += tempMap3.get(x, y + 1);
 
-        value = Math.floor(Math.floor(value / 4) + tempMap3.get(x, y) / 2);
+        value = Math.floor((Math.floor(value / 4) + tempMap3.get(x, y)) / 2);
         terrainDensityMap.set(x, y, value);
       }
     }
