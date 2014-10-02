@@ -65,7 +65,7 @@ define(['BlockMap', 'BlockMapUtils', 'Budget', 'Census', 'Commercial', 'Disaster
       // Holds a value representing the amount of pollution in a neighbourhood, in the range 0-255
       pollutionDensityMap: new BlockMap(this._map.width, this._map.height, 2),
 
-      // Holds a value representing population density of a block, in the range 0-254
+      // Holds a value representing population density of a block, in the range 0-510
       populationDensityMap: new BlockMap(this._map.width, this._map.height, 2),
 
       // Holds a value representing the rate of growth of a neighbourhood in the range -200 to +200

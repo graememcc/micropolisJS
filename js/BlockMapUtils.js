@@ -345,29 +345,40 @@ define(['BlockMap', 'Commercial', 'Industrial', 'MiscUtils', 'Random', 'Resident
   };
 
 
+  // Iterate over the map, examining each zone for population. We then smooth the results into a population density
+  // map, which is used when deciding to grow residential zones. At the same time, we also note the most populous area
+  // (in terms of zones) to calculate our city centre. Finally, we score each area of the map on its distance from the
+  // city centre.
   var populationDensityScan = function(map, blockMaps) {
+    // We will build the initial unsmoothed map in tempMap1, and smooth it in to tempMap2
     var tempMap1 = blockMaps.tempMap1;
     var tempMap2 = blockMaps.tempMap2;
     var populationDensityMap = blockMaps.populationDensityMap;
-    tempMap1.clear();
 
-    var Xtot = 0;
-    var Ytot = 0;
+    // We will sum all the coordinates that contain zones into xTot and yTot. They are used in our city centre
+    // heuristic.
+    var xTot = 0;
+    var yTot = 0;
     var zoneTotal = 0;
 
-    for (var x = 0; x < map.width; x++) {
-      for (var y = 0; y < map.height; y++) {
+    for (var x = 0, width = map.width; x < width; x++) {
+      for (var y = 0, height = map.height; y < height; y++) {
         var tile = map.getTile(x, y);
         if (tile.isZone()) {
           var tileValue = tile.getValue();
 
+          // Ask the zone to calculate its population, scale it up, then clamp in the range 0-254
           var population = getPopulationDensity(map, x, y, tileValue) * 8;
           population = Math.min(population, 254);
 
+          // The block size of population density is 2x2, so there can only be 1 zone per block
           tempMap1.worldSet(x, y, population);
-          Xtot += x;
-          Ytot += y;
+
+          xTot += x;
+          yTot += y;
           zoneTotal++;
+        } else {
+          tempMap1.worldSet(x, y, 0);
         }
       }
     }
@@ -375,16 +386,17 @@ define(['BlockMap', 'Commercial', 'Industrial', 'MiscUtils', 'Random', 'Resident
     smoothMap(tempMap1, tempMap2, SMOOTH_ALL_THEN_CLAMP);
     smoothMap(tempMap2, tempMap1, SMOOTH_ALL_THEN_CLAMP);
     smoothMap(tempMap1, tempMap2, SMOOTH_ALL_THEN_CLAMP);
-
-    // Copy tempMap2 to populationDensityMap, multiplying by 2
     blockMaps.populationDensityMap.copyFrom(tempMap2, function(x) {return x * 2;});
 
+    // XXX This follows the original Micropolis source, but it feels weird to me that we score the entire map
+    // based on city centre proximity, and then potentially move the city centre. I think these should be
+    // swapped.
     fillCityCentreDistScoreMap(map, blockMaps);
 
     // Compute new city center
     if (zoneTotal > 0) {
-      map.cityCentreX = Math.floor(Xtot / zoneTotal);
-      map.cityCentreY = Math.floor(Ytot / zoneTotal);
+      map.cityCentreX = Math.floor(xTot / zoneTotal);
+      map.cityCentreY = Math.floor(yTot / zoneTotal);
     } else {
       map.cityCentreX = Math.floor(map.width / 2);
       map.cityCentreY = Math.floor(map.height / 2);
