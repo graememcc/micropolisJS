@@ -60,26 +60,22 @@ define(['BlockMap', 'Commercial', 'Industrial', 'MiscUtils', 'Random', 'Resident
   };
 
 
-  var decRateOfGrowthMap = function(blockMaps) {
+  // Over time, the rate of growth of a neighbourhood should trend towards zero (stable)
+  var neutraliseRateOfGrowthMap = function(blockMaps) {
     var rateOfGrowthMap = blockMaps.rateOfGrowthMap;
-    for (var x = 0; x < rateOfGrowthMap.width; x++) {
-      for (var y = 0; y < rateOfGrowthMap.height; y++) {
+    for (var x = 0, width = rateOfGrowthMap.width; x < width; x++) {
+      for (var y = 0, height = rateOfGrowthMap.height; y < height; y++) {
         var rate = rateOfGrowthMap.get(x, y);
         if (rate === 0)
           continue;
 
-        if (rate > 0) {
+        if (rate > 0)
           rate--;
-          rate = MiscUtils.clamp(rate, -200, 200);
-          rateOfGrowthMap.set(x, y, rate);
-          continue;
-        }
-
-        if (rate < 0)  {
+        else
           rate++;
-          rate = MiscUtils.clamp(rate, -200, 200);
-          rateOfGrowthMap.set(x, y, rate);
-        }
+
+        rate = MiscUtils.clamp(rate, -200, 200);
+        rateOfGrowthMap.set(x, y, rate);
       }
     }
   };
@@ -387,9 +383,9 @@ define(['BlockMap', 'Commercial', 'Industrial', 'MiscUtils', 'Random', 'Resident
 
   var BlockMapUtils = {
     crimeScan: crimeScan,
-    decRateOfGrowthMap: decRateOfGrowthMap,
     decTrafficMap: decTrafficMap,
     fireAnalysis: fireAnalysis,
+    neutraliseRateOfGrowthMap: neutraliseRateOfGrowthMap,
     pollutionTerrainLandValueScan: pollutionTerrainLandValueScan,
     populationDensityScan: populationDensityScan
   };

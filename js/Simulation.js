@@ -321,7 +321,7 @@ define(['BlockMap', 'BlockMapUtils', 'Budget', 'Census', 'Commercial', 'Disaster
 
       case 10:
         if ((this._simCycle % 5) === 0)
-          BlockMapUtils.decRateOfGrowthMap(simData.blockMaps);
+          BlockMapUtils.neutraliseRateOfGrowthMap(simData.blockMaps);
 
         BlockMapUtils.decTrafficMap(this.blockMaps);
         this._sendMessages();
