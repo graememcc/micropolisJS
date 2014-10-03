@@ -28,7 +28,8 @@ define(['BaseTool', 'BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', '
     }
 
     this.tileSet = tileSet;
-    this.simulation = new Simulation(this.gameMap, difficulty, Simulation.SPEED_SLOW, savedGame);
+    this.defaultSpeed = Simulation.SPEED_MED;
+    this.simulation = new Simulation(this.gameMap, difficulty, this.defaultSpeed, savedGame);
 
     this.name = name || 'MyTown';
     this.everClicked = false;
@@ -48,7 +49,6 @@ define(['BaseTool', 'BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', '
     this.mouse = null;
     this.lastCoord = null;
     this.simNeededBudget = false;
-    this.defaultSpeed = Simulation.SPEED_SLOW;
     this.isPaused = false;
     this.lastBadMessageTime = null;
 
