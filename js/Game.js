@@ -7,15 +7,15 @@
  *
  */
 
-define(['BaseTool', 'BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', 'DisasterWindow', 'EvaluationWindow', 'GameCanvas', 'GameMap', 'InfoBar', 'InputStatus', 'Messages', 'MonsterTV', 'NagWindow', 'Notification', 'QueryWindow', 'RCI', 'SaveWindow', 'ScreenshotLinkWindow', 'ScreenshotWindow', 'SettingsWindow', 'Simulation', 'Storage', 'Text', 'TouchWarnWindow'],
-       function(BaseTool, BudgetWindow, Config, CongratsWindow, DebugWindow, DisasterWindow, EvaluationWindow, GameCanvas, GameMap, InfoBar, InputStatus, Messages, MonsterTV, NagWindow, Notification, QueryWindow, RCI, SaveWindow, ScreenshotLinkWindow, ScreenshotWindow, SettingsWindow, Simulation, Storage, Text, TouchWarnWindow) {
+define(['BaseTool', 'BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', 'DisasterWindow', 'EvaluationWindow', 'GameCanvas', 'GameMap', 'InfoBar', 'InputStatus', 'Messages', 'MonsterTV', 'NagWindow', 'Notification', 'QueryWindow', 'Random', 'RCI', 'SaveWindow', 'ScreenshotLinkWindow', 'ScreenshotWindow', 'SettingsWindow', 'Simulation', 'Storage', 'Text', 'TouchWarnWindow'],
+       function(BaseTool, BudgetWindow, Config, CongratsWindow, DebugWindow, DisasterWindow, EvaluationWindow, GameCanvas, GameMap, InfoBar, InputStatus, Messages, MonsterTV, NagWindow, Notification, QueryWindow, Random, RCI, SaveWindow, ScreenshotLinkWindow, ScreenshotWindow, SettingsWindow, Simulation, Storage, Text, TouchWarnWindow) {
   "use strict";
 
 
   var disasterTimeout = 20 * 1000;
 
 
-  function Game(gameMap, tileSet, spriteSheet, difficulty, name) {
+  function Game(gameMap, tileSet, snowTileSet, spriteSheet, difficulty, name) {
     difficulty = difficulty || 0;
     var savedGame;
 
@@ -28,6 +28,7 @@ define(['BaseTool', 'BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', '
     }
 
     this.tileSet = tileSet;
+    this.snowTileSet = snowTileSet;
     this.defaultSpeed = Simulation.SPEED_MED;
     this.simulation = new Simulation(this.gameMap, difficulty, this.defaultSpeed, savedGame);
 
@@ -170,6 +171,10 @@ define(['BaseTool', 'BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', '
     // And pauses
     this.inputStatus.addEventListener(Messages.SPEED_CHANGE, this.handlePause.bind(this));
 
+    // And date changes
+    // XXX Not yet activated
+    //this.simulation.addEventListener(Messages.DATE_UPDATED, this.onDateChange.bind(this));
+
     this.infoBar = InfoBar('cclass', 'population', 'score', 'funds', 'date', 'name');
     var initialValues = {
       classification: this.simulation.evaluation.cityClass,
@@ -250,6 +255,14 @@ define(['BaseTool', 'BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', '
   var genericDialogClosure = function() {
     this.dialogOpen = false;
     this._openWindow = null;
+  };
+
+
+  Game.prototype.onDateChange = function(date) {
+    if (date.month === 10 && Random.getChance(10))
+      this.gameCanvas.changeTileSet(this.snowTileSet);
+    else if (date.month === 1)
+      this.gameCanvas.changeTileSet(this.tileSet);
   };
 
 

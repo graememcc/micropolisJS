@@ -372,26 +372,11 @@ define(['AnimationManager', 'GameMap', 'MiscUtils', 'MouseBox', 'Tile', 'TileSet
 
 
   GameCanvas.prototype.changeTileSet = function(tileSet) {
-    var e = new Error('Invalid parameter');
-
-    if (arguments.length < 1)
-      throw e;
-
     if (!this.ready)
       throw new Error('Not ready!');
 
-    if (!tileSet.loaded)
+    if (!tileSet.isValid)
       throw new Error('new tileset not loaded');
-
-    if (this._pendingTileSet && (this._pendingHeight || this._pendingWidth))
-      throw new Error('dimensions have changed');
-
-    var w = tileSet.tileWidth;
-    var canvasWidth = this._pendingWidth === null ? this.canvasWidth : this._pendingWidth;
-    var canvasHeight = this._pendingHeight === null ? this.canvasHeight : this._pendingHeight;
-
-    if (canvasWidth < w || canvasHeight < w)
-      throw new Error('canvas too small');
 
     this._pendingTileSet = tileSet;
   };
@@ -580,27 +565,19 @@ define(['AnimationManager', 'GameMap', 'MiscUtils', 'MouseBox', 'Tile', 'TileSet
     if (!this.ready)
       throw new Error('Not ready!');
 
-    // Change tileSet if necessary
-    var tileSetChanged = false;
-    if (this._pendingTileSet !== null) {
-      this._tileSet = this._pendingTileSet;
-      this._pendingTileSet = null;
-      tileSetChanged = true;
-
-      this._lastPaintedTiles = null;
-      this._lastCanvasData = null;
-    }
-
     var ctx = this._canvas.getContext('2d');
 
     // Recompute our dimensions if there has been a resize since last paint
-    if (this._pendingDimensionChange) {
+    if (this._pendingDimensionChange || this._pendingTileSet) {
       this._calculateDimensions();
       this._pendingDimensionChange = false;
 
-      // If the dimensions have changed, set each entry in lastPaintedTiles to a bogus value to force a repaint.
-      // Note: we use -2 as our bogus value; -1 would paint the black void
-      if (this.canvasWidth !== this._lastCanvasWidth || this.canvasHeight !== this._lastCanvasHeight) {
+      // Change tileSet if necessary
+      this._tileSet = this._pendingTileSet;
+
+      // If the dimensions or tileset has changed, set each entry in lastPaintedTiles to a bogus value to force a
+      // repaint. Note: we use -2 as our bogus value; -1 would paint the black void
+      if (this._pendingTileSet || this.canvasWidth !== this._lastCanvasWidth || this.canvasHeight !== this._lastCanvasHeight) {
         ctx.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
         for (var y = 0, l = (this._lastPaintedTiles !== null ? this._lastPaintedTiles.length : 0); y < l; y++) {
           var row = this._lastPaintedTiles[y];
@@ -608,6 +585,8 @@ define(['AnimationManager', 'GameMap', 'MiscUtils', 'MouseBox', 'Tile', 'TileSet
             row[x] = -2;
         }
       }
+
+      this._pendingTileSet = null;
     }
 
     // Fill an array with the values we need to paint

@@ -7,8 +7,8 @@
  *
  */
 
-require(['Config', 'SplashScreen', 'TileSet', 'TileSetURI'],
-        function(Config, SplashScreen, TileSet, TileSetURI) {
+require(['Config', 'SplashScreen', 'TileSet', 'TileSetURI', 'TileSetSnowURI'],
+        function(Config, SplashScreen, TileSet, TileSetURI, TileSetSnowURI) {
   "use strict";
 
 
@@ -20,13 +20,20 @@ require(['Config', 'SplashScreen', 'TileSet', 'TileSetURI'],
    */
 
 
-  var fallbackImage, tileSet;
+  var fallbackImage, tileSet, snowTileSet;
+
 
   var onTilesLoaded = function() {
+    var snowTiles = $('#snowtiles')[1];
+    snowTileSet = new TileSet(snowTiles, onAllTilesLoaded, onFallbackTilesLoaded);
+  };
+
+
+  var onAllTilesLoaded = function() {
     // Kick things off properly
     var sprites = $('#sprites')[0];
     $('#loadingBanner').css('display', 'none');
-    var s = new SplashScreen(tileSet, sprites);
+    var s = new SplashScreen(tileSet, snowTileSet, sprites);
   };
 
 
@@ -37,9 +44,23 @@ require(['Config', 'SplashScreen', 'TileSet', 'TileSetURI'],
   };
 
 
+  var onFallbackSnowLoad = function() {
+    fallbackImage.onload = fallbackImage.onerror = null;
+    snowTileSet = new TileSet(fallbackImage, onAllTilesLoaded, onFallbackError);
+  };
+
+
+  var onFallbackTilesLoaded = function() {
+    fallbackImage = new Image();
+    fallbackImage.onload = onFallbackSnowLoad;
+    fallbackImage.onerror = onFallbackError;
+    fallbackImage.src = TileSetSnowURI;
+  };
+
+
   var onFallbackLoad = function() {
     fallbackImage.onload = fallbackImage.onerror = null;
-    tileSet = new TileSet(fallbackImage, onTilesLoaded, onFallbackError);
+    tileSet = new TileSet(fallbackImage, onFallbackTilesLoaded, onFallbackError);
   };
 
 
@@ -62,4 +83,5 @@ require(['Config', 'SplashScreen', 'TileSet', 'TileSetURI'],
 
   var tiles = $('#tiles')[0];
   tileSet = new TileSet(tiles, onTilesLoaded, tileSetError);
+  var snowtiles = $('#snowtiles')[1];
 });

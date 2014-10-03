@@ -32,7 +32,7 @@ define(['Config', 'Game', 'MapGenerator', 'Simulation', 'SplashCanvas', 'Storage
   };
 
 
-  function SplashScreen(tileSet, spriteSheet) {
+  function SplashScreen(tileSet, snowTileSet, spriteSheet) {
     // We don't launch the game if the screen is too small, however, we should retain the right to do so
     // should the situation change...
     if ($('#tooSmall').is(':visible')) {
@@ -42,6 +42,7 @@ define(['Config', 'Game', 'MapGenerator', 'Simulation', 'SplashCanvas', 'Storage
     }
 
     this.tileSet = tileSet;
+    this.snowTileSet = snowTileSet;
     this.spriteSheet = spriteSheet;
     this.map = MapGenerator();
 
@@ -136,7 +137,7 @@ define(['Config', 'Game', 'MapGenerator', 'Simulation', 'SplashCanvas', 'Storage
     var name = $('#nameForm').val();
 
     // Launch a new game
-    var g = new Game(this.map, this.tileSet, this.spriteSheet, difficulty, name);
+    var g = new Game(this.map, this.tileSet, this.snowTileSet, this.spriteSheet, difficulty, name);
   };
 
 
