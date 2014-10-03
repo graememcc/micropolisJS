@@ -193,7 +193,7 @@ define(['BlockMap', 'Commercial', 'Industrial', 'MiscUtils', 'Random', 'Resident
     var pollutionDensityMap = blockMaps.pollutionDensityMap;
     var crimeRateMap = blockMaps.crimeRateMap;
 
-    var x, y;
+    var x, y, width, height;
 
     var totalLandValue = 0;
     var developedTileCount = 0;
