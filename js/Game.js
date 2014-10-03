@@ -58,7 +58,7 @@ define(['BaseTool', 'BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', '
         self.dialogOpen = true;
         self._openWindow = 'nagWindow';
         self.nagWindow.open();
-      }, 60 * 60 * 1000);
+      }, 30 * 60 * 1000);
 
       $('.nag').each(function() {
         $(this).click(function(e) {
