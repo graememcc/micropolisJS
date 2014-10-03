@@ -96,7 +96,7 @@ define(['Messages', 'ModalWindow', 'MiscUtils', 'Simulation'],
     else
       $(speedFastID).prop('checked', true);
 
-    if (settingsData.diasters)
+    if (settingsData.disasters)
       $(disastersYesID).prop('checked', true);
     else
       $(disastersNoID).prop('checked', true);
