@@ -12,7 +12,7 @@ define(['EventEmitter', 'GameCanvas', 'Messages'],
   "use strict";
 
 
-  var TIMEOUT_SECS = 20;
+  var TIMEOUT_SECS = 10;
 
 
   var MonsterTV = function(map, tileSet, spriteSheet, animationManager) {
