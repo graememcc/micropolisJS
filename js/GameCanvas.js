@@ -573,7 +573,8 @@ define(['AnimationManager', 'GameMap', 'MiscUtils', 'MouseBox', 'Tile', 'TileSet
       this._pendingDimensionChange = false;
 
       // Change tileSet if necessary
-      this._tileSet = this._pendingTileSet;
+      if (this._pendingTileSet !== null)
+        this._tileSet = this._pendingTileSet;
 
       // If the dimensions or tileset has changed, set each entry in lastPaintedTiles to a bogus value to force a
       // repaint. Note: we use -2 as our bogus value; -1 would paint the black void
