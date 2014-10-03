@@ -40,8 +40,8 @@ define(['AirplaneSprite', 'BoatSprite', 'CopterSprite', 'EventEmitter', 'Explosi
     var sprites = [];
     startX = SpriteUtils.worldToPix(startX);
     startY = SpriteUtils.worldToPix(startY);
-    lastX = startX + pixelWidth;
-    lastY = startY + pixelHeight;
+    var lastX = startX + pixelWidth;
+    var lastY = startY + pixelHeight;
 
     return this.spriteList.filter(function(s) {
       var spriteLeft = s.x + s.xOffset;
