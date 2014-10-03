@@ -27,6 +27,7 @@ body {
 
 button, input[type="submit"] {
   width: 140px;
+  height: 19px;
   border-radius: 3px;
   cursor: pointer;
   border: none;
