@@ -111,7 +111,7 @@ define(['Messages', 'MiscUtils', 'ModalWindow'],
       this['original' + elem] = budgetData[elem];
       setSpendRangeText(elem, budgetData[spendKeys[i]], this[dataKeys[i]]);
       elem = $(MiscUtils.normaliseDOMid(elem));
-      elem.on('input', onFundingUpdate.bind(this, spendKeys[i]));
+      elem.on('change', onFundingUpdate.bind(this, spendKeys[i]));
       elem = elem[0];
       elem.value = budgetData[spendKeys[i]];
     }
@@ -121,7 +121,7 @@ define(['Messages', 'MiscUtils', 'ModalWindow'],
 
     this.originalTaxRate = budgetData.taxRate;
     elem = $('#taxRate');
-    elem.on('input', onTaxUpdate);
+    elem.on('change', onTaxUpdate);
     elem = elem[0];
     elem.value = budgetData.taxRate;
     onTaxUpdate();
