@@ -19,9 +19,9 @@
     <title>micropolisJS</title>
   </head>
   <body>
-    <img id="tiles" class="imageData" src="images/tiles.png">
-    <img id="snowtiles" class="imageData" src="images/tilessnow.png">
-    <img id="sprites" class="imageData" src="images/sprites.png">
+    <img id="tiles" class="imageData" src="images/tiles.png" alt="These are the game's principal tiles">
+    <img id="snowtiles" class="imageData" src="images/tilessnow.png" alt="These are the game's alternate tiles">
+    <img id="sprites" class="imageData" src="images/sprites.png" alt="These are the game's sprites">
     <header id="header" class="chunk border-bottom padding10">
       <div class="left inlineblock">
         <h1 id="title" class="white fontlarge">micropolisJS</h1>
@@ -40,7 +40,7 @@
         <div id="splash" class="mintcream awaitGeneration open shadow padding10 centred">
           <h2 class="chunk alignCenter">Welcome!</h2>
           <p>micropolisJS is a handmade Javascript port of the open-source city simulator <cite>Micropolis</cite></p>
-          <div class="" id="splashContainer"></div>
+          <div id="splashContainer"></div>
           <div id="splashButtonContainer">
             <div id="splashButtons">
               <button id="splashLoad" class="width140 block loadSave splashButton" disabled>Load game</button>
@@ -55,9 +55,9 @@
             <label for="nameForm">City name (max 15 letters)</label>
             <input id="nameForm" autofocus required class="margin10" type="text" maxlength="15">
             Difficulty
-            <input type="radio" class="difficulty" name="difficulty" id="difficultyEasy" value="0" checked="checked"><label for="difficultyEasy">Easy</label></input>
-            <input type="radio" class="difficulty" name="difficulty" id="difficultyMed" value="1"><label for="difficultyMed">Medium</label></input>
-            <input type="radio" class="difficulty" name="difficulty" id="difficultyHard" value="2"><label for="difficultyHard">Hard</label></input>
+            <input type="radio" class="difficulty" name="difficulty" id="difficultyEasy" value="0" checked="checked"><label for="difficultyEasy">Easy</label>
+            <input type="radio" class="difficulty" name="difficulty" id="difficultyMed" value="1"><label for="difficultyMed">Medium</label>
+            <input type="radio" class="difficulty" name="difficulty" id="difficultyHard" value="2"><label for="difficultyHard">Hard</label>
             <div id="playSubmitDiv">
               <input id="playit" type="submit" value="Play!">
             </div>
@@ -68,7 +68,7 @@
             <div class="semibold chunk">
               <span id="name">Your Name Here</span>
             </div>
-            <div class="">
+            <div>
               <span id="date">Jan 1900</span>
             </div>
             <div class="elided">
@@ -77,7 +77,7 @@
             <div class="elided">
               Score: <span id="score">0</span>
             </div>
-            <div class="">
+            <div>
               <span id="cclass">VILLAGE</span>
             </div>
             <div class="elided">
@@ -87,25 +87,25 @@
         </div>
         <div id="miscButtons" class="alignCenter leftedge open controlShadow width140 padding10 mintcream z1 initialHidden">
           <div class="inner">
-            <div class="">
+            <div>
               <button id="budgetRequest" class="miscButton">Budget</button>
             </div>
-            <div class="">
+            <div>
               <button id="evalRequest" class="miscButton">Evaluation</button>
             </div>
-            <div class="">
+            <div>
               <button id="disasterRequest" class="miscButton">Disasters</button>
             </div>
-            <div class="">
+            <div>
               <button id="saveRequest" class="miscButton loadSave" disabled>Save</button>
             </div>
-            <div class="">
+            <div>
               <button id="settingsRequest" class="miscButton">Settings</button>
             </div>
-            <div class="">
+            <div>
               <button id="screenshotRequest" class="miscButton">Take Picture</button>
             </div>
-            <div class="">
+            <div>
               <button id="pauseRequest" class="miscButton">Pause</button>
             </div>
           </div>
@@ -113,7 +113,7 @@
         <div id="RCIContainer" class="controlShadow leftedge width140 padding10 mintcream z1 initialHidden"></div>
         <div id="controls" class="controlShadow mintcream z1 initialHidden rightedge open">
           <div id="toolInfo" class="alignCenter"><span id="toolOutput">Tools</span></div>
-          <div id="buttons" class="">
+          <div id="buttons">
             <button id="residentialButton" data-size="3" data-tool="residential" data-colour="lime" class="toolButton unselected">Residential $100</button>
             <button id="nuclearButton" data-size="4" data-tool="nuclear" data-colour="mistyrose" class="toolButton unselected">Nuclear $5000</button>
             <button id="commercialButton" data-size="3" data-tool="commercial" data-colour="blue" class="toolButton unselected">Commercial $100</button>
@@ -137,7 +137,7 @@
         </div>
         <div id="monstertv" class="alignCenter z1 hidden rightedge padding10 controlShadow open">
           <div id="monsterTVContainer">
-            <div id="tvContainer" class="">
+            <div id="tvContainer">
             </div>
             <form id="monsterTVForm">
               <input type="submit" value="Close" class="width140 cancel">
@@ -145,11 +145,11 @@
           </div>
         </div>
         <div id="debug" class="alignCenter z1 rightedge padding10 mintcream controlShadow open">
-          <div id="fps" class="">
+          <div id="fps">
             <span id="fpsValue">0</span> FPS
           </div>
-          <div class="">
-            <button id="debugRequest" class="">Debug</button>
+          <div>
+            <button id="debugRequest">Debug</button>
           </div>
         </div>
         <div id="notifications" class="initialHidden neutral z1 rightedge alignCenter elided padding10 controlShadow"></div>
@@ -158,7 +158,7 @@
           <div id="noscript" class="open mintcream centred padding10">
             <h1 class="chunk alignCenter">micropolisJS</h1>
             <p class="padding10">Hey, thanks for your interest in micropolisJS!</p>
-            <p class="padding10">Unfortunately, the <abbr title="Javascript">JS</a> stands for "<em>Javascript</em>", which appears to be disabled on your system. Consult your browser's documentation on how to enable Javascript!</p>
+            <p class="padding10">Unfortunately, the <abbr title="Javascript">JS</abbr> stands for "<em>Javascript</em>", which appears to be disabled on your system. Consult your browser's documentation on how to enable Javascript!</p>
           </div>
         </noscript>
       </main>
@@ -172,12 +172,12 @@
            Budget
         </header>
         <div id="budgetFormContainer" class="padding10 open">
-          <form id="budgetForm" class="">
+          <form id="budgetForm">
             <div id="taxInfo" class="elided budgetData">Tax Collected: <span id="taxesCollected"></span></div>
             <div id="cashInfo" class="elided budgetRight budgetData">Cashflow: <span id="cashFlow"></span></div>
             <div id="previousInfo" class="elided budgetData">Previous funds: <span id="previousFunds"></span></div>
             <div id="currentInfo" class="elided budgetRight budgetData">Current funds: <span id="currentFunds"></span></div>
-            <fieldset class="">
+            <fieldset>
               <legend>Roads</legend>
               <input type="range" id="roadRate" min="0" max="100" step="1" data-source="roadMaintenanceBudget">
               <div>
@@ -191,7 +191,7 @@
                 <label for="fireRate" class="elided budgetData" id="fireRateLabel">100% of $100 = $100</label>
               </div>
             </fieldset>
-            <fieldset class="">
+            <fieldset>
               <legend>Police</legend>
               <input type="range" id="policeRate" min="0" max="100" step="1" data-source="policeMaintenanceBudget">
               <div>
@@ -232,7 +232,7 @@
           </section>
           <section id="statistics">
             <h2 class="alignCenter">Statistics</h2>
-            <div id="statisticsList">
+            <dl id="statisticsList">
               <dt class="evalItem statisticsItem">Population:</dt><dd class="elided statisticsRight evalItem evalRight" id="evalPopulation"></dd>
               <dt class="evalItem statisticsItem">Net Migration:</dt><dd class="elided statisticsRight evalItem evalRight" id="evalMigration"></dd>
               <dt class="evalItem statisticsItem">Assessed Value:</dt><dd class="elided statisticsRight evalItem evalRight" id="evalValue"></dd>
@@ -240,7 +240,8 @@
               <dt class="evalItem statisticsItem">Game Level:</dt><dd class="elided statisticsRight evalItem evalRight" id="evalLevel"></dd>
               <dt class="evalItem statisticsItem">Score:</dt><dd class="elided statisticsRight evalItem evalRight" id="evalScore"></dd>
               <dt class="evalItem statisticsItem">Annual change:</dt><dd class=" elided statisticsRight evalItem evalRight" id="evalScoreDelta"></dd>
-          </div>
+	    </dl>
+	  </section>
           <form id="evalButtons" class="alignCenter margin10">
             <input type="submit" id="evalOK" class="width140 dialogOK" value="OK">
           </form>
@@ -284,7 +285,9 @@
               <dt class="queryItem">Crime</dt><dd class="queryItem queryRight" id="queryCrime"></dd>
               <dt class="queryItem">Pollution</dt><dd class="queryItem queryRight" id="queryPollution"></dd>
               <dt class="queryItem">Growth</dt><dd class="queryItem queryRight" id="queryRate"></dd>
-              <div id="queryDebugList" class="queryDebug hidden">
+            </dl>
+            <div id="queryDebugList" class="queryDebug hidden">
+              <dl>
                 <dt class="queryItem">Tile</dt><dd class="queryItem queryRight" id="queryTile"></dd>
                 <dt class="queryItem">TileValue</dt><dd class="queryItem queryRight" id="queryTileValue"></dd>
                 <dt class="queryItem">FireStation</dt><dd class="queryItem queryRight" id="queryFireStationRaw"></dd>
@@ -299,28 +302,30 @@
                 <dt class="queryItem">LandValue</dt><dd class="queryItem queryRight" id="queryLandValueRaw"></dd>
                 <dt class="queryItem">Traffic Density</dt><dd class="queryItem queryRight" id="queryTrafficDensityRaw"></dd>
                 <dt class="queryItem">Density</dt><dd class="queryItem queryRight" id="queryDensityRaw"></dd>
-              </div>
-            </dl>
+              </dl>
+            </div>
           </div>
           <div id="queryDebugTable" class="margin10 queryDebug hidden">
             <table id="flagsTable">
               <thead>
                 <tr>
-                  <th class="">Burn</th>
-                  <th class="">Bull</th>
-                  <th class="">Cond</th>
-                  <th class="">Anim</th>
-                  <th class="">Pow</th>
-                  <th class="">Zone</th>
+                  <th>Burn</th>
+                  <th>Bull</th>
+                  <th>Cond</th>
+                  <th>Anim</th>
+                  <th>Pow</th>
+                  <th>Zone</th>
                 </tr>
               </thead>
               <tbody>
-                <td class="" id="queryTileBurnable"></td>
-                <td class="" id="queryTileBulldozable"></td>
-                <td class="" id="queryTileCond"></td>
-                <td class="" id="queryTileAnim"></td>
-                <td class="" id="queryTilePowered"></td>
-                <td class="" id="queryTileZone"</td>
+	        <tr>
+                  <td id="queryTileBurnable"></td>
+                  <td id="queryTileBulldozable"></td>
+                  <td id="queryTileCond"></td>
+                  <td id="queryTileAnim"></td>
+                  <td id="queryTilePowered"></td>
+		  <td id="queryTileZone"></td>
+	        </tr>
               </tbody>
             </table>
           </div>
@@ -383,7 +388,7 @@
         </header>
         <div id="screenshotContainer" class="padding10 open">
           <form id="screenshotForm" class="alignCenter margin10">
-            <div id="screenshotContainer">
+            <div id="screenshotContainerDiv">
               Area to take picture of:
               <input type="radio" class="screenshotType" name="screenshotType" id="screenshotVisible" value="visible" checked="checked"><label for="screenshotVisible">Visible Map</label>
               <input type="radio" class="screenshotType" name="screenshotType" id="screenshotAll" value="all"><label for="screenshotAll">Full map</label>

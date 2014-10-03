@@ -31,6 +31,7 @@ button, input[type="submit"] {
   border-radius: 3px;
   cursor: pointer;
   border: none;
+  font-family: sans-serif;
 }
 
 footer {
@@ -306,6 +307,11 @@ nav li {
 #budgetForm > div, #budgetForm > fieldset {
   display: inline-block;
   width: 230px;
+}
+
+#budgetForm input[type="range"] {
+  max-width: 210px;
+  padding: 5px;
 }
 
 #budgetReset {
