@@ -62,31 +62,39 @@ define(['EventEmitter', 'Messages', 'MiscUtils'],
     var taxTableScale = 600;
     var employment, labourBase;
 
+    // Residential zones scale their population index when reporting it to the census
     var normalizedResPop = census.resPop / resPopDenom;
     census.totalPop = Math.round(normalizedResPop + census.comPop + census.indPop);
 
+    // A lack of developed commercial and industrial zones means there are no employment opportunities, which constrain
+    // growth. (This might hurt initially if, for example, the player lays out an initial grid, as the residential zones
+    // will likely develop first, so the residential valve will immediately crater).
     if (census.resPop > 0)
       employment = (census.comHist10[1] + census.indHist10[1]) / normalizedResPop;
     else
       employment = 1;
 
+    // Given the employment rate, calculate expected migration, add in births, and project the new population.
     var migration = normalizedResPop * (employment - 1);
     var births = normalizedResPop * birthRate;
     var projectedResPop = normalizedResPop + migration + births;
 
-    // Compute labourBase
-    var temp = census.comHist10[1] + census.indHist10[1];
-    if (temp > 0.0)
-      labourBase = (census.resHist10[1] / temp);
+    // Examine how many zones require workers
+    labourBase = census.comHist10[1] + census.indHist10[1];
+    if (labourBase > 0.0)
+      labourBase = census.resHist10[1] / labourBase;
     else
       labourBase = 1;
-
     labourBase = MiscUtils.clamp(labourBase, 0.0, labourBaseMax);
+
+    // Project future industry and commercial needs, taking into account available labour, and competition from
+    // other global cities
     var internalMarket = (normalizedResPop + census.comPop + census.indPop) / internalMarketDenom;
     var projectedComPop = internalMarket * labourBase;
     var projectedIndPop = census.indPop * labourBase * extMarketParamTable[gameLevel];
     projectedIndPop = Math.max(projectedIndPop, projectedIndPopMin);
 
+    // Calculate the expected percentage changes in each population type
     var resRatio;
     if (normalizedResPop > 0)
       resRatio = projectedResPop / normalizedResPop;
@@ -109,13 +117,12 @@ define(['EventEmitter', 'Messages', 'MiscUtils'],
     comRatio = Math.min(comRatio, comRatioMax);
     indRatio = Math.min(indRatio, indRatioMax);
 
-    // Global tax and game level effects.
+    // Constrain growth according to the tax level.
     var z = Math.min((budget.cityTax + gameLevel), taxMax);
     resRatio = (resRatio - 1) * taxTableScale + taxTable[z];
     comRatio = (comRatio - 1) * taxTableScale + taxTable[z];
     indRatio = (indRatio - 1) * taxTableScale + taxTable[z];
 
-    // Ratios are velocity changes to valves.
     this.resValve = MiscUtils.clamp(this.resValve + Math.round(resRatio), -RES_VALVE_RANGE, RES_VALVE_RANGE);
     this.comValve = MiscUtils.clamp(this.comValve + Math.round(comRatio), -COM_VALVE_RANGE, COM_VALVE_RANGE);
     this.indValve = MiscUtils.clamp(this.indValve + Math.round(indRatio), -IND_VALVE_RANGE, IND_VALVE_RANGE);
