@@ -845,13 +845,17 @@ nav li {
   left: 50%;
   border: 1px solid black;
   width: 75%;
-  line-height: 1.5em;
+  line-height: 1.7em;
   text-align: justify;
   transform: translate(-50%);
 }
 
 #aboutContainer p, #aboutContainer li, #aboutContainer h3 {
   margin: 10px;
+}
+
+#aboutContainer h3 {
+  margin-top: 20px;
 }
 
 #aboutContainer ul {
