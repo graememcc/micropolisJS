@@ -12,41 +12,73 @@ define(['MiscUtils', 'Text'],
   "use strict";
 
 
+  var TIMEOUT_SECS = 30;
+
+
   function Notification(element, map, initialText) {
     element = MiscUtils.normaliseDOMid(element);
-    this._element = $(element);
+
     this._map = map;
+    this._element = $(element);
+    this._timeout = null;
 
     this._handleClick = handleClick.bind(this);
-
-    this._element.text(initialText);
 
     // The position to centre on when the link is clicked
     this._x = -1;
     this._y = -1;
 
     this._element.click(this._handleClick);
+    this.close = close.bind(this);
+    if (this._element.is(':visible'))
+      this._element.toggle();
   }
 
 
+  var close = function(e) {
+    if (e)
+      e.preventDefault();
+
+    if (this._element.is(':visible'))
+      this._element.toggle();
+  };
+
+
   Notification.prototype._displayLink = function(text, x, y) {
+    if (this._timeout !== null) {
+      window.clearTimeout(this._timeout);
+      this._timeout = null;
+    }
+
     this._element.text(text);
 
     this._x = x;
     this._y = y;
 
-    this._element.text(text);
-
     this._element.addClass('pointer');
+
+    if (!this._element.is(':visible'))
+      this._element.toggle();
+
+    this._timeout = window.setTimeout(function() {this._timeout = null; this.close();}.bind(this), TIMEOUT_SECS * 1000);
   }
 
 
   Notification.prototype._displayText = function(text, x, y) {
-    this._element.removeClass('pointer');
+    if (this._timeout !== null) {
+      window.clearTimeout(this._timeout);
+      this._timeout = null;
+    }
 
+    this._element.removeClass('pointer');
     this._element.text(text);
     this._x = -1;
     this._y = -1;
+
+    if (!this._element.is(':visible'))
+      this._element.toggle();
+
+    this._timeout = window.setTimeout(function() {this._timeout = null; this.close();}.bind(this), TIMEOUT_SECS * 1000);
   };
 
 
