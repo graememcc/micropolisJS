@@ -159,7 +159,7 @@ define(['EventEmitter', 'Messages', 'MiscUtils', 'Random'],
   };
 
 
-  var getTrafficAverage = function(blockMaps) {
+  var getTrafficAverage = function(blockMaps, census) {
     var trafficDensityMap = blockMaps.trafficDensityMap;
     var landValueMap = blockMaps.landValueMap;
 
@@ -175,7 +175,7 @@ define(['EventEmitter', 'Messages', 'MiscUtils', 'Random'],
       }
     }
 
-    var trafficAverage = Math.floor(trafficTotal / count) * 2.4;
+    var trafficAverage = census.trafficAverage = Math.floor(trafficTotal / count) * 2.4;
 
     return trafficAverage;
   };
@@ -205,7 +205,7 @@ define(['EventEmitter', 'Messages', 'MiscUtils', 'Random'],
     problemData[Evaluation.POLLUTION]    = census.pollutionAverage;
     problemData[Evaluation.HOUSING]      = census.landValueAverage * 7 / 10;
     problemData[Evaluation.TAXES]        = budget.cityTax * 10;
-    problemData[Evaluation.TRAFFIC]      = getTrafficAverage(blockMaps);
+    problemData[Evaluation.TRAFFIC]      = getTrafficAverage(blockMaps, census);
     problemData[Evaluation.UNEMPLOYMENT] = getUnemployment(census);
     problemData[Evaluation.FIRE]         = getFireSeverity(census);
 
