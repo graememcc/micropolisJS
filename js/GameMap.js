@@ -47,9 +47,8 @@ define(['Direction', 'MiscUtils', 'PositionMaker', 'Tile'],
 
 
     this.Position = PositionMaker(width, height);
-    Object.defineProperties(this,
-      {width: MiscUtils.makeConstantDescriptor(width),
-       height:MiscUtils.makeConstantDescriptor(height)});
+    this.width = width;
+    this.height = height;
 
     var data = [];
     for (var i = 0, l = width * height; i < l; i++)
