@@ -402,7 +402,6 @@ define(['BaseTool', 'BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', '
         data = customFn();
 
       this[win].open.apply(this[win], data);
-      window.setTimeout(this.tick, 0);
     };
   };
 
