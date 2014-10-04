@@ -564,7 +564,7 @@ define(['AnimationManager', 'GameMap', 'MiscUtils', 'MouseBox', 'Tile', 'TileSet
 
 
   GameCanvas.prototype.paint = function(mouse, sprites, isPaused) {
-    var x, y, row, damaged;
+    var x, y, row, damaged, xBound, yBound;
 
     if (!this.ready)
       throw new Error('Not ready!');

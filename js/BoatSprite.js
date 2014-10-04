@@ -71,6 +71,7 @@ define(['BaseSprite', 'Messages', 'MiscUtils', 'Random', 'SpriteConstants', 'Spr
 
   BoatSprite.prototype.move = function(spriteCycle, disasterManager, blockMaps) {
     var tile = Tile.RIVER;
+    var frame, x, y;
 
     if (this.soundCount > 0)
       this.soundCount--;
@@ -102,7 +103,7 @@ define(['BaseSprite', 'Messages', 'MiscUtils', 'Random', 'SpriteConstants', 'Spr
       // Otherwise pick a new direction
       // Choose a random starting direction to search from
       // 0 = N, 1 = NE, ... 7 = NW
-      startDir = Random.getRandom16() & 7;
+      var startDir = Random.getRandom16() & 7;
 
       for (var dir = startDir; dir < (startDir + 8); dir++) {
         frame = (dir & 7) + 1;
@@ -150,7 +151,7 @@ define(['BaseSprite', 'Messages', 'MiscUtils', 'Random', 'SpriteConstants', 'Spr
 
     // If we didn't find a new direction, we might explode
     // depending on the last tile we looked at.
-    for (i = 0; i < 8; i++) {
+    for (var i = 0; i < 8; i++) {
       if (tile === tileWhiteList[i]) {
         break;
       }
