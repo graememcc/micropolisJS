@@ -207,7 +207,7 @@ define(['EventEmitter', 'Messages', 'MiscUtils', 'Random', 'SpriteConstants', 'T
             if (tile.isCombustible() || tileValue === Tile.DIRT ||
                 (tileValue >= Tile.WOODS5 && tileValue < Tile.FLOOD)) {
               if (tile.isZone())
-                ZoneUtils.fireZone(this.map, xx, yy, blockMaps);
+                ZoneUtils.fireZone(this._map, xx, yy, blockMaps);
 
               this._map.setTile(xx, yy, Tile.FLOOD + Random.getRandom(2), 0);
             }
