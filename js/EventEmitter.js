@@ -59,7 +59,7 @@ define([],
       obj.addEventListener = addListener;
       obj.removeEventListener = removeListener;
       obj._emitEvent = emitEvent;
-    }
+    };
 
     if (typeof(obj) === 'object')
       addProps(obj, 'object');

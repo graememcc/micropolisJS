@@ -33,16 +33,16 @@ define(['EventEmitter', 'Messages', 'MiscUtils'],
   var extMarketParamTable = [1.2, 1.1, 0.98];
 
   Valves.prototype.save = function(saveData) {
-    saveData['resValve'] = this.resValve;
-    saveData['comValve'] = this.comValve;
-    saveData['indValve'] = this.indValve;
+    saveData.resValve = this.resValve;
+    saveData.comValve = this.comValve;
+    saveData.indValve = this.indValve;
   };
 
 
   Valves.prototype.load = function(saveData) {
-    this.resValve = saveData['resValve'];
-    this.comValve = saveData['comValve'];
-    this.indValve = saveData['indValve'];
+    this.resValve = saveData.resValve;
+    this.comValve = saveData.comValve;
+    this.indValve = saveData.indValve;
 
     this._emitEvent(Messages.VALVES_UPDATED);
   };

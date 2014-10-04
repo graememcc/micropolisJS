@@ -497,6 +497,8 @@ define(['AnimationManager', 'GameMap', 'MiscUtils', 'MouseBox', 'Tile', 'TileSet
 
 
   GameCanvas.prototype._paintTiles = function(ctx, paintData) {
+    var x, y, row;
+
     if (this._lastPaintedTiles !== null) {
       // We have painted the canvas before. There are 3 possibilities:
       //  - The canvas is exactly the same size as last time we painted
@@ -509,11 +511,11 @@ define(['AnimationManager', 'GameMap', 'MiscUtils', 'MouseBox', 'Tile', 'TileSet
       var yBound = Math.min(this._lastPaintedHeight, this._totalTilesInViewY);
 
       // Loop over the common area that we painted last time. Compare the current value against what was there last time
-      for (var y = 0; y < yBound; y++) {
-        var row = paintData[y];
+      for (y = 0; y < yBound; y++) {
+        row = paintData[y];
         var lastRow = this._lastPaintedTiles[y];
 
-        for (var x = 0; x < xBound; x++) {
+        for (x = 0; x < xBound; x++) {
           if (lastRow[x] === row[x])
             continue;
 
@@ -542,7 +544,7 @@ define(['AnimationManager', 'GameMap', 'MiscUtils', 'MouseBox', 'Tile', 'TileSet
       }
     } else {
       // Full paint
-      for (var y = 0; y < this._totalTilesInViewY; y++) {
+      for (y = 0; y < this._totalTilesInViewY; y++) {
         row = paintData[y];
 
         for (x = 0; x < this._totalTilesInViewX; x++)
@@ -562,6 +564,8 @@ define(['AnimationManager', 'GameMap', 'MiscUtils', 'MouseBox', 'Tile', 'TileSet
 
 
   GameCanvas.prototype.paint = function(mouse, sprites, isPaused) {
+    var x, y, row, damaged;
+
     if (!this.ready)
       throw new Error('Not ready!');
 
@@ -580,9 +584,9 @@ define(['AnimationManager', 'GameMap', 'MiscUtils', 'MouseBox', 'Tile', 'TileSet
       // repaint. Note: we use -2 as our bogus value; -1 would paint the black void
       if (this._pendingTileSet || this.canvasWidth !== this._lastCanvasWidth || this.canvasHeight !== this._lastCanvasHeight) {
         ctx.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
-        for (var y = 0, l = (this._lastPaintedTiles !== null ? this._lastPaintedTiles.length : 0); y < l; y++) {
-          var row = this._lastPaintedTiles[y];
-          for (var x = 0, l2 = row.length; x < l2; x++)
+        for (y = 0, l = (this._lastPaintedTiles !== null ? this._lastPaintedTiles.length : 0); y < l; y++) {
+          row = this._lastPaintedTiles[y];
+          for (x = 0, l2 = row.length; x < l2; x++)
             row[x] = -2;
         }
       }
@@ -607,10 +611,10 @@ define(['AnimationManager', 'GameMap', 'MiscUtils', 'MouseBox', 'Tile', 'TileSet
     }
 
     if (mouse) {
-      var damaged = this._processMouse(mouse);
-      for (var y = Math.max(0, damaged.y), yBound = Math.min(this._lastPaintedTiles.length, damaged.yBound); y < yBound; y++) {
-        var row = this._lastPaintedTiles[y];
-        for (var x = Math.max(0, damaged.x), xBound = Math.min(row.length, damaged.xBound); x < xBound; x++) {
+      damaged = this._processMouse(mouse);
+      for (y = Math.max(0, damaged.y), yBound = Math.min(this._lastPaintedTiles.length, damaged.yBound); y < yBound; y++) {
+        row = this._lastPaintedTiles[y];
+        for (x = Math.max(0, damaged.x), xBound = Math.min(row.length, damaged.xBound); x < xBound; x++) {
           // Note: we can't use Tile.INVALID (-1) as that in some sense is a valid tile for the void!
           row[x] = -2;
         }
@@ -621,9 +625,9 @@ define(['AnimationManager', 'GameMap', 'MiscUtils', 'MouseBox', 'Tile', 'TileSet
       damaged = this._processSprites(ctx, sprites);
       for (var i = 0, l = damaged.length; i < l; i++) {
         var damagedArea = damaged[i];
-        for (var y = Math.max(0, damagedArea.y), yBound = Math.min(damagedArea.yBound, this._lastPaintedTiles.length); y < yBound; y++) {
+        for (y = Math.max(0, damagedArea.y), yBound = Math.min(damagedArea.yBound, this._lastPaintedTiles.length); y < yBound; y++) {
           row = this._lastPaintedTiles[y];
-          for (var x = Math.max(0, damagedArea.x), xBound = Math.min(damagedArea.xBound, row.length); x < xBound; x++) {
+          for (x = Math.max(0, damagedArea.x), xBound = Math.min(damagedArea.xBound, row.length); x < xBound; x++) {
             this._lastPaintedTiles[y][x] = -2;
           }
         }

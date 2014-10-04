@@ -90,7 +90,7 @@ define(['Random', 'Tile', 'TileUtils', 'Traffic', 'ZoneUtils'],
 
       // Trigger outward migration if not connected to road network
       if (trafficOK === Traffic.NO_ROAD_FOUND) {
-        var lpValue = ZoneUtils.getLandPollutionValue(simData.blockMaps, x, y);
+        lpValue = ZoneUtils.getLandPollutionValue(simData.blockMaps, x, y);
         degradeZone(map, x, y, simData.blockMaps, population, lpValue, zonePower);
         return;
       }

@@ -61,7 +61,7 @@ define(['MiscUtils', 'Text'],
       this._element.toggle();
 
     this._timeout = window.setTimeout(function() {this._timeout = null; this.close();}.bind(this), TIMEOUT_SECS * 1000);
-  }
+  };
 
 
   Notification.prototype._displayText = function(text, x, y) {

@@ -24,7 +24,7 @@ define(['ModalWindow', 'Messages', 'Text'],
   EvaluationWindow.prototype.close = function() {
     this._emitEvent(Messages.EVAL_WINDOW_CLOSED);
     this._toggleDisplay();
-  }
+  };
 
 
   var submit = function(e) {

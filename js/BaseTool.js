@@ -90,7 +90,7 @@ define(['Messages', 'MiscUtils', 'Tile', 'TileUtils', 'WorldEffects'],
 
 
   var save = function(saveData) {
-    saveData['autoBulldoze'] = BaseTool.autoBulldoze;
+    saveData.autoBulldoze = BaseTool.autoBulldoze;
   };
 
 

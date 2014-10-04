@@ -39,7 +39,7 @@ define(['EventEmitter', 'MiscUtils'],
       if (focusID !== null)
         $(focusID).focus();
       else
-        $(this._windowID + ' input[type=submit]').focus()
+        $(this._windowID + ' input[type=submit]').focus();
     };
 
 

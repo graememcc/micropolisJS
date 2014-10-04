@@ -104,7 +104,7 @@ define(['BaseTool', 'Config', 'EventEmitter', 'Messages', 'Text', 'Tile'],
       tileValue = Tile.COALBASE;
 
     var index = 0;
-    for (var index = 0, l = baseTiles.length - 1; index < l; index++) {
+    for (index = 0, l = baseTiles.length - 1; index < l; index++) {
       if (tileValue < baseTiles[index + 1])
         break;
     }

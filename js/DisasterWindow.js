@@ -28,7 +28,7 @@ define(['Messages', 'MiscUtils', 'ModalWindow'],
     disaster = disaster || DisasterWindow.DISASTER_NONE;
     this._toggleDisplay();
     this._emitEvent(Messages.DISASTER_WINDOW_CLOSED, disaster);
-  }
+  };
 
 
   var cancel = function(e) {

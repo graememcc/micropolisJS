@@ -59,7 +59,7 @@ define(['MiscUtils'],
 
   Object.defineProperty(Storage, 'CURRENT_VERSION', MiscUtils.makeConstantDescriptor(2));
   Object.defineProperty(Storage, 'KEY', MiscUtils.makeConstantDescriptor('micropolisJSGame'));
-  Object.defineProperty(Storage, 'canStore', MiscUtils.makeConstantDescriptor(window['localStorage'] !== undefined));
+  Object.defineProperty(Storage, 'canStore', MiscUtils.makeConstantDescriptor(window.localStorage !== undefined));
 
 
   return Storage;

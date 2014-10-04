@@ -70,7 +70,7 @@ define(['Direction', 'MiscUtils', 'PositionMaker', 'Tile'],
     for (var i = 0, l = saveProps.length; i < l; i++)
       saveData[saveProps[i]] = this[saveProps[i]];
 
-    saveData['map'] = this._data.map(function(t) {
+    saveData.map = this._data.map(function(t) {
       return {value: t.getRawValue()};
     });
   };
