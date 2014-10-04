@@ -49,7 +49,7 @@ define(['Random', 'Tile', 'TileUtils', 'Traffic', 'ZoneUtils'],
   var degradeZone = function(map, x, y, blockMaps, populationCategory, valueCategory, zonePower) {
     // Note that we special case empty zones here, rather than having to check population value on every
     // call to placeIndustrial (which we anticipate will be called more often)
-    if (population > 1)
+    if (populationCategory > 1)
       placeIndustrial(map, x, y, populationCategory - 1, valueCategory, zonePower);
     else
       ZoneUtils.putZone(map, x, y, Tile.INDCLR, zonePower);

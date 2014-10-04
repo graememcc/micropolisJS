@@ -373,7 +373,7 @@ define(['BaseTool', 'BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', '
       this.simulation.budget.roadPercent = data.roadPercent / 100;
       this.simulation.budget.firePercent = data.firePercent / 100;
       this.simulation.budget.policePercent = data.policePercent / 100;
-      this.simulation.budget.setTax(data.taxPercent);
+      this.simulation.budget.setTax(data.taxPercent - 0);
       if (this.simNeededBudget) {
         this.simulation.budget.doBudgetWindow();
         this.simNeededBudget = false;
