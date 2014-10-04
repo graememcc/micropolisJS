@@ -29,7 +29,7 @@ define(['Random', 'Tile', 'TileUtils', 'Traffic', 'ZoneUtils'],
   // Takes a map and coordinates, a population category in the range 1-5, a value category in the range 0-3, and places
   // the appropriate industrial zone on the map
   var placeCommercial = function(map, x, y, population, lpValue, zonePower) {
-    var centreTile = ((lpValue * 5) + population) * 9 + Tile.COMCLR;
+    var centreTile = ((lpValue * 5) + population) * 9 + Tile.CZB;
     ZoneUtils.putZone(map, x, y, centreTile, zonePower);
   };
 
@@ -45,7 +45,7 @@ define(['Random', 'Tile', 'TileUtils', 'Traffic', 'ZoneUtils'],
 
     // This zone is desirable, and seemingly not to crowded. Switch to the next category of zone.
     if (population < 5) {
-      placeCommercial(map, x, y, population + 1, lpValue, zonePower);
+      placeCommercial(map, x, y, population, lpValue, zonePower);
       ZoneUtils.incRateOfGrowth(blockMaps, x, y, 8);
     }
   };
@@ -55,7 +55,7 @@ define(['Random', 'Tile', 'TileUtils', 'Traffic', 'ZoneUtils'],
     // Note that we special case empty zones here, rather than having to check population value on every
     // call to placeIndustrial (which we anticipate will be called more often)
     if (populationCategory > 1) {
-      placeCommercial(map, x, y, populationCategory - 1, lpCategory, zonePower);
+      placeCommercial(map, x, y, populationCategory - 2, lpCategory, zonePower);
     } else {
       ZoneUtils.putZone(map, x, y, Tile.COMCLR, zonePower);
     }

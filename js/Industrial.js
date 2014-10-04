@@ -21,9 +21,6 @@ define(['Random', 'Tile', 'TileUtils', 'Traffic', 'ZoneUtils'],
 
   // Given the centre of an industrial zone, compute it's population level (a number in the range 0-4)
   var getZonePopulation = function(map, x, y, tileValue) {
-    if (tileValue instanceof Tile)
-      tileValue = tile.getValue();
-
     if (tileValue === Tile.INDCLR)
       return 0;
 
@@ -34,15 +31,17 @@ define(['Random', 'Tile', 'TileUtils', 'Traffic', 'ZoneUtils'],
   // Takes a map and coordinates, a population category in the range 1-4, a value category in the range 0-1, and places
   // the appropriate industrial zone on the map
   var placeIndustrial = function(map, x, y, populationCategory, valueCategory, zonePower) {
-    var centreTile = ((valueCategory * 4) + populationCategory) * 9 + Tile.INDCLR;
+    var centreTile = ((valueCategory * 4) + populationCategory) * 9 + Tile.IZB;
     ZoneUtils.putZone(map, x, y, centreTile, zonePower);
   };
 
 
   var growZone = function(map, x, y, blockMaps, population, valueCategory, zonePower) {
     // Switch to the next category of zone
-    placeIndustrial(map, x, y, population + 1, valueCategory, zonePower);
-    ZoneUtils.incRateOfGrowth(blockMaps, x, y, 8);
+    if (population < 4) {
+      placeIndustrial(map, x, y, population, valueCategory, zonePower);
+      ZoneUtils.incRateOfGrowth(blockMaps, x, y, 8);
+    }
   };
 
 
@@ -50,7 +49,7 @@ define(['Random', 'Tile', 'TileUtils', 'Traffic', 'ZoneUtils'],
     // Note that we special case empty zones here, rather than having to check population value on every
     // call to placeIndustrial (which we anticipate will be called more often)
     if (populationCategory > 1)
-      placeIndustrial(map, x, y, populationCategory - 1, valueCategory, zonePower);
+      placeIndustrial(map, x, y, populationCategory - 2, valueCategory, zonePower);
     else
       ZoneUtils.putZone(map, x, y, Tile.INDCLR, zonePower);
 
