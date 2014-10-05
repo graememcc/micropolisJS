@@ -69,6 +69,7 @@ define(['EventEmitter', 'GameCanvas', 'GameTools', 'Messages', 'MiscUtils'],
 
 
   var canvasID = '#' + GameCanvas.DEFAULT_ID;
+  var toolOutputID = '#toolOutput';
 
 
   var keyDownHandler = function(e) {
@@ -250,6 +251,7 @@ define(['EventEmitter', 'GameCanvas', 'GameTools', 'Messages', 'MiscUtils'],
     this.toolWidth = $(e.target).attr('data-size');
     this.currentTool = this.gameTools[this.toolName];
     this.toolColour = $(e.target).attr('data-colour');
+    $(toolOutputID).html('Tools');
 
     if (this.toolName !== 'query') {
       $(this.canvasID).removeClass('helpPointer');
