@@ -133,7 +133,7 @@ define(['Evaluate', 'Messages', 'Simulation'],
   messageText[Messages.HIGH_POLLUTION] = 'Pollution very high';
   messageText[Messages.MONSTER_SIGHTED] = 'A Monster has been sighted !';
   messageText[Messages.NO_MONEY] = 'YOUR CITY HAS GONE BROKE';
-  messageText[Messages.NOT_ENOUGH_POWER] = 'Blackouts reported. Check power map';
+  messageText[Messages.NOT_ENOUGH_POWER] = 'Blackouts reported: insufficient power capacity';
   messageText[Messages.NUCLEAR_MELTDOWN] = 'A Nuclear Meltdown has occurred !!';
   messageText[Messages.PLANE_CRASHED] = 'A plane has crashed ';
   messageText[Messages.SHIP_CRASHED] = 'Shipwreck reported ';
