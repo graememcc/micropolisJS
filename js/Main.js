@@ -32,8 +32,12 @@ require(['Config', 'SplashScreen', 'TileSet', 'TileSetURI', 'TileSetSnowURI'],
   var onAllTilesLoaded = function() {
     // Kick things off properly
     var sprites = $('#sprites')[0];
-    $('#loadingBanner').css('display', 'none');
-    var s = new SplashScreen(tileSet, snowTileSet, sprites);
+    if (sprites.complete) {
+      $('#loadingBanner').css('display', 'none');
+      var s = new SplashScreen(tileSet, snowTileSet, sprites);
+    } else {
+       window.setTimeout(onAllTilesLoaded, 0);
+    }
   };
 
 
