@@ -25,7 +25,7 @@ define(['Tile'],
 
   var fromKey = function(k) {
     k = k.split(',');
-    return {x: k[0] - 0, y: k[1] - 0};
+    return {x: k[0] - 0, y: k[1] - 0, toString: function() {return 'World effect coord: (' + k[0] + ', ' + k[1] + ')';}};
   };
 
 

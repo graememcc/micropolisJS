@@ -12,16 +12,13 @@ define(['Direction', 'MiscUtils', 'PositionMaker', 'Tile'],
   "use strict";
 
 
-  var invalid = new Error('Invalid parameter');
-
-
   function GameMap(width, height, defaultValue) {
     if (!(this instanceof GameMap))
       return new GameMap(width, height, defaultValue);
 
     if (arguments.length > 1 && typeof(width) === 'number' &&
         (width < 1 || height < 1))
-      throw invalid;
+      throw new Error('GameMap constructor called with invalid width or height ' + width + ' ' + height);
 
     // Argument shuffling
     if (arguments.length === 0) {
@@ -124,7 +121,7 @@ define(['Direction', 'MiscUtils', 'PositionMaker', 'Tile'],
 
   GameMap.prototype.getTileValue = function(x, y) {
     if (arguments.length < 1)
-      throw invalid;
+      throw new Error('GameMap getTileValue called with too few arguments' + [].toString.apply(arguments));
 
     // Argument-shuffling
     if (typeof(x) === 'object') {
@@ -133,7 +130,7 @@ define(['Direction', 'MiscUtils', 'PositionMaker', 'Tile'],
     }
 
     if (!this.testBounds(x, y))
-      throw invalid;
+      throw new Error('GameMap getTileValue called with invalid bounds ' + x + ', ' + y);
 
     var tileIndex = this._calculateIndex(x, y);
     return this._data[tileIndex].getValue();
@@ -142,7 +139,7 @@ define(['Direction', 'MiscUtils', 'PositionMaker', 'Tile'],
 
   GameMap.prototype.getTileFlags = function(x, y) {
     if (arguments.length < 1)
-      throw invalid;
+      throw new Error('GameMap getTileFlags called with too few arguments' + [].toString.apply(arguments));
 
     // Argument-shuffling
     if (typeof(x) === 'object') {
@@ -151,7 +148,7 @@ define(['Direction', 'MiscUtils', 'PositionMaker', 'Tile'],
     }
 
     if (!this.testBounds(x, y))
-      throw invalid;
+      throw new Error('GameMap getTileFlags called with invalid bounds ' + x + ', ' + y);
 
     var tileIndex = this._calculateIndex(x, y);
     return this._data[tileIndex].getFlags();
@@ -160,7 +157,7 @@ define(['Direction', 'MiscUtils', 'PositionMaker', 'Tile'],
 
   GameMap.prototype.getTiles = function(x, y, w, h) {
     if (arguments.length < 3)
-      throw invalid;
+      throw new Error('GameMap getTiles called with too few arguments' + [].toString.apply(arguments));
 
     // Argument-shuffling
     if (arguments.length === 3) {
@@ -171,7 +168,7 @@ define(['Direction', 'MiscUtils', 'PositionMaker', 'Tile'],
     }
 
     if (!this.testBounds(x, y))
-      throw invalid;
+      throw new Error('GameMap getTiles called with invalid bounds ' + x + ', ' + y);
 
     var res = [];
     for (var a = y, ylim = y + h; a < ylim; a++) {
@@ -189,7 +186,7 @@ define(['Direction', 'MiscUtils', 'PositionMaker', 'Tile'],
     result = result || [];
 
     if (arguments.length < 3)
-      throw invalid;
+      throw new Error('GameMap getTileValuesForPainting called with too few arguments' + [].toString.apply(arguments));
 
     // Argument-shuffling
     if (arguments.length === 3) {
@@ -254,7 +251,7 @@ define(['Direction', 'MiscUtils', 'PositionMaker', 'Tile'],
 
   GameMap.prototype.setTile = function(x, y, value, flags) {
     if (arguments.length < 3)
-      throw invalid;
+      throw new Error('GameMap setTile called with too few arguments' + [].toString.apply(arguments));
 
     // Argument-shuffling
     if (arguments.length === 3) {
@@ -265,7 +262,7 @@ define(['Direction', 'MiscUtils', 'PositionMaker', 'Tile'],
     }
 
     if (!this.testBounds(x, y))
-      throw invalid;
+      throw new Error('GameMap setTile called with invalid bounds ' + x + ', ' + y);
 
     var tileIndex = this._calculateIndex(x, y);
     this._data[tileIndex].set(value, flags);
@@ -274,7 +271,7 @@ define(['Direction', 'MiscUtils', 'PositionMaker', 'Tile'],
 
   GameMap.prototype.setTo = function(x, y, tile) {
     if (arguments.length < 2)
-      throw invalid;
+      throw new Error('GameMap setTo called with too few arguments' + [].toString.apply(arguments));
 
     // Argument-shuffling
     if (tile === undefined) {
@@ -284,7 +281,7 @@ define(['Direction', 'MiscUtils', 'PositionMaker', 'Tile'],
     }
 
     if (!this.testBounds(x, y))
-      throw invalid;
+      throw new Error('GameMap setTo called with invalid bounds ' + x + ', ' + y);
 
     var tileIndex = this._calculateIndex(x, y);
     this._data[tileIndex] = tile;
@@ -293,7 +290,7 @@ define(['Direction', 'MiscUtils', 'PositionMaker', 'Tile'],
 
   GameMap.prototype.setTileValue = function(x, y, value) {
     if (arguments.length < 2)
-      throw invalid;
+      throw new Error('GameMap setTileValue called with too few arguments' + [].toString.apply(arguments));
 
     // Argument-shuffling
     if (arguments.length === 2) {
@@ -303,7 +300,7 @@ define(['Direction', 'MiscUtils', 'PositionMaker', 'Tile'],
     }
 
     if (!this.testBounds(x, y))
-      throw invalid;
+      throw new Error('GameMap setTileValue called with invalid bounds ' + x + ', ' + y);
 
     var tileIndex = this._calculateIndex(x, y);
     this._data[tileIndex].setValue(value);
@@ -312,7 +309,7 @@ define(['Direction', 'MiscUtils', 'PositionMaker', 'Tile'],
 
   GameMap.prototype.setTileFlags = function(x, y, flags) {
     if (arguments.length < 2)
-      throw invalid;
+      throw new Error('GameMap setTileFlags called with too few arguments' + [].toString.apply(arguments));
 
     // Argument-shuffling
     if (arguments.length === 2) {
@@ -322,7 +319,7 @@ define(['Direction', 'MiscUtils', 'PositionMaker', 'Tile'],
     }
 
     if (!this.testBounds(x, y))
-      throw invalid;
+      throw new Error('GameMap setTileFlags called with invalid bounds ' + x + ', ' + y);
 
     var tileIndex = this._calculateIndex(x, y);
     this._data[tileIndex].setFlags(flags);
@@ -331,7 +328,7 @@ define(['Direction', 'MiscUtils', 'PositionMaker', 'Tile'],
 
   GameMap.prototype.addTileFlags = function(x, y, flags) {
     if (arguments.length < 2)
-      throw invalid;
+      throw new Error('GameMap addTileFlags called with too few arguments' + [].toString.apply(arguments));
 
     // Argument-shuffling
     if (arguments.length === 2) {
@@ -341,7 +338,7 @@ define(['Direction', 'MiscUtils', 'PositionMaker', 'Tile'],
     }
 
     if (!this.testBounds(x, y))
-      throw invalid;
+      throw new Error('GameMap addTileFlags called with invalid bounds ' + x + ', ' + y);
 
     var tileIndex = this._calculateIndex(x, y);
     this._data[tileIndex].addFlags(flags);
@@ -350,7 +347,7 @@ define(['Direction', 'MiscUtils', 'PositionMaker', 'Tile'],
 
   GameMap.prototype.removeTileFlags = function(x, y, flags) {
     if (arguments.length < 2)
-      throw invalid;
+      throw new Error('GameMap removeTileFlags called with too few arguments' + [].toString.apply(arguments));
 
     // Argument-shuffling
     if (arguments.length === 2) {
@@ -360,7 +357,7 @@ define(['Direction', 'MiscUtils', 'PositionMaker', 'Tile'],
     }
 
     if (!this.testBounds(x, y))
-      throw invalid;
+      throw new Error('GameMap removeTileFlags called with invalid bounds ' + x + ', ' + y);
 
     var tileIndex = this._calculateIndex(x, y);
     this._data[tileIndex].removeFlags(flags);
@@ -369,7 +366,7 @@ define(['Direction', 'MiscUtils', 'PositionMaker', 'Tile'],
 
   GameMap.prototype.putZone = function(centreX, centreY, centreTile, size) {
     if (!this.testBounds(centreX, centreY) || !this.testBounds(centreX - 1 + size, centreY - 1 + size))
-      throw invalid;
+      throw new Error('GameMap putZone called with invalid bounds ' + x + ', ' + y);
 
     var tile = centreTile - 1 - size;
     var startX = centreX - 1;

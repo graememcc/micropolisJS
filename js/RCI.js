@@ -13,11 +13,8 @@ define(['Messages', 'MiscUtils'],
 
 
   function RCI(parentNode, eventSource, id) {
-    var e = new Error('Invalid parameter');
-
-    if (arguments.length < 2) {
-      throw e;
-    }
+    if (arguments.length < 2)
+      throw new Error('RCI constructor called with too few arguments ' + [].toString.apply(arguments));
 
     if (id === undefined)
       id = RCI.DEFAULT_ID;

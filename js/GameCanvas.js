@@ -16,10 +16,8 @@ define(['AnimationManager', 'GameMap', 'MiscUtils', 'MouseBox', 'Tile', 'TileSet
     if (!(this instanceof GameCanvas))
       return new GameCanvas(id, parentNode, width, height);
 
-    var e = new Error('Invalid parameter');
-
     if (arguments.length < 1)
-      throw e;
+      throw new Error('Attempt to construct a GameCanvas with no parameters');
 
     // Argument shuffling
     if (parentNode === undefined) {
@@ -65,10 +63,8 @@ define(['AnimationManager', 'GameMap', 'MiscUtils', 'MouseBox', 'Tile', 'TileSet
   GameCanvas.prototype.init = function(map, tileSet, spriteSheet, animationManager) {
     animationManager = animationManager || new AnimationManager(map);
 
-    var e = new Error('Invalid parameter');
-
     if (arguments.length < 3)
-      throw e;
+      throw new Error('GameCanvas constructor called with too few arguments ' + [].toString.apply(arguments));
 
     if (!tileSet.isValid)
       throw new Error('TileSet not ready!');
@@ -205,10 +201,8 @@ define(['AnimationManager', 'GameMap', 'MiscUtils', 'MouseBox', 'Tile', 'TileSet
 
 
   GameCanvas.prototype.moveTo = function(x, y) {
-    var e = new Error('Invalid parameter');
-
     if (arguments.length < 1)
-      throw e;
+      throw new Error('GameCanvas moveTo called with no arguments');
 
     if (!this.ready)
       throw new Error('Not ready!');
@@ -223,10 +217,8 @@ define(['AnimationManager', 'GameMap', 'MiscUtils', 'MouseBox', 'Tile', 'TileSet
 
 
   GameCanvas.prototype.centreOn = function(x, y) {
-    var e = new Error('Invalid parameter');
-
     if (arguments.length < 1)
-      throw e;
+      throw new Error('GameCanvas centreOn called with no arguments');
 
     if (!this.ready)
       throw new Error('Not ready!');
@@ -276,10 +268,8 @@ define(['AnimationManager', 'GameMap', 'MiscUtils', 'MouseBox', 'Tile', 'TileSet
 
 
   GameCanvas.prototype.canvasCoordinateToTileOffset = function(x, y) {
-    var e = new Error('Invalid parameter');
-
     if (arguments.length < 2)
-      throw e;
+      throw new Error('GameCanvas canvasCoordinateToTileOffset called with too few arguments ' + [].toString.apply(arguments));
 
     if (!this.ready)
       throw new Error('Not ready!');
@@ -290,10 +280,8 @@ define(['AnimationManager', 'GameMap', 'MiscUtils', 'MouseBox', 'Tile', 'TileSet
 
 
   GameCanvas.prototype.canvasCoordinateToTileCoordinate = function(x, y) {
-    var e = new Error('Invalid parameter');
-
     if (arguments.length < 2)
-      throw e;
+      throw new Error('GameCanvas canvasCoordinateToTileCoordinate called with too few arguments ' + [].toString.apply(arguments));
 
     if (!this.ready)
       throw new Error('Not ready!');
@@ -307,10 +295,8 @@ define(['AnimationManager', 'GameMap', 'MiscUtils', 'MouseBox', 'Tile', 'TileSet
 
 
   GameCanvas.prototype.canvasCoordinateToPosition = function(x, y) {
-    var e = new Error('Invalid parameter');
-
     if (arguments.length < 2)
-      throw e;
+      throw new Error('GameCanvas canvasCoordinateToPosition called with too few arguments ' + [].toString.apply(arguments));
 
     if (!this.ready)
       throw new Error('Not ready!');
@@ -331,11 +317,8 @@ define(['AnimationManager', 'GameMap', 'MiscUtils', 'MouseBox', 'Tile', 'TileSet
 
 
   GameCanvas.prototype.positionToCanvasCoordinate = function(p) {
-    var e = new Error('Invalid parameter');
-
     if (arguments.length < 1)
-      throw e;
-
+      throw new Error('GameCanvas positionToCanvasCoordinate called with too few arguments ' + [].toString.apply(arguments));
 
     return this.tileToCanvasCoordinate(p);
   };
@@ -343,10 +326,8 @@ define(['AnimationManager', 'GameMap', 'MiscUtils', 'MouseBox', 'Tile', 'TileSet
 
 
   GameCanvas.prototype.tileToCanvasCoordinate = function(x, y) {
-    var e = new Error('Invalid parameter');
-
     if (arguments.length < 1)
-      throw e;
+      throw new Error('GameCanvas tileToCanvasCoordinate  called with too few arguments ' + [].toString.apply(arguments));
 
     if (!this.ready)
       throw new Error('Not ready!');

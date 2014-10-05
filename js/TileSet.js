@@ -22,10 +22,12 @@ define(['Tile'],
     if (!(this instanceof TileSet))
       return new TileSet(image, callback, errorCallback);
 
-    var e = new Error('Invalid parameter');
-
-    if (callback === undefined || errorCallback === undefined)
-      throw e;
+    if (callback === undefined || errorCallback === undefined) {
+      if (callback === undefined && errorCallback === undefined)
+        throw new Error('Tileset constructor called with no callback or errorCallback');
+      else
+        throw new Error('Tileset constructor called with no ' + (callback === undefined ? 'callback' : 'errorCallback'));
+    }
 
     this.isValid = false;
 
