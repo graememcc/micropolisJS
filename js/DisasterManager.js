@@ -106,6 +106,9 @@ define(['EventEmitter', 'Messages', 'MiscUtils', 'Random', 'SpriteConstants', 'T
       var x = Random.getRandom(this._map.width - 1);
       var y = Random.getRandom(this._map.height - 1);
 
+      if (!map.testBounds(x, y))
+        continue;
+
       if (vulnerable(this._map.getTile(x, y))) {
         if ((i & 0x3) !== 0)
           this._map.setTo(x, y, TileUtils.randomRubble());
@@ -123,6 +126,10 @@ define(['EventEmitter', 'Messages', 'MiscUtils', 'Random', 'SpriteConstants', 'T
     for (var i = 0; i < times; i++) {
       var x = Random.getRandom(this._map.width - 1);
       var y = Random.getRandom(this._map.height - 1);
+
+      if (!map.testBounds(x, y))
+        continue;
+
       var tile = this._map.getTile(x, y);
 
       if (!tile.isZone()) {
@@ -167,6 +174,9 @@ define(['EventEmitter', 'Messages', 'MiscUtils', 'Random', 'SpriteConstants', 'T
     for (var i = 0; i < 300; i++) {
       var x = Random.getRandom(this._map.width - 1);
       var y = Random.getRandom(this._map.height - 1);
+      if (!this._map.testBounds(x, y))
+        continue;
+
       var tileValue = this._map.getTileValue(x, y);
 
       if (tileValue > Tile.CHANNEL && tileValue <= Tile.WATER_HIGH) {

@@ -365,7 +365,7 @@ define(['Direction', 'MiscUtils', 'PositionMaker', 'Tile'],
 
 
   GameMap.prototype.putZone = function(centreX, centreY, centreTile, size) {
-    if (!this.testBounds(centreX, centreY) || !this.testBounds(centreX - 1 + size, centreY - 1 + size))
+    if (!this.testBounds(centreX, centreY) || !this.testBounds(centreX - 1 + size - 1, centreY - 1 + size - 1))
       throw new Error('GameMap putZone called with invalid bounds ' + x + ', ' + y);
 
     var tile = centreTile - 1 - size;

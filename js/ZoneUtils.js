@@ -194,10 +194,10 @@ define(['MiscUtils', 'Tile'],
 
 
   // Calls map.putZone after first checking for flood, fire
-  // and radiation
+  // and radiation. Should be called with coordinates of centre tile.
   var putZone = function(map, x, y, centreTile, isPowered) {
-    for (var dY = 0; dY < 3; dY++) {
-      for (var dX = 0; dX < 3; dX++) {
+    for (var dY = -1; dY < 2; dY++) {
+      for (var dX = -1; dX < 2; dX++) {
         var tileValue = map.getTileValue(x + dX, y + dY);
         if (tileValue >= Tile.FLOOD && tileValue < Tile.ROADBASE)
           return;

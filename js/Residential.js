@@ -53,13 +53,22 @@ define(['Config', 'Random', 'Tile', 'TileUtils', 'Traffic', 'ZoneUtils'],
     var xDelta = [0, 1, 0, -1];
     var yDelta = [-1, 0, 1, 0];
 
+    if (!map.testBounds(x, y))
+      return -1;
+
     var tileValue = map.getTileValue(x, y);
     if (tileValue < Tile.RESBASE || tileValue > Tile.RESBASE + 8)
       return -1;
 
     var score = 1;
     for (var i = 0; i < 4; i++) {
-      tileValue = map.getTileValue(x + xDelta[i], y + yDelta[i]);
+      var edgeX = x + xDelta[i];
+      var edgeY = y + yDelta[i];
+
+      if (edgeX < 0 || edgeX >= map.width || edgeY < 0 || edgeY >= map.height)
+        continue;
+
+      tileValue = map.getTileValue(edgeX, edgeY);
       if (tileValue !== Tile.DIRT && tileValue <= Tile.LASTROAD)
         score += 1;
     }
@@ -91,7 +100,7 @@ define(['Config', 'Random', 'Tile', 'TileUtils', 'Traffic', 'ZoneUtils'],
       }
     }
 
-    if (best > 0)
+    if (best > 0 && map.testBounds(x + xDelta[best], y + yDelta[best]))
       map.setTile(x + xDelta[best], y + yDelta[best],
                 Tile.HOUSE + Random.getRandom(2) + lpValue * 3, Tile.BLBNCNBIT);
   };
