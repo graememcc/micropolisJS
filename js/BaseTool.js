@@ -57,17 +57,18 @@ define(['Messages', 'MiscUtils', 'Tile', 'TileUtils', 'WorldEffects'],
 
   var modifyIfEnoughFunding = function(budget) {
     if (this.result !== this.TOOLRESULT_OK) {
-      this._worldEffects.clear();
+      this.clear();
       return false;
     }
 
     if (budget.totalFunds < this._applicationCost) {
       this.result = this.TOOLRESULT_NO_MONEY;
-      this._worldEffects.clear();
+      this.clear();
       return false;
     }
 
     apply.call(this, budget);
+    this.clear();
     return true;
   };
 
