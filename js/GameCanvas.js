@@ -480,7 +480,9 @@ define(['AnimationManager', 'GameMap', 'MiscUtils', 'MouseBox', 'Tile', 'TileSet
     try {
       ctx.drawImage(src, x * this._tileSet.tileWidth, y * this._tileSet.tileWidth);
     } catch (e) {
-      throw new Error('Failed to draw tile ' + tileVal + ' at ' + x + ', ' + y);
+      var mapX = this._originX + x;
+      var mapY = this._originY + y;
+      throw new Error('Failed to draw tile ' + tileVal + ' at ' + x + ', ' + y + ' (map ' + mapX + ', ' + mapY + ' tile ' + (this._map.testBounds(mapX, mapY) ? this._map.getTileValue(mapX, mapY) : '?? (Out of bounds)') + ')');
     }
   };
 
@@ -491,7 +493,7 @@ define(['AnimationManager', 'GameMap', 'MiscUtils', 'MouseBox', 'Tile', 'TileSet
     if (this._lastPaintedTiles !== null) {
       // We have painted the canvas before. There are 3 possibilities:
       //  - The canvas is exactly the same size as last time we painted
-      //  - The canvas has been enlarged
+      //  - The canvas has grown
       //  - The canvas has shrunk
       //
       // In any case, we want to find the minimal area that was onscreen last paint
