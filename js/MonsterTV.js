@@ -70,7 +70,7 @@ define(['EventEmitter', 'GameCanvas', 'Messages'],
 
 
   var onDie = function(event) {
-    this._tracking.removeEventListener(Messages.SPRITE_MOVE, this._onMove);
+    this._tracking.removeEventListener(Messages.SPRITE_MOVED, this._onMove);
     this._tracking.removeEventListener(Messages.SPRITE_DYING, this._onDie);
     this._tracking = null;
 
@@ -80,7 +80,7 @@ define(['EventEmitter', 'GameCanvas', 'Messages'],
 
   MonsterTV.prototype.track = function(x, y, sprite) {
     if (this._tracking !== null) {
-      this._tracking.removeEventListener(Messages.SPRITE_MOVE, this._onMove);
+      this._tracking.removeEventListener(Messages.SPRITE_MOVED, this._onMove);
       this._tracking.removeEventListener(Messages.SPRITE_DYING, this._onDie);
     }
 

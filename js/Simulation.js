@@ -415,7 +415,7 @@ define(['BlockMap', 'BlockMapUtils', 'Budget', 'Census', 'Commercial', 'Disaster
 
       case 26:
         if (this._census.resPop > 500 && this._census.stadiumPop === 0) {
-          this._emitEvent(Messages.FRONT_END_MESSAGE, {subject: Messages.MESSAGE_NEED_STADIUM});
+          this._emitEvent(Messages.FRONT_END_MESSAGE, {subject: Messages.NEED_STADIUM});
           this._valves.resCap = true;
         } else {
           this._valves.resCap = false;

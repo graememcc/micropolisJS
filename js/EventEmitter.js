@@ -39,6 +39,9 @@ define([],
 
 
     var emitEvent = function(event, value) {
+      if (event === undefined)
+        console.warn('Sending undefined event!');
+
       if (!(event in events))
         events[event] = [];
 

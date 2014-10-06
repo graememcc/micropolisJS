@@ -80,12 +80,12 @@ define(['Evaluate', 'Messages', 'Simulation'],
 
   var badMessages = {};
   badMessages[Messages.BLACKOUTS_REPORTED] = true;
-  badMessages[Messages.COPTER_CRASHED] = true;
   badMessages[Messages.EARTHQUAKE] = true;
   badMessages[Messages.EXPLOSION_REPORTED] = true;
   badMessages[Messages.FLOODING_REPORTED] = true;
   badMessages[Messages.FIRE_REPORTED] = true;
   badMessages[Messages.HEAVY_TRAFFIC] = true;
+  badMessages[Messages.HELICOPTER_CRASHED] = true;
   badMessages[Messages.HIGH_CRIME] = true;
   badMessages[Messages.HIGH_POLLUTION] = true;
   badMessages[Messages.MONSTER_SIGHTED] = true;
@@ -123,12 +123,12 @@ define(['Evaluate', 'Messages', 'Simulation'],
   messageText[Messages.POLICE_NEEDS_FUNDING] = 'Police departments need funding';
   messageText[Messages.WELCOME] = 'Welcome to micropolisJS';
   messageText[Messages.BLACKOUTS_REPORTED] = 'Brownouts, build another Power Plant';
-  messageText[Messages.COPTER_CRASHED] = 'A helicopter crashed ';
   messageText[Messages.EARTHQUAKE] = 'Major earthquake reported !!';
   messageText[Messages.EXPLOSION_REPORTED] = 'Explosion detected ';
   messageText[Messages.FLOODING_REPORTED] = 'Flooding reported !';
   messageText[Messages.FIRE_REPORTED] = 'Fire reported ';
   messageText[Messages.HEAVY_TRAFFIC] = 'Heavy Traffic reported';
+  messageText[Messages.HELICOPTER_CRASHED] = 'A helicopter crashed ';
   messageText[Messages.HIGH_CRIME] = 'Crime very high';
   messageText[Messages.HIGH_POLLUTION] = 'Pollution very high';
   messageText[Messages.MONSTER_SIGHTED] = 'A Monster has been sighted !';
