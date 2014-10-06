@@ -28,6 +28,9 @@ define(['BlockMap', 'BlockMapUtils', 'Budget', 'Census', 'Commercial', 'Disaster
     this._cityYearLast = -1;
     this._cityMonthLast = -1;
 
+    // Last time we relayed a message from PowerManager to the front-end
+    this._lastPowerMessage = null;
+
     // And now, the main cast of characters
     this.evaluation = new Evaluate(this._gameLevel);
     this._valves = new Valves();
@@ -228,7 +231,14 @@ define(['BlockMap', 'BlockMapUtils', 'Budget', 'Census', 'Commercial', 'Disaster
     for (var i = 0, l = evaluationEvents.length; i < l; i++)
       this.evaluation.addEventListener(evaluationEvents[i], MiscUtils.reflectEvent.bind(this, evaluationEvents[i]));
 
-    this._powerManager.addEventListener(Messages.NOT_ENOUGH_POWER, this._wrapMessage.bind(this, Messages.NOT_ENOUGH_POWER));
+    this._powerManager.addEventListener(Messages.NOT_ENOUGH_POWER, function(e) {
+      var d = new Date();
+
+      if (this._lastPowerMessage === null || d - this._lastPowerMessage > 1000 * 60 * 2) {
+        this._emitEvent(Messages.FRONT_END_MESSAGE, {subject: Messages.NOT_ENOUGH_POWER});
+        this._lastPowerMessage = d;
+      }
+    }.bind(this));
 
     this.budget.addEventListener(Messages.FUNDS_CHANGED, MiscUtils.reflectEvent.bind(this, Messages.FUNDS_CHANGED));
     this.budget.addEventListener(Messages.BUDGET_NEEDED, MiscUtils.reflectEvent.bind(this, Messages.BUDGET_NEEDED));
@@ -443,8 +453,13 @@ define(['BlockMap', 'BlockMapUtils', 'Budget', 'Census', 'Commercial', 'Disaster
       case 32:
         var zoneCount = this._census.unpoweredZoneCount + this._census.poweredZoneCount;
         if (zoneCount > 0) {
-          if (this._census.poweredZoneCount / zoneCount < 0.7 && powerPop > 0)
-            this._emitEvent(Messages.FRONT_END_MESSAGE, {subject: Messages.BLACKOUTS_REPORTED});
+          if (this._census.poweredZoneCount / zoneCount < 0.7 && powerPop > 0) {
+            var d = new Date();
+            if (this._lastPowerMessage === null || d - this._lastPowerMessage > 1000 * 60 * 2) {
+              this._emitEvent(Messages.FRONT_END_MESSAGE, {subject: Messages.BLACKOUTS_REPORTED});
+              this._lastPowerMessage = d;
+            }
+          }
         }
         break;
 
