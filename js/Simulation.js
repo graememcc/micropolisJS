@@ -450,7 +450,8 @@ define(['BlockMap', 'BlockMapUtils', 'Budget', 'Census', 'Commercial', 'Disaster
 
       case 35:
         if (this._census.pollutionAverage > 60)
-          this._emitEvent(Messages.FRONT_END_MESSAGE, {subject: Messages.HIGH_POLLUTION});
+          this._emitEvent(Messages.FRONT_END_MESSAGE,
+                         {subject: Messages.HIGH_POLLUTION, data: {x: this._map.pollutionMaxX, y: this._map.pollutionMaxY}});
         break;
 
       case 42:

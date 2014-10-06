@@ -60,7 +60,7 @@ define(['Direction', 'MiscUtils', 'PositionMaker', 'Tile'],
   }
 
 
-  var saveProps = ['_cityCentreX', '_cityCentreY', '_pollutionMaxX', '_pollutionMaxY', 'width', 'height'];
+  var saveProps = ['cityCentreX', 'cityCentreY', 'pollutionMaxX', 'pollutionMaxY', 'width', 'height'];
 
   GameMap.prototype.save = function(saveData) {
     for (var i = 0, l = saveProps.length; i < l; i++)

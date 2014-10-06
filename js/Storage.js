@@ -41,12 +41,22 @@ define(['MiscUtils'],
 
 
   var transitionOldSave = function(savedGame) {
-    if (savedGame.version === 1) {
-      savedGame.everClicked = false;
-      return;
-    }
+    switch (savedGame.version) {
+      case 1:
+        savedGame.everClicked = false;
 
-    throw new Error('Unknown save version!');
+        // Deliberate fall through
+      case 2:
+        savedGame.pollutionMaxX = Math.floor(savedGame.width / 2);
+        savedGame.pollutionMaxY = Math.floor(savedGame.height / 2);
+        savedGame.cityCentreX = Math.floor(savedGame.width / 2);
+        savedGame.cityCentreY = Math.floor(savedGame.height / 2);
+
+        break;
+
+      default:
+        throw new Error('Unknown save version!');
+    }
   };
 
 
@@ -57,7 +67,7 @@ define(['MiscUtils'],
   };
 
 
-  Object.defineProperty(Storage, 'CURRENT_VERSION', MiscUtils.makeConstantDescriptor(2));
+  Object.defineProperty(Storage, 'CURRENT_VERSION', MiscUtils.makeConstantDescriptor(3));
   Object.defineProperty(Storage, 'KEY', MiscUtils.makeConstantDescriptor('micropolisJSGame'));
   Object.defineProperty(Storage, 'canStore', MiscUtils.makeConstantDescriptor(window.localStorage !== undefined));
 
