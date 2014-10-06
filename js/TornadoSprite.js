@@ -30,8 +30,7 @@ define(['BaseSprite', 'Messages', 'MiscUtils', 'Random', 'SpriteConstants', 'Spr
   var yDelta = [-2, 0, 2, 3, 2, 0];
 
   TornadoSprite.prototype.move = function(spriteCycle, disasterManager, blockMaps) {
-    var frame;
-    frame = this.frame;
+    var frame = this.frame;
 
     // If middle frame, move right or left
     // depending on the flag value

@@ -403,15 +403,19 @@ define(['AnimationManager', 'GameMap', 'MiscUtils', 'MouseBox', 'Tile', 'TileSet
 
     for (var i = 0, l = spriteList.length; i < l; i++) {
       var sprite = spriteList[i];
-      ctx.drawImage(this._spriteSheet,
-                    (sprite.frame - 1) * 48,
-                    (sprite.type - 1) * 48,
-                    sprite.width,
-                    sprite.width,
-                    sprite.x + sprite.xOffset - this._originX * 16,
-                    sprite.y + sprite.yOffset - this._originY * 16,
-                    sprite.width,
-                    sprite.width);
+      try {
+        ctx.drawImage(this._spriteSheet,
+                      (sprite.frame - 1) * 48,
+                      (sprite.type - 1) * 48,
+                      sprite.width,
+                      sprite.width,
+                      sprite.x + sprite.xOffset - this._originX * 16,
+                      sprite.y + sprite.yOffset - this._originY * 16,
+                      sprite.width,
+                      sprite.width);
+      } catch (e) {
+        throw new Error('Failed to draw sprite ' + sprite.type + ' frame ' + sprite.frame + ' at ' + sprite.x +  ', ' + sprite.y);
+      }
 
       // sprite values are in pixels
       spriteDamage.push({x: Math.floor((sprite.x + sprite.xOffset - this._originX * 16) / tileWidth),
@@ -473,7 +477,11 @@ define(['AnimationManager', 'GameMap', 'MiscUtils', 'MouseBox', 'Tile', 'TileSet
     }
 
     var src = this._tileSet[tileVal];
-    ctx.drawImage(src, x * this._tileSet.tileWidth, y * this._tileSet.tileWidth);
+    try {
+      ctx.drawImage(src, x * this._tileSet.tileWidth, y * this._tileSet.tileWidth);
+    } catch (e) {
+      throw new Error('Failed to draw tile ' + tileVal + ' at ' + x + ', ' + y);
+    }
   };
 
 
