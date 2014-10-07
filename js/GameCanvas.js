@@ -572,7 +572,7 @@ define(['AnimationManager', 'GameMap', 'MiscUtils', 'MouseBox', 'Tile', 'TileSet
 
 
   GameCanvas.prototype.paint = function(mouse, sprites, isPaused) {
-    var x, y, row, damaged, xBound, yBound;
+    var x, y, row, damaged, xBound, yBound, index;
 
     if (!this.ready)
       throw new Error('Not ready!');
@@ -627,7 +627,7 @@ define(['AnimationManager', 'GameMap', 'MiscUtils', 'MouseBox', 'Tile', 'TileSet
 
       for (y = Math.max(0, damaged.y), yBound = Math.min(paintHeight, damaged.yBound); y < yBound; y++) {
         for (x = Math.max(0, damaged.x), xBound = Math.min(paintWidth, damaged.xBound); x < xBound; x++) {
-          var index = [y * paintWidth + x];
+          index = [y * paintWidth + x];
           // Note: we can't use Tile.INVALID (-1) as that in some sense is a valid tile for the void!
           lastPaintedTiles[index] = -2;
         }
