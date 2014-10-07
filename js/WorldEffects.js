@@ -52,6 +52,9 @@ define(['Tile'],
     if (flags !== undefined && value instanceof Tile)
       throw new Error('Flags supplied with already defined tile');
 
+    if (!this._map.testBounds(x, y))
+      throw new Error('WorldEffects setTile called with invalid bounds ' + x + ', ' + y);
+
     if (flags === undefined && !(value instanceof Tile))
       value = new Tile(value);
     else if (flags !== undefined)
