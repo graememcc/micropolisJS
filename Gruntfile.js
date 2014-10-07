@@ -22,7 +22,8 @@ module.exports = function(grunt) {
         options: {
           baseUrl: 'js/',
           name: 'Main',
-          out: 'dist/js/Main.js'
+          out: 'dist/js/Main.js',
+          useStrict: true
         }
       }
     },
