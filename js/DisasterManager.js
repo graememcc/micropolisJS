@@ -106,7 +106,7 @@ define(['EventEmitter', 'Messages', 'MiscUtils', 'Random', 'SpriteConstants', 'T
       var x = Random.getRandom(this._map.width - 1);
       var y = Random.getRandom(this._map.height - 1);
 
-      if (!map.testBounds(x, y))
+      if (!this._map.testBounds(x, y))
         continue;
 
       if (vulnerable(this._map.getTile(x, y))) {
@@ -127,7 +127,7 @@ define(['EventEmitter', 'Messages', 'MiscUtils', 'Random', 'SpriteConstants', 'T
       var x = Random.getRandom(this._map.width - 1);
       var y = Random.getRandom(this._map.height - 1);
 
-      if (!map.testBounds(x, y))
+      if (!this._map.testBounds(x, y))
         continue;
 
       var tile = this._map.getTile(x, y);

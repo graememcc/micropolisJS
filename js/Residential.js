@@ -299,7 +299,7 @@ define(['Config', 'Random', 'Tile', 'TileUtils', 'Traffic', 'ZoneUtils'],
     // Degrade to an empty zone if a hospital is no longer sustainable
     if (simData.census.needHospital === -1) {
       if (Random.getRandom(20) === 0)
-        ZoneUtils.putZone(map, x, y, Tile.FREEZ);
+        ZoneUtils.putZone(map, x, y, Tile.FREE, map.getTile(x, y).isPowered());
     }
   };
 
