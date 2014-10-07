@@ -97,26 +97,25 @@ define(['Tile', 'TileHistory', 'TileUtils'],
     var newPainted = this._currentPainted === null ? new TileHistory() : this._currentPainted;
 
     for (var y = 0; y < yBound; y++) {
-      var row = tileValues[y];
-
       for (var x = 0; x < xBound; x++) {
         var mapX = x + offsetX;
         var mapY = y + offsetY;
+        var index = y * xBound + x;
 
         if (mapX < 0 || mapX >= this._map.width || mapY < 0 || mapY >= this._map.height)
           continue;
 
-        var tile = row[x];
+        var tile = tileValues[index];
         if (tile === INVALID)
           continue;
 
         if (shouldBlink && (tile & ZONEBIT) && !(tile & POWERBIT)) {
-          row[x] = LIGHTNINGBOLT;
+          tileValues[index] = LIGHTNINGBOLT;
           continue;
         }
 
         if (!(tile & ANIMBIT)) {
-          row[x] = tile & BIT_MASK;
+          tileValues[index] = tile & BIT_MASK;
           continue;
         }
 
@@ -150,11 +149,11 @@ define(['Tile', 'TileHistory', 'TileUtils'],
         }
 
         if (newTile === INVALID) {
-          row[x] = tileValue;
+          tileValues[index] = tileValue;
           continue;
         }
 
-        row[x] = newTile;
+        tileValues[index] = newTile;
         newPainted.setTile(x, y, newTile);
       }
     }

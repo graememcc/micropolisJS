@@ -201,16 +201,14 @@ define(['Direction', 'MiscUtils', 'PositionMaker', 'Tile'],
 
     // Result is stored in row-major order
     for (var a = y, ylim = y + h; a < ylim; a++) {
-      var row = result[a - y] = [];
-
       for (var b = x, xlim = x + w; b < xlim; b++) {
         if (a < 0 || b < 0 || a >= height || b >= width) {
-          row.push(Tile.TILE_INVALID);
+          result[(a - y) * w + (b - x)] = Tile.TILE_INVALID;
           continue;
         }
 
         var tileIndex =  b + a * width;
-        row.push(this._data[tileIndex].getRawValue());
+        result[(a - y) * w + (b - x)] = this._data[tileIndex].getRawValue();
       }
     }
 

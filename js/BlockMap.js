@@ -34,18 +34,15 @@ define(['MiscUtils'],
        blockSize: MiscUtils.makeConstantDescriptor(blockSize)});
 
     this.data = [];
-
-    for (var y = 0, height = this.height; y < height; y++)
-      this.data[y] = [];
     this.clear();
   }
 
 
   BlockMap.prototype.clear = function() {
+    var data = this.data;
     for (var y = 0, height = this.height; y < height; y++) {
-      var row = this.data[y];
       for (var x = 0, width = this.width; x < width; x++)
-        row[x] = 0;
+        data[width * y + x] = 0;
     }
   };
 
@@ -56,18 +53,18 @@ define(['MiscUtils'],
 
     for (var y = 0, height = sourceMap.height; y < height; y++) {
       for (var x = 0, width = sourceMap.width; x < width; x++)
-        this.data[y][x] = sourceFn(sourceMap.data[y][x]);
+        this.data[width * y + x] = sourceFn(sourceMap.data[width * y + x]);
     }
   };
 
 
   BlockMap.prototype.get = function(x, y) {
-    return this.data[y][x];
+    return this.data[this.width * y + x];
   };
 
 
   BlockMap.prototype.set = function(x, y, value) {
-    this.data[y][x] = value;
+    this.data[this.width * y + x] = value;
   };
 
 

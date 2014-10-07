@@ -83,7 +83,7 @@ define(['AnimationManager', 'GameMap', 'MiscUtils', 'MouseBox', 'Tile', 'TileSet
 
     // An array indexed by tile offset containing the tileValue last painted there
     this._lastPaintedTiles = null;
-    this._currentPaintedTiles = null; // for future use
+    this._currentPaintedTiles = []; // for future use
 
     // Last time we painted, the canvas was this many tiles wide and tall
     this._lastPaintedWidth = -1;
@@ -428,39 +428,54 @@ define(['AnimationManager', 'GameMap', 'MiscUtils', 'MouseBox', 'Tile', 'TileSet
   };
 
 
-  GameCanvas.prototype._processMouse = function(mouse) {
-    if (mouse.width === 0 || mouse.height === 0)
-      return;
+  // Draws a mouse outline around the selected tiles. The mouse object is assumed to contain x and y properties which
+  // express the coordinate of the top-left of the box in terms of the number of tiles from the top left. It should
+  // also contain a width and height that are again expressed in terms of the number of tiles. The colour property
+  // naturally defines the colour of the painted box.
+  GameCanvas.prototype._processMouse = (function() {
+    var damage = {x: 0, xBound: 0, y: 0, yBound: 0};
 
-    // For outlines bigger than 2x2 (in either dimension) assume the mouse is offset by
-    // one tile
-    var mouseX = mouse.x;
-    var mouseY = mouse.y;
-    var mouseWidth = mouse.width;
-    var mouseHeight = mouse.height;
-    var options = {colour: mouse.colour, outline: true};
+    return function(mouse) {
+      if (mouse.width === 0 || mouse.height === 0)
+        return;
 
-    if (mouseWidth > 2)
-      mouseX -= 1;
-    if (mouseHeight > 2)
-      mouseY -= 1;
+      // For outlines bigger than 2x2 (in either dimension) assume the mouse is offset by
+      // one tile
+      var mouseX = mouse.x;
+      var mouseY = mouse.y;
+      var mouseWidth = mouse.width;
+      var mouseHeight = mouse.height;
+      var options = {colour: mouse.colour, outline: true};
 
-    var offMap = (this._originX + mouseX < 0 && this._originX + mouseX + mouseWidth <= 0) ||
-                 (this._originY + mouseY < 0 && this._originY + mouseY + mouseHeight <= 0) ||
-                 this._originX + mouseX >= this._map.width || this._originY + mouseY >= this._map.height;
+      if (mouseWidth > 2)
+        mouseX -= 1;
+      if (mouseHeight > 2)
+        mouseY -= 1;
 
-    if (offMap)
-      return {x: mouseX, xBound: mouseX, y: mouseY, yBound: mouseY};
+      var offMap = (this._originX + mouseX < 0 && this._originX + mouseX + mouseWidth <= 0) ||
+                   (this._originY + mouseY < 0 && this._originY + mouseY + mouseHeight <= 0) ||
+                   this._originX + mouseX >= this._map.width || this._originY + mouseY >= this._map.height;
 
-    var pos = {x: mouseX * this._tileSet.tileWidth, y: mouseY * this._tileSet.tileWidth};
-    var width = mouseWidth * this._tileSet.tileWidth;
-    var height = mouseHeight * this._tileSet.tileWidth;
-    MouseBox.draw(this._canvas, pos, width, height, options);
+      if (offMap) {
+        damage.x = damage.xBound = mouseX;
+        damage.y = damage.yBound = mouseY;
+        return damage;
+      }
 
-    // Return an object representing tiles that were damaged that will need redrawn
-    // Note that we must take an extra tile either side to account for the outline
-    return {x: mouseX - 1, xBound: mouseX + mouseWidth + 2, y: mouseY - 1, yBound: mouseY + mouseWidth + 2};
-  };
+      var pos = {x: mouseX * this._tileSet.tileWidth, y: mouseY * this._tileSet.tileWidth};
+      var width = mouseWidth * this._tileSet.tileWidth;
+      var height = mouseHeight * this._tileSet.tileWidth;
+      MouseBox.draw(this._canvas, pos, width, height, options);
+
+      // Return an object representing tiles that were damaged that will need redrawn
+      // Note that we must take an extra tile either side to account for the outline
+      damage.x = mouseX - 1;
+      damage.xBound = mouseX + mouseWidth + 2;
+      damage.y = mouseY - 1;
+      damage.yBound = mouseY + mouseWidth + 2;
+      return damage;
+    };
+  })();
 
 
   GameCanvas.prototype._paintVoid = function(ctx, x, y) {
@@ -488,9 +503,13 @@ define(['AnimationManager', 'GameMap', 'MiscUtils', 'MouseBox', 'Tile', 'TileSet
 
 
   GameCanvas.prototype._paintTiles = function(ctx, paintData) {
-    var x, y, row;
+    var x, y, row, index;
+    var lastPaintedTiles = this._lastPaintedTiles;
 
-    if (this._lastPaintedTiles !== null) {
+    var width = this._totalTilesInViewX;
+    var height = this._totalTilesInViewY;
+
+    if (lastPaintedTiles !== null) {
       // We have painted the canvas before. There are 3 possibilities:
       //  - The canvas is exactly the same size as last time we painted
       //  - The canvas has grown
@@ -498,54 +517,52 @@ define(['AnimationManager', 'GameMap', 'MiscUtils', 'MouseBox', 'Tile', 'TileSet
       //
       // In any case, we want to find the minimal area that was onscreen last paint
       // and this paint, and iterate over those tiles, repainting where necessary
-      var xBound = Math.min(this._lastPaintedWidth, this._totalTilesInViewX);
-      var yBound = Math.min(this._lastPaintedHeight, this._totalTilesInViewY);
+      var xBound = Math.min(this._lastPaintedWidth, width);
+      var yBound = Math.min(this._lastPaintedHeight, height);
 
       // Loop over the common area that we painted last time. Compare the current value against what was there last time
       for (y = 0; y < yBound; y++) {
-        row = paintData[y];
-        var lastRow = this._lastPaintedTiles[y];
-
         for (x = 0; x < xBound; x++) {
-          if (lastRow[x] === row[x])
+          index  = y * xBound + x;
+          if (lastPaintedTiles[index] === paintData[index])
             continue;
 
           // Tile is different: repaint
-          this._paintOne(ctx, row[x], x, y);
+          this._paintOne(ctx, paintData[index], x, y);
         }
       }
 
       // Do we have more tiles than before? Paint the extra width and/or the extra height
-      if (this._totalTilesInViewX > this._lastPaintedWidth) {
-        for (y = 0; y < this._totalTilesInViewY; y++) {
-          row = paintData[y];
-
-          for (x = this._lastPaintedWidth; x < this._totalTilesInViewX; x++)
-              this._paintOne(ctx, row[x], x, y);
+      if (width > this._lastPaintedWidth) {
+        for (y = 0; y < height; y++) {
+          for (x = this._lastPaintedWidth; x < width; x++) {
+            index  = y * width + x;
+            this._paintOne(ctx, paintData[index], x, y);
+          }
         }
       }
 
-      if (this._totalTilesInViewY > this._lastPaintedHeight) {
-        for (y = this._lastPaintedHeight; y < this._totalTilesInViewY; y++) {
-          row = paintData[y];
-
-          for (x = 0; x < this._totalTilesInViewX; x++)
-            this._paintOne(ctx, row[x], x, y);
+      if (height > this._lastPaintedHeight) {
+        for (y = this._lastPaintedHeight; y < height; y++) {
+          for (x = 0; x < width; x++) {
+            index  = y * width + x;
+            this._paintOne(ctx, paintData[index], x, y);
+          }
         }
       }
     } else {
       // Full paint
-      for (y = 0; y < this._totalTilesInViewY; y++) {
-        row = paintData[y];
-
-        for (x = 0; x < this._totalTilesInViewX; x++)
-            this._paintOne(ctx, row[x], x, y);
+      for (y = 0; y < height; y++) {
+        for (x = 0; x < width; x++) {
+          index = y * width + x;
+          this._paintOne(ctx, paintData[index], x, y);
+        }
       }
     }
 
     // Stash data
-    this._lastPaintedWidth = this._totalTilesInViewX;
-    this._lastPaintedHeight = this._totalTilesInViewY;
+    this._lastPaintedWidth = width;
+    this._lastPaintedHeight = height;
 
     // Rotate tile data
     var temp = this._lastPaintedTiles;
@@ -561,6 +578,7 @@ define(['AnimationManager', 'GameMap', 'MiscUtils', 'MouseBox', 'Tile', 'TileSet
       throw new Error('Not ready!');
 
     var ctx = this._canvas.getContext('2d');
+    var lastPaintedTiles = this._lastPaintedTiles;
 
     // Recompute our dimensions if there has been a resize since last paint
     if (this._pendingDimensionChange || this._pendingTileSet) {
@@ -575,23 +593,26 @@ define(['AnimationManager', 'GameMap', 'MiscUtils', 'MouseBox', 'Tile', 'TileSet
       // repaint. Note: we use -2 as our bogus value; -1 would paint the black void
       if (this._pendingTileSet || this.canvasWidth !== this._lastCanvasWidth || this.canvasHeight !== this._lastCanvasHeight) {
         ctx.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
-        for (y = 0, l = (this._lastPaintedTiles !== null ? this._lastPaintedTiles.length : 0); y < l; y++) {
-          row = this._lastPaintedTiles[y];
-          for (x = 0, l2 = row.length; x < l2; x++)
-            row[x] = -2;
-        }
+
+        for (y = 0, l = (lastPaintedTiles !== null ? lastPaintedTiles.length : 0); y < l; y++)
+          lastPaintedTiles[y] = -2;
       }
 
       this._pendingTileSet = null;
     }
 
+    var paintWidth = this._totalTilesInViewX;
+    var paintHeight = this._totalTilesInViewY;
+
     // Fill an array with the values we need to paint
-    var tileValues = this._map.getTileValuesForPainting(this._originX, this._originY, this._totalTilesInViewX, this._totalTilesInViewY, this._currentPaintedTiles);
+    var tileValues = this._map.getTileValuesForPainting(this._originX, this._originY, paintWidth, paintHeight, this._currentPaintedTiles);
 
     // Adjust for animations
-    this.animationManager.getTiles(tileValues, this._originX, this._originY, this._totalTilesInViewX, this._totalTilesInViewY, isPaused);
+    this.animationManager.getTiles(tileValues, this._originX, this._originY, paintWidth, paintHeight, isPaused);
 
     this._paintTiles(ctx, tileValues);
+    // The _paintTiles call updates this._lastPaintedTiles. Update our cached copy
+    lastPaintedTiles = this._lastPaintedTiles;
 
     // Stash various values for next paint
     this._lastCanvasWidth = this.canvasWidth;
@@ -603,11 +624,12 @@ define(['AnimationManager', 'GameMap', 'MiscUtils', 'MouseBox', 'Tile', 'TileSet
 
     if (mouse) {
       damaged = this._processMouse(mouse);
-      for (y = Math.max(0, damaged.y), yBound = Math.min(this._lastPaintedTiles.length, damaged.yBound); y < yBound; y++) {
-        row = this._lastPaintedTiles[y];
-        for (x = Math.max(0, damaged.x), xBound = Math.min(row.length, damaged.xBound); x < xBound; x++) {
+
+      for (y = Math.max(0, damaged.y), yBound = Math.min(paintHeight, damaged.yBound); y < yBound; y++) {
+        for (x = Math.max(0, damaged.x), xBound = Math.min(paintWidth, damaged.xBound); x < xBound; x++) {
+          var index = [y * paintWidth + x];
           // Note: we can't use Tile.INVALID (-1) as that in some sense is a valid tile for the void!
-          row[x] = -2;
+          lastPaintedTiles[index] = -2;
         }
       }
     }
@@ -616,10 +638,10 @@ define(['AnimationManager', 'GameMap', 'MiscUtils', 'MouseBox', 'Tile', 'TileSet
       damaged = this._processSprites(ctx, sprites);
       for (var i = 0, l = damaged.length; i < l; i++) {
         var damagedArea = damaged[i];
-        for (y = Math.max(0, damagedArea.y), yBound = Math.min(damagedArea.yBound, this._lastPaintedTiles.length); y < yBound; y++) {
-          row = this._lastPaintedTiles[y];
-          for (x = Math.max(0, damagedArea.x), xBound = Math.min(damagedArea.xBound, row.length); x < xBound; x++) {
-            this._lastPaintedTiles[y][x] = -2;
+        for (y = Math.max(0, damagedArea.y), yBound = Math.min(damagedArea.yBound, paintHeight); y < yBound; y++) {
+          for (x = Math.max(0, damagedArea.x), xBound = Math.min(damagedArea.xBound, paintWidth); x < xBound; x++) {
+            index = [y * paintWidth + x];
+            this._lastPaintedTiles[index] = -2;
           }
         }
       }
