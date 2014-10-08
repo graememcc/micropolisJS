@@ -19,6 +19,11 @@ define(['BaseTool', 'Random', 'Tile', 'TileUtils'],
 
 
   ParkTool.prototype.doTool = function(x, y, blockMaps) {
+    if (this._worldEffects.getTileValue(x, y) !== Tile.DIRT) {
+      this.result = this.TOOLRESULT_NEEDS_BULLDOZE;
+      return;
+    }
+
     var value = Random.getRandom(4);
     var tileFlags = Tile.BURNBIT | Tile.BULLBIT;
     var tileValue;
