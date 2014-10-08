@@ -44,7 +44,7 @@ define(['BlockMap', 'BlockMapUtils', 'Budget', 'Census', 'Commercial', 'Disaster
     this.disasterManager = new DisasterManager(this._map, this.spriteManager, this._gameLevel);
 
     this.blockMaps = {
-      // Holds a "distance score" for the block from the city centre, range 0-64
+      // Holds a "distance score" for the block from the city centre, range  -64 to 64
       cityCentreDistScoreMap: new BlockMap(this._map.width, this._map.height, 8),
 
       // Holds a score representing how dangerous an area is, in range 0-250 (larger is worse)
