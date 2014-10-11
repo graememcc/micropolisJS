@@ -103,7 +103,7 @@ define(['BaseTool', 'Config', 'EventEmitter', 'Messages', 'Text', 'Tile'],
     if (tileValue >= Tile.COALSMOKE1 && tileValue < Tile.FOOTBALLGAME1)
       tileValue = Tile.COALBASE;
 
-    var index = 0;
+    var index, l;
     for (index = 0, l = baseTiles.length - 1; index < l; index++) {
       if (tileValue < baseTiles[index + 1])
         break;
