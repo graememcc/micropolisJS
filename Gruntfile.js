@@ -19,6 +19,9 @@ module.exports = function(grunt) {
     },
 
     jshint: {
+      options: {
+        newcap: false
+      },
       src: ['js/**/*.js']
     },
 
