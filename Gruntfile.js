@@ -1,4 +1,5 @@
 module.exports = function(grunt) {
+  require('load-grunt-tasks')(grunt);
 
   grunt.initConfig({
     copy: {
@@ -15,6 +16,13 @@ module.exports = function(grunt) {
           {src: ['index.html'], dest: 'dist/'}
         ]
       }
+    },
+
+    jshint: {
+      options: {
+        newcap: false
+      },
+      src: ['js/**/*.js']
     },
 
     requirejs: {
@@ -35,13 +43,7 @@ module.exports = function(grunt) {
   });
 
 
-  tasks = ['copy', 'requirejs', 'watch'];
-  tasks.forEach(function(task) {
-    grunt.loadNpmTasks('grunt-contrib-' + task);
-  });
-
-
-  grunt.registerTask('init', ['requirejs', 'copy']);
+  grunt.registerTask('init', ['jshint', 'requirejs', 'copy']);
   grunt.registerTask('build', ['init']);
   grunt.registerTask('default', ['watch']);
 };

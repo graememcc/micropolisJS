@@ -45,7 +45,7 @@ define(['MiscUtils'],
       case 1:
         savedGame.everClicked = false;
 
-        // Deliberate fall through
+        /* falls through */
       case 2:
         savedGame.pollutionMaxX = Math.floor(savedGame.width / 2);
         savedGame.pollutionMaxY = Math.floor(savedGame.height / 2);
