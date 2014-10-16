@@ -7,8 +7,8 @@
  *
  */
 
-define([],
-       function() {
+define(['./Config'],
+       function(Config) {
   "use strict";
 
 
@@ -39,8 +39,12 @@ define([],
 
 
     var emitEvent = function(event, value) {
-      if (event === undefined)
-        console.warn('Sending undefined event!');
+      if (event === undefined) {
+        if (!Config.debug)
+          console.warn('Sending undefined event!');
+        else
+          throw new Error('Sending undefined event!');
+      }
 
       if (!(event in events))
         events[event] = [];
