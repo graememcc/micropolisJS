@@ -126,5 +126,5 @@ define(['BaseSprite', 'Messages', 'MiscUtils', 'Random', 'SpriteConstants', 'Spr
      frames: MiscUtils.makeConstantDescriptor(5)});
 
 
-return TrainSprite;
+  return TrainSprite;
 });

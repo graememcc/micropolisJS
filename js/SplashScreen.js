@@ -93,7 +93,7 @@ define(['Config', 'Game', 'MapGenerator', 'Simulation', 'SplashCanvas', 'Storage
     $('#splash').toggle();
 
     // Launch
-    var g = new Game(savedGame, this.tileSet, this.spriteSheet, Simulation.LEVEL_EASY, name);
+    var g = new Game(savedGame, this.tileSet, this.snowTileSet, this.spriteSheet, Simulation.LEVEL_EASY, name);
   };
 
 
