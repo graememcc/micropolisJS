@@ -1,0 +1,896 @@
+/* micropolisJS. Adapted by Graeme McCutcheon from Micropolis.
+ *
+ * This code is released under the GNU GPL v3, with some additional terms.
+ * Please see the files LICENSE and COPYING for details. Alternatively,
+ * consult http://micropolisjs.graememcc.co.uk/LICENSE and
+ * http://micropolisjs.graememcc.co.uk/COPYING
+ *
+ */
+
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,300italic,400italic);
+
+* {
+  padding: 0;
+  margin: 0;
+}
+
+@font-face {
+  font-family: 'Chunk';
+  font-style: normal;
+  font-weight: 400;
+  src: local('ChunkFive'), url(chunk.woff) format('woff');
+}
+
+body {
+  background-image: url('../images/dirtbg.png');
+}
+
+button, input[type="submit"] {
+  width: 140px;
+  height: 19px;
+  border-radius: 3px;
+  cursor: pointer;
+  border: none;
+  font-family: sans-serif;
+}
+
+footer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0px;
+  height: 35px;
+  background-color: darkslategray;
+}
+
+header {
+  background-color: darkslategray;
+  background-image: repeating-linear-gradient(-45deg, transparent, transparent 35px, rgba(255, 255, 255, 0.2) 35px, rgba(255, 255, 255, 0.2) 70px);
+  font-family: 'Chunk', serif;
+  height: 35px;
+}
+
+header h1 {
+  margin-left: 50px;
+}
+
+main {
+  position: absolute;
+  top: 0;
+  bottom: 55px;
+  width: 100%;
+  overflow: hidden;
+}
+
+nav a, nav a:link, nav a:visited, nav a:hover, footer a, footer a:link, footer a:visited, footer a:hover #aboutHeader a, #aboutHeader a:link, #aboutHeader a:visited, #aboutHeader a:hover{
+  text-decoration: none;
+  color: white;
+}
+
+footer a, footer a:link, footer a:visited, footer a:hover {
+  text-decoration: underline;
+  margin-left: 5px;
+}
+
+nav li {
+  display: inline;
+}
+
+.alignCenter {
+  text-align: center;
+}
+
+.awaitGeneration, .hidden, .initialHidden, .imageData {
+  display: none;
+}
+
+.bad {
+  background-color: red;
+  color: yellow;
+}
+
+.block {
+  display: block;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.border-bottom {
+  border-bottom: 1px solid black;
+}
+
+.budgetRight {
+   margin-left: 7px
+}
+
+.cancel, #debugRequest, #pauseRequest {
+  background-color: darkslategray;
+  color: white;
+}
+
+.centred, #tooSmallInner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border: 1px solid black;
+  width: 400px;
+  transform: translate(-50%, -50%);
+}
+
+.chunk {
+  font-family: 'Chunk', serif;
+  font-weight: normal;
+}
+
+.dialogOK {
+  color: white;
+  background-color: green;
+}
+
+.difficulty {
+  margin-left: 10px;
+}
+
+.elided {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.fontlarge {
+  font-size: 36px;
+}
+
+.good {
+  background-color: LightGreen;
+  color: black;
+}
+
+.helpPointer {
+  cursor: help;
+}
+
+.inline {
+  display: inline;
+}
+
+.inlineblock {
+  display: inline-block;
+}
+
+.left {
+  float: left;
+}
+
+.leftedge {
+  left: 50px;
+}
+
+.loadSave, .saveHeader {
+  background-color: cadetblue;
+  color: white;
+}
+
+.loadSave:disabled {
+  background-color: darkgray;
+  color: silver;
+  cursor: not-allowed;
+}
+
+.margin10 {
+  margin: 10px 0;
+}
+
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  border: 1px solid black;
+  transform: translate(-50%, -50%);
+  z-index: 20;
+  background-color: white;
+  width: 500px;
+}
+
+.modal header {
+  height: 18px;
+}
+
+.mintcream, .neutral {
+  background-color: mintcream;
+}
+
+.neutral {
+  color: black;
+}
+
+.open {
+  font-family: 'Open Sans', sans-serif;
+}
+
+.opinion, .statistics {
+  font-size: 12px;
+}
+
+.opinionList dd {
+  font-style: italic;
+}
+
+.padding10 {
+  padding: 10px;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.queryItem, .statisticsItem {
+  display: inline-block;
+  width: 200px;
+}
+
+.queryList dt {
+  font-weight: 600;
+}
+
+.right {
+  float: right;
+}
+
+.rightedge {
+  right: 50px;
+}
+
+.row button {
+  display: inline-block;
+}
+
+.selected {
+  font-weight: bold;
+  border: 1px solid black;
+}
+
+.semibold {
+  font-weight: 600px;
+}
+
+.shadow, .controlShadow {
+  -ms-box-shadow: 10px 0px 35px 0px rgba(31,28,31, 0.8);
+  -webkit-box-shadow: 10px 0px 35px 0px rgba(31,28,31, 0.8);
+  -moz-box-shadow: 10px 0px 35px 0px rgba(31,28,31, 0.8);
+  box-shadow: 10px 0px 35px 0px rgba(31,28,31, 0.8);
+}
+
+.statisticsItem {
+  display: inline-block;
+  width: 200px;
+}
+
+.statisticsRight {
+  display: inline-block;
+  width: 150px;
+}
+
+.toolButton {
+  width: 140px;
+  margin-left: 5px;
+  margin-right: 5px;
+  color: black;
+  background-color: white;
+  font-size: 12px;
+  display: inline-block;
+}
+
+.unselected {
+  font-weight: normal;
+}
+
+.white {
+  color: white;
+}
+
+.width140 {
+  width: 140px;
+}
+
+.z1 {
+  z-index: 1;
+}
+
+#budgetForm > div:nth-child(9) {
+  align: center;
+  width: 100%;
+}
+
+#budgetForm > div, #budgetForm > fieldset {
+  display: inline-block;
+  width: 230px;
+}
+
+#budgetForm input[type="range"] {
+  max-width: 210px;
+  padding: 5px;
+}
+
+#budgetReset {
+  color: white;
+  background-color: dodgerblue;
+}
+
+#congratsHeader {
+  background-color: limegreen;
+}
+
+#controls {
+  position: absolute;
+  top: 40px;
+  width: 305px;
+  height: 220px;
+}
+
+#debug {
+  position: absolute;
+  top: 580px;
+  width: 280px;
+  display: none;
+}
+
+#difficultyLabel {
+  margin-right: 5px;
+}
+
+#disasterLabel {
+  display: block;
+}
+
+#evalContainer {
+  font-size: 14px;
+}
+
+#flagsTable {
+  text-align: center;
+  padding: 5px;
+  margin: 0 auto;
+  border: 1px solid black;
+}
+
+#flagsTable td, #flagsTable th {
+  padding: 0 5px;
+}
+
+#infobar {
+  position: absolute;
+  top: 40px;
+  height: 150px;
+}
+
+#loadingBanner[data-hasscript=false] {
+  display: none;
+}
+
+#miscButtons {
+  position: absolute;
+  top: 250px;
+  height: 162px;
+}
+
+#monstertv {
+  position: absolute;
+  top: 364px;
+  width: 200px;
+  background-color: red;
+}
+
+#monsterTVForm {
+  margin-top: 5px;
+}
+
+#nameForm {
+  font-size: 18px;
+  width: 150px;
+}
+
+#notifications {
+  position: absolute;
+  bottom: 65px;
+  left: 50%;
+  border: 1px solid black;
+  width: 400px;
+  height: 19px;
+  transform: translateX(-50%);
+}
+
+#opaque {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  opacity: .70;
+  filter: Alpha(Opacity=70);
+  background-color: gray;
+  z-index: 10;
+}
+
+#playit {
+  background-color: green;
+  color: white;
+  font-size: 18px;
+  height: 24px;
+}
+
+#RCIContainer {
+  position: absolute;
+  top: 472px;
+  width: 140px;
+  height: 140px;
+  margin: 0px;
+}
+
+#screenshotLink, #screenshotLink:link, #screenshotLink:visited, #screenshotLink:hover {
+  text-decoration: none;
+  color: dodgerblue;
+}
+
+#splash {
+  position: absolute;
+  width: 540px;
+  height: 380px;
+}
+
+#splashButton {
+  margin-bottom: 10px;
+}
+
+#splashButtons {
+  position: absolute;
+  left: 10px;
+  top: 105px;
+}
+
+#splashButtonContainer {
+  position: absolute;
+  top: 90px;
+  left: 390px;
+}
+
+#splashContainer {
+  position: absolute;
+  top: 90px;
+  left: 20px;
+}
+
+#splashGenerate {
+  background-color: dodgerBlue;
+  color: white
+}
+
+#splashPlay {
+  background-color: lightgreen;
+}
+
+#start {
+  display: none;
+  text-align: center;
+  font-size: 18px;
+}
+
+#statisticsList, .queryList {
+  width: 400px;
+  margin: 0 auto;
+  padding: 0 110px;
+}
+
+#tooSmall {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: none;
+  z-index: 200;
+}
+
+#tw {
+  position: absolute;
+  top: 300px;
+}
+
+#tvContainer {
+  width: 177px;
+  height: 128px;
+  margin: 0 auto;
+}
+
+#wrapper {
+  position: absolute;
+  top: 55px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+}
+
+
+/* Miscellaneous buttons */
+
+#budgetRequest, #budgetHeader {
+  background-color: dodgerblue;
+  color: white;
+}
+
+#disasterRequest, #disasterHeader {
+  background-color: red;
+  color: yellow;
+}
+
+#evalRequest, #evalHeader {
+  background-color: forestgreen;
+  color: white;
+}
+
+.screenshotHeader, #screenshotRequest {
+  background-color: tomato;
+  color: white;
+}
+
+#settingsHeader, #settingsRequest {
+  background-color: #663399;
+  color: white;
+}
+
+/* Tool buttons */
+#airportButton {
+  background-color: violet;
+}
+
+#bulldozerButton {
+  background-color: salmon;
+}
+
+#coalButton {
+  background-color: gray;
+}
+
+#commercialButton {
+  background-color: blue;
+  color: white;
+}
+
+#fireButton {
+  background-color: red;
+}
+
+#industrialButton {
+  background-color: yellow;
+}
+
+#nuclearButton {
+  background-color: mistyrose;
+}
+
+#parkButton {
+  background-color: darkgreen;
+  color: white;
+}
+
+#policeButton {
+  background-color: darkblue;
+  color: white;
+}
+
+#portButton {
+ background-color: dodgerblue;
+ color: white;
+}
+
+#queryButton, #queryHeader {
+  background-color: cyan;
+}
+
+#railButton {
+  background-color: brown;
+  color: white;
+}
+
+#residentialButton {
+  background-color: lime;
+}
+
+#roadButton {
+  background-color: black;
+  color: white;
+}
+
+#stadiumButton {
+  background-color: indigo;
+  color: white;
+}
+
+#wireButton {
+  background-color: khaki;
+}
+
+@media (max-height: 742px) {
+ footer {
+    height: 15px;
+  }
+
+  header {
+    height: 15px;
+  }
+
+  main {
+    bottom: 35px;
+  }
+
+  .border-bottom {
+    border: none;
+  }
+
+  .fontlarge {
+      font-size: 16px;
+  }
+
+  #author {
+    display: none;
+  }
+
+  #notifications {
+    bottom: unset;
+    border: none;
+    top: 593px;
+  }
+
+  #wrapper {
+    top: 35px;
+  }
+}
+
+@media (max-height: 702px) {
+  #controls {
+    top: 30px;
+  }
+
+  #debug {
+    top: 544px;
+  }
+
+  #infobar {
+    top: 30px;
+  }
+
+  #monstertv {
+    top: 324px;
+  }
+
+  #miscButtons {
+    top: 230px;
+  }
+
+  #notifications {
+    top: 563px;
+  }
+
+  #RCIContainer {
+    top: 442px;
+  }
+
+  #tw {
+    top: 280px;
+  }
+}
+
+@media (max-height: 672px) {
+  #controls {
+    top: 20px;
+  }
+
+  #debug {
+    top: 504px;
+  }
+
+  #infobar {
+    top: 20px;
+  }
+
+  #monstertv {
+    top: 304px;
+  }
+
+  #miscButtons {
+    top: 210px;
+  }
+
+  #notifications {
+    top: 533px;
+  }
+
+  #RCIContainer {
+    top: 412px;
+  }
+
+  #tw {
+    top: 260px;
+  }
+}
+
+@media (max-height: 642px) {
+  .controlShadow {
+    -ms-box-shadow: unset;
+    -webkit-box-shadow: unset;
+    -moz-box-shadow: unset;
+    box-shadow: unset;
+  }
+
+  #controls {
+    top: 10px;
+  }
+
+  #debug {
+    top: 460px;
+  }
+
+  #infobar {
+    top: 10px;
+  }
+
+  #miscButtons {
+    top: 190px;
+  }
+
+  #monstertv {
+    top: 274px;
+  }
+
+  #notifications {
+    top: 503px;
+  }
+
+  #RCIContainer {
+    top: 382px;
+  }
+
+  #tw {
+    top: 240px;
+  }
+}
+
+@media (max-height: 612px) {
+  #controls {
+    top: 0px;
+  }
+
+  #debug {
+    top: 396px;
+  }
+
+  #infobar {
+    top: 0px;
+  }
+
+  #miscButtons {
+    top: 170px;
+  }
+
+  #monstertv {
+    top: 220px;
+  }
+
+  #notifications {
+    top: 473px;
+  }
+
+  #RCIContainer {
+    top: 352px;
+  }
+
+  #tw {
+    display: none;
+  }
+}
+
+@media (max-height: 582px) {
+  #tooSmall[data-hasscript=true] {
+    display: block;
+  }
+}
+
+@media (max-width: 850px) {
+  .leftedge {
+    left: 20px;
+  }
+
+  .rightedge {
+    right: 20px;
+  }
+
+  #notifications {
+    bottom: 40px;
+    left: unset;
+    right: 0;
+    transform: unset;
+  }
+}
+
+@media (max-width: 750px) {
+  .leftedge {
+    left: 10px;
+  }
+
+  .rightedge {
+    right: 10px;
+  }
+}
+
+@media (max-width: 650px) {
+  .leftedge {
+    left: 0px;
+  }
+
+  .rightedge {
+    right: 0px;
+  }
+}
+
+@media (max-width: 590px) {
+  #tooSmall[data-hasscript=true] {
+    display: block;
+  }
+}
+
+/* About/nag page styles */
+
+#aboutMain {
+  position: relative;
+  top: 50px;
+  margin-bottom: 100px;
+}
+
+#aboutContainer {
+  position: relative;
+  left: 50%;
+  border: 1px solid black;
+  width: 75%;
+  line-height: 1.7em;
+  text-align: justify;
+  transform: translate(-50%);
+}
+
+#aboutContainer p, #aboutContainer li, #aboutContainer h3 {
+  margin: 10px;
+}
+
+#aboutContainer h3 {
+  margin-top: 20px;
+}
+
+#aboutContainer ul {
+  margin-left: 50px;
+}
+
+#aboutFooter {
+  position: static;
+}
+
+#appeal {
+  border: 1px dotted grey;
+  font-size: 12px;
+  width: 50%;
+  margin: auto;
+  line-height: 1.5em;
+  background-color: lightyellow;
+}
+
+#aboutMain a, #aboutMain a:link, #aboutMain a:visited, #aboutMain a:hover #nagContainer a, #nagContainer a:link, #nagContainer a:visited, #nagContainer a:hover {
+  text-decoration: none;
+  color: dodgerblue;
+}
+
+/* Pre refactoring below */
+
+.info {
+  width: 20%;
+  text-align: centre;
+}
