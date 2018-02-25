@@ -129,6 +129,7 @@ define(['Config', 'Random', 'Tile', 'TileUtils', 'Traffic', 'ZoneUtils'],
         ZoneUtils.incRateOfGrowth(blockMaps, x, y, 8);
         return;
       }
+        return;
     }
 
     if (population < 40) {
