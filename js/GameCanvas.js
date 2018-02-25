@@ -572,7 +572,7 @@ define(['AnimationManager', 'GameMap', 'MiscUtils', 'MouseBox', 'Tile', 'TileSet
 
 
   GameCanvas.prototype.paint = function(mouse, sprites, isPaused) {
-    var x, y, row, damaged, xBound, yBound, index;
+    var i, l, x, y, row, damaged, xBound, yBound, index;
 
     if (!this.ready)
       throw new Error('Not ready!');
@@ -636,7 +636,7 @@ define(['AnimationManager', 'GameMap', 'MiscUtils', 'MouseBox', 'Tile', 'TileSet
 
     if (sprites) {
       damaged = this._processSprites(ctx, sprites);
-      for (var i = 0, l = damaged.length; i < l; i++) {
+      for (i = 0, l = damaged.length; i < l; i++) {
         var damagedArea = damaged[i];
         for (y = Math.max(0, damagedArea.y), yBound = Math.min(damagedArea.yBound, paintHeight); y < yBound; y++) {
           for (x = Math.max(0, damagedArea.x), xBound = Math.min(damagedArea.xBound, paintWidth); x < xBound; x++) {
