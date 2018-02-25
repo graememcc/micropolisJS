@@ -266,8 +266,6 @@ define(['BlockMap', 'Commercial', 'Industrial', 'MiscUtils', 'Random', 'Resident
     else
       census.landValueAverage = 0;
       
-    // console.log('lValue: ' + census.landValueAverage)
-
     // Smooth the pollution map twice
     smoothMap(tempMap1, tempMap2, SMOOTH_ALL_THEN_CLAMP);
     smoothMap(tempMap2, tempMap1, SMOOTH_ALL_THEN_CLAMP);
@@ -418,7 +416,7 @@ define(['BlockMap', 'Commercial', 'Industrial', 'MiscUtils', 'Random', 'Resident
     var yTot = 0;
     var zoneTotal = 0;
       
-      tempMap1.clear();
+    tempMap1.clear();
 
     for (var x = 0, width = map.width; x < width; x++) {
       for (var y = 0, height = map.height; y < height; y++) {
@@ -436,8 +434,6 @@ define(['BlockMap', 'Commercial', 'Industrial', 'MiscUtils', 'Random', 'Resident
           xTot += x;
           yTot += y;
           zoneTotal++;
-        } else {
-          // tempMap1.worldSet(x, y, 0);
         }
       }
     }

@@ -120,16 +120,13 @@ define(['Config', 'Random', 'Tile', 'TileUtils', 'Traffic', 'ZoneUtils'],
         // Zone capacity not yet reached: build another house
         buildHouse(map, x, y, lpValue);
         ZoneUtils.incRateOfGrowth(blockMaps, x, y, 1);
-        return;
-      }
-
-      if (blockMaps.populationDensityMap.worldGet(x, y) > 64) {
+      } else if (blockMaps.populationDensityMap.worldGet(x, y) > 64) {
         // There is local demand for higher density housing
         placeResidential(map, x, y, 0, lpValue, zonePower);
         ZoneUtils.incRateOfGrowth(blockMaps, x, y, 8);
-        return;
       }
-        return;
+
+      return;
     }
 
     if (population < 40) {
