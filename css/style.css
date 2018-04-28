@@ -871,7 +871,7 @@ nav li {
 }
 
 #aboutFooter {
-  position: static;
+  position: relative;
 }
 
 #appeal {
