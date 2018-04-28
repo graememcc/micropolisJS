@@ -7,10 +7,13 @@
  *
  */
 
-define(['ConnectingTool', 'Tile', 'TileUtils'],
-       function(ConnectingTool, Tile, TileUtils) {
+define(function(require, exports, module) {
   "use strict";
 
+
+  var ConnectingTool = require('./ConnectingTool');
+  var Tile = require('./Tile');
+  var TileUtils = require('./TileUtils');
 
   var WireTool = ConnectingTool(function(map) {
     this.init(5, map, true, true);

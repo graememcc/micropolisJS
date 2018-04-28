@@ -7,10 +7,15 @@
  *
  */
 
-define(['EventEmitter', 'GameCanvas', 'GameTools', 'Messages', 'MiscUtils'],
-       function(EventEmitter, GameCanvas, GameTools, Messages, MiscUtils) {
+define(function(require, exports, module) {
   "use strict";
 
+
+  var EventEmitter = require('./EventEmitter');
+  var GameCanvas = require('./GameCanvas');
+  var GameTools = require('./GameTools');
+  var Messages = require('./Messages');
+  var MiscUtils = require('./MiscUtils');
 
   var InputStatus = EventEmitter(function(map, tileWidth) {
     this.gameTools = new GameTools(map);

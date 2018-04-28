@@ -7,10 +7,12 @@
  *
  */
 
-define(['MiscUtils', 'Tile'],
-       function(MiscUtils, Tile) {
+define(function(require, exports, module) {
   "use strict";
 
+
+  var MiscUtils = require('./MiscUtils');
+  var Tile = require('./Tile');
 
   var checkBigZone = function(tileValue) {
     var result;

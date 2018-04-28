@@ -7,9 +7,10 @@
  *
  */
 
-define(['MiscUtils'],
-       function(MiscUtils) {
+define(function(require, exports, module) {
 
+
+  var MiscUtils = require('./MiscUtils');
 
   // Split out to avoid circular dependency hell
 

@@ -7,10 +7,12 @@
  *
  */
 
-define(['Messages', 'ModalWindow'],
-       function(Messages, ModalWindow) {
+define(function(require, exports, module) {
   "use strict";
 
+
+  var Messages = require('./Messages');
+  var ModalWindow = require('./ModalWindow');
 
   var CongratsWindow = ModalWindow(function() {
     $(congratsFormID).on('submit', submit.bind(this));

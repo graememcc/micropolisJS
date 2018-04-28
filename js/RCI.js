@@ -7,10 +7,12 @@
  *
  */
 
-define(['Messages', 'MiscUtils'],
-       function(Messages, MiscUtils) {
+define(function(require, exports, module) {
   "use strict";
 
+
+  var Messages = require('./Messages');
+  var MiscUtils = require('./MiscUtils');
 
   function RCI(parentNode, eventSource, id) {
     if (arguments.length < 2)

@@ -7,10 +7,12 @@
  *
  */
 
-define(['Tile', 'ZoneUtils'],
-       function(Tile, ZoneUtils) {
+define(function(require, exports, module) {
   "use strict";
 
+
+  var Tile = require('./Tile');
+  var ZoneUtils = require('./ZoneUtils');
 
   var pixToWorld = function(p) {
     return p >> 4;

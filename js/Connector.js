@@ -7,10 +7,12 @@
  *
  */
 
-define(['Tile', 'TileUtils'],
-        function(Tile, TileUtils) {
+define(function(require, exports, module) {
     "use strict";
 
+
+  var Tile = require('./Tile');
+  var TileUtils = require('./TileUtils');
 
   var RoadTable = [
     Tile.ROADS, Tile.ROADS2, Tile.ROADS, Tile.ROADS3,

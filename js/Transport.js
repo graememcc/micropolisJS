@@ -7,10 +7,14 @@
  *
  */
 
-define(['Random', 'SpriteConstants', 'Tile', 'TileUtils'],
-       function(Random, SpriteConstants, Tile, TileUtils) {
+define(function(require, exports, module) {
   "use strict";
 
+
+  var Random = require('./Random');
+  var SpriteConstants = require('./SpriteConstants');
+  var Tile = require('./Tile');
+  var TileUtils = require('./TileUtils');
 
   var railFound = function(map, x, y, simData) {
     simData.census.railTotal += 1;

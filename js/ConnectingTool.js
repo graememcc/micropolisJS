@@ -7,9 +7,12 @@
  *
  */
 
-define(['BaseTool', 'Connector'], function(BaseTool, Connector) {
+define(function(require, exports, module) {
   "use strict";
 
+
+  var BaseTool = require('./BaseTool');
+  var Connector = require('./Connector');
 
   // Take a tool constructor, make it inherit from BaseTool, and add
   // the various connection related functions

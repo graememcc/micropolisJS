@@ -7,10 +7,11 @@
  *
  */
 
-define(['Direction'],
-       function(Direction) {
+define(function(require, exports, module) {
   "use strict";
 
+
+  var Direction = require('./Direction');
 
   function PositionMaker(width, height) {
     if (arguments.length < 2)

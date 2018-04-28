@@ -7,10 +7,13 @@
  *
  */
 
-define(['Messages', 'MiscUtils', 'ModalWindow'],
-       function(Messages, MiscUtils, ModalWindow) {
+define(function(require, exports, module) {
   "use strict";
 
+
+  var Messages = require('./Messages');
+  var MiscUtils = require('./MiscUtils');
+  var ModalWindow = require('./ModalWindow');
 
   var BudgetWindow = ModalWindow(function() {
     $(budgetCancelID).on('click', cancel.bind(this));

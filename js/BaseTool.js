@@ -7,10 +7,15 @@
  *
  */
 
-define(['Messages', 'MiscUtils', 'Tile', 'TileUtils', 'WorldEffects'],
-       function(Messages, MiscUtils, Tile, TileUtils, WorldEffects) {
+define(function(require, exports, module) {
   "use strict";
 
+
+  var Messages = require('./Messages');
+  var MiscUtils = require('./MiscUtils');
+  var Tile = require('./Tile');
+  var TileUtils = require('./TileUtils');
+  var WorldEffects = require('./WorldEffects');
 
   var init = function(cost, map, shouldAutoBulldoze, isDraggable) {
     isDraggable = isDraggable || false;

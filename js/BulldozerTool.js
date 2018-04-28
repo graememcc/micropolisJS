@@ -7,10 +7,17 @@
  *
  */
 
-define(['ConnectingTool', 'EventEmitter', 'Messages', 'Random', 'Tile', 'TileUtils', 'ZoneUtils'],
-       function(ConnectingTool, EventEmitter, Messages, Random, Tile, TileUtils, ZoneUtils) {
+define(function(require, exports, module) {
   "use strict";
 
+
+  var ConnectingTool = require('./ConnectingTool');
+  var EventEmitter = require('./EventEmitter');
+  var Messages = require('./Messages');
+  var Random = require('./Random');
+  var Tile = require('./Tile');
+  var TileUtils = require('./TileUtils');
+  var ZoneUtils = require('./ZoneUtils');
 
   var BulldozerTool = EventEmitter(ConnectingTool(function(map) {
     this.init(10, map, true);

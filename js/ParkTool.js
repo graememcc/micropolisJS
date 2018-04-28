@@ -7,10 +7,14 @@
  *
  */
 
-define(['BaseTool', 'Random', 'Tile', 'TileUtils'],
-       function(BaseTool, Random, Tile, TileUtils) {
+define(function(require, exports, module) {
   "use strict";
 
+
+  var BaseTool = require('./BaseTool');
+  var Random = require('./Random');
+  var Tile = require('./Tile');
+  var TileUtils = require('./TileUtils');
 
   var makeTool = BaseTool.makeTool;
   var ParkTool = makeTool(function(map) {

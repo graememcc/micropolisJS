@@ -7,10 +7,16 @@
  *
  */
 
-define(['BaseSprite', 'Messages', 'MiscUtils', 'Random', 'SpriteConstants', 'SpriteUtils'],
-       function(BaseSprite, Messages, MiscUtils, Random, SpriteConstants, SpriteUtils) {
+define(function(require, exports, module) {
   "use strict";
 
+
+  var BaseSprite = require('./BaseSprite');
+  var Messages = require('./Messages');
+  var MiscUtils = require('./MiscUtils');
+  var Random = require('./Random');
+  var SpriteConstants = require('./SpriteConstants');
+  var SpriteUtils = require('./SpriteUtils');
 
   function TornadoSprite(map, spriteManager, x, y) {
     this.init(SpriteConstants.SPRITE_TORNADO, map, spriteManager, x, y);

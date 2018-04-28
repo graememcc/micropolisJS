@@ -7,10 +7,13 @@
  *
  */
 
-define(['Messages', 'ModalWindow', 'MiscUtils'],
-       function(Messages, ModalWindow, MiscUtils) {
+define(function(require, exports, module) {
   "use strict";
 
+
+  var Messages = require('./Messages');
+  var ModalWindow = require('./ModalWindow');
+  var MiscUtils = require('./MiscUtils');
 
   var ScreenshotLinkWindow = ModalWindow(function() {
     $(screenshotLinkFormID).on('submit', submit.bind(this));

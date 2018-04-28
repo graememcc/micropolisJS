@@ -7,10 +7,11 @@
  *
  */
 
-define(['Tile'],
-       function(Tile) {
+define(function(require, exports, module) {
   "use strict";
 
+
+  var Tile = require('./Tile');
 
   // Tiles must be 16px square
   var TILE_SIZE = 16;

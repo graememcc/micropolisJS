@@ -7,10 +7,12 @@
  *
  */
 
-define(['EventEmitter', 'SpriteUtils'],
-       function(EventEmitter, SpriteUtils) {
+define(function(require, exports, module) {
   "use strict";
 
+
+  var EventEmitter = require('./EventEmitter');
+  var SpriteUtils = require('./SpriteUtils');
 
   var init = function(type, map, spriteManager, x, y) {
     this.type = type;

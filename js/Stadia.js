@@ -7,10 +7,11 @@
  *
  */
 
-define(['Tile'],
-       function(Tile) {
+define(function(require, exports, module) {
   "use strict";
 
+
+  var Tile = require('./Tile');
 
   var emptyStadiumFound = function(map, x, y, simData) {
     simData.census.stadiumPop += 1;

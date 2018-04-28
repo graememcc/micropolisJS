@@ -7,10 +7,16 @@
  *
  */
 
-define(['Config', 'Random', 'Tile', 'TileUtils', 'Traffic', 'ZoneUtils'],
-       function(Config, Random, Tile, TileUtils, Traffic, ZoneUtils) {
+define(function(require, exports, module) {
   "use strict";
 
+
+  var Config = require('./Config');
+  var Random = require('./Random');
+  var Tile = require('./Tile');
+  var TileUtils = require('./TileUtils');
+  var Traffic = require('./Traffic');
+  var ZoneUtils = require('./ZoneUtils');
 
   // Residential tiles have 'populations' of 16, 24, 32 or 40, and value from 0 to 3. The tiles are laid out in
   // increasing order of land value, cycling through each population value

@@ -7,10 +7,11 @@
  *
  */
 
-define(['Tile'],
-       function(Tile) {
+define(function(require, exports, module) {
   "use strict";
 
+
+  var Tile = require('./Tile');
 
   function RepairManager(map) {
     this._map = map;

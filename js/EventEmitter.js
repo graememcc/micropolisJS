@@ -7,10 +7,11 @@
  *
  */
 
-define(['./Config'],
-       function(Config) {
+define(function(require, exports, module) {
   "use strict";
 
+
+  var Config = require('./Config');
 
   // Decorate the given object, by adding {add|remove}EventListener methods, and an internal '_emitEvent' method
   var makeEventEmitter = function(obj) {

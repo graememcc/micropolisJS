@@ -7,10 +7,17 @@
  *
  */
 
-define(['BaseSprite', 'Messages', 'MiscUtils', 'Random', 'SpriteConstants', 'SpriteUtils', 'Tile'],
-       function(BaseSprite, Messages, MiscUtils, Random, SpriteConstants, SpriteUtils, Tile) {
+define(function(require, exports, module) {
   "use strict";
 
+
+  var BaseSprite = require('./BaseSprite');
+  var Messages = require('./Messages');
+  var MiscUtils = require('./MiscUtils');
+  var Random = require('./Random');
+  var SpriteConstants = require('./SpriteConstants');
+  var SpriteUtils = require('./SpriteUtils');
+  var Tile = require('./Tile');
 
   function BoatSprite(map, spriteManager, x, y) {
     this.init(SpriteConstants.SPRITE_SHIP, map, spriteManager, x, y);

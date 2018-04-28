@@ -7,10 +7,14 @@
  *
  */
 
-define(['Config', 'Messages', 'ModalWindow', 'MiscUtils'],
-       function(Config, Messages, ModalWindow, MiscUtils) {
+define(function(require, exports, module) {
   "use strict";
 
+
+  var Config = require('./Config');
+  var Messages = require('./Messages');
+  var ModalWindow = require('./ModalWindow');
+  var MiscUtils = require('./MiscUtils');
 
   var QueryWindow = ModalWindow(function() {
     this._debugToggled = false;

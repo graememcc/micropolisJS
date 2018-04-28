@@ -7,10 +7,13 @@
  *
  */
 
-define(['Messages', 'MiscUtils', 'Text'],
-       function(Messages, MiscUtils, Text) {
+define(function(require, exports, module) {
   "use strict";
 
+
+  var Messages = require('./Messages');
+  var MiscUtils = require('./MiscUtils');
+  var Text = require('./Text');
 
   // TODO L20N
 

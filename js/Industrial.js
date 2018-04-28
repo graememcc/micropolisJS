@@ -7,10 +7,15 @@
  *
  */
 
-define(['Random', 'Tile', 'TileUtils', 'Traffic', 'ZoneUtils'],
-       function(Random, Tile, TileUtils, Traffic, ZoneUtils) {
+define(function(require, exports, module) {
   "use strict";
 
+
+  var Random = require('./Random');
+  var Tile = require('./Tile');
+  var TileUtils = require('./TileUtils');
+  var Traffic = require('./Traffic');
+  var ZoneUtils = require('./ZoneUtils');
 
   // There are 8 types of industrial zone aside from the empty zone. They are categorized by population and value.
   // There are 4 levels of population (1-4), and 2 levels of value.

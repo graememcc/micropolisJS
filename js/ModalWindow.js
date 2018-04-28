@@ -7,10 +7,12 @@
  *
  */
 
-define(['EventEmitter', 'MiscUtils'],
-       function(EventEmitter, MiscUtils) {
+define(function(require, exports, module) {
   "use strict";
 
+
+  var EventEmitter = require('./EventEmitter');
+  var MiscUtils = require('./MiscUtils');
 
   var ModalWindow = function(constructorFunction, focusID) {
     focusID = focusID ? MiscUtils.normaliseDOMid(focusID) : null;

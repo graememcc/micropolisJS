@@ -7,10 +7,16 @@
  *
  */
 
-define(['AnimationManager', 'GameMap', 'MiscUtils', 'MouseBox', 'Tile', 'TileSet'],
-       function(AnimationManager, GameMap, MiscUtils, MouseBox, Tile, TileSet) {
+define(function(require, exports, module) {
   "use strict";
 
+
+  var AnimationManager = require('./AnimationManager');
+  var GameMap = require('./GameMap');
+  var MiscUtils = require('./MiscUtils');
+  var MouseBox = require('./MouseBox');
+  var Tile = require('./Tile');
+  var TileSet = require('./TileSet');
 
   function GameCanvas(id, parentNode) {
     if (!(this instanceof GameCanvas))

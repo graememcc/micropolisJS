@@ -7,10 +7,12 @@
  *
  */
 
-define(['MiscUtils', 'Text'],
-       function(MiscUtils, Text) {
+define(function(require, exports, module) {
   "use strict";
 
+
+  var MiscUtils = require('./MiscUtils');
+  var Text = require('./Text');
 
   var TIMEOUT_SECS = 30;
 

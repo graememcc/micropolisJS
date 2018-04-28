@@ -7,10 +7,14 @@
  *
  */
 
-define(['Direction', 'GameMap', 'Random', 'Tile'],
-       function(Direction, GameMap, Random, Tile) {
+define(function(require, exports, module) {
   "use strict";
 
+
+  var Direction = require('./Direction');
+  var GameMap = require('./GameMap');
+  var Random = require('./Random');
+  var Tile = require('./Tile');
 
   var TERRAIN_CREATE_ISLAND;
   var TERRAIN_TREE_LEVEL = -1;

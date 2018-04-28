@@ -7,10 +7,18 @@
  *
  */
 
-define(['BaseSprite', 'Messages', 'MiscUtils', 'Random', 'SpriteConstants', 'SpriteUtils', 'Tile', 'TileUtils'],
-       function(BaseSprite, Messages, MiscUtils, Random, SpriteConstants, SpriteUtils, Tile, TileUtils) {
+define(function(require, exports, module) {
   "use strict";
 
+
+  var BaseSprite = require('./BaseSprite');
+  var Messages = require('./Messages');
+  var MiscUtils = require('./MiscUtils');
+  var Random = require('./Random');
+  var SpriteConstants = require('./SpriteConstants');
+  var SpriteUtils = require('./SpriteUtils');
+  var Tile = require('./Tile');
+  var TileUtils = require('./TileUtils');
 
   function MonsterSprite(map, spriteManager, x, y) {
     this.init(SpriteConstants.SPRITE_MONSTER, map, spriteManager, x, y);

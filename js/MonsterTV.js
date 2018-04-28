@@ -7,10 +7,13 @@
  *
  */
 
-define(['EventEmitter', 'GameCanvas', 'Messages'],
-       function(EventEmitter, GameCanvas, Messages) {
+define(function(require, exports, module) {
   "use strict";
 
+
+  var EventEmitter = require('./EventEmitter');
+  var GameCanvas = require('./GameCanvas');
+  var Messages = require('./Messages');
 
   var TIMEOUT_SECS = 10;
 

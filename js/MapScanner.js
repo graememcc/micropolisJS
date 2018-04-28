@@ -7,10 +7,11 @@
  *
  */
 
-define(['Tile'],
-       function(Tile) {
+define(function(require, exports, module) {
   "use strict";
 
+
+  var Tile = require('./Tile');
 
   // Tile to be filled to avoid creating lots of GC-able objects
   var tile = new Tile();

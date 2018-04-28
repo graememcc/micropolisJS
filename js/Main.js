@@ -7,10 +7,15 @@
  *
  */
 
-require(['Config', 'SplashScreen', 'TileSet', 'TileSetURI', 'TileSetSnowURI'],
-        function(Config, SplashScreen, TileSet, TileSetURI, TileSetSnowURI) {
+define(function(require, exports, module) {
   "use strict";
 
+
+  var Config = require('./Config');
+  var SplashScreen = require('./SplashScreen');
+  var TileSet = require('./TileSet');
+  var TileSetURI = require('./TileSetURI');
+  var TileSetSnowURI = require('./TileSetSnowURI');
 
   /*
    *

@@ -7,10 +7,11 @@
  *
  */
 
-define(['Tile'],
-       function(Tile) {
+define(function(require, exports, module) {
   "use strict";
 
+
+  var Tile = require('./Tile');
 
   var handleService = function(censusStat, budgetEffect, blockMap) {
     return function(map, x, y, simData) {

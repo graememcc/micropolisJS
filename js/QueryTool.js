@@ -7,10 +7,16 @@
  *
  */
 
-define(['BaseTool', 'Config', 'EventEmitter', 'Messages', 'Text', 'Tile'],
-       function(BaseTool, Config, EventEmitter, Messages, Text, Tile) {
+define(function(require, exports, module) {
   "use strict";
 
+
+  var BaseTool = require('./BaseTool');
+  var Config = require('./Config');
+  var EventEmitter = require('./EventEmitter');
+  var Messages = require('./Messages');
+  var Text = require('./Text');
+  var Tile = require('./Tile');
 
   var makeTool = BaseTool.makeTool;
   var QueryTool = EventEmitter(makeTool(function(map) {

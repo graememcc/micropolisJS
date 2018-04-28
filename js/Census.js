@@ -7,10 +7,11 @@
  *
  */
 
-define(['MiscUtils'],
-       function(MiscUtils) {
+define(function(require, exports, module) {
   "use strict";
 
+
+  var MiscUtils = require('./MiscUtils');
 
   var arrs = ['res', 'com', 'ind', 'crime',
               'money', 'pollution'];

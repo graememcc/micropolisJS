@@ -7,10 +7,16 @@
  *
  */
 
-define(['Config', 'Game', 'MapGenerator', 'Simulation', 'SplashCanvas', 'Storage'],
-       function(Config, Game, MapGenerator, Simulation, SplashCanvas, Storage) {
+define(function(require, exports, module) {
   "use strict";
 
+
+  var Config = require('./Config');
+  var Game = require('./Game');
+  var MapGenerator = require('./MapGenerator');
+  var Simulation = require('./Simulation');
+  var SplashCanvas = require('./SplashCanvas');
+  var Storage = require('./Storage');
 
   /*
    *

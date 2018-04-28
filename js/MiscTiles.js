@@ -7,10 +7,14 @@
  *
  */
 
-define(['Random', 'Tile', 'TileUtils', 'ZoneUtils'],
-       function(Random, Tile, TileUtils, ZoneUtils) {
+define(function(require, exports, module) {
   "use strict";
 
+
+  var Random = require('./Random');
+  var Tile = require('./Tile');
+  var TileUtils = require('./TileUtils');
+  var ZoneUtils = require('./ZoneUtils');
 
   var xDelta = [-1,  0,  1,  0 ];
   var yDelta = [ 0, -1,  0,  1 ];

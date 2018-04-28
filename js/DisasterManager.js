@@ -7,10 +7,18 @@
  *
  */
 
-define(['EventEmitter', 'Messages', 'MiscUtils', 'Random', 'SpriteConstants', 'Tile', 'TileUtils', 'ZoneUtils'],
-       function(EventEmitter, Messages, MiscUtils, Random, SpriteConstants, Tile, TileUtils, ZoneUtils) {
+define(function(require, exports, module) {
   "use strict";
 
+
+  var EventEmitter = require('./EventEmitter');
+  var Messages = require('./Messages');
+  var MiscUtils = require('./MiscUtils');
+  var Random = require('./Random');
+  var SpriteConstants = require('./SpriteConstants');
+  var Tile = require('./Tile');
+  var TileUtils = require('./TileUtils');
+  var ZoneUtils = require('./ZoneUtils');
 
   var DisasterManager = EventEmitter(function(map, spriteManager, gameLevel) {
     this._map = map;

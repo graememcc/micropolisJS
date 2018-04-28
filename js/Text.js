@@ -7,10 +7,13 @@
  *
  */
 
-define(['Evaluate', 'Messages', 'Simulation'],
-       function(Evaluation, Messages, Simulation) {
+define(function(require, exports, module) {
   "use strict";
 
+
+  var Evaluation = require('./Evaluate');
+  var Messages = require('./Messages');
+  var Simulation = require('./Simulation');
 
   // TODO Some kind of rudimentary L20N based on navigator.language?
 

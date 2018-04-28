@@ -7,10 +7,13 @@
  *
  */
 
-define(['EventEmitter', 'Messages', 'MiscUtils'],
-       function(EventEmitter, Messages, MiscUtils) {
+define(function(require, exports, module) {
   "use strict";
 
+
+  var EventEmitter = require('./EventEmitter');
+  var Messages = require('./Messages');
+  var MiscUtils = require('./MiscUtils');
 
   var Valves = EventEmitter(function () {
     this.resValve = 0;

@@ -7,10 +7,13 @@
  *
  */
 
-define(['Tile', 'TileHistory', 'TileUtils'],
-       function(Tile, TileHistory, TileUtils) {
+define(function(require, exports, module) {
   "use strict";
 
+
+  var Tile = require('./Tile');
+  var TileHistory = require('./TileHistory');
+  var TileUtils = require('./TileUtils');
 
   var BIT_MASK = Tile.BIT_MASK;
   var POWERBIT = Tile.POWERBIT;

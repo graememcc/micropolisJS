@@ -7,10 +7,13 @@
  *
  */
 
-define(['Random', 'Tile', 'TileUtils'],
-       function(Random, Tile, TileUtils) {
+define(function(require, exports, module) {
   "use strict";
 
+
+  var Random = require('./Random');
+  var Tile = require('./Tile');
+  var TileUtils = require('./TileUtils');
 
   var openBridge = function(map, origX, origY, xDelta, yDelta, oldTiles, newTiles) {
     for (var i = 0; i < 7; i++) {

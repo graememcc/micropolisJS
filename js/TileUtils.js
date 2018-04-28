@@ -7,10 +7,12 @@
  *
  */
 
-define(['Random', 'Tile'],
-       function(Random, Tile) {
+define(function(require, exports, module) {
   "use strict";
 
+
+  var Random = require('./Random');
+  var Tile = require('./Tile');
 
   var unwrapTile = function(f) {
     return function(tile) {

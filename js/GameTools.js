@@ -7,10 +7,21 @@
  *
  */
 
-define(['BuildingTool', 'BulldozerTool', 'EventEmitter', 'Messages', 'MiscUtils', 'ParkTool', 'RailTool', 'RoadTool', 'QueryTool', 'Tile', 'WireTool'],
-       function(BuildingTool, BulldozerTool, EventEmitter, Messages, MiscUtils, ParkTool, RailTool, RoadTool, QueryTool, Tile, WireTool) {
+define(function(require, exports, module) {
   "use strict";
 
+
+  var BuildingTool = require('./BuildingTool');
+  var BulldozerTool = require('./BulldozerTool');
+  var EventEmitter = require('./EventEmitter');
+  var Messages = require('./Messages');
+  var MiscUtils = require('./MiscUtils');
+  var ParkTool = require('./ParkTool');
+  var RailTool = require('./RailTool');
+  var RoadTool = require('./RoadTool');
+  var QueryTool = require('./QueryTool');
+  var Tile = require('./Tile');
+  var WireTool = require('./WireTool');
 
   function gameTools(map) {
     var tools = EventEmitter({

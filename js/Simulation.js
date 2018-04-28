@@ -7,10 +7,33 @@
  *
  */
 
-define(['BlockMap', 'BlockMapUtils', 'Budget', 'Census', 'Commercial', 'DisasterManager', 'EventEmitter', 'EmergencyServices', 'Evaluate', 'Industrial', 'MapScanner', 'Messages', 'MiscTiles', 'MiscUtils', 'PowerManager', 'RepairManager', 'Residential', 'Road', 'SpriteManager', 'Stadia', 'Traffic', 'Transport', 'Valves'],
-        function(BlockMap, BlockMapUtils, Budget, Census, Commercial, DisasterManager, EventEmitter, EmergencyServices, Evaluate, Industrial, MapScanner, Messages, MiscTiles, MiscUtils, PowerManager, RepairManager, Residential, Road, SpriteManager, Stadia, Traffic, Transport, Valves) {
+define(function(require, exports, module) {
   "use strict";
 
+
+  var BlockMap = require('./BlockMap');
+  var BlockMapUtils = require('./BlockMapUtils');
+  var Budget = require('./Budget');
+  var Census = require('./Census');
+  var Commercial = require('./Commercial');
+  var DisasterManager = require('./DisasterManager');
+  var EventEmitter = require('./EventEmitter');
+  var EmergencyServices = require('./EmergencyServices');
+  var Evaluate = require('./Evaluate');
+  var Industrial = require('./Industrial');
+  var MapScanner = require('./MapScanner');
+  var Messages = require('./Messages');
+  var MiscTiles = require('./MiscTiles');
+  var MiscUtils = require('./MiscUtils');
+  var PowerManager = require('./PowerManager');
+  var RepairManager = require('./RepairManager');
+  var Residential = require('./Residential');
+  var Road = require('./Road');
+  var SpriteManager = require('./SpriteManager');
+  var Stadia = require('./Stadia');
+  var Traffic = require('./Traffic');
+  var Transport = require('./Transport');
+  var Valves = require('./Valves');
 
   var Simulation = EventEmitter(function (gameMap, gameLevel, speed, savedGame) {
     this._map = gameMap;

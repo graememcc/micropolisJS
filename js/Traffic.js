@@ -7,10 +7,17 @@
  *
  */
 
-define(['Direction', 'MiscUtils', 'Random', 'SpriteConstants', 'SpriteUtils', 'Tile', 'TileUtils'],
-       function(Direction, MiscUtils, Random, SpriteConstants, SpriteUtils, Tile, TileUtils) {
+define(function(require, exports, module) {
   "use strict";
 
+
+  var Direction = require('./Direction');
+  var MiscUtils = require('./MiscUtils');
+  var Random = require('./Random');
+  var SpriteConstants = require('./SpriteConstants');
+  var SpriteUtils = require('./SpriteUtils');
+  var Tile = require('./Tile');
+  var TileUtils = require('./TileUtils');
 
   function Traffic(map, spriteManager) {
     this._map = map;

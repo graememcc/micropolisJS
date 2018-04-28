@@ -7,10 +7,15 @@
  *
  */
 
-define(['Random', 'Tile', 'TileUtils', 'Traffic', 'ZoneUtils'],
-       function(Random, Tile, TileUtils, Traffic, ZoneUtils) {
+define(function(require, exports, module) {
   "use strict";
 
+
+  var Random = require('./Random');
+  var Tile = require('./Tile');
+  var TileUtils = require('./TileUtils');
+  var Traffic = require('./Traffic');
+  var ZoneUtils = require('./ZoneUtils');
 
   // There are 20 types of commercial zone aside from the empty zone. They reflect 5 different categories of
   // population, and 4 grades of land value/pollution. Population value 1/low value corresponds to the 9 tiles

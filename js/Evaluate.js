@@ -7,10 +7,14 @@
  *
  */
 
-define(['EventEmitter', 'Messages', 'MiscUtils', 'Random'],
-       function(EventEmitter, Messages, MiscUtils, Random) {
+define(function(require, exports, module) {
   "use strict";
 
+
+  var EventEmitter = require('./EventEmitter');
+  var Messages = require('./Messages');
+  var MiscUtils = require('./MiscUtils');
+  var Random = require('./Random');
 
   var PROBLEMS = ['CVP_CRIME', 'CVP_POLLUTION', 'CVP_HOUSING', 'CVP_TAXES',
                   'CVP_TRAFFIC', 'CVP_UNEMPLOYMENT', 'CVP_FIRE'];

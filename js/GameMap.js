@@ -7,10 +7,14 @@
  *
  */
 
-define(['Direction', 'MiscUtils', 'PositionMaker', 'Tile'],
-       function(Direction, MiscUtils, PositionMaker, Tile) {
+define(function(require, exports, module) {
   "use strict";
 
+
+  var Direction = require('./Direction');
+  var MiscUtils = require('./MiscUtils');
+  var PositionMaker = require('./PositionMaker');
+  var Tile = require('./Tile');
 
   function GameMap(width, height, defaultValue) {
     if (!(this instanceof GameMap))

@@ -7,10 +7,17 @@
  *
  */
 
-define(['BlockMap', 'Commercial', 'Industrial', 'MiscUtils', 'Random', 'Residential', 'Tile'],
-       function(BlockMap, Commercial, Industrial, MiscUtils, Random, Residential, Tile) {
+define(function(require, exports, module) {
   "use strict";
 
+
+  var BlockMap = require('./BlockMap');
+  var Commercial = require('./Commercial');
+  var Industrial = require('./Industrial');
+  var MiscUtils = require('./MiscUtils');
+  var Random = require('./Random');
+  var Residential = require('./Residential');
+  var Tile = require('./Tile');
 
   // Smoothing styles for map smoothing
   var SMOOTH_NEIGHBOURS_THEN_BLOCK = 0;

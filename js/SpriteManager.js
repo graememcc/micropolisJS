@@ -7,10 +7,24 @@
  *
  */
 
-define(['AirplaneSprite', 'BoatSprite', 'CopterSprite', 'EventEmitter', 'ExplosionSprite', 'Messages', 'MiscUtils', 'MonsterSprite', 'Random', 'SpriteConstants', 'SpriteUtils', 'Tile', 'TornadoSprite', 'TrainSprite'],
-       function(AirplaneSprite, BoatSprite, CopterSprite, EventEmitter, ExplosionSprite, Messages, MiscUtils, MonsterSprite, Random, SpriteConstants, SpriteUtils, Tile, TornadoSprite, TrainSprite) {
+define(function(require, exports, module) {
   "use strict";
 
+
+  var AirplaneSprite = require('./AirplaneSprite');
+  var BoatSprite = require('./BoatSprite');
+  var CopterSprite = require('./CopterSprite');
+  var EventEmitter = require('./EventEmitter');
+  var ExplosionSprite = require('./ExplosionSprite');
+  var Messages = require('./Messages');
+  var MiscUtils = require('./MiscUtils');
+  var MonsterSprite = require('./MonsterSprite');
+  var Random = require('./Random');
+  var SpriteConstants = require('./SpriteConstants');
+  var SpriteUtils = require('./SpriteUtils');
+  var Tile = require('./Tile');
+  var TornadoSprite = require('./TornadoSprite');
+  var TrainSprite = require('./TrainSprite');
 
   var SpriteManager = EventEmitter(function(map) {
     this.spriteList = [];

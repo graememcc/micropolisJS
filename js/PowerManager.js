@@ -7,10 +7,16 @@
  *
  */
 
-define(['BlockMap', 'Direction', 'EventEmitter', 'Messages', 'Random', 'Tile'],
-       function(BlockMap, Direction, EventEmitter, Messages, Random, Tile) {
+define(function(require, exports, module) {
   "use strict";
 
+
+  var BlockMap = require('./BlockMap');
+  var Direction = require('./Direction');
+  var EventEmitter = require('./EventEmitter');
+  var Messages = require('./Messages');
+  var Random = require('./Random');
+  var Tile = require('./Tile');
 
   var COAL_POWER_STRENGTH = 700;
   var NUCLEAR_POWER_STRENGTH = 2000;

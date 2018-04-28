@@ -7,10 +7,36 @@
  *
  */
 
-define(['BaseTool', 'BudgetWindow', 'Config', 'CongratsWindow', 'DebugWindow', 'DisasterWindow', 'EvaluationWindow', 'GameCanvas', 'GameMap', 'InfoBar', 'InputStatus', 'Messages', 'MonsterTV', 'NagWindow', 'Notification', 'QueryWindow', 'Random', 'RCI', 'SaveWindow', 'ScreenshotLinkWindow', 'ScreenshotWindow', 'SettingsWindow', 'Simulation', 'Storage', 'Text', 'TouchWarnWindow'],
-       function(BaseTool, BudgetWindow, Config, CongratsWindow, DebugWindow, DisasterWindow, EvaluationWindow, GameCanvas, GameMap, InfoBar, InputStatus, Messages, MonsterTV, NagWindow, Notification, QueryWindow, Random, RCI, SaveWindow, ScreenshotLinkWindow, ScreenshotWindow, SettingsWindow, Simulation, Storage, Text, TouchWarnWindow) {
+define(function(require, exports, module) {
   "use strict";
 
+
+  var BaseTool = require('./BaseTool');
+  var BudgetWindow = require('./BudgetWindow');
+  var Config = require('./Config');
+  var CongratsWindow = require('./CongratsWindow');
+  var DebugWindow = require('./DebugWindow');
+  var DisasterWindow = require('./DisasterWindow');
+  var EvaluationWindow = require('./EvaluationWindow');
+  var GameCanvas = require('./GameCanvas');
+  var GameMap = require('./GameMap');
+  var InfoBar = require('./InfoBar');
+  var InputStatus = require('./InputStatus');
+  var Messages = require('./Messages');
+  var MonsterTV = require('./MonsterTV');
+  var NagWindow = require('./NagWindow');
+  var Notification = require('./Notification');
+  var QueryWindow = require('./QueryWindow');
+  var Random = require('./Random');
+  var RCI = require('./RCI');
+  var SaveWindow = require('./SaveWindow');
+  var ScreenshotLinkWindow = require('./ScreenshotLinkWindow');
+  var ScreenshotWindow = require('./ScreenshotWindow');
+  var SettingsWindow = require('./SettingsWindow');
+  var Simulation = require('./Simulation');
+  var Storage = require('./Storage');
+  var Text = require('./Text');
+  var TouchWarnWindow = require('./TouchWarnWindow');
 
   var disasterTimeout = 20 * 1000;
 
