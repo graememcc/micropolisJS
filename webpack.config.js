@@ -79,7 +79,7 @@ module.exports = function(env, argv) {
     entry: './js/Main.js',
     output: {
       path: path.resolve(__dirname, OUTPUT_DIRECTORY),
-      filename: 'main.js'
+      filename: 'js/micropolis.js'
     },
     plugins: [
       cleanUpLeftovers(),
