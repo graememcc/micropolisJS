@@ -36,6 +36,25 @@ module.exports = function(grunt) {
       src: ['js/**/*.js']
     },
 
+    revision: {
+      options: {
+        property: 'meta.revision',
+        ref: 'HEAD',
+        short: true
+      }
+    },
+
+    replace: {
+      buildId: {
+        src: ['dist/*.html'],
+        overwrite: true,
+        replacements: [{
+          from: /BUILDID/,
+          to: "<%= meta.revision %>"
+        }]
+      }
+    },
+
     requirejs: {
       compile: {
         options: {
@@ -52,12 +71,12 @@ module.exports = function(grunt) {
         livereload: '<%= connect.developmentServer.options.livereload %>'
       },
       files: ['index.html', 'about.html', 'css/*', 'sprites/*', 'thirdparty/*', 'images/*', 'js/*', 'COPYING', 'LICENSE'],
-      tasks: ['copy', 'requirejs']
+      tasks: ['copy', 'requirejs', 'revision', 'replace']
     }
   });
 
 
-  grunt.registerTask('init', ['jshint', 'requirejs', 'copy']);
+  grunt.registerTask('init', ['jshint', 'requirejs', 'copy', 'revision', 'replace']);
   grunt.registerTask('build', ['init']);
-  grunt.registerTask('default', ['connect:developmentServer', 'watch']);
+  grunt.registerTask('default', ['build', 'connect:developmentServer', 'watch']);
 };

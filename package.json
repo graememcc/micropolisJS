@@ -16,6 +16,8 @@
     "grunt-contrib-jshint": "^1.1.0",
     "grunt-contrib-requirejs": "^0.4.4",
     "grunt-contrib-watch": "^0.6.1",
+    "grunt-git-revision": "0.0.1",
+    "grunt-text-replace": "0.4.0",
     "load-grunt-tasks": "^0.6.0"
   },
   "author": "Graeme McCutcheon (http://www.graememcc.co.uk)",
