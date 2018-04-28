@@ -894,3 +894,9 @@ nav li {
   width: 20%;
   text-align: centre;
 }
+
+#build {
+  position: absolute;
+  left: 5px;
+  bottom: 5px;
+}
