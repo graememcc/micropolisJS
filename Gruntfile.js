@@ -18,6 +18,17 @@ module.exports = function(grunt) {
       }
     },
 
+    connect: {
+      developmentServer: {
+        options: {
+          base: 'dist',
+          port: 8000,
+          hostname: 'localhost',
+          livereload: 35729
+        }
+      }
+    },
+
     jshint: {
       options: {
         newcap: false
@@ -37,6 +48,9 @@ module.exports = function(grunt) {
     },
 
     watch: {
+      options: {
+        livereload: '<%= connect.developmentServer.options.livereload %>'
+      },
       files: ['index.html', 'about.html', 'css/*', 'sprites/*', 'thirdparty/*', 'images/*', 'js/*', 'COPYING', 'LICENSE'],
       tasks: ['copy', 'requirejs']
     }
@@ -45,5 +59,5 @@ module.exports = function(grunt) {
 
   grunt.registerTask('init', ['jshint', 'requirejs', 'copy']);
   grunt.registerTask('build', ['init']);
-  grunt.registerTask('default', ['watch']);
+  grunt.registerTask('default', ['connect:developmentServer', 'watch']);
 };
