@@ -71,12 +71,11 @@ module.exports = function(grunt) {
         livereload: '<%= connect.developmentServer.options.livereload %>'
       },
       files: ['index.html', 'about.html', 'css/*', 'sprites/*', 'thirdparty/*', 'images/*', 'js/*', 'COPYING', 'LICENSE'],
-      tasks: ['copy', 'requirejs', 'revision', 'replace']
+      tasks: ['build']
     }
   });
 
 
-  grunt.registerTask('init', ['jshint', 'requirejs', 'copy', 'revision', 'replace']);
-  grunt.registerTask('build', ['init']);
+  grunt.registerTask('build', ['jshint', 'requirejs', 'copy', 'revision', 'replace']);
   grunt.registerTask('default', ['build', 'connect:developmentServer', 'watch']);
 };
