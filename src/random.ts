@@ -8,43 +8,50 @@
  *
  */
 
-var getChance = function(chance: number): boolean {
-  return (getRandom16() & chance) === 0;
+interface MathGlobal {
+  random(): number;
+  floor(n: number): number;
+}
+
+type UpperBoundedRNG = (maxValue: number) => number;
+
+type SixteenBitRNG = () => number;
+
+function getChance(chance: number, rng: SixteenBitRNG = getRandom16): boolean {
+  // tslint:disable-next-line:no-bitwise
+  return (rng() & chance) === 0;
+}
+
+function getERandom(max: number, rng: UpperBoundedRNG = getRandom): number {
+  const firstCandidate = rng(max);
+  const secondCandidate = rng(max);
+  return Math.min(firstCandidate, secondCandidate);
+}
+
+function getRandom(max: number, mathGlobal: MathGlobal = Math): number {
+  return mathGlobal.floor(mathGlobal.random() * (max + 1));
+}
+
+function getRandom16(rng: UpperBoundedRNG = getRandom): number {
+  return rng(65535);
+}
+
+function getRandom16Signed(rng: SixteenBitRNG = getRandom16) {
+  const value = rng();
+
+  if (value < 32768) {
+    return value;
+  } else {
+    return -(2 ** 16) + value;
+  }
+}
+
+const Random = {
+  getChance,
+  getERandom,
+  getRandom,
+  getRandom16,
+  getRandom16Signed,
 };
-
-
-var getERandom = function(max:number): number {
-  var r1 = getRandom(max);
-  var r2 = getRandom(max);
-  return Math.min(r1, r2);
-};
-
-
-var getRandom = function(max:number): number {
-  return Math.floor(Math.random() * (max + 1));
-};
-
-
-var getRandom16 = function() {
-  return getRandom(65535);
-};
-
-
-var getRandom16Signed = function() {
-  var value = getRandom16();
-  if (value >= 32768)
-    value = 32768 - value;
-  return value;
-};
-
-
-var Random = {
-  getChance: getChance,
-  getERandom: getERandom,
-  getRandom: getRandom,
-  getRandom16: getRandom16,
-  getRandom16Signed: getRandom16Signed
-};
-
 
 export { Random };
