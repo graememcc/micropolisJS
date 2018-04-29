@@ -7,113 +7,108 @@
  *
  */
 
-define(function(require, exports, module) {
-  "use strict";
+import { BaseSprite } from './BaseSprite';
+import { Messages } from './Messages';
+import { MiscUtils } from './MiscUtils';
+import { Random } from './Random';
+import { SpriteConstants } from './SpriteConstants';
+import { SpriteUtils } from './SpriteUtils';
+import { Tile } from './Tile';
+
+function CopterSprite(map, spriteManager, x, y) {
+  this.init(SpriteConstants.SPRITE_HELICOPTER, map, spriteManager, x, y);
+  this.width = 32;
+  this.height = 32;
+  this.xOffset = -16;
+  this.yOffset = -16;
+  this.frame = 5;
+  this.count = 1500;
+  this.destX = Random.getRandom(SpriteUtils.worldToPix(map.width)) + 8;
+  this.destY = Random.getRandom(SpriteUtils.worldToPix(map.height)) + 8;
+  this.origX = x;
+  this.origY = y;
+}
 
 
-  var BaseSprite = require('./BaseSprite');
-  var Messages = require('./Messages');
-  var MiscUtils = require('./MiscUtils');
-  var Random = require('./Random');
-  var SpriteConstants = require('./SpriteConstants');
-  var SpriteUtils = require('./SpriteUtils');
-  var Tile = require('./Tile');
-
-  function CopterSprite(map, spriteManager, x, y) {
-    this.init(SpriteConstants.SPRITE_HELICOPTER, map, spriteManager, x, y);
-    this.width = 32;
-    this.height = 32;
-    this.xOffset = -16;
-    this.yOffset = -16;
-    this.frame = 5;
-    this.count = 1500;
-    this.destX = Random.getRandom(SpriteUtils.worldToPix(map.width)) + 8;
-    this.destY = Random.getRandom(SpriteUtils.worldToPix(map.height)) + 8;
-    this.origX = x;
-    this.origY = y;
-  }
+BaseSprite(CopterSprite);
 
 
-  BaseSprite(CopterSprite);
+var xDelta = [0, 0, 3, 5, 3, 0, -3, -5, -3];
+var yDelta = [0, -5, -3, 0, 3, 5, 3, 0, -3];
 
+CopterSprite.prototype.move = function(spriteCycle, disasterManager, blockMaps) {
+  if (this.soundCount > 0)
+    this.soundCount--;
 
-  var xDelta = [0, 0, 3, 5, 3, 0, -3, -5, -3];
-  var yDelta = [0, -5, -3, 0, 3, 5, 3, 0, -3];
+  if (this.count > 0)
+    this.count--;
 
-  CopterSprite.prototype.move = function(spriteCycle, disasterManager, blockMaps) {
-    if (this.soundCount > 0)
-      this.soundCount--;
+  if (this.count === 0) {
+    // Head towards a monster, and certain doom
+    var s = this.spriteManager.getSprite(SpriteConstants.SPRITE_MONSTER);
 
-    if (this.count > 0)
-      this.count--;
-
-    if (this.count === 0) {
-      // Head towards a monster, and certain doom
-      var s = this.spriteManager.getSprite(SpriteConstants.SPRITE_MONSTER);
+    if (s !== null) {
+      this.destX = s.x;
+      this.destY = s.y;
+    } else {
+      // No monsters. Hm. I bet flying near that tornado is sensible
+      s = this.spriteManager.getSprite(SpriteConstants.SPRITE_TORNADO);
 
       if (s !== null) {
-        this.destX = s.x;
-        this.destY = s.y;
+          this.destX = s.x;
+          this.destY = s.y;
       } else {
-        // No monsters. Hm. I bet flying near that tornado is sensible
-        s = this.spriteManager.getSprite(SpriteConstants.SPRITE_TORNADO);
-
-        if (s !== null) {
-            this.destX = s.x;
-            this.destY = s.y;
-        } else {
-            this.destX = this.origX;
-            this.destY = this.origY;
-        }
-      }
-
-      // If near destination, let's get her on the ground
-      var absDist = SpriteUtils.absoluteDistance(this.x, this.y, this.origX, this.origY);
-      if (absDist < 30) {
-        this.frame = 0;
-        return;
+          this.destX = this.origX;
+          this.destY = this.origY;
       }
     }
 
-    if (this.soundCount === 0) {
-        var x = this.worldX;
-        var y = this.worldY;
+    // If near destination, let's get her on the ground
+    var absDist = SpriteUtils.absoluteDistance(this.x, this.y, this.origX, this.origY);
+    if (absDist < 30) {
+      this.frame = 0;
+      return;
+    }
+  }
 
-        if (x >= 0 && x < this.map.width && y >= 0 && y < this.map.height) {
-          if (blockMaps.trafficDensityMap.worldGet(x, y) > 170 && (Random.getRandom16() & 7) === 0) {
-            this._emitEvent(Messages.HEAVY_TRAFFIC, {x: x, y: y});
-            this._emitEvent(Messages.SOUND_HEAVY_TRAFFIC);
-            this.soundCount = 200;
-        }
+  if (this.soundCount === 0) {
+      var x = this.worldX;
+      var y = this.worldY;
+
+      if (x >= 0 && x < this.map.width && y >= 0 && y < this.map.height) {
+        if (blockMaps.trafficDensityMap.worldGet(x, y) > 170 && (Random.getRandom16() & 7) === 0) {
+          this._emitEvent(Messages.HEAVY_TRAFFIC, {x: x, y: y});
+          this._emitEvent(Messages.SOUND_HEAVY_TRAFFIC);
+          this.soundCount = 200;
       }
     }
+  }
 
-    var frame = this.frame;
+  var frame = this.frame;
 
-    if ((spriteCycle & 3) === 0) {
-      var dir = SpriteUtils.getDir(this.x, this.y, this.destX, this.destY);
-      frame = SpriteUtils.turnTo(frame, dir);
-      this.frame = frame;
-    }
+  if ((spriteCycle & 3) === 0) {
+    var dir = SpriteUtils.getDir(this.x, this.y, this.destX, this.destY);
+    frame = SpriteUtils.turnTo(frame, dir);
+    this.frame = frame;
+  }
 
-    this.x += xDelta[frame];
-    this.y += yDelta[frame];
-  };
-
-
-  CopterSprite.prototype.explodeSprite = function() {
-    this.frame = 0;
-    this.spriteManager.makeExplosionAt(this.x, this.y);
-    this._emitEvent(Messages.HELICOPTER_CRASHED, {x: this.worldX, y: this.worldY});
-  };
+  this.x += xDelta[frame];
+  this.y += yDelta[frame];
+};
 
 
-  // Metadata for image loading
-  Object.defineProperties(CopterSprite,
-    {ID: MiscUtils.makeConstantDescriptor(2),
-     width: MiscUtils.makeConstantDescriptor(32),
-     frames: MiscUtils.makeConstantDescriptor(8)});
+CopterSprite.prototype.explodeSprite = function() {
+  this.frame = 0;
+  this.spriteManager.makeExplosionAt(this.x, this.y);
+  this._emitEvent(Messages.HELICOPTER_CRASHED, {x: this.worldX, y: this.worldY});
+};
 
 
-  return CopterSprite;
-});
+// Metadata for image loading
+Object.defineProperties(CopterSprite,
+  {ID: MiscUtils.makeConstantDescriptor(2),
+   width: MiscUtils.makeConstantDescriptor(32),
+   frames: MiscUtils.makeConstantDescriptor(8)});
+
+
+export { CopterSprite };

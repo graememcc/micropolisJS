@@ -7,39 +7,34 @@
  *
  */
 
-define(function(require, exports, module) {
-  "use strict";
+import { Messages } from './Messages';
+import { ModalWindow } from './ModalWindow';
 
-
-  var Messages = require('./Messages');
-  var ModalWindow = require('./ModalWindow');
-
-  var SaveWindow = ModalWindow(function() {
-    $(saveFormID).on('submit', submit.bind(this));
-  });
-
-
-  var saveFormID = '#saveForm';
-  var saveOKID = '#saveOK';
-
-
-  var submit = function(e) {
-    e.preventDefault();
-    this.close();
-  };
-
-
-  SaveWindow.prototype.close = function() {
-    this._toggleDisplay();
-    this._emitEvent(Messages.SAVE_WINDOW_CLOSED);
-  };
-
-
-  SaveWindow.prototype.open = function() {
-    this._toggleDisplay();
-    $(saveOKID).focus();
-  };
-
-
-  return SaveWindow;
+var SaveWindow = ModalWindow(function() {
+  $(saveFormID).on('submit', submit.bind(this));
 });
+
+
+var saveFormID = '#saveForm';
+var saveOKID = '#saveOK';
+
+
+var submit = function(e) {
+  e.preventDefault();
+  this.close();
+};
+
+
+SaveWindow.prototype.close = function() {
+  this._toggleDisplay();
+  this._emitEvent(Messages.SAVE_WINDOW_CLOSED);
+};
+
+
+SaveWindow.prototype.open = function() {
+  this._toggleDisplay();
+  $(saveOKID).focus();
+};
+
+
+export { SaveWindow };

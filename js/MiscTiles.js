@@ -7,85 +7,80 @@
  *
  */
 
-define(function(require, exports, module) {
-  "use strict";
+import { Random } from './Random';
+import { Tile } from './Tile';
+import { TileUtils } from './TileUtils';
+import { ZoneUtils } from './ZoneUtils';
 
+var xDelta = [-1,  0,  1,  0 ];
+var yDelta = [ 0, -1,  0,  1 ];
 
-  var Random = require('./Random');
-  var Tile = require('./Tile');
-  var TileUtils = require('./TileUtils');
-  var ZoneUtils = require('./ZoneUtils');
+var fireFound = function(map, x, y, simData) {
+  simData.census.firePop += 1;
 
-  var xDelta = [-1,  0,  1,  0 ];
-  var yDelta = [ 0, -1,  0,  1 ];
+  if ((Random.getRandom16() & 3) !== 0)
+    return;
 
-  var fireFound = function(map, x, y, simData) {
-    simData.census.firePop += 1;
+  // Try to set neighbouring tiles on fire as well
+  for (var i = 0; i < 4; i++) {
+    if (Random.getChance(7)) {
+      var xTem = x + xDelta[i];
+      var yTem = y + yDelta[i];
 
-    if ((Random.getRandom16() & 3) !== 0)
-      return;
+      if (map.testBounds(xTem, yTem)) {
+        var tile = map.getTile(x, y);
+        if (!tile.isCombustible())
+            continue;
 
-    // Try to set neighbouring tiles on fire as well
-    for (var i = 0; i < 4; i++) {
-      if (Random.getChance(7)) {
-        var xTem = x + xDelta[i];
-        var yTem = y + yDelta[i];
+        if (tile.isZone()) {
+          // Neighbour is a ione and burnable
+          ZoneUtils.fireZone(map, x, y, simData.blockMaps);
 
-        if (map.testBounds(xTem, yTem)) {
-          var tile = map.getTile(x, y);
-          if (!tile.isCombustible())
-              continue;
-
-          if (tile.isZone()) {
-            // Neighbour is a ione and burnable
-            ZoneUtils.fireZone(map, x, y, simData.blockMaps);
-
-            // Industrial zones etc really go boom
-            if (tile.getValue() > Tile.IZB)
-              simData.spriteManager.makeExplosionAt(x, y);
-          }
-
-          map.setTo(tileUtils.randomFire());
+          // Industrial zones etc really go boom
+          if (tile.getValue() > Tile.IZB)
+            simData.spriteManager.makeExplosionAt(x, y);
         }
+
+        map.setTo(tileUtils.randomFire());
       }
     }
+  }
 
-    // Compute likelyhood of fire running out of fuel
-    var rate = 10; // Likelyhood of extinguishing (bigger means less chance)
-    i = simData.blockMaps.fireStationEffectMap.worldGet(x, y);
+  // Compute likelyhood of fire running out of fuel
+  var rate = 10; // Likelyhood of extinguishing (bigger means less chance)
+  i = simData.blockMaps.fireStationEffectMap.worldGet(x, y);
 
-    if (i > 100)
-      rate = 1;
-    else if (i > 20)
-      rate = 2;
-    else if (i > 0)
-      rate = 3;
+  if (i > 100)
+    rate = 1;
+  else if (i > 20)
+    rate = 2;
+  else if (i > 0)
+    rate = 3;
 
-    // Decide whether to put out the fire.
-    if (Random.getRandom(rate) === 0)
-      map.setTo(x, y, TileUtils.randomRubble());
-  };
-
-
-  var radiationFound = function(map, x, y, simData) {
-    if (Random.getChance(4095))
-      map.setTile(x, y, Tile.DIRT, 0);
-  };
+  // Decide whether to put out the fire.
+  if (Random.getRandom(rate) === 0)
+    map.setTo(x, y, TileUtils.randomRubble());
+};
 
 
-  var floodFound = function(map, x, y, simData) {
-    simData.disasterManager.doFlood(x, y, simData.blockMaps);
-  };
+var radiationFound = function(map, x, y, simData) {
+  if (Random.getChance(4095))
+    map.setTile(x, y, Tile.DIRT, 0);
+};
 
 
-  var MiscTiles = {
-    registerHandlers: function(mapScanner, repairManager) {
-      mapScanner.addAction(TileUtils.isFire, fireFound, true);
-      mapScanner.addAction(Tile.RADTILE, radiationFound, true);
-      mapScanner.addAction(TileUtils.isFlood, floodFound, true);
-    }
-  };
+var floodFound = function(map, x, y, simData) {
+  simData.disasterManager.doFlood(x, y, simData.blockMaps);
+};
 
 
-  return MiscTiles;
-});
+var MiscTiles = {
+  registerHandlers: function(mapScanner, repairManager) {
+    mapScanner.addAction(TileUtils.isFire, fireFound, true);
+    mapScanner.addAction(Tile.RADTILE, radiationFound, true);
+    mapScanner.addAction(TileUtils.isFlood, floodFound, true);
+  }
+};
+
+
+export { MiscTiles };

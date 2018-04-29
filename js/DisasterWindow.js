@@ -7,73 +7,68 @@
  *
  */
 
-define(function(require, exports, module) {
-  "use strict";
+import { Messages } from './Messages';
+import { MiscUtils } from './MiscUtils';
+import { ModalWindow } from './ModalWindow';
+
+var disasterSelectID = '#disasterSelect';
+var disasterCancelID = '#disasterCancel';
+var disasterOKID = '#disasterOK';
+var disasterFormID = '#disasterForm';
 
 
-  var Messages = require('./Messages');
-  var MiscUtils = require('./MiscUtils');
-  var ModalWindow = require('./ModalWindow');
-
-  var disasterSelectID = '#disasterSelect';
-  var disasterCancelID = '#disasterCancel';
-  var disasterOKID = '#disasterOK';
-  var disasterFormID = '#disasterForm';
+var DisasterWindow = ModalWindow(function() {
+  $(disasterFormID).on('submit', submit.bind(this));
+  $(disasterCancelID).on('click', cancel.bind(this));
+}, disasterSelectID);
 
 
-  var DisasterWindow = ModalWindow(function() {
-    $(disasterFormID).on('submit', submit.bind(this));
-    $(disasterCancelID).on('click', cancel.bind(this));
-  }, disasterSelectID);
+DisasterWindow.prototype.close = function(disaster) {
+  disaster = disaster || DisasterWindow.DISASTER_NONE;
+  this._toggleDisplay();
+  this._emitEvent(Messages.DISASTER_WINDOW_CLOSED, disaster);
+};
 
 
-  DisasterWindow.prototype.close = function(disaster) {
-    disaster = disaster || DisasterWindow.DISASTER_NONE;
-    this._toggleDisplay();
-    this._emitEvent(Messages.DISASTER_WINDOW_CLOSED, disaster);
-  };
+var cancel = function(e) {
+  e.preventDefault();
+  this.close();
+};
 
 
-  var cancel = function(e) {
-    e.preventDefault();
-    this.close();
-  };
+var submit = function(e) {
+  e.preventDefault();
+
+  // Get element values
+  var requestedDisaster = $(disasterSelectID)[0].value;
+  this.close(requestedDisaster);
+};
 
 
-  var submit = function(e) {
-    e.preventDefault();
+DisasterWindow.prototype.open = function() {
+  var i;
 
-    // Get element values
-    var requestedDisaster = $(disasterSelectID)[0].value;
-    this.close(requestedDisaster);
-  };
+  // Ensure options have right values
+  $('#disasterNone').attr('value', DisasterWindow.DISASTER_NONE);
+  $('#disasterMonster').attr('value', DisasterWindow.DISASTER_MONSTER);
+  $('#disasterFire').attr('value', DisasterWindow.DISASTER_FIRE);
+  $('#disasterFlood').attr('value', DisasterWindow.DISASTER_FLOOD);
+  $('#disasterCrash').attr('value', DisasterWindow.DISASTER_CRASH);
+  $('#disasterMeltdown').attr('value', DisasterWindow.DISASTER_MELTDOWN);
+  $('#disasterTornado').attr('value', DisasterWindow.DISASTER_TORNADO);
 
-
-  DisasterWindow.prototype.open = function() {
-    var i;
-
-    // Ensure options have right values
-    $('#disasterNone').attr('value', DisasterWindow.DISASTER_NONE);
-    $('#disasterMonster').attr('value', DisasterWindow.DISASTER_MONSTER);
-    $('#disasterFire').attr('value', DisasterWindow.DISASTER_FIRE);
-    $('#disasterFlood').attr('value', DisasterWindow.DISASTER_FLOOD);
-    $('#disasterCrash').attr('value', DisasterWindow.DISASTER_CRASH);
-    $('#disasterMeltdown').attr('value', DisasterWindow.DISASTER_MELTDOWN);
-    $('#disasterTornado').attr('value', DisasterWindow.DISASTER_TORNADO);
-
-    this._toggleDisplay();
-  };
+  this._toggleDisplay();
+};
 
 
-  Object.defineProperties(DisasterWindow,
-    {DISASTER_NONE: MiscUtils.makeConstantDescriptor('None'),
-     DISASTER_MONSTER: MiscUtils.makeConstantDescriptor('Monster'),
-     DISASTER_FIRE: MiscUtils.makeConstantDescriptor('Fire'),
-     DISASTER_FLOOD: MiscUtils.makeConstantDescriptor('Flood'),
-     DISASTER_CRASH: MiscUtils.makeConstantDescriptor('Crash'),
-     DISASTER_MELTDOWN: MiscUtils.makeConstantDescriptor('Meltdown'),
-     DISASTER_TORNADO: MiscUtils.makeConstantDescriptor('Tornado')});
+Object.defineProperties(DisasterWindow,
+  {DISASTER_NONE: MiscUtils.makeConstantDescriptor('None'),
+   DISASTER_MONSTER: MiscUtils.makeConstantDescriptor('Monster'),
+   DISASTER_FIRE: MiscUtils.makeConstantDescriptor('Fire'),
+   DISASTER_FLOOD: MiscUtils.makeConstantDescriptor('Flood'),
+   DISASTER_CRASH: MiscUtils.makeConstantDescriptor('Crash'),
+   DISASTER_MELTDOWN: MiscUtils.makeConstantDescriptor('Meltdown'),
+   DISASTER_TORNADO: MiscUtils.makeConstantDescriptor('Tornado')});
 
 
-  return DisasterWindow;
-});
+export { DisasterWindow };

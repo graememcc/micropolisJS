@@ -7,97 +7,92 @@
  *
  */
 
-define(function(require, exports, module) {
-  "use strict";
+import { BaseSprite } from './BaseSprite';
+import { Messages } from './Messages';
+import { MiscUtils } from './MiscUtils';
+import { Random } from './Random';
+import { SpriteConstants } from './SpriteConstants';
+import { SpriteUtils } from './SpriteUtils';
+
+function TornadoSprite(map, spriteManager, x, y) {
+  this.init(SpriteConstants.SPRITE_TORNADO, map, spriteManager, x, y);
+  this.width = 48;
+  this.height = 48;
+  this.xOffset = -24;
+  this.yOffset = -40;
+  this.frame = 1;
+  this.count = 200;
+}
 
 
-  var BaseSprite = require('./BaseSprite');
-  var Messages = require('./Messages');
-  var MiscUtils = require('./MiscUtils');
-  var Random = require('./Random');
-  var SpriteConstants = require('./SpriteConstants');
-  var SpriteUtils = require('./SpriteUtils');
+BaseSprite(TornadoSprite);
 
-  function TornadoSprite(map, spriteManager, x, y) {
-    this.init(SpriteConstants.SPRITE_TORNADO, map, spriteManager, x, y);
-    this.width = 48;
-    this.height = 48;
-    this.xOffset = -24;
-    this.yOffset = -40;
-    this.frame = 1;
-    this.count = 200;
+
+var xDelta = [2, 3, 2, 0, -2, -3];
+var yDelta = [-2, 0, 2, 3, 2, 0];
+
+TornadoSprite.prototype.move = function(spriteCycle, disasterManager, blockMaps) {
+  var frame = this.frame;
+
+  // If middle frame, move right or left
+  // depending on the flag value
+  // If frame = 1, perhaps die based on flag
+  // value
+  if (frame === 2) {
+    if (this.flag)
+      frame = 3;
+    else
+      frame = 1;
+  } else {
+    if (frame === 1)
+      this.flag = 1;
+    else
+      this.flag = 0;
+
+    frame = 2;
   }
 
+  if (this.count > 0)
+    this.count--;
 
-  BaseSprite(TornadoSprite);
+  this.frame = frame;
 
+  var spriteList = this.spriteManager.getSpriteList();
+  for (var i = 0; i < spriteList.length; i++) {
+    var s = spriteList[i];
 
-  var xDelta = [2, 3, 2, 0, -2, -3];
-  var yDelta = [-2, 0, 2, 3, 2, 0];
-
-  TornadoSprite.prototype.move = function(spriteCycle, disasterManager, blockMaps) {
-    var frame = this.frame;
-
-    // If middle frame, move right or left
-    // depending on the flag value
-    // If frame = 1, perhaps die based on flag
-    // value
-    if (frame === 2) {
-      if (this.flag)
-        frame = 3;
-      else
-        frame = 1;
-    } else {
-      if (frame === 1)
-        this.flag = 1;
-      else
-        this.flag = 0;
-
-      frame = 2;
+    // Explode vulnerable sprites
+    if (s.frame !== 0 &&
+        (s.type === SpriteConstants.SPRITE_AIRPLANE || s.type === SpriteConstants.SPRITE_HELICOPTER ||
+         s.type === SpriteConstants.SPRITE_SHIP || s.type === SpriteConstants.SPRITE_TRAIN) &&
+      SpriteUtils.checkSpriteCollision(this, s)) {
+      s.explodeSprite();
     }
+  }
 
-    if (this.count > 0)
-      this.count--;
+  frame = Random.getRandom(5);
+  this.x += xDelta[frame];
+  this.y += yDelta[frame];
 
-    this.frame = frame;
+  if (this.spriteNotInBounds())
+    this.frame = 0;
 
-    var spriteList = this.spriteManager.getSpriteList();
-    for (var i = 0; i < spriteList.length; i++) {
-      var s = spriteList[i];
+  if (this.count !== 0 && Random.getRandom(500) === 0)
+    this.frame = 0;
 
-      // Explode vulnerable sprites
-      if (s.frame !== 0 &&
-          (s.type === SpriteConstants.SPRITE_AIRPLANE || s.type === SpriteConstants.SPRITE_HELICOPTER ||
-           s.type === SpriteConstants.SPRITE_SHIP || s.type === SpriteConstants.SPRITE_TRAIN) &&
-        SpriteUtils.checkSpriteCollision(this, s)) {
-        s.explodeSprite();
-      }
-    }
+  if (this.frame === 0)
+    this._emitEvent(Messages.SPRITE_DYING);
 
-    frame = Random.getRandom(5);
-    this.x += xDelta[frame];
-    this.y += yDelta[frame];
-
-    if (this.spriteNotInBounds())
-      this.frame = 0;
-
-    if (this.count !== 0 && Random.getRandom(500) === 0)
-      this.frame = 0;
-
-    if (this.frame === 0)
-      this._emitEvent(Messages.SPRITE_DYING);
-
-    SpriteUtils.destroyMapTile(this.spriteManager, this.map, blockMaps, this.x, this.y);
-    this._emitEvent(Messages.SPRITE_MOVED, {x: this.worldX, y: this.worldY});
-  };
+  SpriteUtils.destroyMapTile(this.spriteManager, this.map, blockMaps, this.x, this.y);
+  this._emitEvent(Messages.SPRITE_MOVED, {x: this.worldX, y: this.worldY});
+};
 
 
-  // Metadata for image loading
-  Object.defineProperties(TornadoSprite,
-    {ID: MiscUtils.makeConstantDescriptor(6),
-     width: MiscUtils.makeConstantDescriptor(48),
-     frames: MiscUtils.makeConstantDescriptor(3)});
+// Metadata for image loading
+Object.defineProperties(TornadoSprite,
+  {ID: MiscUtils.makeConstantDescriptor(6),
+   width: MiscUtils.makeConstantDescriptor(48),
+   frames: MiscUtils.makeConstantDescriptor(3)});
 
 
-  return TornadoSprite;
-});
+export { TornadoSprite };

@@ -7,20 +7,15 @@
  *
  */
 
-define(function(require, exports, module) {
-  "use strict";
+import { BaseTool } from './BaseTool';
+import { Connector } from './Connector';
+
+// Take a tool constructor, make it inherit from BaseTool, and add
+// the various connection related functions
+var makeTool = BaseTool.makeTool;
+var ConnectingTool = function(toolConstructor) {
+  return Connector(makeTool(toolConstructor));
+};
 
 
-  var BaseTool = require('./BaseTool');
-  var Connector = require('./Connector');
-
-  // Take a tool constructor, make it inherit from BaseTool, and add
-  // the various connection related functions
-  var makeTool = BaseTool.makeTool;
-  var connectingTool = function(toolConstructor) {
-    return Connector(makeTool(toolConstructor));
-  };
-
-
-  return connectingTool;
-});
+export { ConnectingTool };
