@@ -76,11 +76,11 @@ module.exports = function(env, argv) {
   const buildId = getBuildId();
 
   const options = {
-    entry: './js/Main.js',
+    entry: './src/micropolis.js',
     mode: 'production',
     output: {
       path: path.resolve(__dirname, OUTPUT_DIRECTORY),
-      filename: 'js/micropolis.js'
+      filename: 'src/micropolis.js'
     },
     plugins: [
       cleanUpLeftovers(),
