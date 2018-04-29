@@ -7,7 +7,7 @@
  *
  */
 
-import { Evaluation } from './Evaluate';
+import { Evaluation } from './Evaluation';
 import { Messages } from './Messages';
 import { Simulation } from './Simulation';
 

@@ -15,7 +15,7 @@ import { Commercial } from './Commercial';
 import { DisasterManager } from './DisasterManager';
 import { EventEmitter } from './EventEmitter';
 import { EmergencyServices } from './EmergencyServices';
-import { Evaluation } from './Evaluate';
+import { Evaluation } from './Evaluation';
 import { Industrial } from './Industrial';
 import { MapScanner } from './MapScanner';
 import { Messages } from './Messages';
