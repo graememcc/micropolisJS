@@ -1,5 +1,6 @@
 *.swp
 *.swo
+coverage/
 dist/
 node_modules/
 TODO
