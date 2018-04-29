@@ -75,9 +75,16 @@ function getBuildId() {
 module.exports = function(env, argv) {
   const buildId = getBuildId();
 
+  const typescriptThroughATL = {test: /\.ts$/, loader: "awesome-typescript-loader"};
+
   const options = {
     entry: './src/micropolis.js',
     mode: 'production',
+    module: {
+     rules: [
+       typescriptThroughATL
+      ]
+    },
     output: {
       path: path.resolve(__dirname, OUTPUT_DIRECTORY),
       filename: 'src/micropolis.js'
@@ -88,7 +95,12 @@ module.exports = function(env, argv) {
       injectBundleIntoHTML(buildId),
       injectBuildIdIntoAbout(buildId),
       deferInjectedBundle()
-    ]
+    ],
+    resolve: {
+      extensions: [
+        ".js", ".json", ".ts"
+      ]
+    }
   };
 
   if (env.development) {
