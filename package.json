@@ -14,7 +14,8 @@
     "watch": "webpack --watch --env.development",
     "start": "webpack-dev-server --env.development",
     "test": "jest",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "lint": "tslint src/*.ts test/*.ts"
   },
   "devDependencies": {
     "@types/jest": "22.2.3",
@@ -26,6 +27,7 @@
     "jest": "22.4.3",
     "script-ext-html-webpack-plugin": "2.0.1",
     "ts-jest": "22.4.4",
+    "tslint": "5.9.1",
     "typescript": "2.8.3",
     "webpack": "4.6.0",
     "webpack-cli": "2.0.15",
