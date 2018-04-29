@@ -77,6 +77,7 @@ module.exports = function(env, argv) {
 
   const options = {
     entry: './js/Main.js',
+    mode: 'production',
     output: {
       path: path.resolve(__dirname, OUTPUT_DIRECTORY),
       filename: 'js/micropolis.js'
