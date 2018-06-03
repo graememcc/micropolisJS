@@ -7,7 +7,7 @@
  *
  */
 
-import { Messages } from './messages';
+import { VALVES_UPDATED } from './messages';
 import { MiscUtils } from './miscUtils';
 
 function RCI(parentNode, eventSource, id) {
@@ -53,7 +53,7 @@ function RCI(parentNode, eventSource, id) {
   // We might be created before our container has appeared on screen
   this._initialisedBounds = false;
 
-  eventSource.addEventListener(Messages.VALVES_UPDATED, this.update.bind(this));
+  eventSource.addEventListener(VALVES_UPDATED, this.update.bind(this));
 }
 
 

@@ -7,7 +7,7 @@
  *
  */
 
-import { Messages } from './messages';
+import { SCREENSHOT_LINK_CLOSED } from './messages';
 import { ModalWindow } from './modalWindow';
 import { MiscUtils } from './miscUtils';
 
@@ -23,7 +23,7 @@ var screenshotLinkID = '#screenshotLink';
 
 ScreenshotLinkWindow.prototype.close = function() {
   this._toggleDisplay();
-  this._emitEvent(Messages.SCREENSHOT_LINK_CLOSED);
+  this._emitEvent(SCREENSHOT_LINK_CLOSED);
 };
 
 

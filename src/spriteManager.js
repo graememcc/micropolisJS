@@ -12,7 +12,7 @@ import { BoatSprite } from './boatSprite';
 import { CopterSprite } from './copterSprite';
 import { EventEmitter } from './eventEmitter';
 import { ExplosionSprite } from './explosionSprite';
-import { Messages } from './messages';
+import * as Messages from './messages';
 import { MiscUtils } from './miscUtils';
 import { MonsterSprite } from './monsterSprite';
 import { Random } from './random';
@@ -94,8 +94,8 @@ SpriteManager.prototype.makeSprite = function(type, x, y) {
   var newSprite = new constructors[type](this.map, this, x, y);
 
   // Listen for crashes
-  for (var i = 0, l = Messages.crashes.length; i < l; i++)
-    newSprite.addEventListener(Messages.crashes[i], MiscUtils.reflectEvent.bind(this, Messages.crashes[i]));
+  for (var i = 0, l = Messages.CRASHES.length; i < l; i++)
+    newSprite.addEventListener(Messages.CRASHES[i], MiscUtils.reflectEvent.bind(this, Messages.CRASHES[i]));
 
   if (type == SpriteConstants.SPRITE_HELICOPTER)
     newSprite.addEventListener(Messages.HEAVY_TRAFFIC, MiscUtils.reflectEvent.bind(this, Messages.HEAVY_TRAFFIC));

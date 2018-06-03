@@ -7,7 +7,7 @@
  *
  */
 
-import { Messages } from './messages';
+import { DEBUG_WINDOW_CLOSED } from './messages';
 import { ModalWindow } from './modalWindow';
 import { MiscUtils } from './miscUtils';
 
@@ -24,7 +24,7 @@ var debugOKID = '#debugOK';
 
 DebugWindow.prototype.close = function(actions) {
   actions = actions || [];
-  this._emitEvent(Messages.DEBUG_WINDOW_CLOSED, actions);
+  this._emitEvent(DEBUG_WINDOW_CLOSED, actions);
   this._toggleDisplay();
 };
 

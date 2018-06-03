@@ -8,7 +8,7 @@
  */
 
 import { BaseSprite } from './baseSprite';
-import { Messages } from './messages';
+import { PLANE_CRASHED } from './messages';
 import { MiscUtils } from './miscUtils';
 import { Random } from './random';
 import { SPRITE_AIRPLANE, SPRITE_HELICOPTER } from './spriteConstants';
@@ -96,7 +96,7 @@ AirplaneSprite.prototype.move = function(spriteCycle, disasterManager, blockMaps
 AirplaneSprite.prototype.explodeSprite = function() {
   this.frame = 0;
   this.spriteManager.makeExplosionAt(this.x, this.y);
-  this._emitEvent(Messages.PLANE_CRASHED, {showable: true, x: this.worldX, y: this.worldY});
+  this._emitEvent(PLANE_CRASHED, {showable: true, x: this.worldX, y: this.worldY});
 };
 
 

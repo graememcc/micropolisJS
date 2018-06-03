@@ -8,7 +8,7 @@
  */
 
 import { BaseSprite } from './baseSprite';
-import { Messages } from './messages';
+import { SHIP_CRASHED, SOUND_HONKHONK } from './messages';
 import { MiscUtils } from './miscUtils';
 import { Random } from './random';
 import { SPRITE_SHIP } from './spriteConstants';
@@ -84,7 +84,7 @@ BoatSprite.prototype.move = function(spriteCycle, disasterManager, blockMaps) {
     if ((Random.getRandom16() & 3) === 1) {
       // TODO Scenarios
       // TODO Sound
-      this._emitEvent(Messages.SOUND_HONKHONK);
+      this._emitEvent(SOUND_HONKHONK);
     }
 
     this.soundCount = 200;
@@ -171,7 +171,7 @@ BoatSprite.prototype.move = function(spriteCycle, disasterManager, blockMaps) {
 BoatSprite.prototype.explodeSprite = function() {
   this.frame = 0;
   this.spriteManager.makeExplosionAt(this.x, this.y);
-  this._emitEvent(Messages.SHIP_CRASHED, {showable: true, x: this.worldX, y: this.worldY});
+  this._emitEvent(SHIP_CRASHED, {showable: true, x: this.worldX, y: this.worldY});
 };
 
 

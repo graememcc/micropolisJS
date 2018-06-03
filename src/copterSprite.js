@@ -8,7 +8,7 @@
  */
 
 import { BaseSprite } from './baseSprite';
-import { Messages } from './messages';
+import { HEAVY_TRAFFIC, HELICOPTER_CRASHED, SOUND_HEAVY_TRAFFIC } from './messages';
 import { MiscUtils } from './miscUtils';
 import { Random } from './random';
 import { SPRITE_HELICOPTER, SPRITE_MONSTER, SPRITE_TORNADO } from './spriteConstants';
@@ -77,8 +77,8 @@ CopterSprite.prototype.move = function(spriteCycle, disasterManager, blockMaps) 
 
       if (x >= 0 && x < this.map.width && y >= 0 && y < this.map.height) {
         if (blockMaps.trafficDensityMap.worldGet(x, y) > 170 && (Random.getRandom16() & 7) === 0) {
-          this._emitEvent(Messages.HEAVY_TRAFFIC, {x: x, y: y});
-          this._emitEvent(Messages.SOUND_HEAVY_TRAFFIC);
+          this._emitEvent(HEAVY_TRAFFIC, {x: x, y: y});
+          this._emitEvent(SOUND_HEAVY_TRAFFIC);
           this.soundCount = 200;
       }
     }
@@ -100,7 +100,7 @@ CopterSprite.prototype.move = function(spriteCycle, disasterManager, blockMaps) 
 CopterSprite.prototype.explodeSprite = function() {
   this.frame = 0;
   this.spriteManager.makeExplosionAt(this.x, this.y);
-  this._emitEvent(Messages.HELICOPTER_CRASHED, {x: this.worldX, y: this.worldY});
+  this._emitEvent(HELICOPTER_CRASHED, {x: this.worldX, y: this.worldY});
 };
 
 

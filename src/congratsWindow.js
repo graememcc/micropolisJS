@@ -7,7 +7,7 @@
  *
  */
 
-import { Messages } from './messages';
+import { CONGRATS_WINDOW_CLOSED } from './messages';
 import { ModalWindow } from './modalWindow';
 
 var CongratsWindow = ModalWindow(function() {
@@ -28,7 +28,7 @@ var submit = function(e) {
 
 CongratsWindow.prototype.close = function() {
   this._toggleDisplay();
-  this._emitEvent(Messages.CONGRATS_WINDOW_CLOSED);
+  this._emitEvent(CONGRATS_WINDOW_CLOSED);
 };
 
 

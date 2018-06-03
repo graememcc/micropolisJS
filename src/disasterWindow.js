@@ -7,7 +7,7 @@
  *
  */
 
-import { Messages } from './messages';
+import { DISASTER_WINDOW_CLOSED } from './messages';
 import { MiscUtils } from './miscUtils';
 import { ModalWindow } from './modalWindow';
 
@@ -26,7 +26,7 @@ var DisasterWindow = ModalWindow(function() {
 DisasterWindow.prototype.close = function(disaster) {
   disaster = disaster || DisasterWindow.DISASTER_NONE;
   this._toggleDisplay();
-  this._emitEvent(Messages.DISASTER_WINDOW_CLOSED, disaster);
+  this._emitEvent(DISASTER_WINDOW_CLOSED, disaster);
 };
 
 

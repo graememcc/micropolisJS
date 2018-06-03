@@ -7,7 +7,7 @@
  *
  */
 
-import { Messages } from './messages';
+import { SCREENSHOT_WINDOW_CLOSED } from './messages';
 import { ModalWindow } from './modalWindow';
 import { MiscUtils } from './miscUtils';
 
@@ -26,7 +26,7 @@ ScreenshotWindow.prototype.close = function(action) {
   action = action || null;
 
   this._toggleDisplay();
-  this._emitEvent(Messages.SCREENSHOT_WINDOW_CLOSED, action);
+  this._emitEvent(SCREENSHOT_WINDOW_CLOSED, action);
 };
 
 

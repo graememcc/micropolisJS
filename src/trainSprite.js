@@ -8,7 +8,7 @@
  */
 
 import { BaseSprite } from './baseSprite';
-import { Messages } from './messages';
+import { TRAIN_CRASHED } from './messages';
 import { MiscUtils } from './miscUtils';
 import { Random } from './random';
 import { SPRITE_TRAIN } from './spriteConstants';
@@ -118,7 +118,7 @@ TrainSprite.prototype.move = function(spriteCycle, disasterManager, blockMaps) {
 TrainSprite.prototype.explodeSprite = function() {
   this.frame = 0;
   this.spriteManager.makeExplosionAt(this.x, this.y);
-  this._emitEvent(Messages.TRAIN_CRASHED, {showable: true, x: this.worldX, y: this.worldY});
+  this._emitEvent(TRAIN_CRASHED, {showable: true, x: this.worldX, y: this.worldY});
 };
 
 

@@ -7,7 +7,7 @@
  *
  */
 
-import { Messages } from './messages';
+import { BUDGET_WINDOW_CLOSED } from './messages';
 import { MiscUtils } from './miscUtils';
 import { ModalWindow } from './modalWindow';
 
@@ -65,7 +65,7 @@ var resetItems = function(e) {
 
 BudgetWindow.prototype.close = function(data) {
   data = data || {cancelled: true};
-  this._emitEvent(Messages.BUDGET_WINDOW_CLOSED, data);
+  this._emitEvent(BUDGET_WINDOW_CLOSED, data);
   this._toggleDisplay();
 };
 

@@ -8,7 +8,7 @@
  */
 
 import { BaseSprite } from './baseSprite';
-import { Messages } from './messages';
+import { EXPLOSION_REPORTED, SOUND_EXPLOSIONHIGH } from './messages';
 import { MiscUtils } from './miscUtils';
 import { Random } from './random';
 import { SPRITE_EXPLOSION } from './spriteConstants';
@@ -55,8 +55,8 @@ ExplosionSprite.prototype.move = function(spriteCycle, disasterManager, blockMap
       // Convert sprite coordinates to tile coordinates.
       var explosionX = this.worldX;
       var explosionY = this.worldY;
-      this._emitEvent(Messages.SOUND_EXPLOSIONHIGH);
-      this._emitEvent(Messages.EXPLOSION_REPORTED, {x: explosionX, y: explosionY});
+      this._emitEvent(SOUND_EXPLOSIONHIGH);
+      this._emitEvent(EXPLOSION_REPORTED, {x: explosionX, y: explosionY});
     }
 
     this.frame++;

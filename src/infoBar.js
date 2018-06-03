@@ -7,7 +7,7 @@
  *
  */
 
-import { Messages } from './messages';
+import * as Messages from './messages';
 import { MiscUtils } from './miscUtils';
 import { Text } from './text';
 

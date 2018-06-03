@@ -10,7 +10,7 @@
 import { BuildingTool } from './buildingTool';
 import { BulldozerTool } from './bulldozerTool';
 import { EventEmitter } from './eventEmitter';
-import { Messages } from './messages';
+import { QUERY_WINDOW_NEEDED } from './messages';
 import { MiscUtils } from './miscUtils';
 import { ParkTool } from './parkTool';
 import { RailTool } from './railTool';
@@ -39,7 +39,7 @@ function GameTools(map) {
     wire: new WireTool(map),
   });
 
-  tools.query.addEventListener(Messages.QUERY_WINDOW_NEEDED, MiscUtils.reflectEvent.bind(tools, Messages.QUERY_WINDOW_NEEDED));
+  tools.query.addEventListener(QUERY_WINDOW_NEEDED, MiscUtils.reflectEvent.bind(tools, QUERY_WINDOW_NEEDED));
 
   return tools;
 }

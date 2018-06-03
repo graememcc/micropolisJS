@@ -18,7 +18,7 @@ import { GameCanvas } from './gameCanvas';
 import { GameMap } from './gameMap';
 import { InfoBar } from './infoBar';
 import { InputStatus } from './inputStatus';
-import { Messages } from './messages';
+import * as Messages from './messages';
 import { MonsterTV } from './monsterTV';
 import { NagWindow } from './nagWindow';
 import { Notification } from './notification';
@@ -598,7 +598,7 @@ Game.prototype.processFrontEndMessage = function(message) {
 
   if (Text.badMessages[subject] !== undefined) {
     this._notificationBar.badNews(message);
-    if (Messages.disasterMessages.indexOf(message.subject) !== -1)
+    if (Messages.DISASTER_MESSAGES.indexOf(message.subject) !== -1)
       this.lastBadMessageTime = d;
     return;
   }

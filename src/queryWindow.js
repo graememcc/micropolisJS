@@ -8,7 +8,7 @@
  */
 
 import { Config } from './config';
-import { Messages } from './messages';
+import { QUERY_WINDOW_CLOSED } from './messages';
 import { ModalWindow } from './modalWindow';
 import { MiscUtils } from './miscUtils';
 
@@ -30,7 +30,7 @@ var submit = function(e) {
 
 QueryWindow.prototype.close = function() {
   this._toggleDisplay();
-  this._emitEvent(Messages.QUERY_WINDOW_CLOSED);
+  this._emitEvent(QUERY_WINDOW_CLOSED);
 };
 
 

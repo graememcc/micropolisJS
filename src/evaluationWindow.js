@@ -8,7 +8,7 @@
  */
 
 import { ModalWindow } from './modalWindow';
-import { Messages } from './messages';
+import { EVAL_WINDOW_CLOSED } from './messages';
 import { Text } from './text';
 
 var EvaluationWindow = ModalWindow(function() {
@@ -21,7 +21,7 @@ var evaluationOKID = '#evalOK';
 
 
 EvaluationWindow.prototype.close = function() {
-  this._emitEvent(Messages.EVAL_WINDOW_CLOSED);
+  this._emitEvent(EVAL_WINDOW_CLOSED);
   this._toggleDisplay();
 };
 

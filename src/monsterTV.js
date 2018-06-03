@@ -9,7 +9,7 @@
 
 import { EventEmitter } from './eventEmitter';
 import { GameCanvas } from './gameCanvas';
-import { Messages } from './messages';
+import { SPRITE_DYING, SPRITE_MOVED } from './messages';
 
 var TIMEOUT_SECS = 10;
 
@@ -69,8 +69,8 @@ var onMove = function(event) {
 
 
 var onDie = function(event) {
-  this._tracking.removeEventListener(Messages.SPRITE_MOVED, this._onMove);
-  this._tracking.removeEventListener(Messages.SPRITE_DYING, this._onDie);
+  this._tracking.removeEventListener(SPRITE_MOVED, this._onMove);
+  this._tracking.removeEventListener(SPRITE_DYING, this._onDie);
   this._tracking = null;
 
   this._timeout = window.setTimeout(function() {this._timeout = null; this.close();}.bind(this), TIMEOUT_SECS * 1000);
@@ -79,13 +79,13 @@ var onDie = function(event) {
 
 MonsterTV.prototype.track = function(x, y, sprite) {
   if (this._tracking !== null) {
-    this._tracking.removeEventListener(Messages.SPRITE_MOVED, this._onMove);
-    this._tracking.removeEventListener(Messages.SPRITE_DYING, this._onDie);
+    this._tracking.removeEventListener(SPRITE_MOVED, this._onMove);
+    this._tracking.removeEventListener(SPRITE_DYING, this._onDie);
   }
 
   this._tracking = sprite;
-  sprite.addEventListener(Messages.SPRITE_MOVED, this._onMove);
-  sprite.addEventListener(Messages.SPRITE_DYING, this._onDie);
+  sprite.addEventListener(SPRITE_MOVED, this._onMove);
+  sprite.addEventListener(SPRITE_DYING, this._onDie);
   this.canvas.centreOn(x, y);
 
   if (this._timeout !== null) {

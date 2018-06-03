@@ -7,7 +7,7 @@
  *
  */
 
-import { Messages } from './messages';
+import { NAG_WINDOW_CLOSED } from './messages';
 import { ModalWindow } from './modalWindow';
 
 var NagWindow = ModalWindow(function() {
@@ -27,7 +27,7 @@ var submit = function(e) {
 
 NagWindow.prototype.close = function() {
   this._toggleDisplay();
-  this._emitEvent(Messages.NAG_WINDOW_CLOSED);
+  this._emitEvent(NAG_WINDOW_CLOSED);
 };
 
 

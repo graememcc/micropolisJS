@@ -8,7 +8,7 @@
  */
 
 import { EventEmitter } from './eventEmitter';
-import { Messages } from './messages';
+import { CLASSIFICATION_UPDATED, POPULATION_UPDATED, SCORE_UPDATED } from './messages';
 import { MiscUtils } from './miscUtils';
 import { Random } from './random';
 
@@ -101,7 +101,7 @@ Evaluation.prototype.getPopulation = function(census) {
   this.cityPopDelta = this.cityPop - oldPopulation;
 
   if (this.cityPopDelta !== 0)
-    this._emitEvent(Messages.POPULATION_UPDATED, this.cityPop);
+    this._emitEvent(POPULATION_UPDATED, this.cityPop);
 
   return this.cityPop;
 };
@@ -127,7 +127,7 @@ Evaluation.prototype.getCityClass = function(cityPopulation) {
 
   if (this.cityClass !== this.cityClassLast) {
     this.cityClassLast = this.cityClass;
-    this._emitEvent(Messages.CLASSIFICATION_UPDATED, this.cityClass);
+    this._emitEvent(CLASSIFICATION_UPDATED, this.cityClass);
   }
 
   return this.cityClass;
@@ -304,7 +304,7 @@ Evaluation.prototype.getScore = function(simData) {
   this.cityScoreDelta = this.cityScore - cityScoreLast;
 
   if (this.cityScoreDelta !== 0)
-    this._emitEvent(Messages.SCORE_UPDATED, this.cityScore);
+    this._emitEvent(SCORE_UPDATED, this.cityScore);
 };
 
 

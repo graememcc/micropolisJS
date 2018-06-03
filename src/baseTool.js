@@ -7,7 +7,6 @@
  *
  */
 
-import { Messages } from './messages';
 import { MiscUtils } from './miscUtils';
 import { Tile } from './tile';
 import { TileUtils } from './tileUtils';

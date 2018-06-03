@@ -9,7 +9,7 @@
 
 import { ConnectingTool } from './connectingTool';
 import { EventEmitter } from './eventEmitter';
-import { Messages } from './messages';
+import { SOUND_EXPLOSIONLOW, SOUND_EXPLOSIONHIGH } from './messages';
 import { Random } from './random';
 import { Tile } from './tile';
 import { TileUtils } from './tileUtils';
@@ -106,18 +106,18 @@ BulldozerTool.prototype.doTool = function(x, y, blockMaps) {
 
     switch (zoneSize) {
       case 3:
-        this._emitEvent(Messages.SOUND_EXPLOSIONHIGH);
+        this._emitEvent(SOUND_EXPLOSIONHIGH);
         this.putRubble(centerX - 1, centerY - 1, 3);
         break;
 
       case 4:
-        this._emitEvent(Messages.SOUND_EXPLOSIONLOW);
+        this._emitEvent(SOUND_EXPLOSIONLOW);
         this.putRubble(centerX - 1, centerY - 1, 4);
         break;
 
       case 6:
-        this._emitEvent(Messages.SOUND_EXPLOSIONHIGH);
-        this._emitEvent(Messages.SOUND_EXPLOSIONLOW);
+        this._emitEvent(SOUND_EXPLOSIONHIGH);
+        this._emitEvent(SOUND_EXPLOSIONLOW);
         this.putRubble(centerX - 1, centerY - 1, 6);
         break;
     }

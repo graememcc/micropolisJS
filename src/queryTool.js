@@ -10,7 +10,7 @@
 import { BaseTool } from './baseTool';
 import { Config } from './config';
 import { EventEmitter } from './eventEmitter';
-import { Messages } from './messages';
+import { QUERY_WINDOW_NEEDED } from './messages';
 import { Text } from './text';
 import { Tile } from './tile';
 
@@ -139,7 +139,7 @@ QueryTool.prototype.doTool = function(x, y, blockMaps) {
   this.classifyRateOfGrowth(x, y, blockMaps);
   this.classifyDebug(x, y, blockMaps);
 
-  this._emitEvent(Messages.QUERY_WINDOW_NEEDED);
+  this._emitEvent(QUERY_WINDOW_NEEDED);
 
   this.result = this.TOOLRESULT_OK;
 };

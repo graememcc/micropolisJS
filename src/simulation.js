@@ -18,7 +18,7 @@ import { EmergencyServices } from './emergencyServices';
 import { Evaluation } from './evaluation';
 import { Industrial } from './industrial';
 import { MapScanner } from './mapScanner';
-import { Messages } from './messages';
+import * as Messages from './messages';
 import { MiscTiles } from './miscTiles';
 import { MiscUtils } from './miscUtils';
 import { PowerManager } from './powerManager';
@@ -265,12 +265,12 @@ Simulation.prototype.init = function() {
 
   this._valves.addEventListener(Messages.VALVES_UPDATED, this._onValveChange.bind(this));
 
-  for (i = 0, l = Messages.disasterMessages.length; i < l; i++) {
-    this.spriteManager.addEventListener(Messages.disasterMessages[i], this._wrapMessage.bind(this, Messages.disasterMessages[i]));
-    this.disasterManager.addEventListener(Messages.disasterMessages[i], this._wrapMessage.bind(this, Messages.disasterMessages[i]));
+  for (i = 0, l = Messages.DISASTER_MESSAGES.length; i < l; i++) {
+    this.spriteManager.addEventListener(Messages.DISASTER_MESSAGES[i], this._wrapMessage.bind(this, Messages.DISASTER_MESSAGES[i]));
+    this.disasterManager.addEventListener(Messages.DISASTER_MESSAGES[i], this._wrapMessage.bind(this, Messages.DISASTER_MESSAGES[i]));
   }
-  for (i = 0, l = Messages.crashes.length; i < l; i++)
-    this.spriteManager.addEventListener(Messages.crashes[i], this._wrapMessage.bind(this, Messages.crashes[i]));
+  for (i = 0, l = Messages.CRASHES.length; i < l; i++)
+    this.spriteManager.addEventListener(Messages.CRASHES[i], this._wrapMessage.bind(this, Messages.CRASHES[i]));
 
   this.spriteManager.addEventListener(Messages.HEAVY_TRAFFIC, this._wrapMessage.bind(this, Messages.HEAVY_TRAFFIC));
 

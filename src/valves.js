@@ -8,7 +8,7 @@
  */
 
 import { EventEmitter } from './eventEmitter';
-import { Messages } from './messages';
+import { VALVES_UPDATED } from './messages';
 import { MiscUtils } from './miscUtils';
 
 var Valves = EventEmitter(function () {
@@ -43,7 +43,7 @@ Valves.prototype.load = function(saveData) {
   this.comValve = saveData.comValve;
   this.indValve = saveData.indValve;
 
-  this._emitEvent(Messages.VALVES_UPDATED);
+  this._emitEvent(VALVES_UPDATED);
 };
 
 
@@ -135,7 +135,7 @@ Valves.prototype.setValves = function(gameLevel, census, budget) {
   if (this.indCap && this.indValve > 0)
       this.indValve = 0;
 
-  this._emitEvent(Messages.VALVES_UPDATED);
+  this._emitEvent(VALVES_UPDATED);
 };
 
 

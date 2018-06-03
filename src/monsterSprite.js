@@ -8,7 +8,7 @@
  */
 
 import { BaseSprite } from './baseSprite';
-import { Messages } from './messages';
+import { SPRITE_DYING, SPRITE_MOVED, SOUND_MONSTER } from './messages';
 import { MiscUtils } from './miscUtils';
 import { Random } from './random';
 import * as SpriteConstants  from './spriteConstants';
@@ -88,7 +88,7 @@ MonsterSprite.prototype.move = function(spriteCycle, disasterManager, blockMaps)
         this.destY = this.origY;
       } else {
         this.frame = 0;
-        this._emitEvent(Messages.SPRITE_DYING);
+        this._emitEvent(SPRITE_DYING);
         return;
       }
     }
@@ -106,7 +106,7 @@ MonsterSprite.prototype.move = function(spriteCycle, disasterManager, blockMaps)
       currentDir = 4;
 
       if (!this.soundCount) {
-        this._emitEvent(Messages.SOUND_MONSTER);
+        this._emitEvent(SOUND_MONSTER);
         this.soundCount = 50 + Random.getRandom(100);
       }
     }
@@ -161,10 +161,10 @@ MonsterSprite.prototype.move = function(spriteCycle, disasterManager, blockMaps)
   }
 
   if (this.frame === 0)
-    this._emitEvent(Messages.SPRITE_DYING);
+    this._emitEvent(SPRITE_DYING);
 
   SpriteUtils.destroyMapTile(this.spriteManager, this.map, blockMaps, this.x, this.y);
-  this._emitEvent(Messages.SPRITE_MOVED, {x: this.worldX, y: this.worldY});
+  this._emitEvent(SPRITE_MOVED, {x: this.worldX, y: this.worldY});
 };
 
 

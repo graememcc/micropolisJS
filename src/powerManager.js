@@ -10,7 +10,7 @@
 import { BlockMap } from './blockMap';
 import { Direction } from './direction';
 import { EventEmitter } from './eventEmitter';
-import { Messages } from './messages';
+import { NOT_ENOUGH_POWER } from './messages';
 import { Random } from './random';
 import { Tile } from './tile';
 
@@ -79,7 +79,7 @@ PowerManager.prototype.doPowerScan = function(census) {
     do {
       powerConsumption++;
       if (powerConsumption > maxPower) {
-        this._emitEvent(Messages.NOT_ENOUGH_POWER);
+        this._emitEvent(NOT_ENOUGH_POWER);
         return;
       }
 

@@ -8,7 +8,7 @@
  */
 
 import { EventEmitter } from './eventEmitter';
-import { Messages } from './messages';
+import * as Messages from './messages';
 import { MiscUtils } from './miscUtils';
 import { Random } from './random';
 import { SPRITE_AIRPLANE } from './spriteConstants';

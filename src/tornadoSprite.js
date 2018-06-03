@@ -8,7 +8,7 @@
  */
 
 import { BaseSprite } from './baseSprite';
-import { Messages } from './messages';
+import { SPRITE_DYING, SPRITE_MOVED } from './messages';
 import { MiscUtils } from './miscUtils';
 import { Random } from './random';
 import { SpriteConstants } from './spriteConstants';
@@ -81,10 +81,10 @@ TornadoSprite.prototype.move = function(spriteCycle, disasterManager, blockMaps)
     this.frame = 0;
 
   if (this.frame === 0)
-    this._emitEvent(Messages.SPRITE_DYING);
+    this._emitEvent(SPRITE_DYING);
 
   SpriteUtils.destroyMapTile(this.spriteManager, this.map, blockMaps, this.x, this.y);
-  this._emitEvent(Messages.SPRITE_MOVED, {x: this.worldX, y: this.worldY});
+  this._emitEvent(SPRITE_MOVED, {x: this.worldX, y: this.worldY});
 };
 
 

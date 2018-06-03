@@ -7,7 +7,7 @@
  *
  */
 
-import { Messages } from './messages';
+import { TOUCH_WINDOW_CLOSED } from './messages';
 import { ModalWindow } from './modalWindow';
 
 var TouchWarnWindow = ModalWindow(function() {
@@ -27,7 +27,7 @@ var submit = function(e) {
 
 TouchWarnWindow.prototype.close = function() {
   this._toggleDisplay();
-  this._emitEvent(Messages.TOUCH_WINDOW_CLOSED);
+  this._emitEvent(TOUCH_WINDOW_CLOSED);
 };
 
 

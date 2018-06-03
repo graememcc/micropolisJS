@@ -7,7 +7,7 @@
  *
  */
 
-import { Messages } from './messages';
+import { SAVE_WINDOW_CLOSED } from './messages';
 import { ModalWindow } from './modalWindow';
 
 var SaveWindow = ModalWindow(function() {
@@ -27,7 +27,7 @@ var submit = function(e) {
 
 SaveWindow.prototype.close = function() {
   this._toggleDisplay();
-  this._emitEvent(Messages.SAVE_WINDOW_CLOSED);
+  this._emitEvent(SAVE_WINDOW_CLOSED);
 };
 
 

@@ -8,7 +8,7 @@
  */
 
 import { EventEmitter } from './eventEmitter';
-import { Messages } from './messages';
+import * as Messages from './messages';
 import { MiscUtils } from './miscUtils';
 
 // Cost of maintaining 1 police station

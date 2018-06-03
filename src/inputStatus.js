@@ -10,7 +10,7 @@
 import { EventEmitter } from './eventEmitter';
 import { GameCanvas } from './gameCanvas';
 import { GameTools } from './gameTools';
-import { Messages } from './messages';
+import * as Messages from './messages';
 import { MiscUtils } from './miscUtils';
 
 var InputStatus = EventEmitter(function(map, tileWidth) {

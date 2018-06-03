@@ -7,7 +7,7 @@
  *
  */
 
-import { Messages } from './messages';
+import { SETTINGS_WINDOW_CLOSED } from './messages';
 import { ModalWindow } from './modalWindow';
 import { MiscUtils } from './miscUtils';
 import { Simulation } from './simulation';
@@ -34,7 +34,7 @@ var disastersNoID = '#disastersNo';
 
 SettingsWindow.prototype.close = function(actions) {
   actions = actions || [];
-  this._emitEvent(Messages.SETTINGS_WINDOW_CLOSED, actions);
+  this._emitEvent(SETTINGS_WINDOW_CLOSED, actions);
   this._toggleDisplay();
 };
 
