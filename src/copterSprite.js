@@ -11,12 +11,12 @@ import { BaseSprite } from './baseSprite';
 import { Messages } from './messages';
 import { MiscUtils } from './miscUtils';
 import { Random } from './random';
-import { SpriteConstants } from './spriteConstants';
+import { SPRITE_HELICOPTER, SPRITE_MONSTER, SPRITE_TORNADO } from './spriteConstants';
 import { SpriteUtils } from './spriteUtils';
 import { Tile } from './tile';
 
 function CopterSprite(map, spriteManager, x, y) {
-  this.init(SpriteConstants.SPRITE_HELICOPTER, map, spriteManager, x, y);
+  this.init(SPRITE_HELICOPTER, map, spriteManager, x, y);
   this.width = 32;
   this.height = 32;
   this.xOffset = -16;
@@ -45,14 +45,14 @@ CopterSprite.prototype.move = function(spriteCycle, disasterManager, blockMaps) 
 
   if (this.count === 0) {
     // Head towards a monster, and certain doom
-    var s = this.spriteManager.getSprite(SpriteConstants.SPRITE_MONSTER);
+    var s = this.spriteManager.getSprite(SPRITE_MONSTER);
 
     if (s !== null) {
       this.destX = s.x;
       this.destY = s.y;
     } else {
       // No monsters. Hm. I bet flying near that tornado is sensible
-      s = this.spriteManager.getSprite(SpriteConstants.SPRITE_TORNADO);
+      s = this.spriteManager.getSprite(SPRITE_TORNADO);
 
       if (s !== null) {
           this.destX = s.x;

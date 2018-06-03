@@ -8,7 +8,7 @@
  */
 
 import { Random } from './random';
-import { SpriteConstants } from './spriteConstants';
+import { SPRITE_SHIP } from './spriteConstants';
 import { Tile } from './tile';
 import { TileUtils } from './tileUtils';
 
@@ -64,7 +64,7 @@ var portFound = function(map, x, y, simData) {
 
   var tile = map.getTile(x, y);
   if (tile.isPowered() &&
-      simData.spriteManager.getSprite(SpriteConstants.SPRITE_SHIP) === null)
+      simData.spriteManager.getSprite(SPRITE_SHIP) === null)
     simData.spriteManager.generateShip();
 };
 

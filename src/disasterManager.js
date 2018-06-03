@@ -11,7 +11,7 @@ import { EventEmitter } from './eventEmitter';
 import { Messages } from './messages';
 import { MiscUtils } from './miscUtils';
 import { Random } from './random';
-import { SpriteConstants } from './spriteConstants';
+import { SPRITE_AIRPLANE } from './spriteConstants';
 import { Tile } from './tile';
 import { TileUtils } from './tileUtils';
 import { ZoneUtils } from './zoneUtils';
@@ -151,7 +151,7 @@ DisasterManager.prototype.setFire = function(times, zonesOnly) {
 
 // User initiated plane crash
 DisasterManager.prototype.makeCrash = function() {
-  var s = this._spriteManager.getSprite(SpriteConstants.SPRITE_PLANE);
+  var s = this._spriteManager.getSprite(SPRITE_AIRPLANE);
   if (s !== null) {
     s.explodeSprite();
     return;
@@ -160,7 +160,7 @@ DisasterManager.prototype.makeCrash = function() {
   var x = Random.getRandom(this._map.width - 1);
   var y = Random.getRandom(this._map.height - 1);
   this._spriteManager.generatePlane(x, y);
-  s = this._spriteManager.getSprite(SpriteConstants.SPRITE_AIRPLANE);
+  s = this._spriteManager.getSprite(SPRITE_AIRPLANE);
   s.explodeSprite();
 };
 

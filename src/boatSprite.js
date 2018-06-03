@@ -11,12 +11,13 @@ import { BaseSprite } from './baseSprite';
 import { Messages } from './messages';
 import { MiscUtils } from './miscUtils';
 import { Random } from './random';
+import { SPRITE_SHIP } from './spriteConstants';
 import { SpriteConstants } from './spriteConstants';
 import { SpriteUtils } from './spriteUtils';
 import { Tile } from './tile';
 
 function BoatSprite(map, spriteManager, x, y) {
-  this.init(SpriteConstants.SPRITE_SHIP, map, spriteManager, x, y);
+  this.init(SPRITE_SHIP, map, spriteManager, x, y);
   this.width = 48;
   this.height = 48;
   this.xOffset = -24;

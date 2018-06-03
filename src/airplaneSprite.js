@@ -11,11 +11,11 @@ import { BaseSprite } from './baseSprite';
 import { Messages } from './messages';
 import { MiscUtils } from './miscUtils';
 import { Random } from './random';
-import { SpriteConstants } from './spriteConstants';
+import { SPRITE_AIRPLANE, SPRITE_HELICOPTER } from './spriteConstants';
 import { SpriteUtils } from './spriteUtils';
 
 function AirplaneSprite(map, spriteManager, x, y) {
-  this.init(SpriteConstants.SPRITE_AIRPLANE, map, spriteManager, x, y);
+  this.init(SPRITE_AIRPLANE, map, spriteManager, x, y);
   this.width = 48;
   this.height = 48;
   this.xOffset = -24;
@@ -73,8 +73,8 @@ AirplaneSprite.prototype.move = function(spriteCycle, disasterManager, blockMaps
       if (s.frame === 0 || s === this)
         continue;
 
-      if ((s.type === SpriteConstants.SPRITE_HELICOPTER ||
-           s.type === SpriteConstants.SPRITE_AIRPLANE) &&
+      if ((s.type === SPRITE_HELICOPTER ||
+           s.type === SPRITE_AIRPLANE) &&
             SpriteUtils.checkSpriteCollision(this, s)) {
         s.explodeSprite();
         explode = true;

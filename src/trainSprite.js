@@ -11,12 +11,12 @@ import { BaseSprite } from './baseSprite';
 import { Messages } from './messages';
 import { MiscUtils } from './miscUtils';
 import { Random } from './random';
-import { SpriteConstants } from './spriteConstants';
+import { SPRITE_TRAIN } from './spriteConstants';
 import { SpriteUtils } from './spriteUtils';
 import { Tile } from './tile';
 
 function TrainSprite(map, spriteManager, x, y) {
-  this.init(SpriteConstants.SPRITE_TRAIN, map,
+  this.init(SPRITE_TRAIN, map,
             spriteManager, x, y);
   this.width = 32;
   this.height = 32;

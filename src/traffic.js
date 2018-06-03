@@ -10,7 +10,7 @@
 import { Direction } from './direction';
 import { MiscUtils } from './miscUtils';
 import { Random } from './random';
-import { SpriteConstants } from './spriteConstants';
+import { SPRITE_HELICOPTER } from './spriteConstants';
 import { SpriteUtils } from './spriteUtils';
 import { Tile } from './tile';
 import { TileUtils } from './tileUtils';
@@ -61,7 +61,7 @@ Traffic.prototype.addToTrafficDensityMap = function(blockMaps) {
 
       // Attract traffic copter to the traffic
       if (traffic >= 240 && Random.getRandom(5) === 0) {
-        var sprite = this._spriteManager.getSprite(SpriteConstants.SPRITE_HELICOPTER);
+        var sprite = this._spriteManager.getSprite(SPRITE_HELICOPTER);
         if (sprite !== null) {
           sprite.destX = SpriteUtils.worldToPix(pos.x);
           sprite.destY = SpriteUtils.worldToPix(pos.y);

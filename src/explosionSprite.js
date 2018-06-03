@@ -11,13 +11,13 @@ import { BaseSprite } from './baseSprite';
 import { Messages } from './messages';
 import { MiscUtils } from './miscUtils';
 import { Random } from './random';
-import { SpriteConstants } from './spriteConstants';
+import { SPRITE_EXPLOSION } from './spriteConstants';
 import { SpriteUtils } from './spriteUtils';
 import { Tile } from './tile';
 import { TileUtils } from './tileUtils';
 
 function ExplosionSprite(map, spriteManager, x, y) {
-  this.init(SpriteConstants.SPRITE_EXPLOSION, map, spriteManager, x, y);
+  this.init(SPRITE_EXPLOSION, map, spriteManager, x, y);
   this.width = 48;
   this.height = 48;
   this.xOffset = -24;

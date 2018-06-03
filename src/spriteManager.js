@@ -16,7 +16,7 @@ import { Messages } from './messages';
 import { MiscUtils } from './miscUtils';
 import { MonsterSprite } from './monsterSprite';
 import { Random } from './random';
-import { SpriteConstants } from './spriteConstants';
+import * as SpriteConstants from './spriteConstants';
 import { SpriteUtils } from './spriteUtils';
 import { Tile } from './tile';
 import { TornadoSprite } from './tornadoSprite';
