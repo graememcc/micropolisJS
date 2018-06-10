@@ -37,8 +37,8 @@ var isCommercialZone = function(tile) {
 
 
 var isDriveable = unwrapTile(function(tile) {
-  return (tile >= Tile.ROADBASE && tile <= Tile.LASTRAIL) ||
-         tile === Tile.RAILPOWERV || tile === Tile.RAILPOWERH;
+  return (tile >= Tile.ROADBASE && tile <= Tile.LASTROAD) ||
+         (tile >= Tile.RAILHPOWERV && tile <= Tile.LASTRAIL);
 });
 
 
