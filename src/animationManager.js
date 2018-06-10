@@ -9,15 +9,13 @@
 
 import { Tile } from './tile';
 import { TileHistory } from './tileHistory';
+import { LASTTINYEXP, LIGHTNINGBOLT, TILE_COUNT, TILE_INVALID } from "./tileValues";
 import { TileUtils } from './tileUtils';
 
 var BIT_MASK = Tile.BIT_MASK;
 var POWERBIT = Tile.POWERBIT;
 var ANIMBIT = Tile.ANIMBIT;
 var ZONEBIT = Tile.ZONEBIT;
-var INVALID = Tile.TILE_INVALID;
-var LIGHTNINGBOLT = Tile.LIGHTNINGBOLT;
-var LASTTINYEXP = Tile.LASTTINYEXP;
 
 
 function AnimationManager(map, animationPeriod, blinkPeriod) {
@@ -47,7 +45,7 @@ function AnimationManager(map, animationPeriod, blinkPeriod) {
 AnimationManager.prototype.initArray = function() {
   // Map all tiles to their own value in case we ever
   // look up a tile that is not animated
-  for (var i = 0; i < Tile.TILE_COUNT; i++)
+  for (var i = 0; i < TILE_COUNT; i++)
     this._data[i] = i;
 };
 
@@ -105,7 +103,7 @@ AnimationManager.prototype.getTiles = function(tileValues, offsetX, offsetY, xBo
         continue;
 
       var tile = tileValues[index];
-      if (tile === INVALID)
+      if (tile === TILE_INVALID)
         continue;
 
       if (shouldBlink && (tile & ZONEBIT) && !(tile & POWERBIT)) {
@@ -119,7 +117,7 @@ AnimationManager.prototype.getTiles = function(tileValues, offsetX, offsetY, xBo
       }
 
       var tileValue = tile & BIT_MASK;
-      var newTile = INVALID;
+      var newTile = TILE_INVALID;
       var last;
       if (this._lastPainted)
         last = this._lastPainted.getTile(x, y);
@@ -147,7 +145,7 @@ AnimationManager.prototype.getTiles = function(tileValues, offsetX, offsetY, xBo
           newTile = last;
       }
 
-      if (newTile === INVALID) {
+      if (newTile === TILE_INVALID) {
         tileValues[index] = tileValue;
         continue;
       }

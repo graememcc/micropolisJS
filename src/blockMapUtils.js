@@ -13,7 +13,7 @@ import { Industrial } from './industrial';
 import { MiscUtils } from './miscUtils';
 import { Random } from './random';
 import { Residential } from './residential';
-import { Tile } from './tile';
+import * as TileValues from "./tileValues";
 
 // Smoothing styles for map smoothing
 var SMOOTH_NEIGHBOURS_THEN_BLOCK = 0;
@@ -109,24 +109,24 @@ var neutraliseTrafficMap = function(blockMaps) {
 
 // Given a tileValue, score it on the pollution it generates, in the range 0-255
 var getPollutionValue = function(tileValue) {
-  if (tileValue < Tile.POWERBASE) {
+  if (tileValue < TileValues.POWERBASE) {
     // Roads, fires and radiation lie below POWERBASE
 
     // Heavy traffic is bad
-    if (tileValue >= Tile.HTRFBASE)
+    if (tileValue >= TileValues.HTRFBASE)
       return 75;
 
     // Low traffic not so much
-    if (tileValue >= Tile.LTRFBASE)
+    if (tileValue >= TileValues.LTRFBASE)
       return 50;
 
-    if (tileValue <  Tile.ROADBASE) {
+    if (tileValue <  TileValues.ROADBASE) {
       // Fire = carbon monoxide = a bad score for you
-      if (tileValue > Tile.FIREBASE)
+      if (tileValue > TileValues.FIREBASE)
         return 90;
 
       // Radiation. Top of the charts.
-      if (tileValue >= Tile.RADTILE)
+      if (tileValue >= TileValues.RADTILE)
         return 255;
     }
 
@@ -137,15 +137,15 @@ var getPollutionValue = function(tileValue) {
   // If we've reached this point, we're classifying some form of zone tile
 
   // Residential and commercial zones don't pollute
-  if (tileValue <= Tile.LASTIND)
+  if (tileValue <= TileValues.LASTIND)
     return 0;
 
   // Industrial zones, however...
-  if (tileValue < Tile.PORTBASE)
+  if (tileValue < TileValues.PORTBASE)
     return 50;
 
   // Coal power plants are bad
-  if (tileValue <= Tile.LASTPOWERPLANT)
+  if (tileValue <= TileValues.LASTPOWERPLANT)
       return 100;
 
   return 0;
@@ -214,10 +214,10 @@ var pollutionTerrainLandValueScan = function(map, census, blockMaps) {
         for (var mapY = worldY; mapY <= worldY + 1; mapY++) {
           var tileValue = map.getTileValue(mapX, mapY);
 
-          if (tileValue === Tile.DIRT)
+          if (tileValue === TileValues.DIRT)
             continue;
 
-          if (tileValue < Tile.RUBBLE) {
+          if (tileValue < TileValues.RUBBLE) {
             // Undeveloped land: record in tempMap3. Each undeveloped piece of land scores 15.
             // tempMap3 has a chunk size of 4, so each square in tempMap3 will ultimately contain a
             // maximum value of 240
@@ -227,7 +227,7 @@ var pollutionTerrainLandValueScan = function(map, census, blockMaps) {
           }
 
           pollutionLevel += getPollutionValue(tileValue);
-          if (tileValue >= Tile.ROADBASE)
+          if (tileValue >= TileValues.ROADBASE)
             developed = true;
         }
       }
@@ -390,13 +390,13 @@ var fillCityCentreDistScoreMap = function(map, blockMaps) {
 
 // Dispatch to the correct zone type to get the population value for that zone
 var getPopulationDensity = function(map, x, y, tile) {
-  if (tile < Tile.COMBASE)
+  if (tile < TileValues.COMBASE)
     return Residential.getZonePopulation(map, x, y, tile);
 
-  if (tile < Tile.INDBASE)
+  if (tile < TileValues.INDBASE)
     return Commercial.getZonePopulation(map, x, y, tile) * 8;
 
-  if (tile < Tile.PORTBASE)
+  if (tile < TileValues.PORTBASE)
     return Industrial.getZonePopulation(map, x, y, tile) * 8;
 
   return 0;

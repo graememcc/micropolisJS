@@ -13,7 +13,7 @@ import { MiscUtils } from './miscUtils';
 import { Random } from './random';
 import { SPRITE_TRAIN } from './spriteConstants';
 import { SpriteUtils } from './spriteUtils';
-import { Tile } from './tile';
+import * as TileValues from "./tileValues";
 
 function TrainSprite(map, spriteManager, x, y) {
   this.init(SPRITE_TRAIN, map,
@@ -83,8 +83,8 @@ TrainSprite.prototype.move = function(spriteCycle, disasterManager, blockMaps) {
 
       var tileValue = SpriteUtils.getTileValue(this.map, this.x + tileDeltaX[dir2], this.y + tileDeltaY[dir2]);
 
-      if ((tileValue >= Tile.RAILBASE && tileValue <= Tile.LASTRAIL) ||
-          tileValue === Tile.RAILVPOWERH || tileValue === Tile.RAILHPOWERV) {
+      if ((tileValue >= TileValues.RAILBASE && tileValue <= TileValues.LASTRAIL) ||
+          tileValue === TileValues.RAILVPOWERH || tileValue === TileValues.RAILHPOWERV) {
         if (this.dir !== dir2 && this.dir !== CANTMOVE) {
           if (this.dir + dir2 === WEST)
             this.frame = NWSE;
@@ -94,7 +94,7 @@ TrainSprite.prototype.move = function(spriteCycle, disasterManager, blockMaps) {
           this.frame = TrainPic2[dir2];
         }
 
-        if (tileValue === Tile.HRAIL || tileValue === Tile.VRAIL)
+        if (tileValue === TileValues.HRAIL || tileValue === TileValues.VRAIL)
           this.frame = UNDERWATER;
 
         this.dir = dir2;

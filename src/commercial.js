@@ -8,8 +8,8 @@
  */
 
 import { Random } from './random';
-import { Tile } from './tile';
 import { TileUtils } from './tileUtils';
+import { COMCLR, CZB } from "./tileValues";
 import { Traffic } from './traffic';
 import { ZoneUtils } from './zoneUtils';
 
@@ -20,17 +20,17 @@ import { ZoneUtils } from './zoneUtils';
 
 // Given the centre of a commercial zone, compute it's population level (a number in the range 0-5)
 var getZonePopulation = function(map, x, y, tileValue) {
-  if (tileValue === Tile.COMCLEAR)
+  if (tileValue === COMCLR)
     return 0;
 
-  return Math.floor((tileValue - Tile.CZB) / 9) % 5 + 1;
+  return Math.floor((tileValue - CZB) / 9) % 5 + 1;
 };
 
 
 // Takes a map and coordinates, a population category in the range 1-5, a value category in the range 0-3, and places
 // the appropriate industrial zone on the map
 var placeCommercial = function(map, x, y, population, lpValue, zonePower) {
-  var centreTile = ((lpValue * 5) + population) * 9 + Tile.CZB;
+  var centreTile = ((lpValue * 5) + population) * 9 + CZB;
   ZoneUtils.putZone(map, x, y, centreTile, zonePower);
 };
 
@@ -58,7 +58,7 @@ var degradeZone = function(map, x, y, blockMaps, populationCategory, lpCategory,
   if (populationCategory > 1) {
     placeCommercial(map, x, y, populationCategory - 2, lpCategory, zonePower);
   } else {
-    ZoneUtils.putZone(map, x, y, Tile.COMCLR, zonePower);
+    ZoneUtils.putZone(map, x, y, COMCLR, zonePower);
   }
 
   ZoneUtils.incRateOfGrowth(blockMaps, x, y, -8);

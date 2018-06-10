@@ -12,8 +12,8 @@ import { MiscUtils } from './miscUtils';
 import { Random } from './random';
 import { SPRITE_HELICOPTER } from './spriteConstants';
 import { SpriteUtils } from './spriteUtils';
-import { Tile } from './tile';
 import { TileUtils } from './tileUtils';
+import { DIRT, POWERBASE, ROADBASE } from "./tileValues";
 
 function Traffic(map, spriteManager) {
   this._map = map;
@@ -52,7 +52,7 @@ Traffic.prototype.addToTrafficDensityMap = function(blockMaps) {
 
     var tileValue = this._map.getTileValue(pos.x, pos.y);
 
-    if (tileValue >= Tile.ROADBASE && tileValue < Tile.POWERBASE) {
+    if (tileValue >= ROADBASE && tileValue < POWERBASE) {
       // Update traffic density.
       var traffic = trafficDensityMap.worldGet(pos.x, pos.y);
       traffic += 50;
@@ -133,7 +133,7 @@ Traffic.prototype.tryGo = function(pos, dirLast) {
   var count = 0;
 
   for (var i = 0; i < 4; i++) {
-    if (dir != dirLast && TileUtils.isDriveable(this._map.getTileFromMapOrDefault(pos, dir, Tile.DIRT))) {
+    if (dir != dirLast && TileUtils.isDriveable(this._map.getTileFromMapOrDefault(pos, dir, DIRT))) {
       // found a road in an allowed direction
       directions[i] = dir;
       count++;

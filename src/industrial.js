@@ -10,6 +10,7 @@
 import { Random } from './random';
 import { Tile } from './tile';
 import { TileUtils } from './tileUtils';
+import { INDCLR, IZB } from "./tileValues";
 import { Traffic } from './traffic';
 import { ZoneUtils } from './zoneUtils';
 
@@ -22,17 +23,17 @@ import { ZoneUtils } from './zoneUtils';
 
 // Given the centre of an industrial zone, compute it's population level (a number in the range 0-4)
 var getZonePopulation = function(map, x, y, tileValue) {
-  if (tileValue === Tile.INDCLR)
+  if (tileValue === INDCLR)
     return 0;
 
-  return Math.floor((tileValue - Tile.IZB) / 9) % 4 + 1;
+  return Math.floor((tileValue - IZB) / 9) % 4 + 1;
 };
 
 
 // Takes a map and coordinates, a population category in the range 1-4, a value category in the range 0-1, and places
 // the appropriate industrial zone on the map
 var placeIndustrial = function(map, x, y, populationCategory, valueCategory, zonePower) {
-  var centreTile = ((valueCategory * 4) + populationCategory) * 9 + Tile.IZB;
+  var centreTile = ((valueCategory * 4) + populationCategory) * 9 + IZB;
   ZoneUtils.putZone(map, x, y, centreTile, zonePower);
 };
 
@@ -52,7 +53,7 @@ var degradeZone = function(map, x, y, blockMaps, populationCategory, valueCatego
   if (populationCategory > 1)
     placeIndustrial(map, x, y, populationCategory - 2, valueCategory, zonePower);
   else
-    ZoneUtils.putZone(map, x, y, Tile.INDCLR, zonePower);
+    ZoneUtils.putZone(map, x, y, INDCLR, zonePower);
 
   ZoneUtils.incRateOfGrowth(blockMaps, x, y, -8);
 };
@@ -67,12 +68,12 @@ var yDelta = [-1, 0, -1, -1, 0, 0, -1, -1];
 // the zone has power, and sets or unsets the animation bit in the appropriate part of the zone
 var setAnimation = function(map, x, y, tileValue, isPowered) {
   // The empty zone is not animated
-  if (tileValue < Tile.IZB)
+  if (tileValue < IZB)
     return;
 
   // There are only 8 different types of populated industrial zones. We always have tileValue - IZB < 8x9 (=72),
   // so (tileValue - IZB) >> 3 effectively divides (tileValue - IZB) by 9, forcing into the range 0-7
-  var i = (tileValue - Tile.IZB) >> 3;
+  var i = (tileValue - IZB) >> 3;
 
   // If the tile is animated and powered we set animated, conductive, combustible. Otherwise we set burnable and
   // conductive.

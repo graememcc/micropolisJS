@@ -13,6 +13,7 @@ import { EventEmitter } from './eventEmitter';
 import { NOT_ENOUGH_POWER } from './messages';
 import { Random } from './random';
 import { Tile } from './tile';
+import { NUCLEAR, POWERPLANT } from "./tileValues";
 
 var COAL_POWER_STRENGTH = 700;
 var NUCLEAR_POWER_STRENGTH = 2000;
@@ -29,7 +30,7 @@ PowerManager.prototype.setTilePower = function(x, y) {
   var tile = this._map.getTile(x, y);
   var tileValue = tile.getValue();
 
-  if (tileValue === Tile.NUCLEAR || tileValue === Tile.POWERPLANT ||
+  if (tileValue === NUCLEAR || tileValue === POWERPLANT ||
       this.powerGridMap.worldGet(x, y) > 0) {
     tile.addFlags(Tile.POWERBIT);
     return;
@@ -141,10 +142,10 @@ PowerManager.prototype.nuclearPowerFound = function(map, x, y, simData) {
 
 
 PowerManager.prototype.registerHandlers = function(mapScanner, repairManager) {
-  mapScanner.addAction(Tile.POWERPLANT, this.coalPowerFound.bind(this));
-  mapScanner.addAction(Tile.NUCLEAR, this.nuclearPowerFound.bind(this));
-  repairManager.addAction(Tile.POWERPLANT, 7, 4);
-  repairManager.addAction(Tile.NUCLEAR, 7, 4);
+  mapScanner.addAction(POWERPLANT, this.coalPowerFound.bind(this));
+  mapScanner.addAction(NUCLEAR, this.nuclearPowerFound.bind(this));
+  repairManager.addAction(POWERPLANT, 7, 4);
+  repairManager.addAction(NUCLEAR, 7, 4);
 };
 
 

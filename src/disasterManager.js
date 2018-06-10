@@ -12,8 +12,8 @@ import * as Messages from './messages';
 import { MiscUtils } from './miscUtils';
 import { Random } from './random';
 import { SPRITE_AIRPLANE } from './spriteConstants';
-import { Tile } from './tile';
 import { TileUtils } from './tileUtils';
+import * as TileValues from "./tileValues";
 import { ZoneUtils } from './zoneUtils';
 
 var DisasterManager = EventEmitter(function(map, spriteManager, gameLevel) {
@@ -80,7 +80,7 @@ DisasterManager.prototype.scenarioDisaster = function() {
 DisasterManager.prototype.makeMeltdown = function() {
   for (var x = 0; x < (this._map.width - 1); x++) {
     for (var y = 0; y < (this._map.height - 1); y++) {
-      if (this._map.getTileValue(x, y) === Tile.NUCLEAR) {
+      if (this._map.getTileValue(x, y) === TileValues.NUCLEAR) {
         this.doMeltdown(x, y);
         return;
       }
@@ -92,7 +92,7 @@ DisasterManager.prototype.makeMeltdown = function() {
 var vulnerable = function(tile) {
   var tileValue = tile.getValue();
 
-  if (tileValue < Tile.RESBASE || tileValue > Tile.LASTZONE || tile.isZone())
+  if (tileValue < TileValues.RESBASE || tileValue > TileValues.LASTZONE || tile.isZone())
     return false;
 
   return true;
@@ -138,8 +138,8 @@ DisasterManager.prototype.setFire = function(times, zonesOnly) {
 
     if (!tile.isZone()) {
       tile = tile.getValue();
-      var lowerLimit = zonesOnly ? Tile.LHTHR : Tile.TREEBASE;
-      if (tile > lowerLimit && tile < Tile.LASTZONE) {
+      var lowerLimit = zonesOnly ? TileValues.LHTHR : TileValues.TREEBASE;
+      if (tile > lowerLimit && tile < TileValues.LASTZONE) {
         this._map.setTo(x, y, TileUtils.randomFire());
         this._emitEvent(Messages.FIRE_REPORTED, {showable: true, x: x, y: y});
         return;
@@ -183,7 +183,7 @@ DisasterManager.prototype.makeFlood = function() {
 
     var tileValue = this._map.getTileValue(x, y);
 
-    if (tileValue > Tile.CHANNEL && tileValue <= Tile.WATER_HIGH) {
+    if (tileValue > TileValues.CHANNEL && tileValue <= TileValues.WATER_HIGH) {
       for (var j = 0; j < 4; j++) {
         var xx = x + Dx[j];
         var yy = y + Dy[j];
@@ -194,8 +194,8 @@ DisasterManager.prototype.makeFlood = function() {
         var tile = this._map.getTile(xx, yy);
         tileValue = tile.getValue();
 
-        if (tile === Tile.DIRT || (tile.isBulldozable() && tile.isCombustible)) {
-          this._map.setTile(xx, yy, Tile.FLOOD, 0);
+        if (tile === TileValues.DIRT || (tile.isBulldozable() && tile.isCombustible)) {
+          this._map.setTile(xx, yy, TileValues.FLOOD, 0);
           this._floodCount = 30;
           this._emitEvent(Messages.FLOODING_REPORTED, {showable: true, x: xx, y: yy});
           return;
@@ -218,19 +218,19 @@ DisasterManager.prototype.doFlood = function(x, y, blockMaps) {
           var tile = this._map.getTile(xx, yy);
           var tileValue = tile.getValue();
 
-          if (tile.isCombustible() || tileValue === Tile.DIRT ||
-              (tileValue >= Tile.WOODS5 && tileValue < Tile.FLOOD)) {
+          if (tile.isCombustible() || tileValue === TileValues.DIRT ||
+              (tileValue >= TileValues.WOODS5 && tileValue < TileValues.FLOOD)) {
             if (tile.isZone())
               ZoneUtils.fireZone(this._map, xx, yy, blockMaps);
 
-            this._map.setTile(xx, yy, Tile.FLOOD + Random.getRandom(2), 0);
+            this._map.setTile(xx, yy, TileValues.FLOOD + Random.getRandom(2), 0);
           }
         }
       }
     }
   } else {
     if (Random.getChance(15))
-      this._map.setTile(x, y, Tile.DIRT, 0);
+      this._map.setTile(x, y, TileValues.DIRT, 0);
   }
 };
 
@@ -263,8 +263,8 @@ DisasterManager.prototype.doMeltdown = function(x, y) {
     if (tile.isZone())
         continue;
 
-    if (tile.isCombustible() || tile.getValue() === Tile.DIRT)
-        this._map.setTile(dX, dY, Tile.RADTILE, 0);
+    if (tile.isCombustible() || tile.getValue() === TileValues.DIRT)
+        this._map.setTile(dX, dY, TileValues.RADTILE, 0);
   }
 
   // Report disaster to the user

@@ -9,6 +9,7 @@
 
 import { ConnectingTool } from './connectingTool';
 import { Tile } from './tile';
+import { DIRT } from "./tileValues";
 import { TileUtils } from './tileUtils';
 
 var BuildingTool = ConnectingTool(function(cost, centreTile, map, size, animated) {
@@ -65,11 +66,11 @@ BuildingTool.prototype.prepareBuildingSite = function(leftX, topY) {
 
       tileValue = this._worldEffects.getTileValue(posX, posY);
 
-      if (tileValue === Tile.DIRT)
+      if (tileValue === DIRT)
         continue;
 
       if (!this.autoBulldoze) {
-        // No Tile.DIRT and no bull-dozer => not buildable
+        // No TileValues.DIRT and no bull-dozer => not buildable
         return this.TOOLRESULT_NEEDS_BULLDOZE;
       }
 
@@ -78,7 +79,7 @@ BuildingTool.prototype.prepareBuildingSite = function(leftX, topY) {
         return this.TOOLRESULT_NEEDS_BULLDOZE;
       }
 
-      this._worldEffects.setTile(posX, posY, Tile.DIRT);
+      this._worldEffects.setTile(posX, posY, DIRT);
       this.addCost(this.bulldozerCost);
     }
   }

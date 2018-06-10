@@ -11,6 +11,7 @@ import { BaseTool } from './baseTool';
 import { Random } from './random';
 import { Tile } from './tile';
 import { TileUtils } from './tileUtils';
+import { DIRT, FOUNTAIN, WOODS2 } from "./tileValues";
 
 var makeTool = BaseTool.makeTool;
 var ParkTool = makeTool(function(map) {
@@ -19,7 +20,7 @@ var ParkTool = makeTool(function(map) {
 
 
 ParkTool.prototype.doTool = function(x, y, blockMaps) {
-  if (this._worldEffects.getTileValue(x, y) !== Tile.DIRT) {
+  if (this._worldEffects.getTileValue(x, y) !== DIRT) {
     this.result = this.TOOLRESULT_NEEDS_BULLDOZE;
     return;
   }
@@ -29,10 +30,10 @@ ParkTool.prototype.doTool = function(x, y, blockMaps) {
   var tileValue;
 
   if (value === 4) {
-    tileValue = Tile.FOUNTAIN;
+    tileValue = FOUNTAIN;
     tileFlags |= Tile.ANIMBIT;
   } else {
-    tileValue = value + Tile.WOODS2;
+    tileValue = value + WOODS2;
   }
 
   this._worldEffects.setTile(x, y, tileValue, tileFlags);

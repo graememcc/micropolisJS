@@ -8,6 +8,7 @@
  */
 
 import { Tile } from './tile';
+import { RUBBLE, ROADBASE } from "./tileValues";
 
 function RepairManager(map) {
   this._map = map;
@@ -38,7 +39,7 @@ RepairManager.prototype.repairZone = function(x, y, zoneSize) {
         continue;
 
       var currentValue = current.getValue();
-      if (currentValue < Tile.RUBBLE || currentValue >= Tile.ROADBASE)
+      if (currentValue < RUBBLE || currentValue >= ROADBASE)
         this._map.setTile(x + xx, y + yy, tileValue, Tile.CONDBIT | Tile.BURNBIT);
     }
   }

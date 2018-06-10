@@ -8,6 +8,7 @@
  */
 
 import { Tile } from './tile';
+import * as TileValues from "./tileValues";
 import { ZoneUtils } from './zoneUtils';
 
 var pixToWorld = function(p) {
@@ -110,9 +111,9 @@ var absoluteDistance = function(orgX, orgY, destX, destY) {
 
 
 var checkWet = function(tileValue) {
-  if (tileValue === Tile.HPOWER || tileValue === Tile.VPOWER ||
-      tileValue === Tile.HRAIL || tileValue === Tile.VRAIL ||
-      tileValue === Tile.BRWH || tileValue === Tile.BRWV)
+  if (tileValue === TileValues.HPOWER || tileValue === TileValues.VPOWER ||
+      tileValue === TileValues.HRAIL || tileValue === TileValues.VRAIL ||
+      tileValue === TileValues.BRWH || tileValue === TileValues.BRWV)
     return true;
   else
     return false;
@@ -129,12 +130,12 @@ var destroyMapTile = function(spriteManager, map, blockMaps, ox, oy) {
   var tile = map.getTile(x, y);
   var tileValue = tile.getValue();
 
-  if (tileValue < Tile.TREEBASE)
+  if (tileValue < TileValues.TREEBASE)
     return;
 
   if (!tile.isCombustible()) {
-    if (tileValue >= Tile.ROADBASE && tileValue <= Tile.LASTROAD)
-      map.setTile(x, y, Tile.RIVER, 0);
+    if (tileValue >= TileValues.ROADBASE && tileValue <= TileValues.LASTROAD)
+      map.setTile(x, y, TileValues.RIVER, 0);
 
     return;
   }
@@ -142,14 +143,14 @@ var destroyMapTile = function(spriteManager, map, blockMaps, ox, oy) {
   if (tile.isZone()) {
     ZoneUtils.fireZone(map, x, y, blockMaps);
 
-    if (tileValue > Tile.RZB)
+    if (tileValue > TileValues.RZB)
       spriteManager.makeExplosionAt(ox, oy);
   }
 
   if (checkWet(tileValue))
-    map.setTile(x, y, Tile.RIVER, 0);
+    map.setTile(x, y, TileValues.RIVER, 0);
   else
-    map.setTile(x, y, Tile.TINYEXP, Tile.BULLBIT | Tile.ANIMBIT);
+    map.setTile(x, y, TileValues.TINYEXP, Tile.BULLBIT | Tile.ANIMBIT);
 };
 
 

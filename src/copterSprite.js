@@ -13,7 +13,6 @@ import { MiscUtils } from './miscUtils';
 import { Random } from './random';
 import { SPRITE_HELICOPTER, SPRITE_MONSTER, SPRITE_TORNADO } from './spriteConstants';
 import { SpriteUtils } from './spriteUtils';
-import { Tile } from './tile';
 
 function CopterSprite(map, spriteManager, x, y) {
   this.init(SPRITE_HELICOPTER, map, spriteManager, x, y);

@@ -11,6 +11,7 @@ import { Direction } from './direction';
 import { GameMap } from './gameMap';
 import { Random } from './random';
 import { Tile } from './tile';
+import { CHANNEL, DIRT, REDGE, RIVER, WATER_LOW, WATER_HIGH, WOODS, WOODS_LOW, WOODS_HIGH } from "./tileValues";
 
 var TERRAIN_CREATE_ISLAND;
 var TERRAIN_TREE_LEVEL = -1;
@@ -64,7 +65,7 @@ var MapGenerator = function(w, h) {
 var clearMap = function(map) {
   for (var x = 0; x < map.width; x++) {
     for (var y = 0; y < map.height; y++) {
-      map.setTile(x, y, Tile.DIRT, 0);
+      map.setTile(x, y, DIRT, 0);
     }
   }
 };
@@ -74,8 +75,8 @@ var clearUnnatural = function(map) {
   for (var x = 0; x < map.width; x++) {
     for (var y = 0; y < map.height; y++) {
       var tileValue = map.getTileValue(x, y);
-      if (tileValue > Tile.WOODS)
-        map.setTile(x, y, Tile.DIRT, 0);
+      if (tileValue > WOODS)
+        map.setTile(x, y, DIRT, 0);
     }
   }
 };
@@ -89,9 +90,9 @@ var makeNakedIsland = function(map) {
     for (y = 0; y < map.height; y++) {
       if ((x < 5) || (x >= map.width - 5) ||
           (y < 5) || (y >= map.height - 5)) {
-        map.setTile(x, y, Tile.RIVER, 0);
+        map.setTile(x, y, RIVER, 0);
       } else {
-        map.setTile(x, y, Tile.DIRT, 0);
+        map.setTile(x, y, DIRT, 0);
       }
     }
   }
@@ -177,8 +178,8 @@ var treeSplash = function(map, x, y) {
     if (!map.testBounds(treePos.x, treePos.y))
       return;
 
-    if (map.getTileValue(treePos) === Tile.DIRT)
-      map.setTile(treePos, Tile.WOODS, Tile.BLBNBIT);
+    if (map.getTileValue(treePos) === DIRT)
+      map.setTile(treePos, WOODS, Tile.BLBNBIT);
 
     numTrees--;
   }
@@ -216,7 +217,7 @@ var smoothRiver = function(map) {
 
   for (var x = 0; x < map.width; x++) {
     for (var y = 0; y < map.height; y++) {
-      if (map.getTileValue(x, y) === Tile.REDGE) {
+      if (map.getTileValue(x, y) === REDGE) {
         var bitIndex = 0;
 
         for (var z = 0; z < 4; z++) {
@@ -224,15 +225,15 @@ var smoothRiver = function(map) {
           var xTemp = x + dx[z];
           var yTemp = y + dy[z];
           if (map.testBounds(xTemp, yTemp) &&
-              map.getTileValue(xTemp, yTemp) !== Tile.DIRT &&
-              (map.getTileValue(xTemp, yTemp) < Tile.WOODS_LOW ||
-               map.getTileValue(xTemp, yTemp) > Tile.WOODS_HIGH)) {
+              map.getTileValue(xTemp, yTemp) !== DIRT &&
+              (map.getTileValue(xTemp, yTemp) < WOODS_LOW ||
+               map.getTileValue(xTemp, yTemp) > WOODS_HIGH)) {
             bitIndex++;
           }
         }
 
         var temp = riverEdges[bitIndex & 15];
-        if (temp !== Tile.RIVER && Random.getRandom(1))
+        if (temp !== RIVER && Random.getRandom(1))
           temp++;
 
         map.setTileValue(x, y, temp, 0);
@@ -243,7 +244,7 @@ var smoothRiver = function(map) {
 
 
 var isTree = function(tileValue) {
-  return tileValue >= Tile.WOODS_LOW && tileValue <= Tile.WOODS_HIGH;
+  return tileValue >= WOODS_LOW && tileValue <= WOODS_HIGH;
 };
 
 
@@ -281,7 +282,7 @@ var smoothTreesAt = function(map, x, y, preserve) {
 
   var temp = treeTable[bitIndex & 15];
   if (temp) {
-    if (temp !== Tile.WOODS) {
+    if (temp !== WOODS) {
       if ((x + y) & 1)
           temp = temp - 8;
     }
@@ -375,12 +376,12 @@ var putOnMap = function(map, newVal, x, y) {
 
   var tileValue = map.getTileValue(x, y);
 
-  if (tileValue !== Tile.DIRT) {
-    if (tileValue === Tile.RIVER) {
-      if (newVal !== Tile.CHANNEL)
+  if (tileValue !== DIRT) {
+    if (tileValue === RIVER) {
+      if (newVal !== CHANNEL)
           return;
     }
-    if (tileValue === Tile.CHANNEL)
+    if (tileValue === CHANNEL)
       return;
   }
   map.setTile(x, y, newVal, 0);
@@ -389,15 +390,15 @@ var putOnMap = function(map, newVal, x, y) {
 
 var plopBRiver = function(map, pos) {
   var BRMatrix = [
-   [0, 0, 0, Tile.REDGE, Tile.REDGE, Tile.REDGE, 0, 0, 0],
-   [0, 0, Tile.REDGE, Tile.RIVER, Tile.RIVER, Tile.RIVER, Tile.REDGE, 0, 0],
-   [0, Tile.REDGE, Tile.RIVER, Tile.RIVER, Tile.RIVER, Tile.RIVER, Tile.RIVER, Tile.REDGE, 0],
-   [Tile.REDGE, Tile.RIVER, Tile.RIVER, Tile.RIVER, Tile.RIVER, Tile.RIVER, Tile.RIVER, Tile.RIVER, Tile.REDGE],
-   [Tile.REDGE, Tile.RIVER, Tile.RIVER, Tile.RIVER, Tile.CHANNEL, Tile.RIVER, Tile.RIVER, Tile.RIVER, Tile.REDGE],
-   [Tile.REDGE, Tile.RIVER, Tile.RIVER, Tile.RIVER, Tile.RIVER, Tile.RIVER, Tile.RIVER, Tile.RIVER, Tile.REDGE],
-   [0, Tile.REDGE, Tile.RIVER, Tile.RIVER, Tile.RIVER, Tile.RIVER, Tile.RIVER, Tile.REDGE, 0],
-   [0, 0, Tile.REDGE, Tile.RIVER, Tile.RIVER, Tile.RIVER, Tile.REDGE, 0, 0],
-   [0, 0, 0, Tile.REDGE, Tile.REDGE, Tile.REDGE, 0, 0, 0]];
+   [0, 0, 0, REDGE, REDGE, REDGE, 0, 0, 0],
+   [0, 0, REDGE, RIVER, RIVER, RIVER, REDGE, 0, 0],
+   [0, REDGE, RIVER, RIVER, RIVER, RIVER, RIVER, REDGE, 0],
+   [REDGE, RIVER, RIVER, RIVER, RIVER, RIVER, RIVER, RIVER, REDGE],
+   [REDGE, RIVER, RIVER, RIVER, CHANNEL, RIVER, RIVER, RIVER, REDGE],
+   [REDGE, RIVER, RIVER, RIVER, RIVER, RIVER, RIVER, RIVER, REDGE],
+   [0, REDGE, RIVER, RIVER, RIVER, RIVER, RIVER, REDGE, 0],
+   [0, 0, REDGE, RIVER, RIVER, RIVER, REDGE, 0, 0],
+   [0, 0, 0, REDGE, REDGE, REDGE, 0, 0, 0]];
 
   for (var x = 0; x < 9; x++) {
     for (var y = 0; y < 9; y++) {
@@ -409,12 +410,12 @@ var plopBRiver = function(map, pos) {
 
 var plopSRiver = function(map, pos) {
   var SRMatrix = [
-    [0, 0, Tile.REDGE, Tile.REDGE, 0, 0],
-    [0, Tile.REDGE, Tile.RIVER, Tile.RIVER, Tile.REDGE, 0],
-    [Tile.REDGE, Tile.RIVER, Tile.RIVER, Tile.RIVER, Tile.RIVER, Tile.REDGE],
-    [Tile.REDGE, Tile.RIVER, Tile.RIVER, Tile.RIVER, Tile.RIVER, Tile.REDGE],
-    [0, Tile.REDGE, Tile.RIVER, Tile.RIVER, Tile.REDGE, 0],
-    [0, 0, Tile.REDGE, Tile.REDGE, 0, 0]];
+    [0, 0, REDGE, REDGE, 0, 0],
+    [0, REDGE, RIVER, RIVER, REDGE, 0],
+    [REDGE, RIVER, RIVER, RIVER, RIVER, REDGE],
+    [REDGE, RIVER, RIVER, RIVER, RIVER, REDGE],
+    [0, REDGE, RIVER, RIVER, REDGE, 0],
+    [0, 0, REDGE, REDGE, 0, 0]];
 
   for (var x = 0; x < 6; x++) {
     for (var y = 0; y < 6; y++) {
@@ -431,15 +432,15 @@ var smoothWater = function(map) {
     for (y = 0; y < map.height; y++) {
       tile = map.getTileValue(x, y);
 
-      if (tile >= Tile.WATER_Tile.LOW && tile <= Tile.WATER_Tile.HIGH) {
+      if (tile >= WATER_LOW && tile <= WATER_HIGH) {
         pos = new map.Position(x, y);
 
         for (dir = Direction.BEGIN; dir < Direction.END; dir = Direction.increment90(dir)) {
-          tile = map.getTileFromMap(pos, dir, Tile.WATER_LOW);
+          tile = map.getTileFromMap(pos, dir, WATER_LOW);
 
           /* If nearest object is not water: */
-          if (tile < Tile.WATER_LOW || tile > Tile.WATER_HIGH) {
-            map.setTileValue(x, y, Tile.REDGE, 0); /* set river edge */
+          if (tile < WATER_LOW || tile > WATER_HIGH) {
+            map.setTileValue(x, y, REDGE, 0); /* set river edge */
             break; // Continue with next tile
           }
         }
@@ -451,21 +452,21 @@ var smoothWater = function(map) {
     for (y = 0; y < map.height; y++) {
       tile = map.getTileValue(x, y);
 
-      if (tile !== Tile.CHANNEL && tile >= Tile.WATER_LOW && tile <= Tile.WATER_HIGH) {
+      if (tile !== CHANNEL && tile >= WATER_LOW && tile <= WATER_HIGH) {
         var makeRiver = true;
 
         pos = new map.Position(x, y);
         for (dir = Direction.BEGIN; dir < Direction.END; dir = Direction.increment90(dir)) {
-          tile = map.getTileFromMap(pos, dir, Tile.WATER_LOW);
+          tile = map.getTileFromMap(pos, dir, WATER_LOW);
 
-          if (tile < Tile.WATER_LOW || tile > Tile.WATER_HIGH) {
+          if (tile < WATER_LOW || tile > WATER_HIGH) {
             makeRiver = false;
             break;
           }
         }
 
         if (makeRiver)
-          map.setTileValue(x, y, Tile.RIVER, 0);
+          map.setTileValue(x, y, RIVER, 0);
       }
     }
   }
@@ -474,13 +475,13 @@ var smoothWater = function(map) {
     for (y = 0; y < map.height; y++) {
       tile = map.getTileValue(x, y);
 
-      if (tile >= Tile.WOODS_LOW && tile <= Tile.WOODS_HIGH) {
+      if (tile >= WOODS_LOW && tile <= WOODS_HIGH) {
          pos = new map.Position(x, y);
          for (dir = Direction.BEGIN; dir < Direction.END; dir = Direction.increment90(dir)) {
            tile = map.getTileFromMap(pos, dir, TILE_INVALID);
 
-           if (tile === Tile.RIVER || tile === Tile.CHANNEL) {
-             map.setTileValue(x, y, Tile.REDGE, 0); /* make it water's edge */
+           if (tile === RIVER || tile === CHANNEL) {
+             map.setTileValue(x, y, REDGE, 0); /* make it water's edge */
              break;
            }
          }

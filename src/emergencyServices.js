@@ -7,7 +7,7 @@
  *
  */
 
-import { Tile } from './tile';
+import { FIRESTATION, POLICESTATION } from "./tileValues";
 
 var handleService = function(censusStat, budgetEffect, blockMap) {
   return function(map, x, y, simData) {
@@ -37,8 +37,8 @@ var fireStationFound = handleService('fireStationPop', 'fireEffect', 'fireStatio
 
 var EmergencyServices = {
   registerHandlers: function(mapScanner, repairManager) {
-    mapScanner.addAction(Tile.POLICESTATION, policeStationFound);
-    mapScanner.addAction(Tile.FIRESTATION, fireStationFound);
+    mapScanner.addAction(POLICESTATION, policeStationFound);
+    mapScanner.addAction(FIRESTATION, fireStationFound);
   }
 };
 

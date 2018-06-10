@@ -13,8 +13,8 @@ import { MiscUtils } from './miscUtils';
 import { Random } from './random';
 import * as SpriteConstants  from './spriteConstants';
 import { SpriteUtils } from './spriteUtils';
-import { Tile } from './tile';
 import { TileUtils } from './tileUtils';
+import { DIRT, RIVER, WATER_HIGH } from "./tileValues";
 
 function MonsterSprite(map, spriteManager, x, y) {
   this.init(SpriteConstants.SPRITE_MONSTER, map, spriteManager, x, y);
@@ -143,10 +143,10 @@ MonsterSprite.prototype.move = function(spriteCycle, disasterManager, blockMaps)
 
   var tileValue = SpriteUtils.getTileValue(this.map, this.x, this.y);
 
-  if (tileValue === -1 || (tileValue === Tile.RIVER && this.count < 500))
+  if (tileValue === -1 || (tileValue === RIVER && this.count < 500))
     this.frame = 0;
 
-  if (tileValue === Tile.DIRT || tileValue > Tile.WATER_HIGH)
+  if (tileValue === DIRT || tileValue > WATER_HIGH)
     this._seenLand = true;
 
   var spriteList = this.spriteManager.getSpriteList();

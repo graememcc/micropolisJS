@@ -12,7 +12,7 @@ import { Config } from './config';
 import { EventEmitter } from './eventEmitter';
 import { QUERY_WINDOW_NEEDED } from './messages';
 import { Text } from './text';
-import { Tile } from './tile';
+import * as TileValues from "./tileValues";
 
 var makeTool = BaseTool.makeTool;
 var QueryTool = EventEmitter(makeTool(function(map) {
@@ -93,17 +93,17 @@ QueryTool.prototype.classifyDebug = function(x, y, blockMaps) {
 
 QueryTool.prototype.classifyZone = function(x, y) {
   var baseTiles = [
-      Tile.DIRT, Tile.RIVER, Tile.TREEBASE, Tile.RUBBLE,
-      Tile.FLOOD, Tile.RADTILE, Tile.FIRE, Tile.ROADBASE,
-      Tile.POWERBASE, Tile.RAILBASE, Tile.RESBASE, Tile.COMBASE,
-      Tile.INDBASE, Tile.PORTBASE, Tile.AIRPORTBASE, Tile.COALBASE,
-      Tile.FIRESTBASE, Tile.POLICESTBASE, Tile.STADIUMBASE, Tile.NUCLEARBASE,
-      Tile.HBRDG0, Tile.RADAR0, Tile.FOUNTAIN, Tile.INDBASE2,
-      Tile.FOOTBALLGAME1, Tile.VBRDG0, 952];
+      TileValues.DIRT, TileValues.RIVER, TileValues.TREEBASE, TileValues.RUBBLE,
+      TileValues.FLOOD, TileValues.RADTILE, TileValues.FIRE, TileValues.ROADBASE,
+      TileValues.POWERBASE, TileValues.RAILBASE, TileValues.RESBASE, TileValues.COMBASE,
+      TileValues.INDBASE, TileValues.PORTBASE, TileValues.AIRPORTBASE, TileValues.COALBASE,
+      TileValues.FIRESTBASE, TileValues.POLICESTBASE, TileValues.STADIUMBASE, TileValues.NUCLEARBASE,
+      TileValues.HBRDG0, TileValues.RADAR0, TileValues.FOUNTAIN, TileValues.INDBASE2,
+      TileValues.FOOTBALLGAME1, TileValues.VBRDG0, 952];
 
   var tileValue = this._map.getTileValue(x, y);
-  if (tileValue >= Tile.COALSMOKE1 && tileValue < Tile.FOOTBALLGAME1)
-    tileValue = Tile.COALBASE;
+  if (tileValue >= TileValues.COALSMOKE1 && tileValue < TileValues.FOOTBALLGAME1)
+    tileValue = TileValues.COALBASE;
 
   var index, l;
   for (index = 0, l = baseTiles.length - 1; index < l; index++) {

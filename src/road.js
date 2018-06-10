@@ -9,6 +9,7 @@
 
 import { Random } from './random';
 import { Tile } from './tile';
+import * as TileValues from "./tileValues";
 import { TileUtils } from './tileUtils';
 
 var openBridge = function(map, origX, origY, xDelta, yDelta, oldTiles, newTiles) {
@@ -31,7 +32,7 @@ var closeBridge = function(map, origX, origY, xDelta, yDelta, oldTiles, newTiles
 
     if (map.testBounds(x, y)) {
       var tileValue = map.getTileValue(x, y);
-      if (tileValue === Tile.CHANNEL || (tileValue & 15) === (oldTiles[i] & 15))
+      if (tileValue === TileValues.CHANNEL || (tileValue & 15) === (oldTiles[i] & 15))
         map.setTileValue(x, y, newTiles[i]);
     }
   }
@@ -41,29 +42,29 @@ var closeBridge = function(map, origX, origY, xDelta, yDelta, oldTiles, newTiles
 var verticalDeltaX = [0,  1,  0,  0,  0,  0,  1];
 var verticalDeltaY = [-2, -2, -1,  0,  1,  2,  2];
 var openVertical = [
-      Tile.VBRDG0 | Tile.BULLBIT, Tile.VBRDG1 | Tile.BULLBIT,
-      Tile.RIVER, Tile.BRWV | Tile.BULLBIT,
-      Tile.RIVER, Tile.VBRDG2 | Tile.BULLBIT, Tile.VBRDG3 | Tile.BULLBIT];
+      TileValues.VBRDG0 | Tile.BULLBIT, TileValues.VBRDG1 | Tile.BULLBIT,
+      TileValues.RIVER, TileValues.BRWV | Tile.BULLBIT,
+      TileValues.RIVER, TileValues.VBRDG2 | Tile.BULLBIT, TileValues.VBRDG3 | Tile.BULLBIT];
 var closeVertical = [
-      Tile.VBRIDGE | Tile.BULLBIT, Tile.RIVER, Tile.VBRIDGE | Tile.BULLBIT,
-      Tile.VBRIDGE | Tile.BULLBIT, Tile.VBRIDGE | Tile.BULLBIT,
-      Tile.VBRIDGE | Tile.BULLBIT, Tile.RIVER];
+      TileValues.VBRIDGE | Tile.BULLBIT, TileValues.RIVER, TileValues.VBRIDGE | Tile.BULLBIT,
+      TileValues.VBRIDGE | Tile.BULLBIT, TileValues.VBRIDGE | Tile.BULLBIT,
+      TileValues.VBRIDGE | Tile.BULLBIT, TileValues.RIVER];
 var horizontalDeltaX = [-2,  2, -2, -1,  0,  1,  2];
 var horizontalDeltaY = [ -1, -1,  0,  0,  0,  0,  0];
 var openHorizontal = [
-    Tile.HBRDG1 | Tile.BULLBIT, Tile.HBRDG3 | Tile.BULLBIT,
-    Tile.HBRDG0 | Tile.BULLBIT, Tile.RIVER, Tile.BRWH | Tile.BULLBIT,
-    Tile.RIVER, Tile.HBRDG2 | Tile.BULLBIT
+    TileValues.HBRDG1 | Tile.BULLBIT, TileValues.HBRDG3 | Tile.BULLBIT,
+    TileValues.HBRDG0 | Tile.BULLBIT, TileValues.RIVER, TileValues.BRWH | Tile.BULLBIT,
+    TileValues.RIVER, TileValues.HBRDG2 | Tile.BULLBIT
 ];
 var closeHorizontal = [
-    Tile.RIVER, Tile.RIVER, Tile.HBRIDGE | Tile.BULLBIT,
-    Tile.HBRIDGE | Tile.BULLBIT, Tile.HBRIDGE | Tile.BULLBIT,
-    Tile.HBRIDGE | Tile.BULLBIT, Tile.HBRIDGE | Tile.BULLBIT
+    TileValues.RIVER, TileValues.RIVER, TileValues.HBRIDGE | Tile.BULLBIT,
+    TileValues.HBRIDGE | Tile.BULLBIT, TileValues.HBRIDGE | Tile.BULLBIT,
+    TileValues.HBRIDGE | Tile.BULLBIT, TileValues.HBRIDGE | Tile.BULLBIT
 ];
 
 
 var doBridge = function(map, x, y, currentTile, simData) {
-  if (currentTile === Tile.BRWV) {
+  if (currentTile === TileValues.BRWV) {
     // We have an open vertical bridge. Possibly close it.
     if (Random.getChance(3) && simData.spriteManager.getBoatDistance(x, y) > 340)
       closeBridge(map, x, y, verticalDeltaX, verticalDeltaY, openVertical, closeVertical);
@@ -71,7 +72,7 @@ var doBridge = function(map, x, y, currentTile, simData) {
     return true;
   }
 
-  if (currentTile == Tile.BRWH) {
+  if (currentTile == TileValues.BRWH) {
     // We have an open horizontal bridge. Possibly close it.
     if (Random.getChance(3) && simData.spriteManager.getBoatDistance(x, y) > 340)
       closeBridge(map, x, y, horizontalDeltaX, horizontalDeltaY, openHorizontal, closeHorizontal);
@@ -82,7 +83,7 @@ var doBridge = function(map, x, y, currentTile, simData) {
   if (simData.spriteManager.getBoatDistance(x, y) < 300 || Random.getChance(7)) {
     if (currentTile & 1) {
       if (x < map.width - 1) {
-        if (map.getTileValue(x + 1, y) === Tile.CHANNEL) {
+        if (map.getTileValue(x + 1, y) === TileValues.CHANNEL) {
           // We have a closed vertical bridge. Open it.
           openBridge(map, x, y, verticalDeltaX, verticalDeltaY, closeVertical, openVertical);
           return true;
@@ -91,7 +92,7 @@ var doBridge = function(map, x, y, currentTile, simData) {
       return false;
     } else {
       if (y > 0) {
-        if (map.getTileValue(x, y - 1) === Tile.CHANNEL) {
+        if (map.getTileValue(x, y - 1) === TileValues.CHANNEL) {
           // We have a closed horizontal bridge. Open it.
           openBridge(map, x, y, horizontalDeltaX, horizontalDeltaY, closeHorizontal, openHorizontal);
           return true;
@@ -104,7 +105,7 @@ var doBridge = function(map, x, y, currentTile, simData) {
 };
 
 
-var densityTable = [Tile.ROADBASE, Tile.LTRFBASE, Tile.HTRFBASE];
+var densityTable = [TileValues.ROADBASE, TileValues.LTRFBASE, TileValues.HTRFBASE];
 
 var roadFound = function(map, x, y, simData) {
   simData.census.roadTotal += 1;
@@ -123,7 +124,7 @@ var roadFound = function(map, x, y, simData) {
 
           // Replace bridge tiles with water, otherwise rubble
           if ((tileValue & 15) < 2 || (tileValue & 15) === 15)
-            map.setTile(x, y, Tile.RIVER, 0);
+            map.setTile(x, y, TileValues.RIVER, 0);
           else
             map.setTo(x, y, TileUtils.randomRubble());
 
@@ -145,9 +146,9 @@ var roadFound = function(map, x, y, simData) {
   // Examine traffic density, and modify tile to represent last scanned traffic
   // density
   var density = 0;
-  if (tileValue < Tile.LTRFBASE) {
+  if (tileValue < TileValues.LTRFBASE) {
     density = 0;
-  } else if (tileValue < Tile.HTRFBASE) {
+  } else if (tileValue < TileValues.HTRFBASE) {
     density = 1;
   } else {
     // Heavy traffic counts as two tiles with regards to upkeep cost
@@ -165,7 +166,7 @@ var roadFound = function(map, x, y, simData) {
   if (currentDensity === density)
     return;
 
-  var newValue = ((tileValue - Tile.ROADBASE) & 15) + densityTable[currentDensity];
+  var newValue = ((tileValue - TileValues.ROADBASE) & 15) + densityTable[currentDensity];
   // Preserve all bits except animation
   var newFlags = currentTile.getFlags() & ~Tile.ANIMBIT;
   if (currentDensity > 0)

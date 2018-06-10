@@ -7,7 +7,8 @@
  *
  */
 
-import { Tile } from './tile';
+ import { Tile } from "./tile";
+import { FLOOD } from "./tileValues";
 
 // Tile to be filled to avoid creating lots of GC-able objects
 var tile = new Tile();
@@ -35,7 +36,7 @@ MapScanner.prototype.mapScan = function(startX, maxX, simData) {
       this._map.getTile(x, y, tile);
       var tileValue = tile.getValue();
 
-      if (tileValue < Tile.FLOOD)
+      if (tileValue < FLOOD)
         continue;
 
       if (tile.isConductive())

@@ -11,13 +11,14 @@ import { Config } from './config';
 import { Random } from './random';
 import { Tile } from './tile';
 import { TileUtils } from './tileUtils';
+import * as TileValues from "./tileValues";
 import { Traffic } from './traffic';
 import { ZoneUtils } from './zoneUtils';
 
 // Residential tiles have 'populations' of 16, 24, 32 or 40, and value from 0 to 3. The tiles are laid out in
 // increasing order of land value, cycling through each population value
 var placeResidential = function(map, x, y, population, lpValue, zonePower) {
-  var centreTile = ((lpValue * 4) + population) * 9 + Tile.RZB;
+  var centreTile = ((lpValue * 4) + population) * 9 + TileValues.RZB;
   ZoneUtils.putZone(map, x, y, centreTile, zonePower);
 };
 
@@ -29,7 +30,7 @@ var getFreeZonePopulation = function(map, x, y, tileValue) {
     for (var yy = y - 1; yy <= y + 1; yy++) {
       if (xx === x && yy === y) continue;
       tileValue = map.getTileValue(xx, yy);
-      if (tileValue >= Tile.LHTHR && tileValue <= Tile.HHTHR)
+      if (tileValue >= TileValues.LHTHR && tileValue <= TileValues.HHTHR)
         count += 1;
     }
   }
@@ -42,10 +43,10 @@ var getZonePopulation = function(map, x, y, tileValue) {
   if (tileValue instanceof Tile)
     tileValue = tile.getValue();
 
-  if (tileValue === Tile.FREEZ)
+  if (tileValue === TileValues.FREEZ)
     return getFreeZonePopulation(map, x, y, tileValue);
 
-  var populationIndex = Math.floor((tileValue - Tile.RZB) / 9) % 4 + 1;
+  var populationIndex = Math.floor((tileValue - TileValues.RZB) / 9) % 4 + 1;
   return populationIndex * 8 + 16;
 };
 
@@ -59,7 +60,7 @@ var evalLot = function(map, x, y) {
     return -1;
 
   var tileValue = map.getTileValue(x, y);
-  if (tileValue < Tile.RESBASE || tileValue > Tile.RESBASE + 8)
+  if (tileValue < TileValues.RESBASE || tileValue > TileValues.RESBASE + 8)
     return -1;
 
   var score = 1;
@@ -71,7 +72,7 @@ var evalLot = function(map, x, y) {
       continue;
 
     tileValue = map.getTileValue(edgeX, edgeY);
-    if (tileValue !== Tile.DIRT && tileValue <= Tile.LASTROAD)
+    if (tileValue !== TileValues.DIRT && tileValue <= TileValues.LASTROAD)
       score += 1;
   }
 
@@ -104,7 +105,7 @@ var buildHouse = function(map, x, y, lpValue) {
 
   if (best > 0 && map.testBounds(x + xDelta[best], y + yDelta[best]))
     map.setTile(x + xDelta[best], y + yDelta[best],
-              Tile.HOUSE + Random.getRandom(2) + lpValue * 3, Tile.BLBNCNBIT);
+              TileValues.HOUSE + Random.getRandom(2) + lpValue * 3, Tile.BLBNCNBIT);
 };
 
 
@@ -117,7 +118,7 @@ var growZone = function(map, x, y, blockMaps, population, lpValue, zonePower) {
 
   var tileValue = map.getTileValue(x, y);
 
-  if (tileValue === Tile.FREEZ) {
+  if (tileValue === TileValues.FREEZ) {
     if (population < 8) {
       // Zone capacity not yet reached: build another house
       buildHouse(map, x, y, lpValue);
@@ -155,12 +156,12 @@ var degradeZone = function(map, x, y, blockMaps, population, lpValue, zonePower)
 
   if (population === 16) {
     // Already at lowest density: degrade to 8 individual houses
-    map.setTile(x, y, Tile.FREEZ, Tile.BLBNCNBIT | Tile.ZONEBIT);
+    map.setTile(x, y, TileValues.FREEZ, Tile.BLBNCNBIT | Tile.ZONEBIT);
 
     for (yy = y - 1; yy <= y + 1; yy++) {
       for (xx = x - 1; xx <= x + 1; xx++) {
         if (xx === x && yy === y) continue;
-        map.setTile(x, y, Tile.LHTHR + lpValue + Random.getRandom(2), Tile.BLBNCNBIT);
+        map.setTile(x, y, TileValues.LHTHR + lpValue + Random.getRandom(2), Tile.BLBNCNBIT);
       }
     }
 
@@ -175,9 +176,9 @@ var degradeZone = function(map, x, y, blockMaps, population, lpValue, zonePower)
   for (xx = x - 1; xx <= x + 1; xx++) {
     for (yy = y - 1; yy <= y + 1; yy++, i++) {
       var currentValue = map.getTileValue(xx, yy);
-      if (currentValue >= Tile.LHTHR && currentValue <= Tile.HHTHR) {
+      if (currentValue >= TileValues.LHTHR && currentValue <= TileValues.HHTHR) {
         // We've found a house. Replace it with the normal free zone tile
-        map.setTile(xx, yy, freeZone[i] + Tile.RESBASE, Tile.BLBNCNBIT);
+        map.setTile(xx, yy, freeZone[i] + TileValues.RESBASE, Tile.BLBNCNBIT);
         return;
       }
     }
@@ -236,7 +237,7 @@ var residentialFound = function(map, x, y, simData) {
 
   // Sometimes we will randomly choose to assess this block. However, always assess it if it's empty or contains only
   // single houses.
-  if (tileValue === Tile.FREEZ || Random.getChance(7)) {
+  if (tileValue === TileValues.FREEZ || Random.getChance(7)) {
     // First, score the individual zone. This is a value in the range -3000 to 3000
     // Then take into account global demand for housing.
     var locationScore = evalResidential(simData.blockMaps, x, y, trafficOK);
@@ -286,7 +287,7 @@ var residentialFound = function(map, x, y, simData) {
 var makeHospital = function(map, x, y, simData, zonePower) {
   // We only build a hospital if the population requires it
   if (simData.census.needHospital > 0) {
-    ZoneUtils.putZone(map, x, y, Tile.HOSPITAL, zonePower);
+    ZoneUtils.putZone(map, x, y, TileValues.HOSPITAL, zonePower);
     simData.census.needHospital = 0;
     return;
   }
@@ -299,7 +300,7 @@ var hospitalFound = function(map, x, y, simData) {
   // Degrade to an empty zone if a hospital is no longer sustainable
   if (simData.census.needHospital === -1) {
     if (Random.getRandom(20) === 0)
-      ZoneUtils.putZone(map, x, y, Tile.FREE, map.getTile(x, y).isPowered());
+      ZoneUtils.putZone(map, x, y, TileValues.FREEZ, map.getTile(x, y).isPowered());
   }
 };
 
@@ -307,8 +308,8 @@ var hospitalFound = function(map, x, y, simData) {
 var Residential = {
   registerHandlers: function(mapScanner, repairManager) {
     mapScanner.addAction(TileUtils.isResidentialZone, residentialFound);
-    mapScanner.addAction(TileUtils.HOSPITAL, hospitalFound);
-    repairManager.addAction(Tile.HOSPITAL, 15, 3);
+    mapScanner.addAction(TileValues.HOSPITAL, hospitalFound);
+    repairManager.addAction(TileValues.HOSPITAL, 15, 3);
   },
   getZonePopulation: getZonePopulation
 };

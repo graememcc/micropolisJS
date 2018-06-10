@@ -11,6 +11,7 @@ import { Random } from './random';
 import { SPRITE_SHIP } from './spriteConstants';
 import { Tile } from './tile';
 import { TileUtils } from './tileUtils';
+import * as TileValues from "./tileValues";
 
 var railFound = function(map, x, y, simData) {
   simData.census.railTotal += 1;
@@ -28,8 +29,8 @@ var railFound = function(map, x, y, simData) {
         var mapValue = currentTile.getValue();
 
         // Replace bridge tiles with water, otherwise rubble
-        if (mapValue < Tile.RAILBASE + 2)
-          map.setTile(x, y, Tile.RIVER, 0);
+        if (mapValue < TileValues.RAILBASE + 2)
+          map.setTile(x, y, TileValues.RIVER, 0);
         else
           map.setTo(x, y, TileUtils.randomRubble());
       }
@@ -43,8 +44,8 @@ var airportFound = function(map, x, y, simData) {
 
   var tile = map.getTile(x, y);
   if (tile.isPowered()) {
-    if (map.getTileValue(x + 1, y - 1) === Tile.RADAR)
-      map.setTile(x + 1, y - 1, Tile.RADAR0, Tile.CONDBIT | Tile.ANIMBIT | Tile.BURNBIT);
+    if (map.getTileValue(x + 1, y - 1) === TileValues.RADAR)
+      map.setTile(x + 1, y - 1, TileValues.RADAR0, Tile.CONDBIT | Tile.ANIMBIT | Tile.BURNBIT);
 
     if (Random.getRandom(5) === 0) {
       simData.spriteManager.generatePlane(x, y);
@@ -54,7 +55,7 @@ var airportFound = function(map, x, y, simData) {
     if (Random.getRandom(12) === 0)
       simData.spriteManager.generateCopter(x, y);
   } else {
-      map.setTile(x + 1, y - 1, Tile.RADAR, Tile.CONDBIT | Tile.BURNBIT);
+      map.setTile(x + 1, y - 1, TileValues.RADAR, Tile.CONDBIT | Tile.BURNBIT);
   }
 };
 
@@ -72,11 +73,11 @@ var portFound = function(map, x, y, simData) {
 var Transport = {
   registerHandlers: function(mapScanner, repairManager) {
     mapScanner.addAction(TileUtils.isRail, railFound);
-    mapScanner.addAction(Tile.PORT, portFound);
-    mapScanner.addAction(Tile.AIRPORT, airportFound);
+    mapScanner.addAction(TileValues.PORT, portFound);
+    mapScanner.addAction(TileValues.AIRPORT, airportFound);
 
-    repairManager.addAction(Tile.PORT, 15, 4);
-    repairManager.addAction(Tile.AIRPORT, 7, 6);
+    repairManager.addAction(TileValues.PORT, 15, 4);
+    repairManager.addAction(TileValues.AIRPORT, 7, 6);
   }
 };
 

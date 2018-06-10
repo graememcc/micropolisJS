@@ -13,8 +13,8 @@ import { MiscUtils } from './miscUtils';
 import { Random } from './random';
 import { SPRITE_EXPLOSION } from './spriteConstants';
 import { SpriteUtils } from './spriteUtils';
-import { Tile } from './tile';
 import { TileUtils } from './tileUtils';
+import { DIRT } from "./tileValues";
 
 function ExplosionSprite(map, spriteManager, x, y) {
   this.init(SPRITE_EXPLOSION, map, spriteManager, x, y);
@@ -39,7 +39,7 @@ ExplosionSprite.prototype.startFire = function(x, y) {
   var tile = this.map.getTile(x, y);
   var tileValue = tile.getValue();
 
-  if (!tile.isCombustible() && tileValue !== Tile.DIRT)
+  if (!tile.isCombustible() && tileValue !== DIRT)
     return;
 
   if (tile.isZone())

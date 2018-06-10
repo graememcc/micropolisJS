@@ -10,6 +10,7 @@
 import { ConnectingTool } from './connectingTool';
 import { Tile } from './tile';
 import { TileUtils } from './tileUtils';
+import * as TileValues from "./tileValues";
 
 var RailTool = ConnectingTool(function(map) {
   this.init(20, map, true, true);
@@ -23,21 +24,21 @@ RailTool.prototype.layRail = function(x, y) {
   var cost = this.toolCost;
 
   switch (tile) {
-    case Tile.DIRT:
-      this._worldEffects.setTile(x, y, Tile.LHRAIL | Tile.BULLBIT | Tile.BURNBIT);
+    case TileValues.DIRT:
+      this._worldEffects.setTile(x, y, TileValues.LHRAIL | Tile.BULLBIT | Tile.BURNBIT);
       break;
 
-    case Tile.RIVER:
-    case Tile.REDGE:
-    case Tile.CHANNEL:
+    case TileValues.RIVER:
+    case TileValues.REDGE:
+    case TileValues.CHANNEL:
         cost = 100;
 
         if (x < this._map.width - 1) {
           tile = this._worldEffects.getTileValue(x + 1, y);
           tile = TileUtils.normalizeRoad(tile);
-          if (tile == Tile.RAILHPOWERV || tile == Tile.HRAIL ||
-              (tile >= Tile.LHRAIL && tile <= Tile.HRAILROAD)) {
-            this._worldEffects.setTile(x, y, Tile.HRAIL, Tile.BULLBIT);
+          if (tile == TileValues.RAILHPOWERV || tile == TileValues.HRAIL ||
+              (tile >= TileValues.LHRAIL && tile <= TileValues.HRAILROAD)) {
+            this._worldEffects.setTile(x, y, TileValues.HRAIL, Tile.BULLBIT);
             break;
           }
         }
@@ -45,9 +46,9 @@ RailTool.prototype.layRail = function(x, y) {
         if (x > 0) {
           tile = this._worldEffects.getTileValue(x - 1, y);
           tile = TileUtils.normalizeRoad(tile);
-          if (tile == Tile.RAILHPOWERV || tile == Tile.HRAIL ||
-              (tile > Tile.VRAIL && tile < Tile.VRAILROAD)) {
-            this._worldEffects.setTile(x, y, Tile.HRAIL, Tile.BULLBIT);
+          if (tile == TileValues.RAILHPOWERV || tile == TileValues.HRAIL ||
+              (tile > TileValues.VRAIL && tile < TileValues.VRAILROAD)) {
+            this._worldEffects.setTile(x, y, TileValues.HRAIL, Tile.BULLBIT);
             break;
           }
         }
@@ -55,9 +56,9 @@ RailTool.prototype.layRail = function(x, y) {
         if (y < this._map.height - 1) {
           tile = this._worldEffects.getTileValue(x, y + 1);
           tile = TileUtils.normalizeRoad(tile);
-          if (tile == Tile.RAILVPOWERH || tile == Tile.VRAILROAD ||
-              (tile > Tile.HRAIL && tile < Tile.HRAILROAD)) {
-            this._worldEffects.setTile(x, y, Tile.VRAIL, Tile.BULLBIT);
+          if (tile == TileValues.RAILVPOWERH || tile == TileValues.VRAILROAD ||
+              (tile > TileValues.HRAIL && tile < TileValues.HRAILROAD)) {
+            this._worldEffects.setTile(x, y, TileValues.VRAIL, Tile.BULLBIT);
             break;
           }
         }
@@ -65,29 +66,29 @@ RailTool.prototype.layRail = function(x, y) {
         if (y > 0) {
           tile = this._worldEffects.getTileValue(x, y - 1);
           tile = TileUtils.normalizeRoad(tile);
-          if (tile == Tile.RAILVPOWERH || tile == Tile.VRAILROAD ||
-              (tile > Tile.HRAIL && tile < Tile.HRAILROAD)) {
-            this._worldEffects.setTile(x, y, Tile.VRAIL, Tile.BULLBIT);
+          if (tile == TileValues.RAILVPOWERH || tile == TileValues.VRAILROAD ||
+              (tile > TileValues.HRAIL && tile < TileValues.HRAILROAD)) {
+            this._worldEffects.setTile(x, y, TileValues.VRAIL, Tile.BULLBIT);
             break;
           }
         }
 
         return this.TOOLRESULT_FAILED;
 
-      case Tile.LHPOWER:
-        this._worldEffects.setTile(x, y, Tile.RAILVPOWERH, Tile.CONDBIT | Tile.BURNBIT | Tile.BULLBIT);
+      case TileValues.LHPOWER:
+        this._worldEffects.setTile(x, y, TileValues.RAILVPOWERH, Tile.CONDBIT | Tile.BURNBIT | Tile.BULLBIT);
         break;
 
-      case Tile.LVPOWER:
-        this._worldEffects.setTile(x, y, Tile.RAILHPOWERV, Tile.CONDBIT | Tile.BURNBIT | Tile.BULLBIT);
+      case TileValues.LVPOWER:
+        this._worldEffects.setTile(x, y, TileValues.RAILHPOWERV, Tile.CONDBIT | Tile.BURNBIT | Tile.BULLBIT);
         break;
 
-      case Tile.ROADS:
-        this._worldEffects.setTile(x, y, Tile.VRAILROAD, Tile.BURNBIT | Tile.BULLBIT);
+      case TileValues.ROADS:
+        this._worldEffects.setTile(x, y, TileValues.VRAILROAD, Tile.BURNBIT | Tile.BULLBIT);
         break;
 
-      case Tile.ROADS2:
-        this._worldEffects.setTile(x, y, Tile.HRAILROAD, Tile.BURNBIT | Tile.BULLBIT);
+      case TileValues.ROADS2:
+        this._worldEffects.setTile(x, y, TileValues.HRAILROAD, Tile.BURNBIT | Tile.BULLBIT);
         break;
 
       default:

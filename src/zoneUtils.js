@@ -9,104 +9,105 @@
 
 import { MiscUtils } from './miscUtils';
 import { Tile } from './tile';
+import * as TileValues from "./tileValues";
 
 var checkBigZone = function(tileValue) {
   var result;
 
   switch (tileValue) {
 
-    case Tile.POWERPLANT:
-    case Tile.PORT:
-    case Tile.NUCLEAR:
-    case Tile.STADIUM:
+    case TileValues.POWERPLANT:
+    case TileValues.PORT:
+    case TileValues.NUCLEAR:
+    case TileValues.STADIUM:
       result = {zoneSize: 4, deltaX: 0, deltaY: 0};
       break;
 
-    case Tile.POWERPLANT + 1:
-    case Tile.COALSMOKE3:
-    case Tile.COALSMOKE3 + 1:
-    case Tile.COALSMOKE3 + 2:
-    case Tile.PORT + 1:
-    case Tile.NUCLEAR + 1:
-    case Tile.STADIUM + 1:
+    case TileValues.POWERPLANT + 1:
+    case TileValues.COALSMOKE3:
+    case TileValues.COALSMOKE3 + 1:
+    case TileValues.COALSMOKE3 + 2:
+    case TileValues.PORT + 1:
+    case TileValues.NUCLEAR + 1:
+    case TileValues.STADIUM + 1:
       result = {zoneSize: 4, deltaX: -1, deltaY: 0};
       break;
 
-    case Tile.POWERPLANT + 4:
-    case Tile.PORT + 4:
-    case Tile.NUCLEAR + 4:
-    case Tile.STADIUM + 4:
+    case TileValues.POWERPLANT + 4:
+    case TileValues.PORT + 4:
+    case TileValues.NUCLEAR + 4:
+    case TileValues.STADIUM + 4:
       result = {zoneSize: 4, deltaX: 0, deltaY: -1};
       break;
 
-    case Tile.POWERPLANT + 5:
-    case Tile.PORT + 5:
-    case Tile.NUCLEAR + 5:
-    case Tile.STADIUM + 5:
+    case TileValues.POWERPLANT + 5:
+    case TileValues.PORT + 5:
+    case TileValues.NUCLEAR + 5:
+    case TileValues.STADIUM + 5:
       result = {zoneSize: 4, deltaX: -1, deltaY: -1};
       break;
 
-    case Tile.AIRPORT:
+    case TileValues.AIRPORT:
       result = {zoneSize: 6, deltaX: 0, deltaY: 0};
       break;
 
-    case Tile.AIRPORT + 1:
+    case TileValues.AIRPORT + 1:
       result = {zoneSize: 6, deltaX: -1, deltaY: 0};
       break;
 
-    case Tile.AIRPORT + 2:
+    case TileValues.AIRPORT + 2:
       result = {zoneSize: 6, deltaX: -2, deltaY: 0};
       break;
 
-    case Tile.AIRPORT + 3:
+    case TileValues.AIRPORT + 3:
       result = {zoneSize: 6, deltaX: -3, deltaY: 0};
       break;
 
-    case Tile.AIRPORT + 6:
+    case TileValues.AIRPORT + 6:
       result = {zoneSize: 6, deltaX: 0, deltaY: -1};
       break;
 
-    case Tile.AIRPORT + 7:
+    case TileValues.AIRPORT + 7:
       result = {zoneSize: 6, deltaX: -1, deltaY: -1};
       break;
 
-    case Tile.AIRPORT + 8:
+    case TileValues.AIRPORT + 8:
       result = {zoneSize: 6, deltaX: -2, deltaY: -1};
       break;
 
-    case Tile.AIRPORT + 9:
+    case TileValues.AIRPORT + 9:
       result = {zoneSize: 6, deltaX: -3, deltaY: -1};
       break;
 
-    case Tile.AIRPORT + 12:
+    case TileValues.AIRPORT + 12:
       result = {zoneSize: 6, deltaX: 0, deltaY: -2};
       break;
 
-    case Tile.AIRPORT + 13:
+    case TileValues.AIRPORT + 13:
       result = {zoneSize: 6, deltaX: -1, deltaY: -2};
       break;
 
-    case Tile.AIRPORT + 14:
+    case TileValues.AIRPORT + 14:
       result = {zoneSize: 6, deltaX: -2, deltaY: -2};
       break;
 
-    case Tile.AIRPORT + 15:
+    case TileValues.AIRPORT + 15:
       result = {zoneSize: 6, deltaX: -3, deltaY: -2};
       break;
 
-    case Tile.AIRPORT + 18:
+    case TileValues.AIRPORT + 18:
       result = {zoneSize: 6, deltaX: 0, deltaY: -3};
       break;
 
-    case Tile.AIRPORT + 19:
+    case TileValues.AIRPORT + 19:
       result = {zoneSize: 6, deltaX: -1, deltaY: -3};
       break;
 
-    case Tile.AIRPORT + 20:
+    case TileValues.AIRPORT + 20:
       result = {zoneSize: 6, deltaX: -2, deltaY: -3};
       break;
 
-    case Tile.AIRPORT + 21:
+    case TileValues.AIRPORT + 21:
       result = {zoneSize: 6, deltaX: -3, deltaY: -3};
       break;
 
@@ -120,15 +121,15 @@ var checkBigZone = function(tileValue) {
 
 
 var checkZoneSize = function(tileValue) {
-  if ((tileValue >= Tile.RESBASE - 1        && tileValue <= Tile.PORTBASE - 1) ||
-      (tileValue >= Tile.LASTPOWERPLANT + 1 && tileValue <= Tile.POLICESTATION + 4) ||
-      (tileValue >= Tile.CHURCH1BASE && tileValue <= Tile.CHURCH7LAST)) {
+  if ((tileValue >= TileValues.RESBASE - 1        && tileValue <= TileValues.PORTBASE - 1) ||
+      (tileValue >= TileValues.LASTPOWERPLANT + 1 && tileValue <= TileValues.POLICESTATION + 4) ||
+      (tileValue >= TileValues.CHURCH1BASE && tileValue <= TileValues.CHURCH7LAST)) {
     return 3;
   }
 
-  if ((tileValue >= Tile.PORTBASE    && tileValue <= Tile.LASTPORT) ||
-      (tileValue >= Tile.COALBASE    && tileValue <= Tile.LASTPOWERPLANT) ||
-      (tileValue >= Tile.STADIUMBASE && tileValue <= Tile.LASTZONE)) {
+  if ((tileValue >= TileValues.PORTBASE    && tileValue <= TileValues.LASTPORT) ||
+      (tileValue >= TileValues.COALBASE    && tileValue <= TileValues.LASTPOWERPLANT) ||
+      (tileValue >= TileValues.STADIUMBASE && tileValue <= TileValues.LASTZONE)) {
     return 4;
   }
 
@@ -145,11 +146,11 @@ var fireZone = function(map, x, y, blockMaps) {
   value = MiscUtils.clamp(value - 20, -200, 200);
   blockMaps.rateOfGrowthMap.worldSet(x, y, value);
 
-  if (tileValue === Tile.AIRPORT)
+  if (tileValue === TileValues.AIRPORT)
     zoneSize = 5;
-  else if (tileValue >= Tile.PORTBASE)
+  else if (tileValue >= TileValues.PORTBASE)
     zoneSize = 3;
-  else if (tileValue < Tile.PORTBASE)
+  else if (tileValue < TileValues.PORTBASE)
       zoneSize = 2;
 
   // Make remaining tiles of the zone bulldozable
@@ -161,7 +162,7 @@ var fireZone = function(map, x, y, blockMaps) {
       if (!map.testBounds(xTem, yTem))
         continue;
 
-      if (map.getTileValue(xTem, yTem >= Tile.ROADBASE))
+      if (map.getTileValue(xTem, yTem >= TileValues.ROADBASE))
         map.addTileFlags(xTem, yTem, Tile.BULLBIT);
     }
   }
@@ -197,7 +198,7 @@ var putZone = function(map, x, y, centreTile, isPowered) {
   for (var dY = -1; dY < 2; dY++) {
     for (var dX = -1; dX < 2; dX++) {
       var tileValue = map.getTileValue(x + dX, y + dY);
-      if (tileValue >= Tile.FLOOD && tileValue < Tile.ROADBASE)
+      if (tileValue >= TileValues.FLOOD && tileValue < TileValues.ROADBASE)
         return;
     }
   }

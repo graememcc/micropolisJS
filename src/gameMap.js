@@ -11,6 +11,7 @@ import { Direction } from './direction';
 import { MiscUtils } from './miscUtils';
 import { PositionMaker } from './positionMaker';
 import { Tile } from './tile';
+import { TILE_INVALID } from "./tileValues";
 
 function GameMap(width, height, defaultValue) {
   if (!(this instanceof GameMap))
@@ -104,7 +105,7 @@ GameMap.prototype.getTile = function(x, y, newTile) {
 
   if (x < 0 || y < 0 || x >= width || y >= height) {
     console.warn('getTile called with bad bounds', x, y);
-    return new Tile(Tile.TILE_INVALID);
+    return new Tile(TILE_INVALID);
   }
 
   var tileIndex = x + y * width;
@@ -203,7 +204,7 @@ GameMap.prototype.getTileValuesForPainting = function(x, y, w, h, result) {
   for (var a = y, ylim = y + h; a < ylim; a++) {
     for (var b = x, xlim = x + w; b < xlim; b++) {
       if (a < 0 || b < 0 || a >= height || b >= width) {
-        result[(a - y) * w + (b - x)] = Tile.TILE_INVALID;
+        result[(a - y) * w + (b - x)] = TILE_INVALID;
         continue;
       }
 

@@ -9,6 +9,7 @@
 
 import { Random } from './random';
 import { Tile } from './tile';
+import * as TileValues from "./tileValues";
 
 var unwrapTile = function(f) {
   return function(tile) {
@@ -20,14 +21,14 @@ var unwrapTile = function(f) {
 
 
 var canBulldoze = unwrapTile(function(tileValue) {
-  return (tileValue >= Tile.FIRSTRIVEDGE  && tileValue <= Tile.LASTRUBBLE) ||
-         (tileValue >= Tile.POWERBASE + 2 && tileValue <= Tile.POWERBASE + 12) ||
-         (tileValue >= Tile.TINYEXP       && tileValue <= Tile.LASTTINYEXP + 2);
+  return (tileValue >= TileValues.FIRSTRIVEDGE  && tileValue <= TileValues.LASTRUBBLE) ||
+         (tileValue >= TileValues.POWERBASE + 2 && tileValue <= TileValues.POWERBASE + 12) ||
+         (tileValue >= TileValues.TINYEXP       && tileValue <= TileValues.LASTTINYEXP + 2);
 });
 
 
 var isCommercial = unwrapTile(function(tile) {
-  return tile >= Tile.COMBASE && tile < Tile.INDBASE;
+  return tile >= TileValues.COMBASE && tile < TileValues.INDBASE;
 });
 
 
@@ -37,23 +38,23 @@ var isCommercialZone = function(tile) {
 
 
 var isDriveable = unwrapTile(function(tile) {
-  return (tile >= Tile.ROADBASE && tile <= Tile.LASTROAD) ||
-         (tile >= Tile.RAILHPOWERV && tile <= Tile.LASTRAIL);
+  return (tile >= TileValues.ROADBASE && tile <= TileValues.LASTROAD) ||
+         (tile >= TileValues.RAILHPOWERV && tile <= TileValues.LASTRAIL);
 });
 
 
 var isFire = unwrapTile(function(tile) {
-  return tile >= Tile.FIREBASE && tile < Tile.ROADBASE;
+  return tile >= TileValues.FIREBASE && tile < TileValues.ROADBASE;
 });
 
 
 var isFlood = unwrapTile(function(tile) {
-  return tile >= Tile.FLOOD && tile < Tile.LASTFLOOD;
+  return tile >= TileValues.FLOOD && tile < TileValues.LASTFLOOD;
 });
 
 
 var isIndustrial = unwrapTile(function(tile) {
-  return tile >= Tile.INDBASE && tile < Tile.PORTBASE;
+  return tile >= TileValues.INDBASE && tile < TileValues.PORTBASE;
 });
 
 
@@ -63,17 +64,17 @@ var isIndustrialZone = function(tile) {
 
 
 var isManualExplosion = unwrapTile(function(tile) {
-  return tile >= Tile.TINYEXP && tile <= Tile.LASTTINYEXP;
+  return tile >= TileValues.TINYEXP && tile <= TileValues.LASTTINYEXP;
 });
 
 
 var isRail = unwrapTile(function(tile) {
-  return tile >= Tile.RAILBASE && tile < Tile.RESBASE;
+  return tile >= TileValues.RAILBASE && tile < TileValues.RESBASE;
 });
 
 
 var isResidential = unwrapTile(function(tile) {
-  return tile >= Tile.RESBASE && tile < Tile.HOSPITALBASE;
+  return tile >= TileValues.RESBASE && tile < TileValues.HOSPITALBASE;
 });
 
 
@@ -83,22 +84,22 @@ var isResidentialZone = function(tile) {
 
 
 var isRoad = unwrapTile(function(tile) {
-  return tile >= Tile.ROADBASE && tile < Tile.POWERBASE;
+  return tile >= TileValues.ROADBASE && tile < TileValues.POWERBASE;
 });
 
 
 var normalizeRoad = unwrapTile(function(tile) {
-  return (tile >= Tile.ROADBASE && tile <= Tile.LASTROAD + 1) ? (tile & 15) + 64 : tile;
+  return (tile >= TileValues.ROADBASE && tile <= TileValues.LASTROAD + 1) ? (tile & 15) + 64 : tile;
 });
 
 
 var randomFire = function() {
-  return new Tile(Tile.FIRE + (Random.getRandom16() & 3), Tile.ANIMBIT);
+  return new Tile(TileValues.FIRE + (Random.getRandom16() & 3), Tile.ANIMBIT);
 };
 
 
 var randomRubble = function() {
-  return new Tile(Tile.RUBBLE + (Random.getRandom16() & 3), Tile.BULLBIT);
+  return new Tile(TileValues.RUBBLE + (Random.getRandom16() & 3), Tile.BULLBIT);
 };
 
 

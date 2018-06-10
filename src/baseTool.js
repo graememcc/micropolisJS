@@ -8,8 +8,8 @@
  */
 
 import { MiscUtils } from './miscUtils';
-import { Tile } from './tile';
 import { TileUtils } from './tileUtils';
+import { DIRT, HBRIDGE, LASTTINYEXP, TINYEXP } from "./tileValues";
 import { WorldEffects } from './worldEffects';
 
 var init = function(cost, map, shouldAutoBulldoze, isDraggable) {
@@ -39,10 +39,10 @@ var doAutoBulldoze = function(x, y) {
   var tile = this._worldEffects.getTile(x, y);
   if (tile.isBulldozable()) {
     tile = TileUtils.normalizeRoad(tile);
-    if ((tile >= Tile.TINYEXP && tile <= Tile.LASTTINYEXP) ||
-        (tile < Tile.HBRIDGE && tile !== Tile.DIRT)) {
+    if ((tile >= TINYEXP && tile <= LASTTINYEXP) ||
+        (tile < HBRIDGE && tile !== DIRT)) {
       this.addCost(1);
-      this._worldEffects.setTile(x, y, Tile.DIRT);
+      this._worldEffects.setTile(x, y, DIRT);
     }
   }
 };

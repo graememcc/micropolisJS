@@ -7,7 +7,7 @@
  *
  */
 
-import { Tile } from './tile';
+ import { Tile } from "./tile";
 
 function WorldEffects(map) {
   this._map = map;

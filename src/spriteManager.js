@@ -18,7 +18,7 @@ import { MonsterSprite } from './monsterSprite';
 import { Random } from './random';
 import * as SpriteConstants from './spriteConstants';
 import { SpriteUtils } from './spriteUtils';
-import { Tile } from './tile';
+import { CHANNEL, RIVER } from "./tileValues";
 import { TornadoSprite } from './tornadoSprite';
 import { TrainSprite } from './trainSprite';
 
@@ -159,7 +159,7 @@ SpriteManager.prototype.generateShip = function() {
 
   if (Random.getChance(3)) {
     for (x = 4; x < this.map.width - 2; x++) {
-      if (this.map.getTileValue(x, 0) === Tile.CHANNEL)  {
+      if (this.map.getTileValue(x, 0) === CHANNEL)  {
         this.makeShipHere(x, 0);
         return;
       }
@@ -168,7 +168,7 @@ SpriteManager.prototype.generateShip = function() {
 
   if (Random.getChance(3)) {
     for (y = 1; y < this.map.height - 2; y++) {
-      if (this.map.getTileValue(0, y) === Tile.CHANNEL)  {
+      if (this.map.getTileValue(0, y) === CHANNEL)  {
         this.makeShipHere(0, y);
         return;
       }
@@ -177,7 +177,7 @@ SpriteManager.prototype.generateShip = function() {
 
   if (Random.getChance(3)) {
     for (x = 4; x < this.map.width - 2; x++) {
-      if (this.map.getTileValue(x, this.map.height - 1) === Tile.CHANNEL)  {
+      if (this.map.getTileValue(x, this.map.height - 1) === CHANNEL)  {
         this.makeShipHere(x, this.map.height - 1);
         return;
       }
@@ -186,7 +186,7 @@ SpriteManager.prototype.generateShip = function() {
 
   if (Random.getChance(3)) {
     for (y = 1; y < this.map.height - 2; y++) {
-      if (this.map.getTileValue(this.map.width - 1, y) === Tile.CHANNEL)  {
+      if (this.map.getTileValue(this.map.width - 1, y) === CHANNEL)  {
         this.makeShipHere(this.map.width - 1, y);
         return;
       }
@@ -253,7 +253,7 @@ SpriteManager.prototype.makeMonster = function() {
     var y = Random.getRandom(this.map.height - 10) + 5;
 
     var tile = this.map.getTile(x, y);
-    if (tile.getValue() === Tile.RIVER) {
+    if (tile.getValue() === RIVER) {
       this.makeMonsterAt(x, y);
       done = 1;
       break;

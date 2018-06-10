@@ -7,11 +7,11 @@
  *
  */
 
-import { Tile } from './tile';
+import { TILE_COUNT } from "./tileValues";
 
 // Tiles must be 16px square
 var TILE_SIZE = 16;
-var TILES_PER_ROW = Math.sqrt(Tile.TILE_COUNT);
+var TILES_PER_ROW = Math.sqrt(TILE_COUNT);
 var ACCEPTABLE_DIMENSION = TILES_PER_ROW * TILE_SIZE;
 
 
@@ -58,7 +58,7 @@ TileSet.prototype._verifyImage = function(image, callback, errorCallback) {
   var cx = c.getContext('2d');
 
   // Count how many tiles we have created
-  var tileCount = Tile.TILE_COUNT;
+  var tileCount = TILE_COUNT;
   var notifications = 0;
   var self = this;
 

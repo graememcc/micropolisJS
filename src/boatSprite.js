@@ -14,7 +14,7 @@ import { Random } from './random';
 import { SPRITE_SHIP } from './spriteConstants';
 import { SpriteConstants } from './spriteConstants';
 import { SpriteUtils } from './spriteUtils';
-import { Tile } from './tile';
+import * as TileValues from "./tileValues";
 
 function BoatSprite(map, spriteManager, x, y) {
   this.init(SPRITE_SHIP, map, spriteManager, x, y);
@@ -55,8 +55,8 @@ var oppositeAndUnderwater = function(tileValue, oldDir, newDir) {
   if (newDir != opposite)
     return false;
 
-  if (tileValue == Tile.POWERBASE || tileValue == Tile.POWERBASE + 1 ||
-      tileValue == Tile.RAILBASE || tileValue == Tile.RAILBASE + 1)
+  if (tileValue == TileValues.POWERBASE || tileValue == TileValues.POWERBASE + 1 ||
+      tileValue == TileValues.RAILBASE || tileValue == TileValues.RAILBASE + 1)
     return true;
 
   return false;
@@ -67,14 +67,14 @@ var tileDeltaX = [0,  0,  1,  1,  1,  0, -1, -1, -1];
 var tileDeltaY = [0, -1, -1,  0,  1,  1,  1,  0, -1];
 var xDelta = [0,  0,  2,  2,  2,  0, -2, -2, -2];
 var yDelta = [0, -2, -2,  0,  2,  2,  2,  0, -2];
-var tileWhiteList = [Tile.RIVER, Tile.CHANNEL, Tile.POWERBASE,
-                Tile.POWERBASE + 1, Tile.RAILBASE,
-                Tile.RAILBASE + 1, Tile.BRWH, Tile.BRWV];
+var tileWhiteList = [TileValues.RIVER, TileValues.CHANNEL, TileValues.POWERBASE,
+                TileValues.POWERBASE + 1, TileValues.RAILBASE,
+                TileValues.RAILBASE + 1, TileValues.BRWH, TileValues.BRWV];
 
 var CANTMOVE = 10;
 
 BoatSprite.prototype.move = function(spriteCycle, disasterManager, blockMaps) {
-  var tile = Tile.RIVER;
+  var tile = TileValues.RIVER;
   var frame, x, y;
 
   if (this.soundCount > 0)
@@ -122,8 +122,8 @@ BoatSprite.prototype.move = function(spriteCycle, disasterManager, blockMaps) {
         tile = this.map.getTileValue(x, y);
 
         // Test for a suitable water tile
-        if (tile === Tile.CHANNEL || tile === Tile.BRWH ||
-            tile === Tile.BRWV || oppositeAndUnderwater(tile, this.dir, frame)) {
+        if (tile === TileValues.CHANNEL || tile === TileValues.BRWH ||
+            tile === TileValues.BRWV || oppositeAndUnderwater(tile, this.dir, frame)) {
           this.newDir = frame;
           this.frame = SpriteUtils.turnTo(this.frame, this.newDir);
           this.dir = frame + 4;

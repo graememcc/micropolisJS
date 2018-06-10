@@ -13,6 +13,7 @@ import { SOUND_EXPLOSIONLOW, SOUND_EXPLOSIONHIGH } from './messages';
 import { Random } from './random';
 import { Tile } from './tile';
 import { TileUtils } from './tileUtils';
+import * as TileValues from "./tileValues";
 import { ZoneUtils } from './zoneUtils';
 
 var BulldozerTool = EventEmitter(ConnectingTool(function(map) {
@@ -26,8 +27,8 @@ BulldozerTool.prototype.putRubble = function(x, y, size) {
       if (this._map.testBounds(xx, yy)) {
         var tile = this._worldEffects.getTile(xx, yy);
 
-        if (tile != Tile.RADTILE && tile != Tile.DIRT)
-          this._worldEffects.setTile(xx, yy, Tile.TINYEXP + Random.getRandom(2), Tile.ANIMBIT | Tile.BULLBIT);
+        if (tile != TileValues.RADTILE && tile != TileValues.DIRT)
+          this._worldEffects.setTile(xx, yy, TileValues.TINYEXP + Random.getRandom(2), Tile.ANIMBIT | Tile.BULLBIT);
       }
     }
   }
@@ -44,27 +45,27 @@ BulldozerTool.prototype.layDoze = function(x, y) {
   tile = TileUtils.normalizeRoad(tile);
 
   switch (tile) {
-    case Tile.HBRIDGE:
-    case Tile.VBRIDGE:
-    case Tile.BRWV:
-    case Tile.BRWH:
-    case Tile.HBRDG0:
-    case Tile.HBRDG1:
-    case Tile.HBRDG2:
-    case Tile.HBRDG3:
-    case Tile.VBRDG0:
-    case Tile.VBRDG1:
-    case Tile.VBRDG2:
-    case Tile.VBRDG3:
-    case Tile.HPOWER:
-    case Tile.VPOWER:
-    case Tile.HRAIL:
-    case Tile.VRAIL:
-      this._worldEffects.setTile(x, y, Tile.RIVER);
+    case TileValues.HBRIDGE:
+    case TileValues.VBRIDGE:
+    case TileValues.BRWV:
+    case TileValues.BRWH:
+    case TileValues.HBRDG0:
+    case TileValues.HBRDG1:
+    case TileValues.HBRDG2:
+    case TileValues.HBRDG3:
+    case TileValues.VBRDG0:
+    case TileValues.VBRDG1:
+    case TileValues.VBRDG2:
+    case TileValues.VBRDG3:
+    case TileValues.HPOWER:
+    case TileValues.VPOWER:
+    case TileValues.HRAIL:
+    case TileValues.VRAIL:
+      this._worldEffects.setTile(x, y, TileValues.RIVER);
       break;
 
     default:
-      this._worldEffects.setTile(x, y, Tile.DIRT);
+      this._worldEffects.setTile(x, y, TileValues.DIRT);
       break;
   }
 
@@ -76,7 +77,7 @@ BulldozerTool.prototype.layDoze = function(x, y) {
 
 BulldozerTool.prototype.doTool = function(x, y, blockMaps) {
   if (!this._map.testBounds(x, y))
-    this.result = Tile.TOOLRESULT_FAILED;
+    this.result = this.TOOLRESULT_FAILED;
 
   var tile = this._worldEffects.getTile(x, y);
   var tileValue = tile.getValue();
@@ -125,7 +126,7 @@ BulldozerTool.prototype.doTool = function(x, y, blockMaps) {
     this.result = this.TOOLRESULT_OK;
   } else {
     var toolResult;
-    if (tileValue === Tile.RIVER || tileValue === Tile.REDGE || tileValue === Tile.CHANNEL) {
+    if (tileValue === TileValues.RIVER || tileValue === TileValues.REDGE || tileValue === TileValues.CHANNEL) {
       toolResult = this.layDoze(x, y);
 
       if (tileValue !== this._worldEffects.getTileValue(x, y))

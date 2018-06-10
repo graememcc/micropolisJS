@@ -11,8 +11,8 @@ import { AnimationManager } from './animationManager';
 import { GameMap } from './gameMap';
 import { MiscUtils } from './miscUtils';
 import { MouseBox } from './mouseBox';
-import { Tile } from './tile';
 import { TileSet } from './tileSet';
+import { TILE_INVALID } from "./tileValues";
 
 function GameCanvas(id, parentNode) {
   if (!(this instanceof GameCanvas))
@@ -488,7 +488,7 @@ GameCanvas.prototype._paintVoid = function(ctx, x, y) {
 
 
 GameCanvas.prototype._paintOne = function(ctx, tileVal, x, y) {
-  if (tileVal === Tile.TILE_INVALID) {
+  if (tileVal === TILE_INVALID) {
     this._paintVoid(ctx, x, y);
     return;
   }
@@ -630,7 +630,7 @@ GameCanvas.prototype.paint = function(mouse, sprites, isPaused) {
     for (y = Math.max(0, damaged.y), yBound = Math.min(paintHeight, damaged.yBound); y < yBound; y++) {
       for (x = Math.max(0, damaged.x), xBound = Math.min(paintWidth, damaged.xBound); x < xBound; x++) {
         index = [y * paintWidth + x];
-        // Note: we can't use Tile.INVALID (-1) as that in some sense is a valid tile for the void!
+        // Note: we can't use TILE_INVALID (-1) as that in some sense is a valid tile for the void!
         lastPaintedTiles[index] = -2;
       }
     }
