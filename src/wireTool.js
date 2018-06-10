@@ -8,7 +8,7 @@
  */
 
 import { ConnectingTool } from './connectingTool';
-import { Tile } from './tile';
+import { CONDBIT, BURNBIT, BULLBIT } from "./tileFlags";
 import { TileUtils } from './tileUtils';
 import * as TileValues from "./tileValues";
 
@@ -26,7 +26,7 @@ WireTool.prototype.layWire = function(x, y) {
 
   switch (tile) {
     case TileValues.DIRT:
-      this._worldEffects.setTile(x, y, TileValues.LHPOWER, Tile.CONDBIT | Tile.BURNBIT | Tile.BULLBIT);
+      this._worldEffects.setTile(x, y, TileValues.LHPOWER, CONDBIT | BURNBIT | BULLBIT);
       break;
 
     case TileValues.RIVER:
@@ -40,7 +40,7 @@ WireTool.prototype.layWire = function(x, y) {
           tile = tile.getValue();
           tile = TileUtils.normalizeRoad(tile);
           if (tile != TileValues.HROADPOWER && tile != TileValues.RAILHPOWERV && tile != TileValues.HPOWER) {
-            this._worldEffects.setTile(x, y, TileValues.VPOWER, Tile.CONDBIT | Tile.BULLBIT);
+            this._worldEffects.setTile(x, y, TileValues.VPOWER, CONDBIT | BULLBIT);
             break;
           }
         }
@@ -52,7 +52,7 @@ WireTool.prototype.layWire = function(x, y) {
           tile = tile.getValue();
           tile = TileUtils.normalizeRoad(tile);
           if (tile != TileValues.HROADPOWER && tile != TileValues.RAILHPOWERV && tile != TileValues.HPOWER) {
-            this._worldEffects.setTile(x, y, TileValues.VPOWER, Tile.CONDBIT | Tile.BULLBIT);
+            this._worldEffects.setTile(x, y, TileValues.VPOWER, CONDBIT | BULLBIT);
             break;
           }
         }
@@ -64,7 +64,7 @@ WireTool.prototype.layWire = function(x, y) {
           tile = tile.getValue();
           tile = TileUtils.normalizeRoad(tile);
           if (tile != TileValues.VROADPOWER && tile != TileValues.RAILVPOWERH && tile != TileValues.VPOWER) {
-            this._worldEffects.setTile(x, y, TileValues.HPOWER, Tile.CONDBIT | Tile.BULLBIT);
+            this._worldEffects.setTile(x, y, TileValues.HPOWER, CONDBIT | BULLBIT);
             break;
           }
         }
@@ -76,7 +76,7 @@ WireTool.prototype.layWire = function(x, y) {
           tile = tile.getValue();
           tile = TileUtils.normalizeRoad(tile);
           if (tile != TileValues.VROADPOWER && tile != TileValues.RAILVPOWERH && tile != TileValues.VPOWER) {
-            this._worldEffects.setTile(x, y, TileValues.HPOWER, Tile.CONDBIT | Tile.BULLBIT);
+            this._worldEffects.setTile(x, y, TileValues.HPOWER, CONDBIT | BULLBIT);
             break;
           }
         }
@@ -85,19 +85,19 @@ WireTool.prototype.layWire = function(x, y) {
       return this.TOOLRESULT_FAILED;
 
     case TileValues.ROADS:
-      this._worldEffects.setTile(x, y, TileValues.HROADPOWER, Tile.CONDBIT | Tile.BURNBIT | Tile.BULLBIT);
+      this._worldEffects.setTile(x, y, TileValues.HROADPOWER, CONDBIT | BURNBIT | BULLBIT);
       break;
 
     case TileValues.ROADS2:
-      this._worldEffects.setTile(x, y, TileValues.VROADPOWER, Tile.CONDBIT | Tile.BURNBIT | Tile.BULLBIT);
+      this._worldEffects.setTile(x, y, TileValues.VROADPOWER, CONDBIT | BURNBIT | BULLBIT);
       break;
 
     case TileValues.LHRAIL:
-      this._worldEffects.setTile(x, y, TileValues.RAILHPOWERV, Tile.CONDBIT | Tile.BURNBIT | Tile.BULLBIT);
+      this._worldEffects.setTile(x, y, TileValues.RAILHPOWERV, CONDBIT | BURNBIT | BULLBIT);
       break;
 
     case TileValues.LVRAIL:
-      this._worldEffects.setTile(x, y, TileValues.RAILVPOWERH, Tile.CONDBIT | Tile.BURNBIT | Tile.BULLBIT);
+      this._worldEffects.setTile(x, y, TileValues.RAILVPOWERH, CONDBIT | BURNBIT | BULLBIT);
       break;
 
     default:

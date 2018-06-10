@@ -7,7 +7,7 @@
  *
  */
 
-import { Tile } from './tile';
+import { ANIMBIT, BULLBIT } from "./tileFlags";
 import * as TileValues from "./tileValues";
 import { ZoneUtils } from './zoneUtils';
 
@@ -150,7 +150,7 @@ var destroyMapTile = function(spriteManager, map, blockMaps, ox, oy) {
   if (checkWet(tileValue))
     map.setTile(x, y, TileValues.RIVER, 0);
   else
-    map.setTile(x, y, TileValues.TINYEXP, Tile.BULLBIT | Tile.ANIMBIT);
+    map.setTile(x, y, TileValues.TINYEXP, BULLBIT | ANIMBIT);
 };
 
 

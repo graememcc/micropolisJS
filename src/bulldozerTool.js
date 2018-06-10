@@ -11,7 +11,7 @@ import { ConnectingTool } from './connectingTool';
 import { EventEmitter } from './eventEmitter';
 import { SOUND_EXPLOSIONLOW, SOUND_EXPLOSIONHIGH } from './messages';
 import { Random } from './random';
-import { Tile } from './tile';
+import { ANIMBIT, BULLBIT } from "./tileFlags";
 import { TileUtils } from './tileUtils';
 import * as TileValues from "./tileValues";
 import { ZoneUtils } from './zoneUtils';
@@ -28,7 +28,7 @@ BulldozerTool.prototype.putRubble = function(x, y, size) {
         var tile = this._worldEffects.getTile(xx, yy);
 
         if (tile != TileValues.RADTILE && tile != TileValues.DIRT)
-          this._worldEffects.setTile(xx, yy, TileValues.TINYEXP + Random.getRandom(2), Tile.ANIMBIT | Tile.BULLBIT);
+          this._worldEffects.setTile(xx, yy, TileValues.TINYEXP + Random.getRandom(2), ANIMBIT | BULLBIT);
       }
     }
   }

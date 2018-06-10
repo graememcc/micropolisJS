@@ -8,7 +8,7 @@
  */
 
 import { ConnectingTool } from './connectingTool';
-import { Tile } from './tile';
+import { ANIMBIT, BNCNBIT, ZONEBIT } from "./tileFlags";
 import { DIRT } from "./tileValues";
 import { TileUtils } from './tileUtils';
 
@@ -30,13 +30,13 @@ BuildingTool.prototype.putBuilding = function(leftX, topY) {
     for (var dx = 0; dx < this.size; dx++) {
       posX = leftX + dx;
       tileValue = baseTile;
-      tileFlags = Tile.BNCNBIT;
+      tileFlags = BNCNBIT;
 
       if (dx === 1) {
         if (dy === 1)
-          tileFlags |= Tile.ZONEBIT;
+          tileFlags |= ZONEBIT;
         else if (dy === 2 && this.animated)
-          tileFlags |= Tile.ANIMBIT;
+          tileFlags |= ANIMBIT;
       }
 
       this._worldEffects.setTile(posX, posY, tileValue, tileFlags);

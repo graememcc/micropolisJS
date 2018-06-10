@@ -7,15 +7,10 @@
  *
  */
 
-import { Tile } from './tile';
+import { ANIMBIT, BIT_MASK, POWERBIT, ZONEBIT } from './tileFlags';
 import { TileHistory } from './tileHistory';
 import { LASTTINYEXP, LIGHTNINGBOLT, TILE_COUNT, TILE_INVALID } from "./tileValues";
 import { TileUtils } from './tileUtils';
-
-var BIT_MASK = Tile.BIT_MASK;
-var POWERBIT = Tile.POWERBIT;
-var ANIMBIT = Tile.ANIMBIT;
-var ZONEBIT = Tile.ZONEBIT;
 
 
 function AnimationManager(map, animationPeriod, blinkPeriod) {

@@ -9,6 +9,7 @@
 
 import { Random } from './random';
 import { Tile } from './tile';
+import { ANIMBIT, BULLBIT } from "./tileFlags";
 import * as TileValues from "./tileValues";
 
 var unwrapTile = function(f) {
@@ -94,12 +95,12 @@ var normalizeRoad = unwrapTile(function(tile) {
 
 
 var randomFire = function() {
-  return new Tile(TileValues.FIRE + (Random.getRandom16() & 3), Tile.ANIMBIT);
+  return new Tile(TileValues.FIRE + (Random.getRandom16() & 3), ANIMBIT);
 };
 
 
 var randomRubble = function() {
-  return new Tile(TileValues.RUBBLE + (Random.getRandom16() & 3), Tile.BULLBIT);
+  return new Tile(TileValues.RUBBLE + (Random.getRandom16() & 3), BULLBIT);
 };
 
 

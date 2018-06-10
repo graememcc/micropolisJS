@@ -8,7 +8,7 @@
  */
 
 import { MiscUtils } from './miscUtils';
-import { Tile } from './tile';
+import { BULLBIT, POWERBIT } from "./tileFlags";
 import * as TileValues from "./tileValues";
 
 var checkBigZone = function(tileValue) {
@@ -163,7 +163,7 @@ var fireZone = function(map, x, y, blockMaps) {
         continue;
 
       if (map.getTileValue(xTem, yTem >= TileValues.ROADBASE))
-        map.addTileFlags(xTem, yTem, Tile.BULLBIT);
+        map.addTileFlags(xTem, yTem, BULLBIT);
     }
   }
 };
@@ -203,9 +203,9 @@ var putZone = function(map, x, y, centreTile, isPowered) {
     }
   }
   map.putZone(x, y, centreTile, 3);
-  map.addTileFlags(x, y, Tile.BULLBIT);
+  map.addTileFlags(x, y, BULLBIT);
   if (isPowered)
-    map.addTileFlags(x, y, Tile.POWERBIT);
+    map.addTileFlags(x, y, POWERBIT);
 };
 
 

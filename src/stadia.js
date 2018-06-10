@@ -7,7 +7,7 @@
  *
  */
 
-import { Tile } from './tile';
+import { ANIMBIT, POWERBIT } from "./tileFlags";
 import { FOOTBALLGAME1, FOOTBALLGAME2, FULLSTADIUM, STADIUM } from "./tileValues";
 
 var emptyStadiumFound = function(map, x, y, simData) {
@@ -17,9 +17,9 @@ var emptyStadiumFound = function(map, x, y, simData) {
     // Occasionally start the big game
     if (((simData.cityTime + x + y) & 31) === 0) {
       map.putZone(x, y, FULLSTADIUM, 4);
-      map.addTileFlags(x, y, Tile.POWERBIT);
-      map.setTile(x + 1, y, FOOTBALLGAME1, Tile.ANIMBIT);
-      map.setTile(x + 1, y + 1, FOOTBALLGAME2, Tile.ANIMBIT);
+      map.addTileFlags(x, y, POWERBIT);
+      map.setTile(x + 1, y, FOOTBALLGAME1, ANIMBIT);
+      map.setTile(x + 1, y + 1, FOOTBALLGAME2, ANIMBIT);
     }
   }
 };
@@ -32,7 +32,7 @@ var fullStadiumFound = function(map, x, y, simData) {
   if (((simData.cityTime + x + y) & 7) === 0) {
     map.putZone(x, y, STADIUM, 4);
     if (isPowered)
-      map.addTileFlags(x, y, Tile.POWERBIT);
+      map.addTileFlags(x, y, POWERBIT);
   }
 };
 

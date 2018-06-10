@@ -8,7 +8,8 @@
  */
 
 import { Random } from './random';
-import { Tile } from './tile';
+import { Tile } from "./tile";
+import { ANIMBIT, BIT_MASK, BULLBIT } from "./tileFlags";
 import * as TileValues from "./tileValues";
 import { TileUtils } from './tileUtils';
 
@@ -18,7 +19,7 @@ var openBridge = function(map, origX, origY, xDelta, yDelta, oldTiles, newTiles)
     var y = origY + yDelta[i];
 
     if (map.testBounds(x, y)) {
-      if (map.getTileValue(x, y) === (oldTiles[i] & Tile.BIT_MASK))
+      if (map.getTileValue(x, y) === (oldTiles[i] & BIT_MASK))
         map.setTileValue(x, y, newTiles[i]);
     }
   }
@@ -42,24 +43,24 @@ var closeBridge = function(map, origX, origY, xDelta, yDelta, oldTiles, newTiles
 var verticalDeltaX = [0,  1,  0,  0,  0,  0,  1];
 var verticalDeltaY = [-2, -2, -1,  0,  1,  2,  2];
 var openVertical = [
-      TileValues.VBRDG0 | Tile.BULLBIT, TileValues.VBRDG1 | Tile.BULLBIT,
-      TileValues.RIVER, TileValues.BRWV | Tile.BULLBIT,
-      TileValues.RIVER, TileValues.VBRDG2 | Tile.BULLBIT, TileValues.VBRDG3 | Tile.BULLBIT];
+      TileValues.VBRDG0 | BULLBIT, TileValues.VBRDG1 | BULLBIT,
+      TileValues.RIVER, TileValues.BRWV | BULLBIT,
+      TileValues.RIVER, TileValues.VBRDG2 | BULLBIT, TileValues.VBRDG3 | BULLBIT];
 var closeVertical = [
-      TileValues.VBRIDGE | Tile.BULLBIT, TileValues.RIVER, TileValues.VBRIDGE | Tile.BULLBIT,
-      TileValues.VBRIDGE | Tile.BULLBIT, TileValues.VBRIDGE | Tile.BULLBIT,
-      TileValues.VBRIDGE | Tile.BULLBIT, TileValues.RIVER];
+      TileValues.VBRIDGE | BULLBIT, TileValues.RIVER, TileValues.VBRIDGE | BULLBIT,
+      TileValues.VBRIDGE | BULLBIT, TileValues.VBRIDGE | BULLBIT,
+      TileValues.VBRIDGE | BULLBIT, TileValues.RIVER];
 var horizontalDeltaX = [-2,  2, -2, -1,  0,  1,  2];
 var horizontalDeltaY = [ -1, -1,  0,  0,  0,  0,  0];
 var openHorizontal = [
-    TileValues.HBRDG1 | Tile.BULLBIT, TileValues.HBRDG3 | Tile.BULLBIT,
-    TileValues.HBRDG0 | Tile.BULLBIT, TileValues.RIVER, TileValues.BRWH | Tile.BULLBIT,
-    TileValues.RIVER, TileValues.HBRDG2 | Tile.BULLBIT
+    TileValues.HBRDG1 | BULLBIT, TileValues.HBRDG3 | BULLBIT,
+    TileValues.HBRDG0 | BULLBIT, TileValues.RIVER, TileValues.BRWH | BULLBIT,
+    TileValues.RIVER, TileValues.HBRDG2 | BULLBIT
 ];
 var closeHorizontal = [
-    TileValues.RIVER, TileValues.RIVER, TileValues.HBRIDGE | Tile.BULLBIT,
-    TileValues.HBRIDGE | Tile.BULLBIT, TileValues.HBRIDGE | Tile.BULLBIT,
-    TileValues.HBRIDGE | Tile.BULLBIT, TileValues.HBRIDGE | Tile.BULLBIT
+    TileValues.RIVER, TileValues.RIVER, TileValues.HBRIDGE | BULLBIT,
+    TileValues.HBRIDGE | BULLBIT, TileValues.HBRIDGE | BULLBIT,
+    TileValues.HBRIDGE | BULLBIT, TileValues.HBRIDGE | BULLBIT
 ];
 
 
@@ -168,9 +169,9 @@ var roadFound = function(map, x, y, simData) {
 
   var newValue = ((tileValue - TileValues.ROADBASE) & 15) + densityTable[currentDensity];
   // Preserve all bits except animation
-  var newFlags = currentTile.getFlags() & ~Tile.ANIMBIT;
+  var newFlags = currentTile.getFlags() & ~ANIMBIT;
   if (currentDensity > 0)
-   newFlags |= Tile.ANIMBIT;
+   newFlags |= ANIMBIT;
 
   map.setTo(x, y, new Tile(newValue, newFlags));
 };

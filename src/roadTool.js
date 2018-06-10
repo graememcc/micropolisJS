@@ -8,7 +8,7 @@
  */
 
 import { ConnectingTool } from './connectingTool';
-import { Tile } from './tile';
+import { BULLBIT, BURNBIT, CONDBIT } from "./tileFlags";
 import { TileUtils } from './tileUtils';
 import * as TileValues from "./tileValues";
 
@@ -24,7 +24,7 @@ RoadTool.prototype.layRoad = function(x, y) {
 
   switch (tile) {
     case TileValues.DIRT:
-      this._worldEffects.setTile(x, y, TileValues.ROADS, Tile.BULLBIT | Tile.BURNBIT);
+      this._worldEffects.setTile(x, y, TileValues.ROADS, BULLBIT | BURNBIT);
       break;
 
     case TileValues.RIVER:
@@ -38,7 +38,7 @@ RoadTool.prototype.layRoad = function(x, y) {
 
         if (tile === TileValues.VRAILROAD || tile === TileValues.HBRIDGE ||
             (tile >= TileValues.ROADS && tile <= TileValues.HROADPOWER)) {
-          this._worldEffects.setTile(x, y, TileValues.HBRIDGE, Tile.BULLBIT);
+          this._worldEffects.setTile(x, y, TileValues.HBRIDGE, BULLBIT);
           break;
         }
       }
@@ -49,7 +49,7 @@ RoadTool.prototype.layRoad = function(x, y) {
 
         if (tile === TileValues.VRAILROAD || tile === TileValues.HBRIDGE ||
             (tile >= TileValues.ROADS && tile <= TileValues.INTERSECTION)) {
-          this._worldEffects.setTile(x, y, TileValues.HBRIDGE, Tile.BULLBIT);
+          this._worldEffects.setTile(x, y, TileValues.HBRIDGE, BULLBIT);
           break;
         }
       }
@@ -60,7 +60,7 @@ RoadTool.prototype.layRoad = function(x, y) {
 
         if (tile === TileValues.HRAILROAD || tile === TileValues.VROADPOWER ||
             (tile >= TileValues.VBRIDGE && tile <= TileValues.INTERSECTION)) {
-          this._worldEffects.setTile(x, y, TileValues.VBRIDGE, Tile.BULLBIT);
+          this._worldEffects.setTile(x, y, TileValues.VBRIDGE, BULLBIT);
           break;
         }
       }
@@ -71,7 +71,7 @@ RoadTool.prototype.layRoad = function(x, y) {
 
         if (tile === TileValues.HRAILROAD || tile === TileValues.VROADPOWER ||
             (tile >= TileValues.VBRIDGE && tile <= TileValues.INTERSECTION)) {
-          this._worldEffects.setTile(x, y, TileValues.VBRIDGE, Tile.BULLBIT);
+          this._worldEffects.setTile(x, y, TileValues.VBRIDGE, BULLBIT);
           break;
         }
       }
@@ -79,19 +79,19 @@ RoadTool.prototype.layRoad = function(x, y) {
       return this.TOOLRESULT_FAILED;
 
     case TileValues.LHPOWER:
-      this._worldEffects.setTile(x, y, TileValues.VROADPOWER | Tile.CONDBIT | Tile.BURNBIT | Tile.BULLBIT);
+      this._worldEffects.setTile(x, y, TileValues.VROADPOWER | CONDBIT | BURNBIT | BULLBIT);
       break;
 
     case TileValues.LVPOWER:
-      this._worldEffects.setTile(x, y, TileValues.HROADPOWER | Tile.CONDBIT | Tile.BURNBIT | Tile.BULLBIT);
+      this._worldEffects.setTile(x, y, TileValues.HROADPOWER | CONDBIT | BURNBIT | BULLBIT);
       break;
 
     case TileValues.LHRAIL:
-      this._worldEffects.setTile(x, y, TileValues.HRAILROAD | Tile.BURNBIT | Tile.BULLBIT);
+      this._worldEffects.setTile(x, y, TileValues.HRAILROAD | BURNBIT | BULLBIT);
       break;
 
     case TileValues.LVRAIL:
-      this._worldEffects.setTile(x, y, TileValues.VRAILROAD | Tile.BURNBIT | Tile.BULLBIT);
+      this._worldEffects.setTile(x, y, TileValues.VRAILROAD | BURNBIT | BULLBIT);
       break;
 
     default:

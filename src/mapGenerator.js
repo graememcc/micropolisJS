@@ -10,7 +10,7 @@
 import { Direction } from './direction';
 import { GameMap } from './gameMap';
 import { Random } from './random';
-import { Tile } from './tile';
+import { BLBNBIT, BULLBIT } from "./tileFlags";
 import { CHANNEL, DIRT, REDGE, RIVER, WATER_LOW, WATER_HIGH, WOODS, WOODS_LOW, WOODS_HIGH } from "./tileValues";
 
 var TERRAIN_CREATE_ISLAND;
@@ -179,7 +179,7 @@ var treeSplash = function(map, x, y) {
       return;
 
     if (map.getTileValue(treePos) === DIRT)
-      map.setTile(treePos, WOODS, Tile.BLBNBIT);
+      map.setTile(treePos, WOODS, BLBNBIT);
 
     numTrees--;
   }
@@ -206,10 +206,10 @@ var doTrees = function(map) {
 
 
 var riverEdges = [
-  13 | Tile.BULLBIT, 13 | Tile.BULLBIT, 17 | Tile.BULLBIT, 15 | Tile.BULLBIT,
-  5 | Tile.BULLBIT, 2, 19 | Tile.BULLBIT, 17 | Tile.BULLBIT,
-  9 | Tile.BULLBIT, 11 | Tile.BULLBIT, 2, 13 | Tile.BULLBIT,
-  7 | Tile.BULLBIT, 9 | Tile.BULLBIT, 5 | Tile.BULLBIT, 2];
+  13 | BULLBIT, 13 | BULLBIT, 17 | BULLBIT, 15 | BULLBIT,
+  5 | BULLBIT, 2, 19 | BULLBIT, 17 | BULLBIT,
+  9 | BULLBIT, 11 | BULLBIT, 2, 13 | BULLBIT,
+  7 | BULLBIT, 9 | BULLBIT, 5 | BULLBIT, 2];
 
 var smoothRiver = function(map) {
   var dx = [-1,  0,  1,  0];
@@ -286,7 +286,7 @@ var smoothTreesAt = function(map, x, y, preserve) {
       if ((x + y) & 1)
           temp = temp - 8;
     }
-    map.setTile(x, y, temp, Tile.BLBNBIT);
+    map.setTile(x, y, temp, BLBNBIT);
   } else {
     if (!preserve)
       map.setTileValue(x, y, temp, 0);

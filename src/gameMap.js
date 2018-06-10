@@ -11,6 +11,7 @@ import { Direction } from './direction';
 import { MiscUtils } from './miscUtils';
 import { PositionMaker } from './positionMaker';
 import { Tile } from './tile';
+import { BNCNBIT, ZONEBIT } from "./tileFlags";
 import { TILE_INVALID } from "./tileValues";
 
 function GameMap(width, height, defaultValue) {
@@ -376,9 +377,9 @@ GameMap.prototype.putZone = function(centreX, centreY, centreTile, size) {
   for (y = startY; y < startY + size; y++) {
     for (x = startX; x < startX + size; x++) {
       if (x === centreX && y === centreY)
-        this.setTo(x, y, new Tile(tile, Tile.BNCNBIT | Tile.ZONEBIT));
+        this.setTo(x, y, new Tile(tile, BNCNBIT | ZONEBIT));
       else
-        this.setTo(x, y, new Tile(tile, Tile.BNCNBIT));
+        this.setTo(x, y, new Tile(tile, BNCNBIT));
       tile += 1;
     }
   }

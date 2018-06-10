@@ -12,7 +12,7 @@ import { Direction } from './direction';
 import { EventEmitter } from './eventEmitter';
 import { NOT_ENOUGH_POWER } from './messages';
 import { Random } from './random';
-import { Tile } from './tile';
+import { ANIMBIT, BURNBIT, CONDBIT, POWERBIT } from "./tileFlags";
 import { NUCLEAR, POWERPLANT } from "./tileValues";
 
 var COAL_POWER_STRENGTH = 700;
@@ -32,11 +32,11 @@ PowerManager.prototype.setTilePower = function(x, y) {
 
   if (tileValue === NUCLEAR || tileValue === POWERPLANT ||
       this.powerGridMap.worldGet(x, y) > 0) {
-    tile.addFlags(Tile.POWERBIT);
+    tile.addFlags(POWERBIT);
     return;
   }
 
-  tile.removeFlags(Tile.POWERBIT);
+  tile.removeFlags(POWERBIT);
 };
 
 
@@ -115,7 +115,7 @@ PowerManager.prototype.coalPowerFound = function(map, x, y, simData) {
   var dY = [-1, -1, 0, 0];
 
   for (var i = 0; i < 4; i++)
-    map.addTileFlags(x + dX[i], y + dY[i], Tile.ANIMBIT);
+    map.addTileFlags(x + dX[i], y + dY[i], ANIMBIT);
 };
 
 
@@ -137,7 +137,7 @@ PowerManager.prototype.nuclearPowerFound = function(map, x, y, simData) {
 
   // Ensure animation bits set
   for (var i = 0; i < 4; i++)
-    map.addTileFlags(x, y, Tile.ANIMBIT | Tile.CONDBIT | Tile.POWERBIT | Tile.BURNBIT);
+    map.addTileFlags(x, y, ANIMBIT | CONDBIT | POWERBIT | BURNBIT);
 };
 
 

@@ -8,7 +8,7 @@
  */
 
 import { Random } from './random';
-import { Tile } from './tile';
+import { ANIMBIT, ASCBIT, BNCNBIT } from "./tileFlags";
 import { TileUtils } from './tileUtils';
 import { INDCLR, IZB } from "./tileValues";
 import { Traffic } from './traffic';
@@ -78,12 +78,12 @@ var setAnimation = function(map, x, y, tileValue, isPowered) {
   // If the tile is animated and powered we set animated, conductive, combustible. Otherwise we set burnable and
   // conductive.
   if (animated[i] && isPowered) {
-    map.addTileFlags(x + xDelta[i], y + yDelta[i], Tile.ASCBIT);
+    map.addTileFlags(x + xDelta[i], y + yDelta[i], ASCBIT);
   } else {
-    map.addTileFlags(x + xDelta[i], y + yDelta[i], Tile.BNCNBIT);
+    map.addTileFlags(x + xDelta[i], y + yDelta[i], BNCNBIT);
 
     // Ensure we drop the animation bit if we've only recently lost power
-    map.removeTileFlags(x + xDelta[i], y + yDelta[i], Tile.ANIMBIT);
+    map.removeTileFlags(x + xDelta[i], y + yDelta[i], ANIMBIT);
   }
 };
 

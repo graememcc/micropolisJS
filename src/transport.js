@@ -9,7 +9,7 @@
 
 import { Random } from './random';
 import { SPRITE_SHIP } from './spriteConstants';
-import { Tile } from './tile';
+import { ANIMBIT, CONDBIT, BURNBIT } from "./tileFlags";
 import { TileUtils } from './tileUtils';
 import * as TileValues from "./tileValues";
 
@@ -45,7 +45,7 @@ var airportFound = function(map, x, y, simData) {
   var tile = map.getTile(x, y);
   if (tile.isPowered()) {
     if (map.getTileValue(x + 1, y - 1) === TileValues.RADAR)
-      map.setTile(x + 1, y - 1, TileValues.RADAR0, Tile.CONDBIT | Tile.ANIMBIT | Tile.BURNBIT);
+      map.setTile(x + 1, y - 1, TileValues.RADAR0, CONDBIT | ANIMBIT | BURNBIT);
 
     if (Random.getRandom(5) === 0) {
       simData.spriteManager.generatePlane(x, y);
@@ -55,7 +55,7 @@ var airportFound = function(map, x, y, simData) {
     if (Random.getRandom(12) === 0)
       simData.spriteManager.generateCopter(x, y);
   } else {
-      map.setTile(x + 1, y - 1, TileValues.RADAR, Tile.CONDBIT | Tile.BURNBIT);
+      map.setTile(x + 1, y - 1, TileValues.RADAR, CONDBIT | BURNBIT);
   }
 };
 

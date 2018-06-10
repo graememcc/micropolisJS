@@ -6,6 +6,7 @@
     "jsRules": {},
     "rules": {
       "interface-name": ["true", "never-prefix"],
+      "no-bitwise": false,
       "no-console": ["false"]
     },
     "rulesDirectory": []

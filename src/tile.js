@@ -7,6 +7,7 @@
  *
  */
 
+ import * as TileFlags from "./tileFlags";
  import { DIRT, TILE_INVALID, TILE_COUNT } from "./tileValues";
 
 // I think I want to change this soon. Most of the tile properties, (e.g. whether
@@ -32,7 +33,7 @@ function Tile(tileValue, bitMask) {
   if (arguments.length > 1 && (tileValue < TILE_INVALID || tileValue >= TILE_COUNT))
     throw new Error('Tile constructor called with out-of-range tileValue ' + tileValue);
 
-  if (arguments.length > 1 && (bitMask < Tile.BIT_START || bitMask >= (Tile.BIT_END << 1)))
+  if (arguments.length > 1 && (bitMask < TileFlags.BIT_START || bitMask >= (TileFlags.BIT_END << 1)))
     throw new Error('Tile constructor called with out-of-range bitmask ' + bitMask);
 
   this._value = tileValue;
@@ -47,7 +48,7 @@ function Tile(tileValue, bitMask) {
 
 
 Tile.prototype.getValue = function() {
-  return this._value & Tile.BIT_MASK;
+  return this._value & TileFlags.BIT_MASK;
 };
 
 
@@ -59,39 +60,39 @@ Tile.prototype.setValue = function(tileValue) {
     throw new Error('Tile setValue called with invalid tileValue ' + tileValue);
 
   var existingFlags = 0;
-  if (tileValue < Tile.BIT_START)
-    existingFlags = this._value & Tile.ALLBITS;
+  if (tileValue < TileFlags.BIT_START)
+    existingFlags = this._value & TileFlags.ALLBITS;
   this._value = tileValue | existingFlags;
 };
 
 
 Tile.prototype.isBulldozable = function() {
-  return (this._value & Tile.BULLBIT) > 0;
+  return (this._value & TileFlags.BULLBIT) > 0;
 };
 
 
 Tile.prototype.isAnimated = function() {
-  return (this._value & Tile.ANIMBIT) > 0;
+  return (this._value & TileFlags.ANIMBIT) > 0;
 };
 
 
 Tile.prototype.isConductive = function() {
-  return (this._value & Tile.CONDBIT) > 0;
+  return (this._value & TileFlags.CONDBIT) > 0;
 };
 
 
 Tile.prototype.isCombustible = function() {
-  return (this._value & Tile.BURNBIT) > 0;
+  return (this._value & TileFlags.BURNBIT) > 0;
 };
 
 
 Tile.prototype.isPowered = function() {
-  return (this._value & Tile.POWERBIT) > 0;
+  return (this._value & TileFlags.POWERBIT) > 0;
 };
 
 
 Tile.prototype.isZone = function() {
-  return (this._value & Tile.ZONEBIT) > 0;
+  return (this._value & TileFlags.ZONEBIT) > 0;
 };
 
 
@@ -102,7 +103,7 @@ Tile.prototype.addFlags = function(bitMask) {
   if (typeof(bitMask) !== 'number')
     throw new Error('Tile constructor called with invalid bitmask ' + bitMask);
 
-  if (bitMask < Tile.BIT_START || bitMask >= (Tile.BIT_END << 1))
+  if (bitMask < TileFlags.BIT_START || bitMask >= (TileFlags.BIT_END << 1))
     throw new Error('Tile addFlags called with out-of-range bitmask ' + bitMask);
 
   this._value |= bitMask;
@@ -116,7 +117,7 @@ Tile.prototype.removeFlags = function(bitMask) {
   if (typeof(bitMask) !== 'number')
     throw new Error('Tile removeFlags called with invalid bitmask ' + bitMask);
 
-  if (bitMask < Tile.BIT_START || bitMask >= (Tile.BIT_END << 1))
+  if (bitMask < TileFlags.BIT_START || bitMask >= (TileFlags.BIT_END << 1))
     throw new Error('Tile removeFlags called with out-of-range bitmask ' + bitMask);
 
   this._value &= ~bitMask;
@@ -130,16 +131,16 @@ Tile.prototype.setFlags = function(bitMask) {
   if (typeof(bitMask) !== 'number')
     throw new Error('Tile setFlags called with invalid bitmask ' + bitMask);
 
-  if (bitMask < Tile.BIT_START || bitMask >= (Tile.BIT_END << 1))
+  if (bitMask < TileFlags.BIT_START || bitMask >= (TileFlags.BIT_END << 1))
     throw new Error('Tile setFlags called with out-of-range bitmask ' + bitMask);
 
-  var existingValue = this._value & ~Tile.ALLBITS;
+  var existingValue = this._value & ~TileFlags.ALLBITS;
   this._value = existingValue | bitMask;
 };
 
 
 Tile.prototype.getFlags = function() {
-  return this._value & Tile.ALLBITS;
+  return this._value & TileFlags.ALLBITS;
 };
 
 
@@ -167,23 +168,6 @@ Tile.prototype.toString = function() {
   s += this.isBulldozable() ? ' bulldozeable' : '';
   return s;
 };
-
-
-// Bit-masks for statusBits
-Tile.POWERBIT  = 0x8000; // bit 15, tile has power.
-Tile.CONDBIT = 0x4000; // bit 14. tile can conduct electricity.
-Tile.BURNBIT = 0x2000; // bit 13, tile can be lit.
-Tile.BULLBIT = 0x1000; // bit 12, tile is bulldozable.
-Tile.ANIMBIT = 0x0800; // bit 11, tile is animated.
-Tile.ZONEBIT = 0x0400; // bit 10, tile is the center tile of the zone.
-Tile.BLBNBIT   = Tile.BULLBIT | Tile.BURNBIT;
-Tile.BLBNCNBIT = Tile.BULLBIT | Tile.BURNBIT | Tile.CONDBIT;
-Tile.BNCNBIT   = Tile.BURNBIT | Tile.CONDBIT;
-Tile.ASCBIT   = Tile.ANIMBIT | Tile.CONDBIT | Tile.BURNBIT;
-Tile.ALLBITS = Tile.POWERBIT | Tile.CONDBIT | Tile.BURNBIT | Tile.BULLBIT | Tile.ANIMBIT | Tile.ZONEBIT;
-Tile.BIT_START = 0x400;
-Tile.BIT_END = 0x8000;
-Tile.BIT_MASK = Tile.BIT_START - 1;
 
 
 export { Tile };

@@ -10,6 +10,7 @@
 import { Config } from './config';
 import { Random } from './random';
 import { Tile } from './tile';
+import { BLBNCNBIT, ZONEBIT } from "./tileFlags";
 import { TileUtils } from './tileUtils';
 import * as TileValues from "./tileValues";
 import { Traffic } from './traffic';
@@ -105,7 +106,7 @@ var buildHouse = function(map, x, y, lpValue) {
 
   if (best > 0 && map.testBounds(x + xDelta[best], y + yDelta[best]))
     map.setTile(x + xDelta[best], y + yDelta[best],
-              TileValues.HOUSE + Random.getRandom(2) + lpValue * 3, Tile.BLBNCNBIT);
+              TileValues.HOUSE + Random.getRandom(2) + lpValue * 3, BLBNCNBIT);
 };
 
 
@@ -156,12 +157,12 @@ var degradeZone = function(map, x, y, blockMaps, population, lpValue, zonePower)
 
   if (population === 16) {
     // Already at lowest density: degrade to 8 individual houses
-    map.setTile(x, y, TileValues.FREEZ, Tile.BLBNCNBIT | Tile.ZONEBIT);
+    map.setTile(x, y, TileValues.FREEZ, BLBNCNBIT | ZONEBIT);
 
     for (yy = y - 1; yy <= y + 1; yy++) {
       for (xx = x - 1; xx <= x + 1; xx++) {
         if (xx === x && yy === y) continue;
-        map.setTile(x, y, TileValues.LHTHR + lpValue + Random.getRandom(2), Tile.BLBNCNBIT);
+        map.setTile(x, y, TileValues.LHTHR + lpValue + Random.getRandom(2), BLBNCNBIT);
       }
     }
 
@@ -178,7 +179,7 @@ var degradeZone = function(map, x, y, blockMaps, population, lpValue, zonePower)
       var currentValue = map.getTileValue(xx, yy);
       if (currentValue >= TileValues.LHTHR && currentValue <= TileValues.HHTHR) {
         // We've found a house. Replace it with the normal free zone tile
-        map.setTile(xx, yy, freeZone[i] + TileValues.RESBASE, Tile.BLBNCNBIT);
+        map.setTile(xx, yy, freeZone[i] + TileValues.RESBASE, BLBNCNBIT);
         return;
       }
     }

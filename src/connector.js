@@ -7,7 +7,7 @@
  *
  */
 
-import { Tile } from './tile';
+import { BLBNCNBIT, BULLBIT, BURNBIT } from "./tileFlags";
 import { TileUtils } from './tileUtils';
 import * as TileValues  from "./tileValues";
 
@@ -80,7 +80,7 @@ var fixSingle = function(x, y) {
         adjTile |= 8;
     }
 
-    this._worldEffects.setTile(x, y, RoadTable[adjTile] | Tile.BULLBIT | Tile.BURNBIT);
+    this._worldEffects.setTile(x, y, RoadTable[adjTile] | BULLBIT | BURNBIT);
     return;
   }
 
@@ -121,7 +121,7 @@ var fixSingle = function(x, y) {
           adjTile |= 8;
       }
 
-    this._worldEffects.setTile(x, y, RailTable[adjTile] | Tile.BULLBIT | Tile.BURNBIT);
+    this._worldEffects.setTile(x, y, RailTable[adjTile] | BULLBIT | BURNBIT);
     return;
   }
 
@@ -166,7 +166,7 @@ var fixSingle = function(x, y) {
       }
     }
 
-    this._worldEffects.setTile(x, y, WireTable[adjTile] | Tile.BLBNCNBIT);
+    this._worldEffects.setTile(x, y, WireTable[adjTile] | BLBNCNBIT);
     return;
   }
 };

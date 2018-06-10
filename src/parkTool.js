@@ -9,7 +9,7 @@
 
 import { BaseTool } from './baseTool';
 import { Random } from './random';
-import { Tile } from './tile';
+import { ANIMBIT, BULLBIT, BURNBIT, CONDBIT } from "./tileFlags";
 import { TileUtils } from './tileUtils';
 import { DIRT, FOUNTAIN, WOODS2 } from "./tileValues";
 
@@ -26,12 +26,12 @@ ParkTool.prototype.doTool = function(x, y, blockMaps) {
   }
 
   var value = Random.getRandom(4);
-  var tileFlags = Tile.BURNBIT | Tile.BULLBIT;
+  var tileFlags = BURNBIT | BULLBIT;
   var tileValue;
 
   if (value === 4) {
     tileValue = FOUNTAIN;
-    tileFlags |= Tile.ANIMBIT;
+    tileFlags |= ANIMBIT;
   } else {
     tileValue = value + WOODS2;
   }
