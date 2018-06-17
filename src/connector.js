@@ -80,7 +80,7 @@ var fixSingle = function(x, y) {
         adjTile |= 8;
     }
 
-    this._worldEffects.setTile(x, y, RoadTable[adjTile] | BULLBIT | BURNBIT);
+    this._worldEffects.setTile(x, y, RoadTable[adjTile], BULLBIT | BURNBIT);
     return;
   }
 
@@ -121,7 +121,7 @@ var fixSingle = function(x, y) {
           adjTile |= 8;
       }
 
-    this._worldEffects.setTile(x, y, RailTable[adjTile] | BULLBIT | BURNBIT);
+    this._worldEffects.setTile(x, y, RailTable[adjTile], BULLBIT | BURNBIT);
     return;
   }
 
@@ -166,7 +166,7 @@ var fixSingle = function(x, y) {
       }
     }
 
-    this._worldEffects.setTile(x, y, WireTable[adjTile] | BLBNCNBIT);
+    this._worldEffects.setTile(x, y, WireTable[adjTile], BLBNCNBIT);
     return;
   }
 };

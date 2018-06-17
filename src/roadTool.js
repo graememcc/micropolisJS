@@ -79,19 +79,19 @@ RoadTool.prototype.layRoad = function(x, y) {
       return this.TOOLRESULT_FAILED;
 
     case TileValues.LHPOWER:
-      this._worldEffects.setTile(x, y, TileValues.VROADPOWER | CONDBIT | BURNBIT | BULLBIT);
+      this._worldEffects.setTile(x, y, TileValues.VROADPOWER, CONDBIT | BURNBIT | BULLBIT);
       break;
 
     case TileValues.LVPOWER:
-      this._worldEffects.setTile(x, y, TileValues.HROADPOWER | CONDBIT | BURNBIT | BULLBIT);
+      this._worldEffects.setTile(x, y, TileValues.HROADPOWER, CONDBIT | BURNBIT | BULLBIT);
       break;
 
     case TileValues.LHRAIL:
-      this._worldEffects.setTile(x, y, TileValues.HRAILROAD | BURNBIT | BULLBIT);
+      this._worldEffects.setTile(x, y, TileValues.HRAILROAD, BURNBIT | BULLBIT);
       break;
 
     case TileValues.LVRAIL:
-      this._worldEffects.setTile(x, y, TileValues.VRAILROAD | BURNBIT | BULLBIT);
+      this._worldEffects.setTile(x, y, TileValues.VRAILROAD, BURNBIT | BULLBIT);
       break;
 
     default:
