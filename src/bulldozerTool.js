@@ -25,8 +25,7 @@ BulldozerTool.prototype.putRubble = function(x, y, size) {
   for (var xx = x; xx < x + size; xx++) {
     for (var yy = y; yy < y + size; yy++)  {
       if (this._map.testBounds(xx, yy)) {
-        var tile = this._worldEffects.getTile(xx, yy);
-
+        var tile = this._worldEffects.getTileValue(xx, yy);
         if (tile != TileValues.RADTILE && tile != TileValues.DIRT)
           this._worldEffects.setTile(xx, yy, TileValues.TINYEXP + Random.getRandom(2), ANIMBIT | BULLBIT);
       }
