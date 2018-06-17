@@ -38,7 +38,7 @@ var addCost = function(cost) {
 var doAutoBulldoze = function(x, y) {
   var tile = this._worldEffects.getTile(x, y);
   if (tile.isBulldozable()) {
-    tile = TileUtils.normalizeRoad(tile);
+    tile = TileUtils.normalizeRoad(tile.getValue());
     if ((tile >= TINYEXP && tile <= LASTTINYEXP) ||
         (tile < HBRIDGE && tile !== DIRT)) {
       this.addCost(1);

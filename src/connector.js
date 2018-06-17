@@ -41,7 +41,7 @@ var fixSingle = function(x, y) {
 
   if (tile >= TileValues.ROADS && tile <= TileValues.INTERSECTION) {
     if (y > 0) {
-      tile = this._worldEffects.getTile(x, y - 1);
+      tile = this._worldEffects.getTileValue(x, y - 1);
       tile = TileUtils.normalizeRoad(tile);
 
       if ((tile === TileValues.HRAILROAD || (tile >= TileValues.ROADBASE && tile <= TileValues.VROADPOWER)) &&
@@ -51,7 +51,7 @@ var fixSingle = function(x, y) {
     }
 
     if (x < this._map.width - 1) {
-      tile = this._worldEffects.getTile(x + 1, y);
+      tile = this._worldEffects.getTileValue(x + 1, y);
       tile = TileUtils.normalizeRoad(tile);
 
       if ((tile === TileValues.VRAILROAD || (tile >= TileValues.ROADBASE && tile <= TileValues.VROADPOWER)) &&
@@ -61,7 +61,7 @@ var fixSingle = function(x, y) {
     }
 
     if (y < this._map.height - 1) {
-      tile = this._worldEffects.getTile(x, y + 1);
+      tile = this._worldEffects.getTileValue(x, y + 1);
       tile = TileUtils.normalizeRoad(tile);
 
       if ((tile === TileValues.HRAILROAD || (tile >= TileValues.ROADBASE && tile <= TileValues.VROADPOWER)) &&
@@ -71,7 +71,7 @@ var fixSingle = function(x, y) {
     }
 
     if (x > 0) {
-      tile = this._worldEffects.getTile(x - 1, y);
+      tile = this._worldEffects.getTileValue(x - 1, y);
       tile = TileUtils.normalizeRoad(tile);
 
       if ((tile === TileValues.VRAILROAD || (tile >= TileValues.ROADBASE && tile <= TileValues.VROADPOWER)) &&
@@ -86,7 +86,7 @@ var fixSingle = function(x, y) {
 
   if (tile >= TileValues.LHRAIL && tile <= TileValues.LVRAIL10) {
       if (y > 0) {
-        tile = this._worldEffects.getTile(x, y - 1);
+        tile = this._worldEffects.getTileValue(x, y - 1);
         tile = TileUtils.normalizeRoad(tile);
         if (tile >= TileValues.RAILHPOWERV && tile <= TileValues.VRAILROAD &&
             tile !== TileValues.RAILHPOWERV && tile !== TileValues.HRAILROAD &&
@@ -95,7 +95,7 @@ var fixSingle = function(x, y) {
       }
 
       if (x < this._map.width - 1) {
-        tile = this._worldEffects.getTile(x + 1, y);
+        tile = this._worldEffects.getTileValue(x + 1, y);
         tile = TileUtils.normalizeRoad(tile);
         if (tile >= TileValues.RAILHPOWERV && tile <= TileValues.VRAILROAD &&
             tile !== TileValues.RAILVPOWERH && tile !== TileValues.VRAILROAD &&
@@ -104,7 +104,7 @@ var fixSingle = function(x, y) {
       }
 
       if (y < this._map.height - 1) {
-        tile = this._worldEffects.getTile(x, y + 1);
+        tile = this._worldEffects.getTileValue(x, y + 1);
         tile = TileUtils.normalizeRoad(tile);
         if (tile >= TileValues.RAILHPOWERV && tile <= TileValues.VRAILROAD &&
             tile !== TileValues.RAILHPOWERV && tile !== TileValues.HRAILROAD &&
@@ -113,7 +113,7 @@ var fixSingle = function(x, y) {
       }
 
       if (x > 0) {
-        tile = this._worldEffects.getTile(x - 1, y);
+        tile = this._worldEffects.getTileValue(x - 1, y);
         tile = TileUtils.normalizeRoad(tile);
         if (tile >= TileValues.RAILHPOWERV && tile <= TileValues.VRAILROAD &&
             tile !== TileValues.RAILVPOWERH && tile !== TileValues.VRAILROAD &&
