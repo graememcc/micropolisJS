@@ -29,111 +29,126 @@ function differenceToNextNeighbour(i: number, array: number[]): number {
     return Math.abs(value - array[neighbour]);
 }
 
-test("getRandom should be able to return 0", () => {
-    const mathGlobal = makeMathGlobal();
-    mathGlobal.random.mockReturnValueOnce(0);
+describe("the getRandom function", () => {
 
-    const result = Random.getRandom(1, mathGlobal);
+    it("should be able to return 0", () => {
+        const mathGlobal = makeMathGlobal();
+        mathGlobal.random.mockReturnValueOnce(0);
 
-    expect(result).toBe(0);
-});
+        const result = Random.getRandom(1, mathGlobal);
 
-test("getRandom should be able to return the maximum", () => {
-    const mathGlobal = makeMathGlobal();
-    mathGlobal.random.mockReturnValueOnce(0.9999999999);
+        expect(result).toBe(0);
+    });
 
-    const result = Random.getRandom(5, mathGlobal);
+    it("should be able to return the maximum", () => {
+        const mathGlobal = makeMathGlobal();
+        mathGlobal.random.mockReturnValueOnce(0.9999999999);
 
-    expect(result).toBe(5);
-});
+        const result = Random.getRandom(5, mathGlobal);
 
-test("getRandom should not exhibit significant bias", () => {
-    const range = 1000;
-    const buckets = zeroFilledArrayOfInclusiveLength(range);
-    const mathGlobal = makeMathGlobal();
+        expect(result).toBe(5);
+    });
 
-    for (let i = 0; i < 1; i += 0.001) {
-        buckets[Random.getRandom(range, mathGlobal)] += 1;
-    }
+    it("should not exhibit significant bias", () => {
+        const range = 1000;
+        const buckets = zeroFilledArrayOfInclusiveLength(range);
+        const mathGlobal = makeMathGlobal();
 
-    buckets.forEach((n) => {
-        expect(differenceToPreviousNeighbour(n, buckets)).toBeLessThan(2);
-        expect(differenceToNextNeighbour(n, buckets)).toBeLessThan(2);
+        for (let i = 0; i < 1; i += 0.001) {
+            buckets[Random.getRandom(range, mathGlobal)] += 1;
+        }
+
+        buckets.forEach((n) => {
+            expect(differenceToPreviousNeighbour(n, buckets)).toBeLessThan(2);
+            expect(differenceToNextNeighbour(n, buckets)).toBeLessThan(2);
+        });
+    });
+
+    it("should not return values outside of the range", () => {
+        const range = 1000;
+        const buckets = zeroFilledArrayOfInclusiveLength(range);
+        const mathGlobal = makeMathGlobal();
+
+        for (let i = 0; i < 1; i += 0.001) {
+            buckets[Random.getRandom(range, mathGlobal)] += 1;
+        }
+
+        expect(buckets.length).toBe(range + 1);
     });
 });
 
-test("getRandom should not return values outside of the range", () => {
-    const range = 1000;
-    const buckets = zeroFilledArrayOfInclusiveLength(range);
-    const mathGlobal = makeMathGlobal();
+describe("the getRandom16 function", () => {
 
-    for (let i = 0; i < 1; i += 0.001) {
-        buckets[Random.getRandom(range, mathGlobal)] += 1;
-    }
+    it("should limit itself to 16-bit values", () => {
+        const rng = jest.fn();
 
-    expect(buckets.length).toBe(range + 1);
+        Random.getRandom16(rng);
+
+        expect(rng).toHaveBeenCalledWith(2 ** 16 - 1);
+    });
 });
 
-test("getRandom16 should limit itself to 16-bit values", () => {
-    const rng = jest.fn();
+describe("the getRandom16Signed function", () => {
 
-    Random.getRandom16(rng);
+    it("should return positive values below 2^15", () => {
+        const valueBelowThreshold = 32767;
 
-    expect(rng).toHaveBeenCalledWith(2 ** 16 - 1);
+        const rng = jest.fn().mockReturnValueOnce(valueBelowThreshold);
+
+        expect(Random.getRandom16Signed(rng)).toBe(valueBelowThreshold);
+    });
+
+    it("should return negative values in the interval [-(2^15)..-1]", () => {
+        const threshold = 32768;
+        const limit = 2 ** 16 - 1;
+        const rng = jest.fn().mockReturnValueOnce(threshold).mockReturnValueOnce(limit);
+
+        expect(Random.getRandom16Signed(rng)).toBeLessThan(0);
+        expect(Random.getRandom16Signed(rng)).toBeLessThan(0);
+    });
 });
 
-test("getRandom16Signed should return positive values below 2^15", () => {
-    const valueBelowThreshold = 32767;
+describe("the getERandom function", () => {
 
-    const rng = jest.fn().mockReturnValueOnce(valueBelowThreshold);
+    it("getERandom should respect the given maximum", () => {
+        const threshold = 1000;
+        const rng = jest.fn().mockReturnValue(1);
 
-    expect(Random.getRandom16Signed(rng)).toBe(valueBelowThreshold);
+        Random.getERandom(threshold, rng);
+
+        expect(rng).toHaveBeenCalledWith(threshold);
+    });
+
+    it("getERandom should exhibit a bias towards smaller numbers", () => {
+        const threshold = 1000;
+        const lower = 1;
+        const upper = 2;
+        const rng = jest.fn().mockReturnValueOnce(lower).mockReturnValueOnce(upper);
+
+        expect(Random.getERandom(threshold, rng)).toBe(lower);
+    });
 });
 
-test("getRandom16Signed should return negative values in the interval [-(2^15)..-1]", () => {
-    const threshold = 32768;
-    const limit = 2 ** 16 - 1;
-    const rng = jest.fn().mockReturnValueOnce(threshold).mockReturnValueOnce(limit);
+describe("the getChance function", () => {
 
-    expect(Random.getRandom16Signed(rng)).toBeLessThan(0);
-    expect(Random.getRandom16Signed(rng)).toBeLessThan(0);
-});
+    it("getChance should return false if the least significant bits match exactly", () => {
+        const chanceValue = 0b101;
+        const rng = jest.fn().mockReturnValueOnce(0b1101);
 
-test("getERandom should respect the given maximum", () => {
-    const threshold = 1000;
-    const rng = jest.fn().mockReturnValue(1);
+        expect(Random.getChance(chanceValue, rng)).toBe(false);
+    });
 
-    Random.getERandom(threshold, rng);
+    it("getChance should return false if some of the least significant bits match", () => {
+        const chanceValue = 0b11;
+        const rng = jest.fn().mockReturnValueOnce(0b1101);
 
-    expect(rng).toHaveBeenCalledWith(threshold);
-});
+        expect(Random.getChance(chanceValue, rng)).toBe(false);
+    });
 
-test("getERandom should exhibit a bias towards smaller numbers", () => {
-    const threshold = 1000;
-    const lower = 1;
-    const upper = 2;
-    const rng = jest.fn().mockReturnValueOnce(lower).mockReturnValueOnce(upper);
+    it("getChance should return true if none of the least significant bits match", () => {
+        const chanceValue = 0b101;
+        const rng = jest.fn().mockReturnValueOnce(0b1010);
 
-    expect(Random.getERandom(threshold, rng)).toBe(lower);
-});
-
-test("getChance should return false if the least significant bits match exactly", () => {
-    const chanceValue = 0b101;
-    const rng = jest.fn().mockReturnValueOnce(0b1101);
-
-    expect(Random.getChance(chanceValue, rng)).toBe(false);
-});
-
-test("getChance should return false if some of the least significant bits match", () => {
-    const chanceValue = 0b11;
-    const rng = jest.fn().mockReturnValueOnce(0b1101);
-
-    expect(Random.getChance(chanceValue, rng)).toBe(false);
-});
-
-test("getChance should return true if none of the least significant bits match", () => {
-    const chanceValue = 0b101;
-    const rng = jest.fn().mockReturnValueOnce(0b1010);
-
-    expect(Random.getChance(chanceValue, rng)).toBe(true);
+        expect(Random.getChance(chanceValue, rng)).toBe(true);
+    });
 });
