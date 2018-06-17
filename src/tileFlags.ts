@@ -8,6 +8,7 @@
  */
 
 // Bit-masks for statusBits
+export const NOFLAGS  = 0x0000;
 export const POWERBIT = 0x8000; // bit 15, tile has power.
 export const CONDBIT  = 0x4000; // bit 14. tile can conduct electricity.
 export const BURNBIT  = 0x2000; // bit 13, tile can be lit.

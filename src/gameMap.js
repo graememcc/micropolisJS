@@ -116,7 +116,7 @@ GameMap.prototype.getTile = function(x, y, newTile) {
   if (!newTile)
     return tile;
 
-  newTile.set(tile);
+  newTile.setFrom(tile);
   return tile;
 };
 
