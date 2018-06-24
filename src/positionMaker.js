@@ -7,7 +7,7 @@
  *
  */
 
-import { Direction } from './direction';
+import * as Direction from './direction';
 
 function PositionMaker(width, height) {
   if (arguments.length < 2)
@@ -92,8 +92,6 @@ function PositionMaker(width, height) {
 
   Position.prototype.move = function(dir) {
     switch (dir) {
-      case Direction.INVALID:
-        return true;
       case Direction.NORTH:
         if (this.y > 0) {
           this.y--;

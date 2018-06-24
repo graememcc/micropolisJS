@@ -7,7 +7,7 @@
  *
  */
 
-import { Direction } from './direction';
+import * as Direction from './direction';
 import { MiscUtils } from './miscUtils';
 import { PositionMaker } from './positionMaker';
 import { Tile } from './tile';

@@ -7,7 +7,7 @@
  *
  */
 
-import { Direction } from './direction';
+import { forEachCardinalDirection, getRandomCardinalDirection, getRandomDirection } from './direction';
 import { GameMap } from './gameMap';
 import { Random } from './random';
 import { BLBNBIT, BULLBIT } from "./tileFlags";
@@ -171,7 +171,7 @@ var treeSplash = function(map, x, y) {
   var treePos = new map.Position(x, y);
 
   while (numTrees > 0) {
-    var dir = Direction.NORTH + Random.getRandom(7);
+    var dir = getRandomDirection();
     treePos.move(dir);
 
     // XXX Should use the fact that positions return success/failure for moves
@@ -296,13 +296,13 @@ var smoothTreesAt = function(map, x, y, preserve) {
 
 
 var doRivers = function(map, terrainPos) {
-  var riverDir = Direction.NORTH + Random.getRandom(3) * 2;
+  var riverDir = getRandomCardinalDirection();
   doBRiver(map, terrainPos, riverDir, riverDir);
 
-  riverDir = Direction.rotate180(riverDir);
+  riverDir = riverDir.oppositeDirection();
   var terrainDir = doBRiver(map, terrainPos, riverDir, riverDir);
 
-  riverDir = Direction.NORTH + Random.getRandom(3) * 2;
+  riverDir = getRandomCardinalDirection();
   doSRiver(map, terrainPos, riverDir, terrainDir);
 };
 
@@ -326,9 +326,9 @@ var doBRiver = function(map, riverPos, riverDir, terrainDir) {
       terrainDir = riverDir;
     } else {
       if (Random.getRandom(rate2) > 90)
-        terrainDir = Direction.rotate45(terrainDir);
+        terrainDir = terrainDir.rotateClockwise();
       if (Random.getRandom(rate2) > 90)
-        terrainDir = Direction.rotate45(terrainDir, 7);
+        terrainDir = terrainDir.rotateCounterClockwise();
     }
     pos.move(terrainDir);
   }
@@ -356,9 +356,9 @@ var doSRiver = function(map, riverPos, riverDir, terrainDir) {
       terrainDir = riverDir;
     } else {
       if (Random.getRandom(rate2) > 90)
-        terrainDir = Direction.rotate45(terrainDir);
+        terrainDir = terrainDir.rotateClockwise();
       if (Random.getRandom(rate2) > 90)
-        terrainDir = Direction.rotate45(terrainDir, 7);
+        terrainDir = terrainDir.rotateCounterClockwise();
     }
     pos.move(terrainDir);
   }
@@ -434,16 +434,21 @@ var smoothWater = function(map) {
 
       if (tile >= WATER_LOW && tile <= WATER_HIGH) {
         pos = new map.Position(x, y);
+        let stop = false;
 
-        for (dir = Direction.BEGIN; dir < Direction.END; dir = Direction.increment90(dir)) {
+        forEachCardinalDirection(dir => {
+          if (stop) {
+            return;
+          }
+
           tile = map.getTileFromMap(pos, dir, WATER_LOW);
 
           /* If nearest object is not water: */
           if (tile < WATER_LOW || tile > WATER_HIGH) {
             map.setTileValue(x, y, REDGE, 0); /* set river edge */
-            break; // Continue with next tile
+            stop = true; // Continue with next tile
           }
-        }
+        });
       }
     }
   }
@@ -456,14 +461,18 @@ var smoothWater = function(map) {
         var makeRiver = true;
 
         pos = new map.Position(x, y);
-        for (dir = Direction.BEGIN; dir < Direction.END; dir = Direction.increment90(dir)) {
+
+        forEachCardinalDirection(dir => {
+          if (!makeRiver) {
+            return;
+          }
+
           tile = map.getTileFromMap(pos, dir, WATER_LOW);
 
           if (tile < WATER_LOW || tile > WATER_HIGH) {
             makeRiver = false;
-            break;
           }
-        }
+        });
 
         if (makeRiver)
           map.setTileValue(x, y, RIVER, 0);
@@ -476,15 +485,21 @@ var smoothWater = function(map) {
       tile = map.getTileValue(x, y);
 
       if (tile >= WOODS_LOW && tile <= WOODS_HIGH) {
-         pos = new map.Position(x, y);
-         for (dir = Direction.BEGIN; dir < Direction.END; dir = Direction.increment90(dir)) {
-           tile = map.getTileFromMap(pos, dir, TILE_INVALID);
+        pos = new map.Position(x, y);
+        let stop = false;
 
-           if (tile === RIVER || tile === CHANNEL) {
-             map.setTileValue(x, y, REDGE, 0); /* make it water's edge */
-             break;
-           }
-         }
+        forEachCardinalDirection(dir => {
+          if (stop) {
+            return;
+          }
+
+          tile = map.getTileFromMap(pos, dir, TILE_INVALID);
+
+          if (tile === RIVER || tile === CHANNEL) {
+            map.setTileValue(x, y, REDGE, 0); /* make it water's edge */
+            stop = true;
+          }
+        });
       }
     }
   }

@@ -7,7 +7,7 @@
  *
  */
 
-import { Direction } from './direction';
+import { forEachCardinalDirection } from './direction';
 import { MiscUtils } from './miscUtils';
 import { Random } from './random';
 import { SPRITE_HELICOPTER } from './spriteConstants';
@@ -96,15 +96,15 @@ Traffic.prototype.findPerimeterRoad = function(pos) {
 var MAX_TRAFFIC_DISTANCE = 30;
 
 Traffic.prototype.tryDrive = function(startPos, destFn) {
-  var dirLast = Direction.INVALID;
+  var dirLast;
   var drivePos = new this._map.Position(startPos);
 
   /* Maximum distance to try */
   for (var dist = 0; dist < MAX_TRAFFIC_DISTANCE; dist++) {
     var  dir = this.tryGo(drivePos, dirLast);
-    if (dir != Direction.INVALID) {
+    if (dir) {
       drivePos.move(dir);
-      dirLast = Direction.rotate180(dir);
+      dirLast = dir.oppositeDirection();
 
       if (dist & 1)
         this._stack.push(new this._map.Position(drivePos));
@@ -126,38 +126,28 @@ Traffic.prototype.tryDrive = function(startPos, destFn) {
 
 
 Traffic.prototype.tryGo = function(pos, dirLast) {
-  var  directions = [];
+  var directions = [];
 
   // Find connections from current position.
-  var dir = Direction.NORTH;
   var count = 0;
 
-  for (var i = 0; i < 4; i++) {
+  forEachCardinalDirection(dir => {
     if (dir != dirLast && TileUtils.isDriveable(this._map.getTileFromMapOrDefault(pos, dir, DIRT))) {
-      // found a road in an allowed direction
-      directions[i] = dir;
+      directions.push(dir);
       count++;
-    } else {
-      directions[i] = Direction.INVALID;
     }
-    dir = Direction.rotate90(dir);
-  }
+  });
 
-  if (count === 0)
-    return Direction.INVALID;
+  if (count === 0) {
+    return;
+  }
 
   if (count === 1) {
-    for (i = 0; i < 4; i++) {
-      if (directions[i] != Direction.INVALID)
-        return directions[i];
-    }
+    return directions[0];
   }
 
-  i = Random.getRandom16() & 3;
-  while (directions[i] === Direction.INVALID)
-      i = (i + 1) & 3;
-
-  return directions[i];
+  const index = Random.getRandom(directions.length - 1);
+  return directions[index];
 };
 
 

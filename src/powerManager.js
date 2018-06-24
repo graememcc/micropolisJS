@@ -8,7 +8,7 @@
  */
 
 import { BlockMap } from './blockMap';
-import { Direction } from './direction';
+import { forEachCardinalDirection } from './direction';
 import { EventEmitter } from './eventEmitter';
 import { NOT_ENOUGH_POWER } from './messages';
 import { Random } from './random';
@@ -75,7 +75,7 @@ PowerManager.prototype.doPowerScan = function(census) {
 
   while (this._powerStack.length > 0) {
     var pos = this._powerStack.pop();
-    var anyDir = Direction.INVALID;
+    var anyDir = undefined;
     var conNum;
     do {
       powerConsumption++;
@@ -84,20 +84,23 @@ PowerManager.prototype.doPowerScan = function(census) {
         return;
       }
 
-      if (anyDir !== Direction.INVALID)
+      if (anyDir)
         pos.move(anyDir);
 
       this.powerGridMap.worldSet(pos.x, pos.y, 1);
       conNum = 0;
-      var dir = Direction.BEGIN;
 
-      while (dir < Direction.END && conNum < 2) {
+      forEachCardinalDirection(dir => {
+        if (conNum >= 2) {
+          return;
+        }
+
         if (this.testForConductive(pos, dir)) {
           conNum++;
           anyDir = dir;
         }
-        dir = Direction.increment90(dir);
-      }
+      });
+
       if (conNum > 1)
         this._powerStack.push(new this._map.Position(pos));
     } while (conNum);
