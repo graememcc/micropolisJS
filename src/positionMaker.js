@@ -23,15 +23,6 @@ function PositionMaker(width, height) {
     return typeof(param) === 'number';
   }
 
-  var validDirs = [Direction.NORTH, Direction.NORTHEAST, Direction.EAST, Direction.SOUTHEAST,
-                   Direction.SOUTH, Direction.SOUTHWEST, Direction.WEST, Direction.NORTHWEST,
-                   Direction.INVALID];
-
-  function isDirection(param) {
-    return isNumber(param) && validDirs.indexOf(param) !== -1;
-  }
-
-
   var Position = function(pos, deltaX, deltaY) {
     if (arguments.length === 0) {
       this.x = 0;
@@ -56,9 +47,6 @@ function PositionMaker(width, height) {
 
     if (arguments.length === 2 && isNumber(pos) && !isNumber(deltaX))
       throw new Error('Position constructor called with invalid y coordinate ' + pos + ' ' + deltaX);
-
-    if (arguments.length === 2 && (pos instanceof Position) && !(isNumber(deltaX) && isDirection(deltaX)))
-      throw new Error('Position constructor called with invalid direction ' + pos + ' ' + deltaX);
 
     if (arguments.length === 2 && !isNumber(pos) && !(pos instanceof Position))
       throw new Error('Position constructor called with bad existing position ' + pos + ' ' + deltaX);
