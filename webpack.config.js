@@ -1,11 +1,13 @@
-var path = require('path');
+const path = require('path');
 
-var CleanWebpackPlugin = require('clean-webpack-plugin');
-var CopyWebpackPlugin = require('copy-webpack-plugin');
-var GitRevisionPlugin = require('git-revision-webpack-plugin');
-var HtmlWebpackPlugin = require('html-webpack-plugin');
-var ScriptExtHtmlPlugin = require('script-ext-html-webpack-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const GitRevisionPlugin = require('git-revision-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ScriptExtHtmlPlugin = require('script-ext-html-webpack-plugin');
+const StripAssertionCode = require('ts-transformer-unassert').default;
 
+const HANDLE_TYPESCRIPT_WITH_ATL = {test: /\.ts$/, loader: "awesome-typescript-loader"};
 
 const OUTPUT_DIRECTORY = 'dist';
 
@@ -63,6 +65,25 @@ function addDevelopmentConfigTo(options) {
   options.mode = 'development';
 }
 
+function addProductionConfigTo(options) {
+  options.mode = 'production';
+
+  removeATLRuleFrom(options.module);
+  const assertionStrippingConfig = {
+    options: {
+      getCustomTransformers: () => {
+        return ({before: [StripAssertionCode]});
+      }
+    }
+  };
+  stripTSAssertionsRule = Object.assign(assertionStrippingConfig, HANDLE_TYPESCRIPT_WITH_ATL);
+  options.module.rules.push(stripTSAssertionsRule);
+}
+
+function removeATLRuleFrom(webpackModuleOptions) {
+  webpackModuleOptions.rules = webpackModuleOptions.rules.filter((rule) => rule !== HANDLE_TYPESCRIPT_WITH_ATL);
+}
+
 function getBuildId() {
   // Technically don't need to use the webpack plugin, as not passing it to Webpack...
   const gitPlugin = new GitRevisionPlugin({
@@ -72,17 +93,14 @@ function getBuildId() {
   return gitPlugin.commithash().slice(0, 12);
 }
 
-module.exports = function(env, argv) {
+function commonOptions() {
   const buildId = getBuildId();
-
-  const typescriptThroughATL = {test: /\.ts$/, loader: "awesome-typescript-loader"};
 
   const options = {
     entry: './src/micropolis.js',
-    mode: 'production',
     module: {
-     rules: [
-       typescriptThroughATL
+      rules: [
+        HANDLE_TYPESCRIPT_WITH_ATL
       ]
     },
     output: {
@@ -103,8 +121,16 @@ module.exports = function(env, argv) {
     }
   };
 
+  return options;
+}
+
+module.exports = function(env, argv) {
+  const options = commonOptions();
+
   if (env.development) {
     addDevelopmentConfigTo(options);
+  } else {
+    addProductionConfigTo(options);
   }
 
   return options;
