@@ -7,9 +7,10 @@
  *
  */
 
+import { Bounds } from "./bounds";
 import * as Direction from './direction';
 import { MiscUtils } from './miscUtils';
-import { PositionMaker } from './positionMaker';
+import { Position } from './position';
 import { Tile } from './tile';
 import { BNCNBIT, ZONEBIT } from "./tileFlags";
 import { TILE_INVALID } from "./tileValues";
@@ -45,9 +46,9 @@ function GameMap(width, height, defaultValue) {
   }
 
 
-  this.Position = PositionMaker(width, height);
   this.width = width;
   this.height = height;
+  this.bounds = Bounds.fromOrigin(width, height);
 
   var data = [];
   for (var i = 0, l = width * height; i < l; i++)
@@ -89,8 +90,13 @@ GameMap.prototype._calculateIndex = function(x, y) {
 };
 
 
+GameMap.prototype.isPositionInBounds = function(pos) {
+  return this.bounds.contains(pos);
+}
+
+
 GameMap.prototype.testBounds = function(x, y) {
-  return x >= 0 && y >= 0 && x < this.width && y < this.height;
+  return this.isPositionInBounds(new Position(x, y));
 };
 
 

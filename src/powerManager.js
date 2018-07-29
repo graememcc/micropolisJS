@@ -10,6 +10,7 @@
 import { BlockMap } from './blockMap';
 import { forEachCardinalDirection } from './direction';
 import { EventEmitter } from './eventEmitter';
+import { Position } from './position';
 import { NOT_ENOUGH_POWER } from './messages';
 import { Random } from './random';
 import { ANIMBIT, BURNBIT, CONDBIT, POWERBIT } from "./tileFlags";
@@ -47,9 +48,9 @@ PowerManager.prototype.clearPowerStack = function() {
 
 
 PowerManager.prototype.testForConductive = function(pos, testDir) {
-  var movedPos = new this._map.Position(pos);
+  var movedPos = Position.move(pos, testDir);
 
-  if (movedPos.move(testDir)) {
+  if (this._map.isPositionInBounds(movedPos)) {
     if (this._map.getTile(movedPos.x, movedPos.y).isConductive()) {
       if (this.powerGridMap.worldGet(movedPos.x, movedPos.y) === 0)
           return true;
@@ -85,7 +86,7 @@ PowerManager.prototype.doPowerScan = function(census) {
       }
 
       if (anyDir)
-        pos.move(anyDir);
+        pos = Position.move(pos, anyDir);
 
       this.powerGridMap.worldSet(pos.x, pos.y, 1);
       conNum = 0;
@@ -102,7 +103,7 @@ PowerManager.prototype.doPowerScan = function(census) {
       });
 
       if (conNum > 1)
-        this._powerStack.push(new this._map.Position(pos));
+        this._powerStack.push(new Position(pos.x, pos.y));
     } while (conNum);
   }
 };
@@ -111,7 +112,7 @@ PowerManager.prototype.doPowerScan = function(census) {
 PowerManager.prototype.coalPowerFound = function(map, x, y, simData) {
   simData.census.coalPowerPop += 1;
 
-  this._powerStack.push(new map.Position(x, y));
+  this._powerStack.push(new Position(x, y));
 
   // Ensure animation runs
   var dX = [-1, 2, 1, 2];
@@ -136,7 +137,7 @@ PowerManager.prototype.nuclearPowerFound = function(map, x, y, simData) {
   }
 
   simData.census.nuclearPowerPop += 1;
-  this._powerStack.push(new map.Position(x, y));
+  this._powerStack.push(new Position(x, y));
 
   // Ensure animation bits set
   for (var i = 0; i < 4; i++)

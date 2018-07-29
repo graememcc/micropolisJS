@@ -9,6 +9,7 @@
 
 import { forEachCardinalDirection } from './direction';
 import { MiscUtils } from './miscUtils';
+import { Position } from './position';
 import { Random } from './random';
 import { SPRITE_HELICOPTER } from './spriteConstants';
 import { SpriteUtils } from './spriteUtils';
@@ -25,7 +26,7 @@ function Traffic(map, spriteManager) {
 Traffic.prototype.makeTraffic = function(x, y, blockMaps, destFn) {
   this._stack = [];
 
-  var pos = new this._map.Position(x, y);
+  var pos = new Position(x, y);
 
   if (this.findPerimeterRoad(pos)) {
     if (this.tryDrive(pos, destFn)) {
@@ -97,17 +98,17 @@ var MAX_TRAFFIC_DISTANCE = 30;
 
 Traffic.prototype.tryDrive = function(startPos, destFn) {
   var dirLast;
-  var drivePos = new this._map.Position(startPos);
+  var drivePos = new Position(startPos);
 
   /* Maximum distance to try */
   for (var dist = 0; dist < MAX_TRAFFIC_DISTANCE; dist++) {
     var  dir = this.tryGo(drivePos, dirLast);
     if (dir) {
-      drivePos.move(dir);
+      drivePos = Position.move(pos, dir);
       dirLast = dir.oppositeDirection();
 
       if (dist & 1)
-        this._stack.push(new this._map.Position(drivePos));
+        this._stack.push(new Position(drivePos));
 
       if (this.driveDone(drivePos, destFn))
         return true;

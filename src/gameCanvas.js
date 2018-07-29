@@ -11,6 +11,7 @@ import { AnimationManager } from './animationManager';
 import { GameMap } from './gameMap';
 import { MiscUtils } from './miscUtils';
 import { MouseBox } from './mouseBox';
+import { Position } from './position';
 import { TileSet } from './tileSet';
 import { TILE_INVALID } from "./tileValues";
 
@@ -313,7 +314,7 @@ GameCanvas.prototype.canvasCoordinateToPosition = function(x, y) {
   if (x < 0 || x >= this._map.width || y < 0 || y >= this._map.height)
     return null;
 
-  return new this._map.Position(x, y);
+  return new Position(x, y);
 };
 
 

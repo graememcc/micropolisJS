@@ -9,6 +9,7 @@
 
 import { forEachCardinalDirection, getRandomCardinalDirection, getRandomDirection } from './direction';
 import { GameMap } from './gameMap';
+import { Position } from './position';
 import { Random } from './random';
 import { BLBNBIT, BULLBIT } from "./tileFlags";
 import { CHANNEL, DIRT, REDGE, RIVER, WATER_LOW, WATER_HIGH, WOODS, WOODS_LOW, WOODS_HIGH } from "./tileValues";
@@ -44,7 +45,7 @@ var MapGenerator = function(w, h) {
     var terrainXStart = 40 + Random.getRandom(map.width - 80);
     var terrainYStart = 33 + Random.getRandom(map.height - 67);
 
-    var terrainPos = new map.Position(terrainXStart, terrainYStart);
+    var terrainPos = new Position(terrainXStart, terrainYStart);
     doRivers(map, terrainPos);
   }
 
@@ -99,24 +100,24 @@ var makeNakedIsland = function(map) {
 
   for (x = 0; x < map.width - 5; x += 2) {
     var mapY = Random.getERandom(terrainIslandRadius);
-    plopBRiver(map, new map.Position(x, mapY));
+    plopBRiver(map, new Position(x, mapY));
 
     mapY = (map.height - 10) - Random.getERandom(terrainIslandRadius);
-    plopBRiver(map, new map.Position(x, mapY));
+    plopBRiver(map, new Position(x, mapY));
 
-    plopSRiver(map, new map.Position(x, 0));
-    plopSRiver(map, new map.Position(x, map.height - 6));
+    plopSRiver(map, new Position(x, 0));
+    plopSRiver(map, new Position(x, map.height - 6));
   }
 
   for (y = 0; y < map.height - 5; y += 2) {
     var mapX = Random.getERandom(terrainIslandRadius);
-    plopBRiver(map, new map.Position(mapX, y));
+    plopBRiver(map, new Position(mapX, y));
 
     mapX = map.width - 10 - Random.getERandom(terrainIslandRadius);
-    plopBRiver(map, new map.Position(mapX, y));
+    plopBRiver(map, new Position(mapX, y));
 
-    plopSRiver(map, new map.Position(0, y));
-    plopSRiver(map, new map.Position(map.width - 6, y));
+    plopSRiver(map, new Position(0, y));
+    plopSRiver(map, new Position(map.width - 6, y));
   }
 };
 
@@ -139,16 +140,17 @@ var makeLakes = function(map) {
     var x = Random.getRandom(map.width - 21) + 10;
     var y = Random.getRandom(map.height - 20) + 10;
 
-    makeSingleLake(map, new map.Position(x, y));
+    makeSingleLake(map, new Position(x, y));
     numLakes--;
   }
 };
+
 
 var makeSingleLake = function(map, pos) {
   var numPlops = Random.getRandom(12) + 2;
 
   while (numPlops > 0) {
-    var plopPos = new map.Position(pos, Random.getRandom(12) - 6, Random.getRandom(12) - 6);
+    var plopPos = new Position(pos, Random.getRandom(12) - 6, Random.getRandom(12) - 6);
 
     if (Random.getRandom(4))
         plopSRiver(map, plopPos);
@@ -168,14 +170,13 @@ var treeSplash = function(map, x, y) {
   else
     numTrees = Random.getRandom(100 + (TERRAIN_TREE_LEVEL * 2)) + 50;
 
-  var treePos = new map.Position(x, y);
+  var treePos = new Position(x, y);
 
   while (numTrees > 0) {
     var dir = getRandomDirection();
-    treePos.move(dir);
+    treePos = Position.move(treePos, dir);
 
-    // XXX Should use the fact that positions return success/failure for moves
-    if (!map.testBounds(treePos.x, treePos.y))
+    if (!map.isPositionInBounds(treePos))
       return;
 
     if (map.getTileValue(treePos) === DIRT)
@@ -207,9 +208,9 @@ var doTrees = function(map) {
 
 var riverEdges = [
   13 | BULLBIT, 13 | BULLBIT, 17 | BULLBIT, 15 | BULLBIT,
-  5 | BULLBIT, 2, 19 | BULLBIT, 17 | BULLBIT,
-  9 | BULLBIT, 11 | BULLBIT, 2, 13 | BULLBIT,
-  7 | BULLBIT, 9 | BULLBIT, 5 | BULLBIT, 2];
+   5 | BULLBIT,        RIVER, 19 | BULLBIT, 17 | BULLBIT,
+   9 | BULLBIT, 11 | BULLBIT,        RIVER, 13 | BULLBIT,
+   7 | BULLBIT,  9 | BULLBIT,  5 | BULLBIT,        RIVER];
 
 var smoothRiver = function(map) {
   var dx = [-1,  0,  1,  0];
@@ -259,10 +260,10 @@ var smoothTrees = function(map) {
 
 
 var treeTable = [
-  0,  0,  0,  34,
-  0,  0,  36, 35,
-  0,  32, 0,  33,
-  30, 31, 29, 37];
+   0,   0,  0, 34,
+   0,   0, 36, 35,
+   0,  32,  0, 33,
+  30,  31, 29, 37];
 
 var smoothTreesAt = function(map, x, y, preserve) {
   var dx = [-1,  0,  1,  0 ];
@@ -307,7 +308,7 @@ var doRivers = function(map, terrainPos) {
 };
 
 
-var doBRiver = function(map, riverPos, riverDir, terrainDir) {
+var doBRiver = function(map, pos, riverDir, terrainDir) {
   var rate1, rate2;
 
   if (TERRAIN_CURVE_LEVEL < 0) {
@@ -317,8 +318,6 @@ var doBRiver = function(map, riverPos, riverDir, terrainDir) {
     rate1 = TERRAIN_CURVE_LEVEL + 10;
     rate2 = TERRAIN_CURVE_LEVEL + 100;
   }
-
-  var pos = new map.Position(riverPos);
 
   while (map.testBounds(pos.x + 4, pos.y + 4)) {
     plopBRiver(map, pos);
@@ -330,14 +329,14 @@ var doBRiver = function(map, riverPos, riverDir, terrainDir) {
       if (Random.getRandom(rate2) > 90)
         terrainDir = terrainDir.rotateCounterClockwise();
     }
-    pos.move(terrainDir);
+    pos = Position.move(pos, terrainDir);
   }
 
   return terrainDir;
 };
 
 
-var doSRiver = function(map, riverPos, riverDir, terrainDir) {
+var doSRiver = function(map, pos, riverDir, terrainDir) {
   var rate1, rate2;
 
   if (TERRAIN_CURVE_LEVEL < 0) {
@@ -347,8 +346,6 @@ var doSRiver = function(map, riverPos, riverDir, terrainDir) {
     rate1 = TERRAIN_CURVE_LEVEL + 10;
     rate2 = TERRAIN_CURVE_LEVEL + 100;
   }
-
-  var pos = new map.Position(riverPos);
 
   while (map.testBounds(pos.x + 3, pos.y + 3)) {
     plopSRiver(map, pos);
@@ -360,7 +357,7 @@ var doSRiver = function(map, riverPos, riverDir, terrainDir) {
       if (Random.getRandom(rate2) > 90)
         terrainDir = terrainDir.rotateCounterClockwise();
     }
-    pos.move(terrainDir);
+    pos = Position.move(pos, terrainDir);
   }
 
   return terrainDir;
@@ -390,15 +387,15 @@ var putOnMap = function(map, newVal, x, y) {
 
 var plopBRiver = function(map, pos) {
   var BRMatrix = [
-   [0, 0, 0, REDGE, REDGE, REDGE, 0, 0, 0],
-   [0, 0, REDGE, RIVER, RIVER, RIVER, REDGE, 0, 0],
-   [0, REDGE, RIVER, RIVER, RIVER, RIVER, RIVER, REDGE, 0],
-   [REDGE, RIVER, RIVER, RIVER, RIVER, RIVER, RIVER, RIVER, REDGE],
+   [    0,     0,     0, REDGE,  REDGE,  REDGE,     0,     0,     0],
+   [    0,     0, REDGE, RIVER,  RIVER,  RIVER, REDGE,     0,     0],
+   [    0, REDGE, RIVER, RIVER,  RIVER,  RIVER, RIVER, REDGE,     0],
+   [REDGE, RIVER, RIVER, RIVER,  RIVER,  RIVER, RIVER, RIVER, REDGE],
    [REDGE, RIVER, RIVER, RIVER, CHANNEL, RIVER, RIVER, RIVER, REDGE],
-   [REDGE, RIVER, RIVER, RIVER, RIVER, RIVER, RIVER, RIVER, REDGE],
-   [0, REDGE, RIVER, RIVER, RIVER, RIVER, RIVER, REDGE, 0],
-   [0, 0, REDGE, RIVER, RIVER, RIVER, REDGE, 0, 0],
-   [0, 0, 0, REDGE, REDGE, REDGE, 0, 0, 0]];
+   [REDGE, RIVER, RIVER, RIVER,  RIVER,  RIVER, RIVER, RIVER, REDGE],
+   [    0, REDGE, RIVER, RIVER,  RIVER,  RIVER, RIVER, REDGE,     0],
+   [    0,     0, REDGE, RIVER,  RIVER,  RIVER, REDGE,     0,     0],
+   [    0,     0,     0, REDGE,  REDGE,  REDGE,     0,     0,     0]];
 
   for (var x = 0; x < 9; x++) {
     for (var y = 0; y < 9; y++) {
@@ -410,12 +407,13 @@ var plopBRiver = function(map, pos) {
 
 var plopSRiver = function(map, pos) {
   var SRMatrix = [
-    [0, 0, REDGE, REDGE, 0, 0],
-    [0, REDGE, RIVER, RIVER, REDGE, 0],
+    [    0,     0, REDGE, REDGE,     0,     0],
+    [    0, REDGE, RIVER, RIVER, REDGE,     0],
     [REDGE, RIVER, RIVER, RIVER, RIVER, REDGE],
     [REDGE, RIVER, RIVER, RIVER, RIVER, REDGE],
-    [0, REDGE, RIVER, RIVER, REDGE, 0],
-    [0, 0, REDGE, REDGE, 0, 0]];
+    [    0, REDGE, RIVER, RIVER, REDGE,     0],
+    [    0,     0, REDGE, REDGE,     0,     0]];
+
 
   for (var x = 0; x < 6; x++) {
     for (var y = 0; y < 6; y++) {
@@ -433,7 +431,7 @@ var smoothWater = function(map) {
       tile = map.getTileValue(x, y);
 
       if (tile >= WATER_LOW && tile <= WATER_HIGH) {
-        pos = new map.Position(x, y);
+        pos = new Position(x, y);
         let stop = false;
 
         forEachCardinalDirection(dir => {
@@ -460,14 +458,14 @@ var smoothWater = function(map) {
       if (tile !== CHANNEL && tile >= WATER_LOW && tile <= WATER_HIGH) {
         var makeRiver = true;
 
-        pos = new map.Position(x, y);
+        pos = new Position(x, y);
 
         forEachCardinalDirection(dir => {
           if (!makeRiver) {
             return;
           }
 
-          tile = map.getTileFromMap(pos, dir, WATER_LOW);
+          tile = map.getTileFromMapOrDefault(pos, dir, WATER_LOW);
 
           if (tile < WATER_LOW || tile > WATER_HIGH) {
             makeRiver = false;
@@ -485,7 +483,7 @@ var smoothWater = function(map) {
       tile = map.getTileValue(x, y);
 
       if (tile >= WOODS_LOW && tile <= WOODS_HIGH) {
-        pos = new map.Position(x, y);
+        pos = new Position(x, y);
         let stop = false;
 
         forEachCardinalDirection(dir => {
@@ -493,7 +491,7 @@ var smoothWater = function(map) {
             return;
           }
 
-          tile = map.getTileFromMap(pos, dir, TILE_INVALID);
+          tile = map.getTileFromMapOrDefault(pos, dir, TILE_INVALID);
 
           if (tile === RIVER || tile === CHANNEL) {
             map.setTileValue(x, y, REDGE, 0); /* make it water's edge */
