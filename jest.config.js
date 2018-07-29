@@ -1,5 +1,9 @@
 module.exports = {
   collectCoverage: true,
+  collectCoverageFrom: [
+    "src/**/*.ts",
+    "test/**/*.ts",
+  ],
   coverageReporters: ["json", "lcov", "text", "html"],
   moduleFileExtensions: [
     "ts",
