@@ -31,7 +31,7 @@ var getZonePopulation = function(map, x, y, tileValue) {
 // the appropriate industrial zone on the map
 var placeCommercial = function(map, x, y, population, lpValue, zonePower) {
   var centreTile = ((lpValue * 5) + population) * 9 + Tile.CZB;
-  ZoneUtils.putZone(map, x, y, centreTile, zonePower);
+  ZoneUtils.putZone(map, x, y, centreTile, zonePower, zoneIrrigate);
 };
 
 
@@ -58,7 +58,7 @@ var degradeZone = function(map, x, y, blockMaps, populationCategory, lpCategory,
   if (populationCategory > 1) {
     placeCommercial(map, x, y, populationCategory - 2, lpCategory, zonePower);
   } else {
-    ZoneUtils.putZone(map, x, y, Tile.COMCLR, zonePower);
+    ZoneUtils.putZone(map, x, y, Tile.COMCLR, zonePower, zoneIrrigate);
   }
 
   ZoneUtils.incRateOfGrowth(blockMaps, x, y, -8);

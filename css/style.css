@@ -327,7 +327,7 @@ nav li {
   position: absolute;
   top: 40px;
   width: 305px;
-  height: 220px;
+  height: 250px; /* 220px*/
 }
 
 #debug {
@@ -566,6 +566,10 @@ nav li {
   background-color: yellow;
 }
 
+#wwtpButton {
+  background-color: darkseagreen;
+}
+
 #nuclearButton {
   background-color: mistyrose;
 }
@@ -598,6 +602,10 @@ nav li {
   background-color: lime;
 }
 
+#FieldButton {
+  background-color: darkgoldenrod;
+}
+
 #roadButton {
   background-color: black;
   color: white;
@@ -610,6 +618,10 @@ nav li {
 
 #wireButton {
   background-color: khaki;
+}
+
+#channelButton {
+  background-color: lightseagreen;
 }
 
 @media (max-height: 742px) {

@@ -13,16 +13,16 @@ import { TileUtils } from './tileUtils';
 import { Traffic } from './traffic';
 import { ZoneUtils } from './zoneUtils';
 
-// There are 8 types of industrial zone aside from the empty zone. They are categorized by population and value.
+// There are 8 types of wwtp zone aside from the empty zone. They are categorized by population and value.
 // There are 4 levels of population (1-4), and 2 levels of value.
 //
 // Population level 1/low value corresponds to the 9 tiles starting at tile 621. This is followed by the tiles
 // for population level 2/low value, and so on.
 
 
-// Given the centre of an industrial zone, compute it's population level (a number in the range 0-4)
+// Given the centre of an wwtp zone, compute it's population level (a number in the range 0-4)
 var getZonePopulation = function(map, x, y, tileValue) {
-  if (tileValue === Tile.INDCLR)
+  if (tileValue === Tile.INDCLR) ////////////////valore tile impianto tratt acque senza pop
     return 0;
 
   return Math.floor((tileValue - Tile.IZB) / 9) % 4 + 1;
@@ -30,9 +30,9 @@ var getZonePopulation = function(map, x, y, tileValue) {
 
 
 // Takes a map and coordinates, a population category in the range 1-4, a value category in the range 0-1, and places
-// the appropriate industrial zone on the map
-var placeIndustrial = function(map, x, y, populationCategory, valueCategory, zonePower) {
-  var centreTile = ((valueCategory * 4) + populationCategory) * 9 + Tile.IZB;
+// the appropriate wwtp zone on the map
+var placeWwtp = function(map, x, y, populationCategory, valueCategory, zonePower) {
+  var centreTile = ((valueCategory * 4) + populationCategory) * 9 + Tile.IZB; /////cambio tile
   ZoneUtils.putZone(map, x, y, centreTile, zonePower, zoneIrrigate);
 };
 
@@ -40,7 +40,7 @@ var placeIndustrial = function(map, x, y, populationCategory, valueCategory, zon
 var growZone = function(map, x, y, blockMaps, population, valueCategory, zonePower) {
   // Switch to the next category of zone
   if (population < 4) {
-    placeIndustrial(map, x, y, population, valueCategory, zonePower);
+    placeWwtp(map, x, y, population, valueCategory, zonePower);
     ZoneUtils.incRateOfGrowth(blockMaps, x, y, 8);
   }
 };
@@ -48,11 +48,11 @@ var growZone = function(map, x, y, blockMaps, population, valueCategory, zonePow
 
 var degradeZone = function(map, x, y, blockMaps, populationCategory, valueCategory, zonePower) {
   // Note that we special case empty zones here, rather than having to check population value on every
-  // call to placeIndustrial (which we anticipate will be called more often)
+  // call to placewwtp (which we anticipate will be called more often)
   if (populationCategory > 1)
-    placeIndustrial(map, x, y, populationCategory - 2, valueCategory, zonePower);
+    placeWwtp(map, x, y, populationCategory - 2, valueCategory, zonePower);
   else
-    ZoneUtils.putZone(map, x, y, Tile.INDCLR, zonePower, zoneIrrigate);
+    ZoneUtils.putZone(map, x, y, Tile.INDCLR, zonePower, zoneIrrigate); ////cambio tile
 
   ZoneUtils.incRateOfGrowth(blockMaps, x, y, -8);
 };
@@ -67,10 +67,10 @@ var yDelta = [-1, 0, -1, -1, 0, 0, -1, -1];
 // the zone has power, and sets or unsets the animation bit in the appropriate part of the zone
 var setAnimation = function(map, x, y, tileValue, isPowered) {
   // The empty zone is not animated
-  if (tileValue < Tile.IZB)
+  if (tileValue < Tile.IZB) /////////////////////////
     return;
 
-  // There are only 8 different types of populated industrial zones. We always have tileValue - IZB < 8x9 (=72),
+  // There are only 8 different types of populated wwtp zones. We always have tileValue - IZB < 8x9 (=72),
   // so (tileValue - IZB) >> 3 effectively divides (tileValue - IZB) by 9, forcing into the range 0-7
   var i = (tileValue - Tile.IZB) >> 3;
 
@@ -87,8 +87,8 @@ var setAnimation = function(map, x, y, tileValue, isPowered) {
 };
 
 
-// Called by the map scanner when it finds the centre of an industrial zone
-var industrialFound = function(map, x, y, simData) {
+// Called by the map scanner when it finds the centre of an wwtp zone
+var wwtpFound = function(map, x, y, simData) {
   // Notify the census
   simData.census.indZonePop += 1;
 
@@ -125,7 +125,7 @@ var industrialFound = function(map, x, y, simData) {
     if (!zonePower)
       zoneScore = -500;
 
-    // The industrial demand valve has range -1500 to 1500, so taking into account the "no traffic" and
+    // The wwtp demand valve has range -1500 to 1500, so taking into account the "no traffic" and
     // "no power" modifiers above, zoneScore must lie in the range -3000 - 1500
 
     // First: observe that if there are no roads we will never take this branch, as zoneScore will be <= -1000.
@@ -151,12 +151,12 @@ var industrialFound = function(map, x, y, simData) {
 };
 
 
-var Industrial = {
+var Wwtp = {
   registerHandlers: function(mapScanner, repairManager) {
-    mapScanner.addAction(TileUtils.isIndustrialZone, industrialFound);
+    mapScanner.addAction(TileUtils.isWwtpZone, wwtpFound);
   },
   getZonePopulation: getZonePopulation
 };
 
 
-export { Industrial };
+export { wwtp };
