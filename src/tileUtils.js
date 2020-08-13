@@ -62,6 +62,16 @@ var isIndustrialZone = function(tile) {
 };
 
 
+var isWwtp = unwrapTile(function(tile) {
+  return tile >= Tile.INDBASE && tile < Tile.PORTBASE; ///////////cambio tile
+});
+
+
+var isWwtpZone = function(tile) {
+  return tile.isZone() && isWwtp(tile);
+};
+
+
 var isManualExplosion = unwrapTile(function(tile) {
   return tile >= Tile.TINYEXP && tile <= Tile.LASTTINYEXP;
 });
@@ -79,6 +89,16 @@ var isResidential = unwrapTile(function(tile) {
 
 var isResidentialZone = function(tile) {
   return tile.isZone() && isResidential(tile);
+};
+
+
+var isField = unwrapTile(function(tile) {
+  return tile >= Tile.RESBASE && tile < Tile.HOSPITALBASE; //valori tile da settare per i tile del field
+});
+
+
+var isFieldZone = function(tile) {
+  return tile.isZone() && isField(tile);
 };
 
 
@@ -111,10 +131,14 @@ var TileUtils = {
   isFlood: isFlood,
   isIndustrial: isIndustrial,
   isIndustrialZone: isIndustrialZone,
+  isWwtpZone: isWwtpZone,
+  isWwtp: isWwtp,
   isManualExplosion: isManualExplosion,
   isRail: isRail,
   isResidential: isResidential,
   isResidentialZone: isResidentialZone,
+  isField: isField,
+  isFieldZone: isFieldZone,
   isRoad: isRoad,
   normalizeRoad: normalizeRoad,
   randomFire: randomFire,

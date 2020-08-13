@@ -193,7 +193,7 @@ var incRateOfGrowth = function(blockMaps, x, y, growthDelta) {
 
 // Calls map.putZone after first checking for flood, fire
 // and radiation. Should be called with coordinates of centre tile.
-var putZone = function(map, x, y, centreTile, isPowered) {
+var putZone = function(map, x, y, centreTile, isPowered, isIrrigated) {
   for (var dY = -1; dY < 2; dY++) {
     for (var dX = -1; dX < 2; dX++) {
       var tileValue = map.getTileValue(x + dX, y + dY);
@@ -205,6 +205,8 @@ var putZone = function(map, x, y, centreTile, isPowered) {
   map.addTileFlags(x, y, Tile.BULLBIT);
   if (isPowered)
     map.addTileFlags(x, y, Tile.POWERBIT);
+  if (isIrrigated)
+    map.addTileFlags(x, y, Tile.IRRIGBIT);
 };
 
 

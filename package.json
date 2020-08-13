@@ -11,8 +11,8 @@
   },
   "scripts": {
     "build": "webpack --env.production",
-    "watch": "webpack --watch --env.development",
-    "start": "webpack-dev-server --env.development",
+    "watch": "webpack --watch --env.production",
+    "start": "webpack-dev-server --env.production",
     "test": "jest",
     "test:watch": "jest --watch",
     "lint": "tslint src/*.ts test/*.ts"

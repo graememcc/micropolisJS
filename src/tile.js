@@ -77,6 +77,9 @@ Tile.prototype.isConductive = function() {
   return (this._value & Tile.CONDBIT) > 0;
 };
 
+Tile.prototype.isHydraulic = function() {
+  return (this._value & Tile.HYDRABIT) > 0;
+};
 
 Tile.prototype.isCombustible = function() {
   return (this._value & Tile.BURNBIT) > 0;
@@ -87,6 +90,9 @@ Tile.prototype.isPowered = function() {
   return (this._value & Tile.POWERBIT) > 0;
 };
 
+Tile.prototype.isIrrigated = function() {
+  return (this._value & Tile.IRRIGBIT) > 0;
+};
 
 Tile.prototype.isZone = function() {
   return (this._value & Tile.ZONEBIT) > 0;
@@ -159,15 +165,19 @@ Tile.prototype.toString = function() {
   var s = 'Tile# ' + value;
   s += this.isCombustible() ? ' burning' : '';
   s += this.isPowered() ? ' powered' : '';
+  s += this.isIrrigated() ? ' irrigated' : '';
   s += this.isAnimated() ? ' animated' : '';
   s += this.isConductive() ? ' conductive' : '';
+  s += this.isHydraulic() ? ' hydraulic' : '';
   s += this.isZone() ? ' zone' : '';
   s += this.isBulldozable() ? ' bulldozeable' : '';
   return s;
 };
 
 
-// Bit-masks for statusBits
+// Bit-masks for statusBits   con ANIMATED bit???? per hydra --> come condbit
+Tile.HYDRABIT = 0x20000; // bit 17, tile can run water. AGG
+Tile.IRRIGBIT = 0x10000; // bit 16, tile is irrigated. AGGIUNTO
 Tile.POWERBIT  = 0x8000; // bit 15, tile has power.
 Tile.CONDBIT = 0x4000; // bit 14. tile can conduct electricity.
 Tile.BURNBIT = 0x2000; // bit 13, tile can be lit.
@@ -178,9 +188,11 @@ Tile.BLBNBIT   = Tile.BULLBIT | Tile.BURNBIT;
 Tile.BLBNCNBIT = Tile.BULLBIT | Tile.BURNBIT | Tile.CONDBIT;
 Tile.BNCNBIT   = Tile.BURNBIT | Tile.CONDBIT;
 Tile.ASCBIT   = Tile.ANIMBIT | Tile.CONDBIT | Tile.BURNBIT;
-Tile.ALLBITS = Tile.POWERBIT | Tile.CONDBIT | Tile.BURNBIT | Tile.BULLBIT | Tile.ANIMBIT | Tile.ZONEBIT;
+Tile.BNHYBIT   = Tile.BURNBIT | Tile.HYDRABIT; //
+Tile.BLBNHYBIT = Tile.BULLBIT | Tile.BURNBIT | Tile.HYDRABIT; //
+Tile.ALLBITS = Tile.HYDRABIT | Tile.IRRIGBIT | Tile.POWERBIT | Tile.CONDBIT | Tile.BURNBIT | Tile.BULLBIT | Tile.ANIMBIT | Tile.ZONEBIT ;
 Tile.BIT_START = 0x400;
-Tile.BIT_END = 0x8000;
+Tile.BIT_END = 0x20000;
 Tile.BIT_MASK = Tile.BIT_START - 1;
 
 // TODO Add comment for each tile
