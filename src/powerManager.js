@@ -69,7 +69,7 @@ PowerManager.prototype.doPowerScan = function(census) {
 
   // Power that the combined coal and nuclear power plants can deliver.
   var maxPower = census.coalPowerPop * COAL_POWER_STRENGTH +
-                 census.nuclearPowerPop * NUCLEAR_POWER_STRENGTH
+                 census.nuclearPowerPop * NUCLEAR_POWER_STRENGTH +
                  census.wwtpPowerPop * WWTP_POWER_STRENGTH;
 
   var powerConsumption = 0; // Amount of power used.
@@ -105,7 +105,7 @@ PowerManager.prototype.doPowerScan = function(census) {
   }
 };
 
-owerManager.prototype.wwtpPowerFound = function(map, x, y, simData) {
+PowerManager.prototype.wwtpPowerFound = function(map, x, y, simData) {
   simData.census.wwtpPowerPop += 1;
 
   this._powerStack.push(new map.Position(x, y));
