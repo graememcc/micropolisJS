@@ -409,7 +409,7 @@ Simulation.prototype._sendMessages = function() {
 
   var totalZonePop = this._census.resZonePop + this._census.comZonePop +
                      this._census.indZonePop;
-  var powerPop = this._census.nuclearPowerPop + this._census.coalPowerPop;
+  var powerPop = this._census.nuclearPowerPop + this._census.coalPowerPop + this._census.wwtpPowerPop;
 
   switch (this._cityTime & 63) {
     case 1:

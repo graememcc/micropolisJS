@@ -16,6 +16,7 @@ var checkBigZone = function(tileValue) {
   switch (tileValue) {
 
     case Tile.POWERPLANT:
+    case Tile.WWTP:
     case Tile.PORT:
     case Tile.NUCLEAR:
     case Tile.STADIUM:
@@ -23,6 +24,7 @@ var checkBigZone = function(tileValue) {
       break;
 
     case Tile.POWERPLANT + 1:
+    case Tile.WWTP + 1:
     case Tile.COALSMOKE3:
     case Tile.COALSMOKE3 + 1:
     case Tile.COALSMOKE3 + 2:
@@ -33,6 +35,7 @@ var checkBigZone = function(tileValue) {
       break;
 
     case Tile.POWERPLANT + 4:
+    case Tile.WWTP + 4:
     case Tile.PORT + 4:
     case Tile.NUCLEAR + 4:
     case Tile.STADIUM + 4:
@@ -40,6 +43,7 @@ var checkBigZone = function(tileValue) {
       break;
 
     case Tile.POWERPLANT + 5:
+    case Tile.WWTP + 5:
     case Tile.PORT + 5:
     case Tile.NUCLEAR + 5:
     case Tile.STADIUM + 5:

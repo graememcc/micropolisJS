@@ -28,7 +28,7 @@ function GameTools(map) {
     commercial: new BuildingTool(100, Tile.COMCLR, map, 3, false),
     fire: new BuildingTool(500, Tile.FIRESTATION, map, 3, false),
     industrial: new BuildingTool(100, Tile.INDCLR, map, 3, false),
-    wwtp: new BuildingTool(100, Tile.INDCLR, map, 3, false), ///////cambio tile
+    wwtp: new BuildingTool(3000, Tile.WWTP, map, 3, false), ///////cambio tile
     nuclear: new BuildingTool(5000, Tile.NUCLEAR, map, 4, true),
     park: new ParkTool(map),
     police: new BuildingTool(500, Tile.POLICESTATION, map, 3, false),

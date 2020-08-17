@@ -89,6 +89,7 @@ Evaluation.prototype.getAssessedValue = function(census) {
   value += census.seaportPop * 5000;
   value += census.airportPop * 10000;
   value += census.coalPowerPop * 3000;
+  value += census.wwtpPowerPop * 3000;
   value += census.nuclearPowerPop * 6000;
 
   this.cityAssessedValue = value * 1000;

@@ -73,6 +73,7 @@ Census.prototype.clearCensus = function() {
   this.policeStationPop = 0;
   this.fireStationPop = 0;
   this.stadiumPop = 0;
+  this.wwtpPowerPop = 0;
   this.coalPowerPop = 0;
   this.nuclearPowerPop = 0;
   this.seaportPop = 0;

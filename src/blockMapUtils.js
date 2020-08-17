@@ -10,7 +10,6 @@
 import { BlockMap } from './blockMap';
 import { Commercial } from './commercial';
 import { Industrial } from './industrial';
-import { Wwtp } from './wwtp';
 import { MiscUtils } from './miscUtils';
 import { Random } from './random';
 import { Residential } from './residential';

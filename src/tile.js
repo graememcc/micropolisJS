@@ -397,6 +397,10 @@ Tile.COALBASE       = 745; // First tile of coal power plant.
 Tile.POWERPLANT     = 750; // 'Center' tile of coal power plant.
 Tile.LASTPOWERPLANT = 760; // Last tile of coal power plant.
 
+Tile.WWTPBASE       = Tile.COALBASE;
+Tile.WWTP           = Tile.POWERPLANT;
+Tile.LASTWWTP       = Tile.LASTPOWERPLANT;
+
 // Fire station (3x3).
 Tile.FIRESTBASE     = 761; // First tile of fire station.
 Tile.FIRESTATION    = 765; // 'Center tile' of fire station.

@@ -62,16 +62,6 @@ var isIndustrialZone = function(tile) {
 };
 
 
-var isWwtp = unwrapTile(function(tile) {
-  return tile >= Tile.INDBASE && tile < Tile.PORTBASE; ///////////cambio tile
-});
-
-
-var isWwtpZone = function(tile) {
-  return tile.isZone() && isWwtp(tile);
-};
-
-
 var isManualExplosion = unwrapTile(function(tile) {
   return tile >= Tile.TINYEXP && tile <= Tile.LASTTINYEXP;
 });
@@ -131,8 +121,6 @@ var TileUtils = {
   isFlood: isFlood,
   isIndustrial: isIndustrial,
   isIndustrialZone: isIndustrialZone,
-  isWwtpZone: isWwtpZone,
-  isWwtp: isWwtp,
   isManualExplosion: isManualExplosion,
   isRail: isRail,
   isResidential: isResidential,

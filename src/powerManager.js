@@ -15,6 +15,7 @@ import { Random } from './random';
 import { Tile } from './tile';
 
 var COAL_POWER_STRENGTH = 700;
+var WWTP_POWER_STRENGTH = 700;
 var NUCLEAR_POWER_STRENGTH = 2000;
 
 
@@ -29,7 +30,7 @@ PowerManager.prototype.setTilePower = function(x, y) {
   var tile = this._map.getTile(x, y);
   var tileValue = tile.getValue();
 
-  if (tileValue === Tile.NUCLEAR || tileValue === Tile.POWERPLANT ||
+  if (tileValue === Tile.NUCLEAR || tileValue === Tile.POWERPLANT || tileValue === Tile.WWTP ||
       this.powerGridMap.worldGet(x, y) > 0) {
     tile.addFlags(Tile.POWERBIT);
     return;
@@ -68,7 +69,8 @@ PowerManager.prototype.doPowerScan = function(census) {
 
   // Power that the combined coal and nuclear power plants can deliver.
   var maxPower = census.coalPowerPop * COAL_POWER_STRENGTH +
-                 census.nuclearPowerPop * NUCLEAR_POWER_STRENGTH;
+                 census.nuclearPowerPop * NUCLEAR_POWER_STRENGTH
+                 census.wwtpPowerPop * WWTP_POWER_STRENGTH;
 
   var powerConsumption = 0; // Amount of power used.
 
@@ -102,6 +104,20 @@ PowerManager.prototype.doPowerScan = function(census) {
     } while (conNum);
   }
 };
+
+owerManager.prototype.wwtpPowerFound = function(map, x, y, simData) {
+  simData.census.wwtpPowerPop += 1;
+
+  this._powerStack.push(new map.Position(x, y));
+
+  // Ensure animation runs
+  var dX = [-1, 2, 1, 2];
+  var dY = [-1, -1, 0, 0];
+
+  for (var i = 0; i < 4; i++)
+    map.addTileFlags(x + dX[i], y + dY[i], Tile.ANIMBIT);
+};
+
 
 
 PowerManager.prototype.coalPowerFound = function(map, x, y, simData) {
@@ -143,8 +159,10 @@ PowerManager.prototype.nuclearPowerFound = function(map, x, y, simData) {
 PowerManager.prototype.registerHandlers = function(mapScanner, repairManager) {
   mapScanner.addAction(Tile.POWERPLANT, this.coalPowerFound.bind(this));
   mapScanner.addAction(Tile.NUCLEAR, this.nuclearPowerFound.bind(this));
+  mapScanner.addAction(Tile.WWTP, this.wwtpPowerFound.bind(this));
   repairManager.addAction(Tile.POWERPLANT, 7, 4);
   repairManager.addAction(Tile.NUCLEAR, 7, 4);
+  repairManager.addAction(Tile.WWTP, 7, 4);
 };
 
 
