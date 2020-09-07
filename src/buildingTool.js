@@ -29,8 +29,11 @@ BuildingTool.prototype.putBuilding = function(leftX, topY) {
     for (var dx = 0; dx < this.size; dx++) {
       posX = leftX + dx;
       tileValue = baseTile;
-      tileFlags = Tile.BNCNBIT;
-
+      if (TileUtils.isField(tileValue) || (tileValue>=Tile.WWTPBASE && tileValue<=Tile.LASTWWTP))
+        tileFlags = Tile.BNHYBIT;
+      else
+        tileFlags = Tile.BNCNBIT;
+            
       if (dx === 1) {
         if (dy === 1)
           tileFlags |= Tile.ZONEBIT;

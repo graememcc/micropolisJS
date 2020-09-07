@@ -25,8 +25,8 @@ ChannelTool.prototype.layChannel = function(x, y) {
 
   switch (tile) {
     case Tile.DIRT:
-      this._worldEffects.setTile(x, y, Tile.LHPOWER, Tile.IRRIGIT | Tile.BURNBIT | Tile.BULLBIT); 
-      break;                  //cambiare lhpower con un tile che sia del canale di irrigaz
+      this._worldEffects.setTile(x, y, Tile.LHTUBE, Tile.HYDRABIT | Tile.BURNBIT | Tile.BULLBIT); 
+      break;                  
 
     case Tile.RIVER:
     case Tile.REDGE:
@@ -38,8 +38,8 @@ ChannelTool.prototype.layChannel = function(x, y) {
         if (tile.isHydraulic()) {
           tile = tile.getValue();
           tile = TileUtils.normalizeRoad(tile);
-          if (tile != Tile.HROADPOWER && tile != Tile.RAILHPOWERV && tile != Tile.HPOWER) { ////cambio tile
-            this._worldEffects.setTile(x, y, Tile.VPOWER, Tile.HYDRABIT | Tile.BULLBIT);
+          if (tile != Tile.HROADTUBE && tile != Tile.RAILHTUBEV && tile != Tile.HTUBE) { 
+            this._worldEffects.setTile(x, y, Tile.VTUBE, Tile.HYDRABIT | Tile.BULLBIT);
             break;
           }
         }
@@ -50,8 +50,8 @@ ChannelTool.prototype.layChannel = function(x, y) {
         if (tile.isHydraulic()) {
           tile = tile.getValue();
           tile = TileUtils.normalizeRoad(tile);
-          if (tile != Tile.HROADPOWER && tile != Tile.RAILHPOWERV && tile != Tile.HPOWER) {
-            this._worldEffects.setTile(x, y, Tile.VPOWER, Tile.HYDRABIT | Tile.BULLBIT);
+          if (tile != Tile.HROADTUBE && tile != Tile.RAILHTUBEV && tile != Tile.HTUBE) {
+            this._worldEffects.setTile(x, y, Tile.VTUBE, Tile.HYDRABIT | Tile.BULLBIT);
             break;
           }
         }
@@ -62,8 +62,8 @@ ChannelTool.prototype.layChannel = function(x, y) {
         if (tile.isHydraulic()) {
           tile = tile.getValue();
           tile = TileUtils.normalizeRoad(tile);
-          if (tile != Tile.VROADPOWER && tile != Tile.RAILVPOWERH && tile != Tile.VPOWER) {
-            this._worldEffects.setTile(x, y, Tile.HPOWER, Tile.HYDRABIT | Tile.BULLBIT);
+          if (tile != Tile.VROADTUBE && tile != Tile.RAILVTUBEH && tile != Tile.VTUBE) {
+            this._worldEffects.setTile(x, y, Tile.HTUBE, Tile.HYDRABIT | Tile.BULLBIT);
             break;
           }
         }
@@ -74,29 +74,29 @@ ChannelTool.prototype.layChannel = function(x, y) {
         if (tile.isHydraulic()) {
           tile = tile.getValue();
           tile = TileUtils.normalizeRoad(tile);
-          if (tile != Tile.VROADPOWER && tile != Tile.RAILVPOWERH && tile != Tile.VPOWER) {
-            this._worldEffects.setTile(x, y, Tile.HPOWER, Tile.HYDRABIT | Tile.BULLBIT);
+          if (tile != Tile.VROADTUBE && tile != Tile.RAILVTUBEH && tile != Tile.VTUBE) {
+            this._worldEffects.setTile(x, y, Tile.HTUBE, Tile.HYDRABIT | Tile.BULLBIT);
             break;
           }
         }
       }
 
       return this.TOOLRESULT_FAILED;
-      ///cambio tile
+    
     case Tile.ROADS:
-      this._worldEffects.setTile(x, y, Tile.HROADPOWER, Tile.HYDRABIT | Tile.BURNBIT | Tile.BULLBIT);
+      this._worldEffects.setTile(x, y, Tile.HROADTUBE, Tile.HYDRABIT | Tile.BURNBIT | Tile.BULLBIT);
       break;
 
     case Tile.ROADS2:
-      this._worldEffects.setTile(x, y, Tile.VROADPOWER, Tile.HYDRABIT | Tile.BURNBIT | Tile.BULLBIT);
+      this._worldEffects.setTile(x, y, Tile.VROADTUBE, Tile.HYDRABIT | Tile.BURNBIT | Tile.BULLBIT);
       break;
 
     case Tile.LHRAIL:
-      this._worldEffects.setTile(x, y, Tile.RAILHPOWERV, Tile.HYDRABIT | Tile.BURNBIT | Tile.BULLBIT);
+      this._worldEffects.setTile(x, y, Tile.RAILHTUBEV, Tile.HYDRABIT | Tile.BURNBIT | Tile.BULLBIT);
       break;
 
     case Tile.LVRAIL:
-      this._worldEffects.setTile(x, y, Tile.RAILVPOWERH, Tile.HYDRABIT | Tile.BURNBIT | Tile.BULLBIT);
+      this._worldEffects.setTile(x, y, Tile.RAILVTUBEH, Tile.HYDRABIT | Tile.BURNBIT | Tile.BULLBIT);
       break;
 
     default:

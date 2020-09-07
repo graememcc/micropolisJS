@@ -12,7 +12,7 @@
   "scripts": {
     "build": "webpack --env.production",
     "watch": "webpack --watch --env.production",
-    "start": "webpack-dev-server --env.production",
+    "start": "webpack-dev-server --env.development",
     "test": "jest",
     "test:watch": "jest --watch",
     "lint": "tslint src/*.ts test/*.ts"

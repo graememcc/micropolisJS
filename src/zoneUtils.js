@@ -123,8 +123,9 @@ var checkBigZone = function(tileValue) {
 };
 
 
-var checkZoneSize = function(tileValue) {
-  if ((tileValue >= Tile.RESBASE - 1        && tileValue <= Tile.PORTBASE - 1) ||
+var checkZoneSize = function(tileValue) { //add for field
+  if ((tileValue >= Tile.RESBASE - 1 && tileValue <= Tile.PORTBASE - 1) ||
+      (tileValue >= Tile.FIELDBASE && tileValue <= Tile.FZB) ||
       (tileValue >= Tile.LASTPOWERPLANT + 1 && tileValue <= Tile.POLICESTATION + 4) ||
       (tileValue >= Tile.CHURCH1BASE && tileValue <= Tile.CHURCH7LAST)) {
     return 3;
@@ -132,6 +133,7 @@ var checkZoneSize = function(tileValue) {
 
   if ((tileValue >= Tile.PORTBASE    && tileValue <= Tile.LASTPORT) ||
       (tileValue >= Tile.COALBASE    && tileValue <= Tile.LASTPOWERPLANT) ||
+      (tileValue >= Tile.WWTPBASE    && tileValue <= Tile.LASTWWTP) || 
       (tileValue >= Tile.STADIUMBASE && tileValue <= Tile.LASTZONE)) {
     return 4;
   }

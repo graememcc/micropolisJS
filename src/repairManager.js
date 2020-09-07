@@ -38,9 +38,12 @@ RepairManager.prototype.repairZone = function(x, y, zoneSize) {
         continue;
 
       var currentValue = current.getValue();
-      if (currentValue < Tile.RUBBLE || currentValue >= Tile.ROADBASE)
+      if (currentValue < Tile.RUBBLE || (currentValue >= Tile.ROADBASE &&
+          currentValue < Tile.WWTPBASE) || currentValue > Tile.LASTWWTP)
         this._map.setTile(x + xx, y + yy, tileValue, Tile.CONDBIT | Tile.BURNBIT);
-    }
+      else
+        this._map.setTile(x + xx, y + yy, tileValue, Tile.HYDRABIT | Tile.BURNBIT);
+      }
   }
 };
 

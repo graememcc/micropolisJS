@@ -31,6 +31,12 @@ var WireTable = [
   Tile.LVPOWER4, Tile.LVPOWER9, Tile.LVPOWER8, Tile.LVPOWER10
 ];
 
+var ChannelTable = [         
+  Tile.LHTUBE, Tile.LVTUBE, Tile.LHTUBE, Tile.LVTUBE2,
+  Tile.LVTUBE, Tile.LVTUBE, Tile.LVTUBE3, Tile.LVTUBE7,
+  Tile.LHTUBE, Tile.LVTUBE5, Tile.LHTUBE, Tile.LVTUBE6,
+  Tile.LVTUBE4, Tile.LVTUBE9, Tile.LVTUBE8, Tile.LVTUBE10
+];
 
 var fixSingle = function(x, y) {
   var adjTile = 0;
@@ -82,7 +88,7 @@ var fixSingle = function(x, y) {
     this._worldEffects.setTile(x, y, RoadTable[adjTile] | Tile.BULLBIT | Tile.BURNBIT);
     return;
   }
-
+/*
   if (tile >= Tile.LHRAIL && tile <= Tile.LVRAIL10) {
       if (y > 0) {
         tile = this._worldEffects.getTile(x, y - 1);
@@ -123,7 +129,7 @@ var fixSingle = function(x, y) {
     this._worldEffects.setTile(x, y, RailTable[adjTile] | Tile.BULLBIT | Tile.BURNBIT);
     return;
   }
-
+*/
   if (tile >= Tile.LHPOWER && tile <= Tile.LVPOWER10) {
     if (y > 0) {
       tile = this._worldEffects.getTile(x, y - 1);
@@ -166,6 +172,51 @@ var fixSingle = function(x, y) {
     }
 
     this._worldEffects.setTile(x, y, WireTable[adjTile] | Tile.BLBNCNBIT);
+    return;
+  }
+
+  if (tile >= Tile.LHTUBE && tile <= Tile.LVTUBE10) { 
+    if (y > 0) {
+      tile = this._worldEffects.getTile(x, y - 1);
+      if (tile.isHydraulic()) {
+        tile = tile.getValue();
+        tile = TileUtils.normalizeRoad(tile);
+        if (tile !== Tile.VTUBE && tile !== Tile.VROADTUBE && tile !== Tile.RAILVTUBEH)
+          adjTile |= 1;
+      }
+    }
+
+    if (x < this._map.width - 1) {
+      tile = this._worldEffects.getTile(x + 1, y);
+      if (tile.isHydraulic()) {
+        tile = tile.getValue();
+        tile = TileUtils.normalizeRoad(tile);
+        if (tile !== Tile.HTUBE && tile !== Tile.HROADTUBE && tile !== Tile.RAILHTUBEV)
+          adjTile |= 2;
+      }
+    }
+
+    if (y < this._map.height - 1) {
+      tile = this._worldEffects.getTile(x, y + 1);
+      if (tile.isHydraulic()) {
+        tile = tile.getValue();
+        tile = TileUtils.normalizeRoad(tile);
+        if (tile !== Tile.VTUBE && tile !== Tile.VROADTUBE && tile !== Tile.RAILVTUBEH)
+          adjTile |= 4;
+      }
+    }
+
+    if (x > 0) {
+      tile = this._worldEffects.getTile(x - 1, y);
+      if (tile.isHydraulic()) {
+        tile = tile.getValue();
+        tile = TileUtils.normalizeRoad(tile);
+        if (tile !== Tile.HTUBE && tile !== Tile.HROADTUBE && tile !== Tile.RAILHTUBEV)
+          adjTile |= 8;
+      }
+    }
+
+    this._worldEffects.setTile(x, y, ChannelTable[adjTile] | Tile.BLBNHYBIT);
     return;
   }
 };

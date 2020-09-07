@@ -98,7 +98,7 @@ Evaluation.prototype.getAssessedValue = function(census) {
 
 Evaluation.prototype.getPopulation = function(census) {
   var oldPopulation = this.cityPop;
-  this.cityPop = (census.resPop + (census.comPop + census.indPop) * 8) * 20;
+  this.cityPop = (census.resPop + (census.fieldPop + census.comPop + census.indPop) * 8) * 20;
   this.cityPopDelta = this.cityPop - oldPopulation;
 
   if (this.cityPopDelta !== 0)
@@ -183,7 +183,7 @@ var getTrafficAverage = function(blockMaps, census) {
 
 
 var getUnemployment = function(census) {
-  var b = (census.comPop + census.indPop) * 8;
+  var b = (census.fieldPop + census.comPop + census.indPop) * 8;
 
   if (b === 0)
       return 0;
@@ -247,6 +247,9 @@ Evaluation.prototype.getScore = function(simData) {
   if (valves.resCap)
     score = Math.round(score * demandPenalty);
 
+  if (valves.fieldCap)
+    score = Math.round(score * demandPenalty);
+
   if (valves.comCap)
     score = Math.round(score * demandPenalty);
 
@@ -267,6 +270,9 @@ Evaluation.prototype.getScore = function(simData) {
   // Penalise the player by 15% if demand for any type of zone has collapsed due
   // to overprovision
   if (valves.resValve < -1000)
+    score = Math.round(score * 0.85);
+
+  if (valves.fieldValve < -1000)
     score = Math.round(score * 0.85);
 
   if (valves.comValve < -1000)

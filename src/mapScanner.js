@@ -41,9 +41,12 @@ MapScanner.prototype.mapScan = function(startX, maxX, simData) {
       if (tile.isConductive())
         simData.powerManager.setTilePower(x, y);
 
+      if (tile.isHydraulic())
+        simData.powerManager.setTileIrrigate(x, y);
+
       if (tile.isZone()) {
         simData.repairManager.checkTile(x, y, simData.cityTime);
-        var powered = tile.isPowered();
+        var powered = tile.isPowered();                         // field is zone but it doesnt need power..?
         if (powered)
           simData.census.poweredZoneCount += 1;
         else

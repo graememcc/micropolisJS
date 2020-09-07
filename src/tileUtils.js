@@ -22,6 +22,7 @@ var unwrapTile = function(f) {
 var canBulldoze = unwrapTile(function(tileValue) {
   return (tileValue >= Tile.FIRSTRIVEDGE  && tileValue <= Tile.LASTRUBBLE) ||
          (tileValue >= Tile.POWERBASE + 2 && tileValue <= Tile.POWERBASE + 12) ||
+         (tileValue >= Tile.TUBEBASE + 2 && tileValue <= Tile.TUBEBASE + 12) || ///channel is autobulldoze
          (tileValue >= Tile.TINYEXP       && tileValue <= Tile.LASTTINYEXP + 2);
 });
 
@@ -83,7 +84,7 @@ var isResidentialZone = function(tile) {
 
 
 var isField = unwrapTile(function(tile) {
-  return tile >= Tile.RESBASE && tile < Tile.HOSPITALBASE; //valori tile da settare per i tile del field
+  return tile >= Tile.FIELDBASE && tile <= Tile.LFARM;
 });
 
 

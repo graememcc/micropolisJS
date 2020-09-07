@@ -256,6 +256,8 @@ Tile.ROADS10        = 75;
 Tile.INTERSECTION   = 76;
 Tile.HROADPOWER     = 77;
 Tile.VROADPOWER     = 78;
+Tile.HROADTUBE     = 223;             ///
+Tile.VROADTUBE     = 223;           ///
 Tile.BRWH           = 79;
 Tile.LTRFBASE       = 80; // First tile with low traffic
 // tile 81 -- 94 ?
@@ -298,7 +300,26 @@ Tile.LASTPOWER      = Tile.RAILVPOWERH;
 
 Tile.UNUSED_TRASH6  = 223;
 
-/* Rail */
+/* tubes lines */ //________
+Tile.HTUBE         = 224;
+Tile.VTUBE         = 225;
+Tile.LHTUBE        = 226;
+Tile.LVTUBE        = 227;
+Tile.LVTUBE2       = 228;
+Tile.LVTUBE3       = 229;
+Tile.LVTUBE4       = 230;
+Tile.LVTUBE5       = 231;
+Tile.LVTUBE6       = 232;
+Tile.LVTUBE7       = 233;
+Tile.LVTUBE8       = 234;
+Tile.LVTUBE9       = 235;
+Tile.LVTUBE10      = 236;
+Tile.RAILHTUBEV    = 237; // Horizontal rail, vertical tube
+Tile.RAILVTUBEH    = 238; // Vertical rail, horizontal tube
+Tile.TUBEBASE      = Tile.HTUBE;
+Tile.LASTTUBE      = Tile.RAILVTUBEH;
+
+/* Rail 
 Tile.HRAIL          = 224;
 Tile.VRAIL          = 225;
 Tile.LHRAIL         = 226;
@@ -316,6 +337,7 @@ Tile.HRAILROAD      = 237;
 Tile.VRAILROAD      = 238;
 Tile.RAILBASE       = Tile.HRAIL;
 Tile.LASTRAIL       = 238;
+*/ 
 
 Tile.ROADVPOWERH    = 239; /* bogus? */
 
@@ -337,6 +359,17 @@ Tile.CHURCHBASE     = 414; // Center of church (tiles 414--422)
 Tile.CHURCH0BASE    = 414; // numbered alias
 Tile.CHURCH         = 418; // Center of church (tiles 414--422)
 Tile.CHURCH0        = 418; // numbered alias
+
+//field zone tiles
+
+Tile.FIELDBASE      = 956;//Tile.RESBASE; // Empty field, tiles
+Tile.FREEF          = 960; //Tile.FREEZ; // center-tile of 3x3 empty field
+
+Tile.FARM           = 965; //Tile.HOUSE; // Single tile farms
+Tile.FFARM          = Tile.FARM; // first farm = first house
+Tile.LFARM          = 970; // Tile.HHTHR; // last farm = last house
+ 
+Tile.FZB            = 975; //Tile.RZB; // center tile first 3x3 tile field
 
 // Commercial zone tiles
 
@@ -397,9 +430,9 @@ Tile.COALBASE       = 745; // First tile of coal power plant.
 Tile.POWERPLANT     = 750; // 'Center' tile of coal power plant.
 Tile.LASTPOWERPLANT = 760; // Last tile of coal power plant.
 
-Tile.WWTPBASE       = Tile.COALBASE;
-Tile.WWTP           = Tile.POWERPLANT;
-Tile.LASTWWTP       = Tile.LASTPOWERPLANT;
+Tile.WWTPBASE       = 868; //Tile.COALBASE;
+Tile.WWTP           = 873; //Tile.POWERPLANT;
+Tile.LASTWWTP       = 883;//Tile.LASTPOWERPLANT;
 
 // Fire station (3x3).
 Tile.FIRESTBASE     = 761; // First tile of fire station.
