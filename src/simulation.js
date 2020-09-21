@@ -608,7 +608,7 @@ Simulation.prototype._onValveChange  = function() {
   this._indLast = this._valves.indValve;
 
   this._emitEvent(Messages.VALVES_UPDATED, {residential: this._valves.resValve,
-                                            field: this._valves.resValve, 
+                                            field: this._valves.fieldValve, 
                                             commercial: this._valves.comValve,
                                             industrial: this._valves.indValve});
 };
