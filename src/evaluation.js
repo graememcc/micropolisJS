@@ -98,7 +98,7 @@ Evaluation.prototype.getAssessedValue = function(census) {
 
 Evaluation.prototype.getPopulation = function(census) {
   var oldPopulation = this.cityPop;
-  this.cityPop = (census.resPop + (census.fieldPop + census.comPop + census.indPop) * 8) * 20;
+  this.cityPop = (census.resPop + census.fieldPop + (census.comPop + census.indPop) * 8) * 20;
   this.cityPopDelta = this.cityPop - oldPopulation;
 
   if (this.cityPopDelta !== 0)

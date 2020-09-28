@@ -106,7 +106,7 @@ Census.prototype.take10Census = function(budget) {
   rotate10Arrays.call(this);
 
   this.resHist10[0] = Math.floor(this.resPop / resPopDenom);
-  this.fieldHist10[0] = this.fieldPop;
+  this.fieldHist10[0] = Math.floor(this.fieldPop / resPopDenom);
   this.comHist10[0] = this.comPop;
   this.indHist10[0] = this.indPop;
 
@@ -137,7 +137,7 @@ Census.prototype.take120Census = function() {
   var resPopDenom = 8;
 
   this.resHist120[0] = Math.floor(this.resPop / resPopDenom);
-  this.fieldHist120[0] = this.fieldPop;
+  this.fieldHist120[0] = Math.floor(this.fieldPop / resPopDenom);
   this.comHist120[0] = this.comPop;
   this.indHist120[0] = this.indPop;
   this.crimeHist120[0] = this.crimeHist10[0];

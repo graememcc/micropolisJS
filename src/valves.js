@@ -24,7 +24,7 @@ var Valves = EventEmitter(function () {
 
 
 var RES_VALVE_RANGE = 2000;
-var FIELD_VALVE_RANGE = 1500;
+var FIELD_VALVE_RANGE = 2000;
 var COM_VALVE_RANGE = 1500;
 var IND_VALVE_RANGE = 1500;
 
@@ -60,7 +60,8 @@ Valves.prototype.setValves = function(gameLevel, census, budget) {
   var projectedIndPopMin = 5.0;
   var resRatioDefault = 1.3;
   var resRatioMax = 2;
-  var fieldRatioMax = 2;
+  var fieldRatioDefault = 1.3;
+  var fieldRatioMax = 2;1
   var comRatioMax = 2;
   var indRatioMax = 2;
   var taxMax = 20;
@@ -69,20 +70,24 @@ Valves.prototype.setValves = function(gameLevel, census, budget) {
 
   // Residential zones scale their population index when reporting it to the census
   var normalizedResPop = census.resPop / resPopDenom;
-  census.totalPop = Math.round(normalizedResPop + census.fieldPop + census.comPop + census.indPop);
+  var normalizedFieldPop = census.fieldPop / resPopDenom; //even field has 8 pos as respopdenom 
+  census.totalPop = Math.round(normalizedResPop + normalizedFieldPop + census.comPop + census.indPop);
 
   // A lack of developed commercial and industrial and field zones means there are no employment opportunities, which constrain
   // growth. (This might hurt initially if, for example, the player lays out an initial grid, as the residential zones
   // will likely develop first, so the residential valve will immediately crater).
-  if (census.resPop > 0)
-    employment = (census.comHist10[1] + census.indHist10[1] + census.fieldHist10[1]) / normalizedResPop;
+  if (census.resPop > 0 || census.fieldPop > 0)
+    employment = (census.comHist10[1] + census.indHist10[1] + census.fieldHist10[1]) / (normalizedResPop + normalizedFieldPop);
   else
     employment = 1;
 
   // Given the employment rate, calculate expected migration, add in births, and project the new population.
   var migration = normalizedResPop * (employment - 1);
+  var migrationField= normalizedFieldPop * (employment - 1);
   var births = normalizedResPop * birthRate;
   var projectedResPop = normalizedResPop + migration + births;
+
+  var projectedFieldPop = normalizedFieldPop + migrationField + 0.15; //???????????
 
   // Examine how many zones require workers
   labourBase = census.comHist10[1] + census.indHist10[1] + census.fieldHist10[1];
@@ -94,9 +99,8 @@ Valves.prototype.setValves = function(gameLevel, census, budget) {
 
   // Project future industry and commercial needs, taking into account available labour, and competition from
   // other global cities
-  var internalMarket = (normalizedResPop + census.fieldPop + census.comPop + census.indPop) / internalMarketDenom;
+  var internalMarket = (normalizedResPop + normalizedFieldPop + census.comPop + census.indPop) / internalMarketDenom;
   var projectedComPop = internalMarket * labourBase;
-  var projectedFieldPop = internalMarket * labourBase; //???????????
   var projectedIndPop = census.indPop * labourBase * extMarketParamTable[gameLevel];
   projectedIndPop = Math.max(projectedIndPop, projectedIndPopMin);
 
@@ -108,10 +112,10 @@ Valves.prototype.setValves = function(gameLevel, census, budget) {
     resRatio = resRatioDefault;
 
   var fieldRatio;
-    if (census.fieldPop > 0)
-      fieldRatio = projectedFieldPop / census.fieldPop;
+    if (normalizedFieldPop > 0)
+      fieldRatio = projectedFieldPop / normalizedFieldPop; //
     else
-      fieldRatio = projectedFieldPop;
+      fieldRatio = fieldRatioDefault;   //
  
   var comRatio;
   if (census.comPop > 0)

@@ -365,9 +365,9 @@ Tile.CHURCH0        = 418; // numbered alias
 Tile.FIELDBASE      = 956;//Tile.RESBASE; // Empty field, tiles
 Tile.FREEF          = 960; //Tile.FREEZ; // center-tile of 3x3 empty field
 
-Tile.FARM           = 965; //Tile.HOUSE; // Single tile farms
+Tile.FARM           = 971; //Tile.HOUSE; // Single tile farms
 Tile.FFARM          = Tile.FARM; // first farm = first house
-Tile.LFARM          = 970; // Tile.HHTHR; // last farm = last house
+Tile.LFARM          = 982; // Tile.HHTHR; // last farm = last house
  
 Tile.FZB            = 975; //Tile.RZB; // center tile first 3x3 tile field
 
