@@ -39,7 +39,7 @@ BuildingTool.prototype.putBuilding = function(leftX, topY) {
       tileValue = baseTile;
 
       if(TileUtils.isIndField(tileValue)){
-        tileFlags = Tile.BURNBIT;
+        tileFlags = Tile.BNHYBIT;
       }else{
       if (TileUtils.isField(tileValue) || (tileValue>=Tile.WWTPBASE && tileValue<=Tile.LASTWWTP))
         tileFlags = Tile.BNHYBIT;

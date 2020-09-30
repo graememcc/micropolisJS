@@ -46,8 +46,9 @@ PowerManager.prototype.setTileIrrigate = function(x, y) {
   var tile = this._map.getTile(x, y);
   var tileValue = tile.getValue();
 
-  if ((tileValue >= Tile.WWTPBASE && tileValue <= Tile.LASTWWTP) ||
-      this.irrigateGridMap.worldGet(x, y) > 0) {
+  if (((tileValue >= Tile.WWTPBASE && tileValue <= Tile.LASTWWTP) ||
+      this.irrigateGridMap.worldGet(x, y) > 0) &&
+      (tileValue < Tile.INDFIELDBASE || tileValue > Tile.FREEINDF+4)) {
     tile.addFlags(Tile.IRRIGBIT);
     return;
   }
