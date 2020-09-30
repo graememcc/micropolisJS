@@ -24,10 +24,10 @@ BuildingTool.prototype.putBuilding = function(leftX, topY) {
  // var baseTile = this.centreTile - this.size - 1;
  var baseTile;
 
-  if(this.centreTile == Tile.FREEF){
+  if(this.centreTile == Tile.FREEF || this.centreTile == Tile.FREEINDF){
     if(!confirm("Building a WWTP field?")){
         this.centreTile = Tile.FREEINDF;
-    }
+    }else this.centreTile = Tile.FREEF;
   }
   baseTile = this.centreTile - this.size - 1;
 
