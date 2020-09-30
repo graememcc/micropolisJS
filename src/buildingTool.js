@@ -21,7 +21,15 @@ var BuildingTool = ConnectingTool(function(cost, centreTile, map, size, animated
 
 BuildingTool.prototype.putBuilding = function(leftX, topY) {
   var posX, posY, tileValue, tileFlags;
-  var baseTile = this.centreTile - this.size - 1;
+ // var baseTile = this.centreTile - this.size - 1;
+ var baseTile;
+
+  if(this.centreTile == Tile.FREEF){
+    if(!confirm("Building a WWTP field?")){
+        this.centreTile = Tile.FREEINDF;
+    }
+  }
+  baseTile = this.centreTile - this.size - 1;
 
   for (var dy = 0; dy < this.size; dy++) {
     posY = topY + dy;
@@ -29,10 +37,15 @@ BuildingTool.prototype.putBuilding = function(leftX, topY) {
     for (var dx = 0; dx < this.size; dx++) {
       posX = leftX + dx;
       tileValue = baseTile;
+
+      if(TileUtils.isIndField(tileValue)){
+        tileFlags = Tile.BURNBIT;
+      }else{
       if (TileUtils.isField(tileValue) || (tileValue>=Tile.WWTPBASE && tileValue<=Tile.LASTWWTP))
         tileFlags = Tile.BNHYBIT;
       else
         tileFlags = Tile.BNCNBIT;
+      }
             
       if (dx === 1) {
         if (dy === 1)

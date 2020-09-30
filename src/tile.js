@@ -371,6 +371,17 @@ Tile.LFARM          = 982; // Tile.HHTHR; // last farm = last house
  
 Tile.FZB            = 975; //Tile.RZB; // center tile first 3x3 tile field
 
+//INDIE field zone tiles
+
+Tile.INDFIELDBASE      = 983;//Tile.RESBASE; // Empty field, tiles
+Tile.FREEINDF          = 987; //Tile.FREEZ; // center-tile of 3x3 empty field
+
+Tile.INDFARM           = 992; //Tile.HOUSE; // Single tile farms
+Tile.FINDFARM          = Tile.INDFARM; // first farm = first house
+Tile.LINDFARM          = 1003; // Tile.HHTHR; // last farm = last house
+ 
+Tile.INDFZB            = 975; //Tile.RZB; // center tile first 3x3 tile field
+
 // Commercial zone tiles
 
 Tile.COMBASE        = 423; // Empty commercial, tiles 423--431

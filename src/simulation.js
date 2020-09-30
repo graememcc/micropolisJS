@@ -25,6 +25,7 @@ import { PowerManager } from './powerManager';
 import { RepairManager } from './repairManager';
 import { Residential } from './residential';
 import { Field } from './field';
+import { IndField } from './indiefield'
 import { Road } from './road';
 import { SpriteManager } from './spriteManager';
 import { Stadia } from './stadia';
@@ -285,6 +286,7 @@ Simulation.prototype.init = function() {
   Road.registerHandlers(this._mapScanner, this._repairManager);
   Residential.registerHandlers(this._mapScanner, this._repairManager);
   Field.registerHandlers(this._mapScanner, this._repairManager);
+  IndField.registerHandlers(this._mapScanner, this._repairManager);
   Stadia.registerHandlers(this._mapScanner, this._repairManager);
   Transport.registerHandlers(this._mapScanner, this._repairManager);
 

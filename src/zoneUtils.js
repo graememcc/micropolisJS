@@ -126,6 +126,7 @@ var checkBigZone = function(tileValue) {
 var checkZoneSize = function(tileValue) { //add for field
   if ((tileValue >= Tile.RESBASE - 1 && tileValue <= Tile.PORTBASE - 1) ||
       (tileValue >= Tile.FIELDBASE && tileValue <= Tile.FZB) ||
+      (tileValue >= Tile.INDFIELDBASE && tileValue <= Tile.INDFZB) ||
       (tileValue >= Tile.LASTPOWERPLANT + 1 && tileValue <= Tile.POLICESTATION + 4) ||
       (tileValue >= Tile.CHURCH1BASE && tileValue <= Tile.CHURCH7LAST)) {
     return 3;

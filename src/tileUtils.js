@@ -92,6 +92,15 @@ var isFieldZone = function(tile) {
   return tile.isZone() && isField(tile);
 };
 
+var isIndField = unwrapTile(function(tile) {
+  return tile >= Tile.INDFIELDBASE && tile <= Tile.LINDFARM;
+});
+
+
+var isIndFieldZone = function(tile) {
+  return tile.isZone() && isIndField(tile);
+};
+
 
 var isRoad = unwrapTile(function(tile) {
   return tile >= Tile.ROADBASE && tile < Tile.POWERBASE;
@@ -128,6 +137,8 @@ var TileUtils = {
   isResidentialZone: isResidentialZone,
   isField: isField,
   isFieldZone: isFieldZone,
+  isIndField : isIndField,
+  isIndFieldZone : isIndFieldZone,
   isRoad: isRoad,
   normalizeRoad: normalizeRoad,
   randomFire: randomFire,
