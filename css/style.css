@@ -602,7 +602,7 @@ nav li {
   background-color: lime;
 }
 
-#FieldButton {
+#fieldButton, #fieldHeader {
   background-color: darkgoldenrod;
 }
 

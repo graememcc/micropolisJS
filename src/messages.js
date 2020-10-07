@@ -28,6 +28,8 @@ var messageData = {
   EVAL_UPDATED: MiscUtils.makeConstantDescriptor('Evaluation Updated'),
   EVAL_WINDOW_CLOSED: MiscUtils.makeConstantDescriptor('Eval window closed'),
   EXPLOSION_REPORTED: MiscUtils.makeConstantDescriptor('Explosion Reported'),
+  FIELD_REQUESTED: MiscUtils.makeConstantDescriptor('Field window requested'),
+  FIELD_WINDOW_CLOSED: MiscUtils.makeConstantDescriptor('Field window closed'),
   FIRE_REPORTED: MiscUtils.makeConstantDescriptor('Fire!'),
   FIRE_STATION_NEEDS_FUNDING: MiscUtils.makeConstantDescriptor('Fire station needs funding'),
   FLOODING_REPORTED: MiscUtils.makeConstantDescriptor('Flooding reported'),

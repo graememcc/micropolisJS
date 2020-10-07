@@ -14,6 +14,7 @@ import { CongratsWindow } from './congratsWindow';
 import { DebugWindow } from './debugWindow';
 import { DisasterWindow } from './disasterWindow';
 import { EvaluationWindow } from './evaluationWindow';
+import { FieldWindow } from './fieldWindow';
 import { GameCanvas } from './gameCanvas';
 import { GameMap } from './gameMap';
 import { InfoBar } from './infoBar';
@@ -123,7 +124,8 @@ function Game(gameMap, tileSet, snowTileSet, spriteSheet, difficulty, name) {
       policeRate: Math.floor(this.simulation.budget.policePercent * 100),
       taxRate: this.simulation.budget.cityTax,
       totalFunds: this.simulation.budget.totalFunds,
-      taxesCollected: this.simulation.budget.taxFund
+      taxesCollected: this.simulation.budget.taxFund,
+      fieldsCost: this.simulation.budget.fieldsCost
     };
 
     return [budgetData];
@@ -172,6 +174,16 @@ function Game(gameMap, tileSet, snowTileSet, spriteSheet, difficulty, name) {
   // ... the touch warn window
   this.touchWindow = new TouchWarnWindow(opacityLayerID, 'touchWarnWindow');
   this.touchWindow.addEventListener(Messages.TOUCH_WINDOW_CLOSED, this.genericDialogClosure);
+
+  // ... the field crops choise window
+  this.handleFieldRequest = makeWindowOpenHandler('field', function() {
+    return [{autoBudget: this.simulation.budget.autoBudget, autoBulldoze: BaseTool.getAutoBulldoze(),
+      speed: this.defaultSpeed, disasters: this.simulation.disasterManager.disastersEnabled}];
+  }.bind(this));
+
+  this.fieldWindow = new FieldWindow(opacityLayerID, 'field');
+  this.fieldWindow.addEventListener(Messages.FIELD_WINDOW_CLOSED, this.genericDialogClosure);
+  this.inputStatus.addEventListener(Messages.FIELD_REQUESTED, this.handleFieldRequest.bind(this));
 
   // ... and finally the query window
   this.queryWindow = new QueryWindow(opacityLayerID, 'queryWindow');

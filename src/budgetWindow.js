@@ -140,6 +140,7 @@ BudgetWindow.prototype.open = function(budgetData) {
   $('#cashFlow').text((cashFlow < 0 ? '-$' : '$') + cashFlow);
   $('#previousFunds').text((previousFunds < 0 ? '-$' : '$') + previousFunds);
   $('#currentFunds').text('$' + currentFunds);
+  $('#fieldsCost').text('$' + fieldsCost);
 
   this._toggleDisplay();
 };

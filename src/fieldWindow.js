@@ -24,6 +24,7 @@ var fieldOKID = '#fieldOK';
 var WWTPYesID = '#WWTPYes';
 var WWTPNoID = '#WWTPNo';
 var fieldSelectID = '#fieldSelect';
+var indFieldSelectID = '#indFieldSelect'
 
 
 
@@ -33,6 +34,10 @@ FieldWindow.prototype.close = function(actions) {
   this._toggleDisplay();
 };
 
+var cancel = function(e) {
+  e.preventDefault();
+  this.close({cancelled: true});
+};
 
 var submit = function(e) {
   e.preventDefault();
@@ -55,7 +60,7 @@ var submit = function(e) {
 };
 
 
-SettingsWindow.prototype.open = function(settingsData) {
+FieldWindow.prototype.open = function(fieldData) {
   if (fieldData.WWTP)
     $(WWTPYesID).prop('checked', true);
   else
@@ -89,4 +94,4 @@ defineAction('WWTP');
 
 
 
-export { SettingsWindow };
+export { FieldWindow };

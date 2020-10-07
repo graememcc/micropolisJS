@@ -37,6 +37,7 @@ var Budget = EventEmitter(function() {
   this.cityTax = 7;
   this.cashFlow = 0;
   this.taxFund = 0;
+  this.fieldsCost = 0;
 
   // These values denote how much money is required to fully maintain the relevant services
   this.roadMaintenanceBudget = 0;
@@ -60,7 +61,7 @@ var Budget = EventEmitter(function() {
 
 var saveProps = ['autoBudget', 'totalFunds', 'policePercent', 'roadPercent', 'firePercent', 'roadSpend',
                  'policeSpend', 'fireSpend', 'roadMaintenanceBudget', 'policeMaintenanceBudget',
-                 'fireMaintenanceBudget', 'cityTax', 'roadEffect', 'policeEffect', 'fireEffect'];
+                 'fireMaintenanceBudget', 'cityTax', 'roadEffect', 'policeEffect', 'fireEffect', 'fieldsCost'];
 
 Budget.prototype.save = function(saveData) {
   for (var i = 0, l = saveProps.length; i < l; i++)
@@ -173,7 +174,7 @@ Budget.prototype.doBudgetNow = function(fromWindow) {
   var policeCost = costs.police;
   var fireCost = costs.fire;
   var totalCost = roadCost + policeCost + fireCost;
-  var cashRemaining = this.totalFunds + this.taxFund - totalCost;
+  var cashRemaining = this.totalFunds + this.taxFund - this.fieldsCost - totalCost;
 
   // Autobudget
   if ((cashRemaining > 0 && this.autoBudget) || fromWindow) {
@@ -196,7 +197,7 @@ Budget.prototype.doBudgetSpend = function(roadValue, fireValue, policeValue) {
   this.roadSpend = roadValue;
   this.fireSpend = fireValue;
   this.policeSpend = policeValue;
-  var total = this.roadSpend + this.fireSpend + this.policeSpend;
+  var total = this.roadSpend + this.fireSpend + this.policeSpend + this.fieldsCost;
 
   this.spend(-(this.taxFund - total));
   this.updateFundEffects();
@@ -239,7 +240,7 @@ Budget.prototype.collectTax = function(gameLevel, census) {
   this.taxFund = Math.floor(Math.floor(census.totalPop * census.landValueAverage / 120) * this.cityTax * FLevels[gameLevel]);
 
   if (census.totalPop > 0) {
-    this.cashFlow = this.taxFund - (this.policeMaintenanceBudget + this.fireMaintenanceBudget + this.roadMaintenanceBudget);
+    this.cashFlow = this.taxFund - (this.fieldsCost + this.policeMaintenanceBudget + this.fireMaintenanceBudget + this.roadMaintenanceBudget);
     this.doBudgetNow(false);
   } else {
     // We don't want roads etc deteriorating when population hasn't yet been established

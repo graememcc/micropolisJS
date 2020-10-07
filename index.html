@@ -115,7 +115,7 @@
           <div id="toolInfo" class="alignCenter"><span id="toolOutput">Tools</span></div>
           <div id="buttons">
             <button id="residentialButton" data-size="3" data-tool="residential" data-colour="lime" class="toolButton unselected">Residential $100</button>
-            <button id="fieldButton" data-size="3" data-tool="field" data-colour="darkgoldenrod" class="toolButton unselected">Field $100</button>
+            <button id="fieldButton" data-size="3" data-tool="field" data-colour="darkgoldenrod" class="toolButton unselected">Field</button>
             <button id="nuclearButton" data-size="4" data-tool="nuclear" data-colour="mistyrose" class="toolButton unselected">Nuclear $5000</button>
             <button id="commercialButton" data-size="3" data-tool="commercial" data-colour="blue" class="toolButton unselected">Commercial $100</button>
             <button id="coalButton" data-size="4" data-tool="coal" data-colour="gray" class="toolButton unselected">Coal $3000</button>
@@ -166,12 +166,44 @@
           <div id="build">Build: <%= htmlWebpackPlugin.options.gitHash %></div>
         </div>
       </footer>
+      <div class="hidden modal shadow" id="field">
+        <header id="fieldHeader" class="fieldHeader padding10 chunk alignCenter">
+           Field
+        </header>
+        <div id="fieldContainer" class="padding10 open">
+          <form id="fieldForm" class="alignCenter margin10">
+            <div id="fieldFormContainer">
+              <div id="autoBudgetSelect" class="padding10">
+                WWTP:
+                <input type="radio" class="WWTPSetting" name="WWTPSetting" id="WWTPYes" value="true" checked="checked"><label for="WWTPYes">Yes</label>
+                <input type="radio" class="WWTPSetting" name="WWTPSetting" id="WWTPNo" value="false"><label for="WWTPNo">No</label>
+              </div>
+              <div id="fieldTypeSelect" class="padding10"></div> 
+                Field type:
+                <input type="radio" class="FieldSetting" name="FieldSetting" id="FieldSelect" checked="checked"><label for="Field">Yes</label>
+                <input type="radio" class="FieldSetting" name="FieldSetting" id="IndFieldSelect"><label for="IndField">No</label>
+              </div>
+              <div id="cropSelect" class="padding10">  
+                Crop:
+                <select id="selectCrop">
+                  <option id="mela" value="Mela">Mela</option>
+                  <option id="pera" value="Pera">Pera</option>
+                  <option id="banana" value="Banana">Banana</option>
+                </select>
+              </div>
+            </div>
+            <button id="fieldCancel" class="cancel width140">Cancel</button>
+            <input type="submit" id="fieldOK" class="dialogOK width140" value="OK">
+          </form>
+        </div>
+      </div>
       <div class="hidden modal shadow" id="budget">
         <header id="budgetHeader" class="budgetHeader padding10 chunk alignCenter">
            Budget
         </header>
         <div id="budgetFormContainer" class="padding10 open">
           <form id="budgetForm">
+            <div id="fieldInfo" class="elided budgetRight budgetData">Year fields cost: <span id="fieldsCost"></span></div>
             <div id="taxInfo" class="elided budgetData">Tax Collected: <span id="taxesCollected"></span></div>
             <div id="cashInfo" class="elided budgetRight budgetData">Cashflow: <span id="cashFlow"></span></div>
             <div id="previousInfo" class="elided budgetData">Previous funds: <span id="previousFunds"></span></div>
