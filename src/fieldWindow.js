@@ -24,7 +24,8 @@ var fieldOKID = '#fieldOK';
 var WWTPYesID = '#WWTPYes';
 var WWTPNoID = '#WWTPNo';
 var fieldSelectID = '#fieldSelect';
-var indFieldSelectID = '#indFieldSelect'
+var indFieldSelectID = '#indFieldSelect';
+var cropSelectID = '#cropSelect'
 
 
 
@@ -34,27 +35,32 @@ FieldWindow.prototype.close = function(actions) {
   this._toggleDisplay();
 };
 
+
 var cancel = function(e) {
   e.preventDefault();
   this.close({cancelled: true});
 };
+
 
 var submit = function(e) {
   e.preventDefault();
 
   var actions = [];
 
-  var requestedField = $(fieldSelectID)[0].value;
-  //this.close(requestedField);
-  actions.push(requestedField);
-
-  var shouldWWTP = $('.WWTPfield:checked').val();
+  var shouldWWTP = $('.WWTPField:checked').val();
   if (shouldWWTP === 'true')
     shouldWWTP = true;
   else
     shouldWWTP = false;
   actions.push({action: FieldWindow.WWTP, data: shouldWWTP});
 
+  var requestedField = $(fieldSelectID)[0].value;
+  //this.close(requestedField);
+  actions.push(requestedField);
+
+  var requestedCrop = $(cropSelectID)[0].value;
+  //this.close(requestedCrop);
+  actions.push(requestedCrop);
 
   this.close(actions);
 };
@@ -93,5 +99,10 @@ var defineAction = (function() {
 defineAction('WWTP');
 
 
+Object.defineProperties(FieldWindow,
+  {FIELD_POTATO: MiscUtils.makeConstantDescriptor('Potato'),
+   FIELD_CORN: MiscUtils.makeConstantDescriptor('Corn'),
+   FIELD_WHEAT: MiscUtils.makeConstantDescriptor('Wheat'),
+   FIELD_ORCHARD: MiscUtils.makeConstantDescriptor('Orchard')});
 
 export { FieldWindow };

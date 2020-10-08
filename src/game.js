@@ -180,9 +180,8 @@ function Game(gameMap, tileSet, snowTileSet, spriteSheet, difficulty, name) {
     return [{autoBudget: this.simulation.budget.autoBudget, autoBulldoze: BaseTool.getAutoBulldoze(),
       speed: this.defaultSpeed, disasters: this.simulation.disasterManager.disastersEnabled}];
   }.bind(this));
-
   this.fieldWindow = new FieldWindow(opacityLayerID, 'field');
-  this.fieldWindow.addEventListener(Messages.FIELD_WINDOW_CLOSED, this.genericDialogClosure);
+  this.fieldWindow.addEventListener(Messages.FIELD_WINDOW_CLOSED, this.handleSettingsWindowClosure.bind(this));
   this.inputStatus.addEventListener(Messages.FIELD_REQUESTED, this.handleFieldRequest.bind(this));
 
   // ... and finally the query window
