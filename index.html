@@ -177,28 +177,18 @@
                 WWTP:
                 <input type="radio"  class="WWTPField" name="WWTP_" id="WWTPYes" value="1"><label for="WWTPYes">Yes</label>
                 <input type="radio"  class="WWTPField" name="WWTP_" id="WWTPNo" value="2"><label for="WWTPNo">No</label>
-                <div id="fieldTypeSelect" class="padding10"></div> 
-                  Field type:
-                  <div class="FieldWWTP">
-                    <input type="radio" name="FieldSetting" id="FieldSelect" checked="checked"><label for="Field">Wwtp Field</label>
-                  </div>
-                  <div class="FieldInd">
-                    <input type="radio" class="FieldInd" name="FieldSetting" id="IndFieldSelect"><label for="IndField">Indipendent Field</label>
-                  </div>
+                
                 </div>
               </div>
               <div id="selectCrop" class="padding10">  
                 Crop:
-                <select id="cropSelect">
-                  <option id="potato" value="Potato">Potato</option>
-                  <option id="corn" value="Corn">Corn</option>
-                  <option id="wheat" value="Wheat">Wheat</option>
-                  <option id="orchard" value="Orchard">Orchard</option>
-                </select>
+                <input type="radio" class="cropSetting" name="cropSetting" id="cropCorn" value="1" checked="checked"><label for="cropCorn">Corn</label>
+                <input type="radio" class="cropSetting" name="cropSetting" id="cropWheat" value="2"><label for="cropWheat">Wheat</label>
+                <input type="radio" class="cropSetting" name="cropSetting" id="cropOrchard" value="3"><label for="cropOrchard">Orchard</label>
+                <input type="radio" class="cropSetting" name="cropSetting" id="cropPotato" value="4"><label for="cropPotato">Potato</label>
               </div>
             </div>
             <div id="fieldButtons" class="alignCenter margin10">
-              <button id="fieldCancel" class="cancel">Cancel</button>
               <input type="submit" id="fieldOK" class="dialogOK" value="OK">
             </div>  
           </form>

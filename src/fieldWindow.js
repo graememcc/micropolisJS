@@ -11,21 +11,21 @@ import { Messages } from './messages';
 import { ModalWindow } from './modalWindow';
 import { MiscUtils } from './miscUtils';
 import { Simulation } from './simulation';
+import { Game } from './game';
 
 var FieldWindow = ModalWindow(function() {
-  $(fieldCancelID).on('click', cancel.bind(this));
   $(fieldFormID).on('submit', submit.bind(this));
-}, fieldSelectID);
+},);
 
 
-var fieldCancelID = '#fieldCancel';
+var cropCornID = '#cropCorn';
+var cropPotatoID = '#cropPotato';
+var cropWheatID = '#cropWheat';
+var cropOrchardID = '#cropOrchard';
 var fieldFormID = '#fieldForm';
 var fieldOKID = '#fieldOK';
 var WWTPYesID = '#WWTPYes';
 var WWTPNoID = '#WWTPNo';
-var fieldSelectID = '#fieldSelect';
-var indFieldSelectID = '#indFieldSelect';
-var cropSelectID = '#cropSelect'
 
 
 
@@ -34,13 +34,6 @@ FieldWindow.prototype.close = function(actions) {
   this._emitEvent(Messages.FIELD_WINDOW_CLOSED, actions);
   this._toggleDisplay();
 };
-
-
-var cancel = function(e) {
-  e.preventDefault();
-  this.close({cancelled: true});
-};
-
 
 var submit = function(e) {
   e.preventDefault();
@@ -54,14 +47,8 @@ var submit = function(e) {
     shouldWWTP = false;
   actions.push({action: FieldWindow.WWTP, data: shouldWWTP});
 
-  var requestedField = $(fieldSelectID)[0].value;
-  //this.close(requestedField);
-  actions.push(requestedField);
-
-  var requestedCrop = $(cropSelectID)[0].value;
-  //this.close(requestedCrop);
-  actions.push(requestedCrop);
-
+  var cropSelect = $('.cropSetting:checked').val() - 0;
+  actions.push({action: FieldWindow.CROP, data: cropSelect});
   this.close(actions);
 };
 
@@ -72,15 +59,14 @@ FieldWindow.prototype.open = function(fieldData) {
   else
     $(WWTPNoID).prop('checked', true);
 
-    var i;
-
-    // Ensure options have right values
-    $('#fieldPotato').attr('value', FieldWindow.FIELD_POTATO);
-    $('#fieldCorn').attr('value', FieldWindow.FIELD_CORN);
-    $('#fieldWheat').attr('value', FieldWindow.FIELD_WHEAT);
-    $('#fieldOrchard').attr('value', FieldWindow.FIELD_ORCHARD);
-
-  
+  if (fieldData.CROP === Simulation.CROP_CORN)
+    $(cropCornID).prop('checked', true);
+  else if (fieldData.CROP === Simulation.CROP_WHEAT)
+    $(cropWheatID).prop('checked', true);
+  else if (fieldData.CROP === Simulation.CROP_POTATO)
+    $(cropPotatoID).prop('checked', true);
+  else
+    $(cropOrchardID).prop('checked', true);
 
   this._toggleDisplay();
 };
@@ -97,12 +83,6 @@ var defineAction = (function() {
 
 
 defineAction('WWTP');
-
-
-Object.defineProperties(FieldWindow,
-  {FIELD_POTATO: MiscUtils.makeConstantDescriptor('Potato'),
-   FIELD_CORN: MiscUtils.makeConstantDescriptor('Corn'),
-   FIELD_WHEAT: MiscUtils.makeConstantDescriptor('Wheat'),
-   FIELD_ORCHARD: MiscUtils.makeConstantDescriptor('Orchard')});
+defineAction('CROP');
 
 export { FieldWindow };

@@ -53,6 +53,7 @@ var Simulation = EventEmitter(function (gameMap, gameLevel, speed, savedGame) {
   this._lastPowerMessage = null;
 
   // And now, the main cast of characters
+  this.wwtpcost = 0;
   this.evaluation = new Evaluation(this._gameLevel);
   this._valves = new Valves();
   this.budget = new Budget();
@@ -128,7 +129,6 @@ Simulation.prototype.setLevel = function(l) {
 
   this._gameLevel = l;
 };
-
 
 Simulation.prototype.setSpeed = function(s) {
   if (s !== Simulation.SPEED_PAUSED &&
@@ -238,7 +238,8 @@ Simulation.prototype._constructSimData = function() {
     simulator: this,
     spriteManager: this.spriteManager,
     trafficManager: this._traffic,
-    valves: this._valves
+    valves: this._valves,
+    wwtpcost: this._wwtpcost
   };
 };
 
@@ -659,6 +660,10 @@ Object.defineProperties(Simulation,
   SPEED_SLOW:  MiscUtils.makeConstantDescriptor(1),
   SPEED_MED: MiscUtils.makeConstantDescriptor(2),
   SPEED_FAST: MiscUtils.makeConstantDescriptor(3),
+  CROP_CORN: MiscUtils.makeConstantDescriptor(0),
+  CROP_WHEAT:  MiscUtils.makeConstantDescriptor(1),
+  CROP_POTATO: MiscUtils.makeConstantDescriptor(2),
+  CROP_ORCHARD: MiscUtils.makeConstantDescriptor(3),
 });
 
 

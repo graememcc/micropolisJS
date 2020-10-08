@@ -33,6 +33,7 @@ import { SettingsWindow } from './settingsWindow';
 import { Simulation } from './simulation';
 import { Storage } from './storage';
 import { Text } from './text';
+import { Tile } from './tile';
 import { TouchWarnWindow } from './touchWarnWindow';
 
 var disasterTimeout = 20 * 1000;
@@ -49,7 +50,10 @@ function Game(gameMap, tileSet, snowTileSet, spriteSheet, difficulty, name) {
     this.gameMap = new GameMap(120, 100);
     savedGame = gameMap;
   }
-
+  var defaultwwtp = true;
+  var wwtpcost = 0;
+  var fieldtile = Tile.FREEF;
+  var croptype = Simulation.CROP_CORN;
   this.tileSet = tileSet;
   this.snowTileSet = snowTileSet;
   this.defaultSpeed = Simulation.SPEED_MED;
@@ -66,7 +70,7 @@ function Game(gameMap, tileSet, snowTileSet, spriteSheet, difficulty, name) {
   // Note: must init canvas before inputStatus
   this.gameCanvas = new GameCanvas('canvasContainer');
   this.gameCanvas.init(this.gameMap, this.tileSet, spriteSheet);
-  this.inputStatus = new InputStatus(this.gameMap, tileSet.tileWidth);
+  this.inputStatus = new InputStatus(this.gameMap, tileSet.tileWidth, wwtpcost, fieldtile);
 
   this.dialogOpen = false;
   this._openWindow = null;
@@ -175,14 +179,13 @@ function Game(gameMap, tileSet, snowTileSet, spriteSheet, difficulty, name) {
   this.touchWindow = new TouchWarnWindow(opacityLayerID, 'touchWarnWindow');
   this.touchWindow.addEventListener(Messages.TOUCH_WINDOW_CLOSED, this.genericDialogClosure);
 
-  // ... the field crops choise window
+  // ... the field crops window
   this.handleFieldRequest = makeWindowOpenHandler('field', function() {
-    return [{autoBudget: this.simulation.budget.autoBudget, autoBulldoze: BaseTool.getAutoBulldoze(),
-      speed: this.defaultSpeed, disasters: this.simulation.disasterManager.disastersEnabled}];
+    return [{cropselect: this.croptype, shouldWWTP: this.defaultwwtp }];
   }.bind(this));
-  this.fieldWindow = new FieldWindow(opacityLayerID, 'field');
-  this.fieldWindow.addEventListener(Messages.FIELD_WINDOW_CLOSED, this.handleSettingsWindowClosure.bind(this));
-  this.inputStatus.addEventListener(Messages.FIELD_REQUESTED, this.handleFieldRequest.bind(this));
+  this.fieldWindow = new fieldWindow(opacityLayerID, 'fieldWindow');
+  this.fieldWindow.addEventListener(Messages.FIELD_WINDOW_CLOSED, this.handleFieldWindowClosure.bind(this));
+  this.inputStatus.addEventListener(Messages.FIELD_WINDOW_REQUESTED, this.handleFieldRequest.bind(this));
 
   // ... and finally the query window
   this.queryWindow = new QueryWindow(opacityLayerID, 'queryWindow');
@@ -363,6 +366,63 @@ Game.prototype.handleSettingsWindowClosure = function(actions) {
 };
 
 
+Game.prototype.handleFieldWindowClosure = function(actions) {
+  this.dialogOpen = false;
+
+  for (var i = 0, l = actions.length; i < l; i++) {
+    var a = actions[i];
+
+    switch (a.action) {
+      case FieldWindow.WWTP:
+        this.setWWTP(a.data);
+        break;
+
+      case FieldWindow.CROP:
+        this.croptype = a.data;
+        this.setCrop(a.data);
+        break;
+
+      default:
+        console.warn('Unexpected action', a);
+    }
+  }
+};
+
+Game.prototype.setWWTP = function(s){
+  if(s) this.fieldtile = Tile.FREEF;
+  else this.fieldtile = Tile.FREEINDF;
+}
+
+Game.prototype.setCrop = function(c){
+  if (c !== Simulation.CROP_CORN &&
+    c !== Simulation.CROP_WHEAT &&
+    c !== Simulation.CROP_ORCHARD &&
+    c !== Simulation.CROP_POTATO)
+  throw new Error('Invalid speed!');
+
+  switch (c) {
+    case Simulation.CROP_CORN:
+      this.wwtpcost = 10;
+      break;
+
+    case Simulation.CROP_WHEAT:
+      this.wwtpcost =  100;
+      break;
+
+    case Simulation.CROP_ORCHARD:
+      this.wwtpcost = 1000;
+      break;
+
+    case Simulation.CROP_POTATO:
+      this.wwtpcost = 5000;
+      break;
+
+    default:
+        console.warn('Unexpected action', a);
+  }
+};
+
+
 Game.prototype.handleDebugWindowClosure = function(actions) {
   this.dialogOpen = false;
 
@@ -443,6 +503,7 @@ Game.prototype.handleDebugRequest = makeWindowOpenHandler('debug');
 Game.prototype.handleDisasterRequest = makeWindowOpenHandler('disaster');
 Game.prototype.handleQueryRequest = makeWindowOpenHandler('query');
 Game.prototype.handleScreenshotRequest = makeWindowOpenHandler('screenshot');
+Game.prototype.handleFieldRequest = makeWindowOpenHandler('field');
 
 
 Game.prototype.handleMandatoryBudget = function() {

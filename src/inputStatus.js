@@ -13,8 +13,8 @@ import { GameTools } from './gameTools';
 import { Messages } from './messages';
 import { MiscUtils } from './miscUtils';
 
-var InputStatus = EventEmitter(function(map, tileWidth) {
-  this.gameTools = new GameTools(map);
+var InputStatus = EventEmitter(function(map, tileWidth,wwtpcost, fieldtile) {
+  this.gameTools = new GameTools(map,wwtpcost, fieldtile);
 
   this.gameTools.addEventListener(Messages.QUERY_WINDOW_NEEDED, MiscUtils.reflectEvent.bind(this, Messages.QUERY_WINDOW_NEEDED));
 
