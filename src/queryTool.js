@@ -94,12 +94,12 @@ QueryTool.prototype.classifyDebug = function(x, y, blockMaps) {
 QueryTool.prototype.classifyZone = function(x, y) {
   var baseTiles = [
       Tile.DIRT, Tile.RIVER, Tile.TREEBASE, Tile.RUBBLE,
-      Tile.FLOOD, Tile.RADTILE, Tile.FIRE, Tile.ROADBASE, /*Tile.TUBEBASE,*/
-      Tile.POWERBASE, Tile.RAILBASE, Tile.FIELDBASE, Tile.RESBASE, Tile.COMBASE,
-      Tile.INDBASE, Tile.PORTBASE, Tile.AIRPORTBASE, Tile.COALBASE, Tile.WWTPBASE,
+      Tile.FLOOD, Tile.RADTILE, Tile.FIRE, Tile.ROADBASE, 
+      Tile.POWERBASE, Tile.TUBEBASE, Tile.RESBASE, Tile.COMBASE,
+      Tile.INDBASE, Tile.PORTBASE, Tile.AIRPORTBASE, Tile.COALBASE,
       Tile.FIRESTBASE, Tile.POLICESTBASE, Tile.STADIUMBASE, Tile.NUCLEARBASE,
-      Tile.HBRDG0, Tile.RADAR0, Tile.FOUNTAIN, Tile.INDBASE2,
-      Tile.FOOTBALLGAME1, Tile.VBRDG0, 952];
+      Tile.HBRDG0, Tile.RADAR0, Tile.FOUNTAIN, Tile.INDBASE2, Tile.WWTPBASE,
+      Tile.FOOTBALLGAME1, Tile.VBRDG0, 952, Tile.FIELDBASE];
 
   var tileValue = this._map.getTileValue(x, y);
   if (tileValue >= Tile.COALSMOKE1 && tileValue < Tile.FOOTBALLGAME1)

@@ -20,11 +20,11 @@ var crimeStrings = ['Safe', 'Light', 'Moderate', 'Dangerous'];
 var pollutionStrings = ['None', 'Moderate', 'Heavy', 'Very Heavy'];
 var rateStrings = ['Declining', 'Stable', 'Slow Growth', 'Fast Growth'];
 var zoneTypes = ['Clear', 'Water', 'Trees', 'Rubble', 'Flood', 'Radioactive Waste', 
-                 'Fire', 'Road', 'Power', /*'Channel',*/ 'Rail', 'Field', 'Residential', 'Commercial', 
-                 'Industrial', 'Seaport', 'Airport', 'Coal Power', 'Wwtp', 'Fire Department',
+                 'Fire', 'Road', 'Power', 'Channel', 'Residential', 'Commercial', 
+                 'Industrial', 'Seaport', 'Airport', 'Coal Power', 'Fire Department',
                  'Police Department', 'Stadium', 'Nuclear Power', 'Draw Bridge',
-                 'Radar Dish', 'Fountain', 'Industrial', 'Steelers 38  Bears 3',
-                 'Draw Bridge', 'Ur 238'];
+                 'Radar Dish', 'Fountain', 'Industrial', 'Wwtp', 'Steelers 38  Bears 3',
+                 'Draw Bridge', 'Ur 238', 'Field'];
 
 // Evaluation window
 var gameLevel = {};
