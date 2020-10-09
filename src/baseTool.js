@@ -82,6 +82,8 @@ var TOOLRESULT_NEEDS_BULLDOZE = 3;
 var BaseToolConstructor = {
   addCost: addCost,
   autoBulldoze: true,
+  wwtp: true,
+  cropcost: 10,
   bulldozerCost: 1,
   clear: clear,
   doAutoBulldoze: doAutoBulldoze,
@@ -112,6 +114,18 @@ var makeTool = function(toolConstructor) {
 
 var BaseTool = {
   makeTool: makeTool,
+  setCropCost: function(value){
+    BaseToolConstructor.cropcost = value;
+},
+  getCropCost: function() {
+  return BaseToolConstructor.cropcost;
+},
+  setWWTP: function(value){
+      BaseToolConstructor.wwtp = value;
+  },
+  getWWTP: function() {
+    return BaseToolConstructor.wwtp;
+  },
   setAutoBulldoze: function(value) {
     BaseToolConstructor.autoBulldoze = value;
   },

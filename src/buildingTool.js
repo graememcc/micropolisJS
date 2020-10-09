@@ -10,15 +10,13 @@
 import { ConnectingTool } from './connectingTool';
 import { Tile } from './tile';
 import { TileUtils } from './tileUtils';
-import {Game} from './game';
+import { BaseTool } from './baseTool';
 
 var BuildingTool = ConnectingTool(function(cost, centreTile, map, size, animated) {
   this.init(cost, map, false);
   this.centreTile = centreTile;
   this.size = size;
   this.animated = animated;
-  var cropcost = 0;
-  var ftile = Tile.FREEF;
 });
 
 
@@ -26,10 +24,15 @@ var BuildingTool = ConnectingTool(function(cost, centreTile, map, size, animated
 BuildingTool.prototype.putBuilding = function(leftX, topY) {
   var posX, posY, tileValue, tileFlags;
  // var baseTile = this.centreTile - this.size - 1;
- var baseTile;
-
+  var baseTile;
+  var b = BaseTool.getWWTP();
+  var c = BaseTool.getCropCost();
  
-  if(this.centreTile == Tile.FREEF) this.centreTile = ftile;
+  if(this.centreTile == Tile.FREEF || this.centreTile == Tile.FREEINDF) {
+      if(b) {this.centreTile = Tile.FREEF;}
+      else this.centreTile = Tile.FREEINDF;
+  }
+  this.addCost(c);
 
   baseTile = this.centreTile - this.size - 1;
 
@@ -115,8 +118,6 @@ BuildingTool.prototype.buildBuilding = function(x, y) {
     return prepareResult;
 
   this.addCost(this.toolCost);
-
-  if(centreTile ===  Tile.FREEF || centreTile === Tile.FREEINDF) this.addCost(cropcost);
 
   this.putBuilding(x, y);
 

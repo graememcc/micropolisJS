@@ -51,8 +51,6 @@ function Game(gameMap, tileSet, snowTileSet, spriteSheet, difficulty, name) {
     savedGame = gameMap;
   }
   this.defaultwwtp = true;
-  //var wwtpcost = 0;
-  //var fieldtile = Tile.FREEF;
   this.croptype = Simulation.CROP_CORN;
   this.tileSet = tileSet;
   this.snowTileSet = snowTileSet;
@@ -374,11 +372,10 @@ Game.prototype.handleFieldWindowClosure = function(actions) {
 
     switch (a.action) {
       case FieldWindow.WWTP:
-        this.setWWTP(a.data);
+       BaseTool.setWWTP(a.data);
         break;
 
       case FieldWindow.CROP:
-        this.croptype = a.data;
         this.setCrop(a.data);
         break;
 
@@ -387,14 +384,6 @@ Game.prototype.handleFieldWindowClosure = function(actions) {
     }
   }
 };
-
-Game.prototype.setWWTP = function(s){
-  /*if(s) this.fieldtile = Tile.FREEF;
-  else this.fieldtile = Tile.FREEINDF;*/
-
-  if(s) BuildingTool.ftile = Tile.FREEF;
-  else BuildingTool.ftile = Tile.FREEINDF;
-}
 
 Game.prototype.setCrop = function(c){
   if (c !== Simulation.CROP_CORN &&
@@ -405,23 +394,23 @@ Game.prototype.setCrop = function(c){
 
   switch (c) {
     case Simulation.CROP_CORN:
-      //this.wwtpcost = 10;
-      BuildingTool.cropcost = 10;
+    
+      BaseTool.setCropCost(10);
       break;
 
     case Simulation.CROP_WHEAT:
-      //this.wwtpcost =  100;
-      BuildingTool.cropcost = 100;
+      
+      BaseTool.setCropCost(100);
       break;
 
     case Simulation.CROP_ORCHARD:
-     // this.wwtpcost = 1000;
-     BuildingTool.cropcost = 1000;
+     
+      BaseTool.setCropCost(1000);
       break;
 
     case Simulation.CROP_POTATO:
-     // this.wwtpcost = 5000;
-     BuildingTool.cropcost = 10000;
+     
+      BaseTool.setCropCost(10000);
       break;
 
     default:
