@@ -661,8 +661,8 @@ Object.defineProperties(Simulation,
   SPEED_FAST: MiscUtils.makeConstantDescriptor(3),
   CROP_CORN: MiscUtils.makeConstantDescriptor(0),
   CROP_WHEAT:  MiscUtils.makeConstantDescriptor(1),
-  CROP_POTATO: MiscUtils.makeConstantDescriptor(2),
-  CROP_ORCHARD: MiscUtils.makeConstantDescriptor(3),
+  CROP_ORCHARD: MiscUtils.makeConstantDescriptor(2),
+  CROP_POTATO: MiscUtils.makeConstantDescriptor(3),
 });
 
 

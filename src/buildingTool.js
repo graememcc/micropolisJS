@@ -31,8 +31,9 @@ BuildingTool.prototype.putBuilding = function(leftX, topY) {
   if(this.centreTile == Tile.FREEF || this.centreTile == Tile.FREEINDF) {
       if(b) {this.centreTile = Tile.FREEF;}
       else this.centreTile = Tile.FREEINDF;
+      this.addCost(c);
   }
-  this.addCost(c);
+  
 
   baseTile = this.centreTile - this.size - 1;
 
