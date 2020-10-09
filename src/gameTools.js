@@ -20,7 +20,7 @@ import { Tile } from './tile';
 import { WireTool } from './wireTool';
 import { ChannelTool } from './channelTool';
 
-function GameTools(map, wwtpcost, fieldtile) {
+function GameTools(map) {
   var tools = EventEmitter({
     airport: new BuildingTool(10000, Tile.AIRPORT, map, 6, false),
     bulldozer: new BulldozerTool(map),
