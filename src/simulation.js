@@ -53,7 +53,6 @@ var Simulation = EventEmitter(function (gameMap, gameLevel, speed, savedGame) {
   this._lastPowerMessage = null;
 
   // And now, the main cast of characters
-  this.wwtpcost = 0;
   this.evaluation = new Evaluation(this._gameLevel);
   this._valves = new Valves();
   this.budget = new Budget();

@@ -51,7 +51,7 @@ function Game(gameMap, tileSet, snowTileSet, spriteSheet, difficulty, name) {
     savedGame = gameMap;
   }
   var defaultwwtp = true;
-  var wwtpcost = 0;
+  var wwtpcost = 10;
   var fieldtile = Tile.FREEF;
   var croptype = Simulation.CROP_CORN;
   this.tileSet = tileSet;
@@ -183,7 +183,7 @@ function Game(gameMap, tileSet, snowTileSet, spriteSheet, difficulty, name) {
   this.handleFieldRequest = makeWindowOpenHandler('field', function() {
     return [{cropselect: this.croptype, shouldWWTP: this.defaultwwtp }];
   }.bind(this));
-  this.fieldWindow = new fieldWindow(opacityLayerID, 'fieldWindow');
+  this.fieldWindow = new FieldWindow(opacityLayerID, 'fieldWindow');
   this.fieldWindow.addEventListener(Messages.FIELD_WINDOW_CLOSED, this.handleFieldWindowClosure.bind(this));
   this.inputStatus.addEventListener(Messages.FIELD_WINDOW_REQUESTED, this.handleFieldRequest.bind(this));
 
