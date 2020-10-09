@@ -10,13 +10,17 @@
 import { ConnectingTool } from './connectingTool';
 import { Tile } from './tile';
 import { TileUtils } from './tileUtils';
+import {Game} from './game';
 
 var BuildingTool = ConnectingTool(function(cost, centreTile, map, size, animated) {
   this.init(cost, map, false);
   this.centreTile = centreTile;
   this.size = size;
   this.animated = animated;
+  var cropcost = 0;
+  var ftile = Tile.FREEF;
 });
+
 
 
 BuildingTool.prototype.putBuilding = function(leftX, topY) {
@@ -24,11 +28,9 @@ BuildingTool.prototype.putBuilding = function(leftX, topY) {
  // var baseTile = this.centreTile - this.size - 1;
  var baseTile;
 
- /* if(this.centreTile == Tile.FREEF || this.centreTile == Tile.FREEINDF){
-    if(!confirm("Building a WWTP field?")){
-        this.centreTile = Tile.FREEINDF;
-    }else this.centreTile = Tile.FREEF;
-  }*/
+ 
+  if(this.centreTile == Tile.FREEF) this.centreTile = ftile;
+
   baseTile = this.centreTile - this.size - 1;
 
   for (var dy = 0; dy < this.size; dy++) {
@@ -113,6 +115,8 @@ BuildingTool.prototype.buildBuilding = function(x, y) {
     return prepareResult;
 
   this.addCost(this.toolCost);
+
+  if(centreTile ===  Tile.FREEF || centreTile === Tile.FREEINDF) this.addCost(cropcost);
 
   this.putBuilding(x, y);
 

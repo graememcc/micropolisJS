@@ -35,7 +35,7 @@ function GameTools(map, wwtpcost, fieldtile) {
     port: new BuildingTool(3000, Tile.PORT, map, 4, false),
     rail: new RailTool(map),
     residential: new BuildingTool(100, Tile.FREEZ, map, 3, false),
-    field: new BuildingTool(wwtpcost, fieldtile, map, 3, false),
+    field: new BuildingTool(0, Tile.FREEF, map, 3, false),
     road: new RoadTool(map),
     query: new QueryTool(map),
     stadium: new BuildingTool(5000, Tile.STADIUM, map, 4, false),

@@ -6,7 +6,7 @@
  * http://micropolisjs.graememcc.co.uk/COPYING
  *
  */
-
+import { BuildingTool } from './buildingTool';
 import { BaseTool } from './baseTool';
 import { BudgetWindow } from './budgetWindow';
 import { Config } from './config';
@@ -50,10 +50,10 @@ function Game(gameMap, tileSet, snowTileSet, spriteSheet, difficulty, name) {
     this.gameMap = new GameMap(120, 100);
     savedGame = gameMap;
   }
-  var defaultwwtp = true;
-  var wwtpcost = 10;
-  var fieldtile = Tile.FREEF;
-  var croptype = Simulation.CROP_CORN;
+  this.defaultwwtp = true;
+  //var wwtpcost = 0;
+  //var fieldtile = Tile.FREEF;
+  this.croptype = Simulation.CROP_CORN;
   this.tileSet = tileSet;
   this.snowTileSet = snowTileSet;
   this.defaultSpeed = Simulation.SPEED_MED;
@@ -181,11 +181,11 @@ function Game(gameMap, tileSet, snowTileSet, spriteSheet, difficulty, name) {
 
   // ... the field crops window
   this.handleFieldRequest = makeWindowOpenHandler('field', function() {
-    return [{cropselect: this.croptype, shouldWWTP: this.defaultwwtp }];
+    return [{cropselect: this.croptype, shouldWWTP: this.defaultwwtp}];
   }.bind(this));
   this.fieldWindow = new FieldWindow(opacityLayerID, 'fieldWindow');
   this.fieldWindow.addEventListener(Messages.FIELD_WINDOW_CLOSED, this.handleFieldWindowClosure.bind(this));
-  this.inputStatus.addEventListener(Messages.FIELD_WINDOW_REQUESTED, this.handleFieldRequest.bind(this));
+  this.inputStatus.addEventListener(Messages.FIELD_REQUESTED, this.handleFieldRequest.bind(this));
 
   // ... and finally the query window
   this.queryWindow = new QueryWindow(opacityLayerID, 'queryWindow');
@@ -389,8 +389,11 @@ Game.prototype.handleFieldWindowClosure = function(actions) {
 };
 
 Game.prototype.setWWTP = function(s){
-  if(s) this.fieldtile = Tile.FREEF;
-  else this.fieldtile = Tile.FREEINDF;
+  /*if(s) this.fieldtile = Tile.FREEF;
+  else this.fieldtile = Tile.FREEINDF;*/
+
+  if(s) BuildingTool.ftile = Tile.FREEF;
+  else BuildingTool.ftile = Tile.FREEINDF;
 }
 
 Game.prototype.setCrop = function(c){
@@ -398,23 +401,27 @@ Game.prototype.setCrop = function(c){
     c !== Simulation.CROP_WHEAT &&
     c !== Simulation.CROP_ORCHARD &&
     c !== Simulation.CROP_POTATO)
-  throw new Error('Invalid speed!');
+  throw new Error('Invalid crop!');
 
   switch (c) {
     case Simulation.CROP_CORN:
-      this.wwtpcost = 10;
+      //this.wwtpcost = 10;
+      BuildingTool.cropcost = 10;
       break;
 
     case Simulation.CROP_WHEAT:
-      this.wwtpcost =  100;
+      //this.wwtpcost =  100;
+      BuildingTool.cropcost = 100;
       break;
 
     case Simulation.CROP_ORCHARD:
-      this.wwtpcost = 1000;
+     // this.wwtpcost = 1000;
+     BuildingTool.cropcost = 1000;
       break;
 
     case Simulation.CROP_POTATO:
-      this.wwtpcost = 5000;
+     // this.wwtpcost = 5000;
+     BuildingTool.cropcost = 10000;
       break;
 
     default:

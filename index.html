@@ -115,7 +115,7 @@
           <div id="toolInfo" class="alignCenter"><span id="toolOutput">Tools</span></div>
           <div id="buttons">
             <button id="residentialButton" data-size="3" data-tool="residential" data-colour="lime" class="toolButton unselected">Residential $100</button>
-            <button id="fieldButton" data-size="3" data-tool="field" data-colour="darkgoldenrod" class="toolButton unselected">Field</button>
+            <button id="fieldRequest" data-size="3" data-tool="field" data-colour="darkgoldenrod" class="toolButton unselected">Field</button>
             <button id="nuclearButton" data-size="4" data-tool="nuclear" data-colour="mistyrose" class="toolButton unselected">Nuclear $5000</button>
             <button id="commercialButton" data-size="3" data-tool="commercial" data-colour="blue" class="toolButton unselected">Commercial $100</button>
             <button id="coalButton" data-size="4" data-tool="coal" data-colour="gray" class="toolButton unselected">Coal $3000</button>
@@ -166,7 +166,7 @@
           <div id="build">Build: <%= htmlWebpackPlugin.options.gitHash %></div>
         </div>
       </footer>
-      <div class="hidden modal shadow" id="field">
+      <div class="hidden modal shadow" id="fieldWindow">
         <header id="fieldHeader" class="fieldHeader padding10 chunk alignCenter">
            Field
         </header>
@@ -175,16 +175,16 @@
             <div id="fieldFormContainer">
               <div id="WWTPSelect" class="padding10">
                 WWTP:
-                <input type="radio"  class="WWTPField" name="WWTP_" id="WWTPYes" value="1"><label for="WWTPYes">Yes</label>
-                <input type="radio"  class="WWTPField" name="WWTP_" id="WWTPNo" value="2"><label for="WWTPNo">No</label>
+                <input type="radio"  class="WWTPField" name="WWTP_" id="WWTPYes" value="true"><label for="WWTPYes">Yes</label>
+                <input type="radio"  class="WWTPField" name="WWTP_" id="WWTPNo" value="false"><label for="WWTPNo">No</label>
                 </div>
               </div>
               <div id="selectCrop" class="padding10">  
                 Crop:
-                <input type="radio" class="cropSetting" name="cropSetting" id="cropCorn" value="1" checked="checked"><label for="cropCorn">Corn</label>
-                <input type="radio" class="cropSetting" name="cropSetting" id="cropWheat" value="2"><label for="cropWheat">Wheat</label>
-                <input type="radio" class="cropSetting" name="cropSetting" id="cropOrchard" value="3"><label for="cropOrchard">Orchard</label>
-                <input type="radio" class="cropSetting" name="cropSetting" id="cropPotato" value="4"><label for="cropPotato">Potato</label>
+                <input type="radio" class="cropSetting" name="cropSetting" id="cropCorn" value="0" checked="checked"><label for="cropCorn">Corn</label>
+                <input type="radio" class="cropSetting" name="cropSetting" id="cropWheat" value="1"><label for="cropWheat">Wheat</label>
+                <input type="radio" class="cropSetting" name="cropSetting" id="cropOrchard" value="2"><label for="cropOrchard">Orchard</label>
+                <input type="radio" class="cropSetting" name="cropSetting" id="cropPotato" value="3"><label for="cropPotato">Potato</label>
               </div>
             </div>
             <div id="fieldButtons" class="alignCenter margin10">

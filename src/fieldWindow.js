@@ -54,16 +54,16 @@ var submit = function(e) {
 
 
 FieldWindow.prototype.open = function(fieldData) {
-  if (fieldData.WWTP)
+  if (fieldData.shouldWWTP)
     $(WWTPYesID).prop('checked', true);
   else
     $(WWTPNoID).prop('checked', true);
 
-  if (fieldData.CROP === Simulation.CROP_CORN)
+  if (fieldData.cropSelect === Simulation.CROP_CORN)
     $(cropCornID).prop('checked', true);
-  else if (fieldData.CROP === Simulation.CROP_WHEAT)
+  else if (fieldData.cropSelect === Simulation.CROP_WHEAT)
     $(cropWheatID).prop('checked', true);
-  else if (fieldData.CROP === Simulation.CROP_POTATO)
+  else if (fieldData.cropSelect === Simulation.CROP_POTATO)
     $(cropPotatoID).prop('checked', true);
   else
     $(cropOrchardID).prop('checked', true);
