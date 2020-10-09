@@ -38,7 +38,7 @@ WireTool.prototype.layWire = function(x, y) {
         if (tile.isConductive()) {
           tile = tile.getValue();
           tile = TileUtils.normalizeRoad(tile);
-          if (tile != Tile.HROADPOWER && tile != Tile.RAILHPOWERV && tile != Tile.HPOWER) {
+          if (tile != Tile.HROADPOWER && tile != Tile.TUBEHPOWERV && tile != Tile.HPOWER) {
             this._worldEffects.setTile(x, y, Tile.VPOWER, Tile.CONDBIT | Tile.BULLBIT);
             break;
           }
@@ -50,7 +50,7 @@ WireTool.prototype.layWire = function(x, y) {
         if (tile.isConductive()) {
           tile = tile.getValue();
           tile = TileUtils.normalizeRoad(tile);
-          if (tile != Tile.HROADPOWER && tile != Tile.RAILHPOWERV && tile != Tile.HPOWER) {
+          if (tile != Tile.HROADPOWER && tile != Tile.TUBEHPOWERV && tile != Tile.HPOWER) {
             this._worldEffects.setTile(x, y, Tile.VPOWER, Tile.CONDBIT | Tile.BULLBIT);
             break;
           }
@@ -62,7 +62,7 @@ WireTool.prototype.layWire = function(x, y) {
         if (tile.isConductive()) {
           tile = tile.getValue();
           tile = TileUtils.normalizeRoad(tile);
-          if (tile != Tile.VROADPOWER && tile != Tile.RAILVPOWERH && tile != Tile.VPOWER) {
+          if (tile != Tile.VROADPOWER && tile != Tile.TUBEVPOWERH && tile != Tile.VPOWER) {
             this._worldEffects.setTile(x, y, Tile.HPOWER, Tile.CONDBIT | Tile.BULLBIT);
             break;
           }
@@ -74,7 +74,7 @@ WireTool.prototype.layWire = function(x, y) {
         if (tile.isConductive()) {
           tile = tile.getValue();
           tile = TileUtils.normalizeRoad(tile);
-          if (tile != Tile.VROADPOWER && tile != Tile.RAILVPOWERH && tile != Tile.VPOWER) {
+          if (tile != Tile.VROADPOWER && tile != Tile.TUBEVPOWERH && tile != Tile.VPOWER) {
             this._worldEffects.setTile(x, y, Tile.HPOWER, Tile.CONDBIT | Tile.BULLBIT);
             break;
           }
@@ -91,12 +91,12 @@ WireTool.prototype.layWire = function(x, y) {
       this._worldEffects.setTile(x, y, Tile.VROADPOWER, Tile.CONDBIT | Tile.BURNBIT | Tile.BULLBIT);
       break;
 
-    case Tile.LHRAIL:
-      this._worldEffects.setTile(x, y, Tile.RAILHPOWERV, Tile.CONDBIT | Tile.BURNBIT | Tile.BULLBIT);
+    case Tile.LHTUBE:
+      this._worldEffects.setTile(x, y, Tile.TUBEHPOWERV, Tile.CONDBIT | Tile.BURNBIT | Tile.BULLBIT);
       break;
 
-    case Tile.LVRAIL:
-      this._worldEffects.setTile(x, y, Tile.RAILVPOWERH, Tile.CONDBIT | Tile.BURNBIT | Tile.BULLBIT);
+    case Tile.LVTUBE:
+      this._worldEffects.setTile(x, y, Tile.TUBEVPOWERH, Tile.CONDBIT | Tile.BURNBIT | Tile.BULLBIT);
       break;
 
     default:

@@ -111,6 +111,7 @@ var absoluteDistance = function(orgX, orgY, destX, destY) {
 
 var checkWet = function(tileValue) {
   if (tileValue === Tile.HPOWER || tileValue === Tile.VPOWER ||
+      tileValue === Tile.HTUBE || tileValue === Tile.VTUBE ||
       tileValue === Tile.HRAIL || tileValue === Tile.VRAIL ||
       tileValue === Tile.BRWH || tileValue === Tile.BRWV)
     return true;

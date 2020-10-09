@@ -49,8 +49,8 @@ var fixSingle = function(x, y) {
       tile = this._worldEffects.getTile(x, y - 1);
       tile = TileUtils.normalizeRoad(tile);
 
-      if ((tile === Tile.HRAILROAD || (tile >= Tile.ROADBASE && tile <= Tile.VROADPOWER)) &&
-           tile !== Tile.HROADPOWER && tile !== Tile.VRAILROAD &&
+      if ((tile === Tile.HTUBEROAD || (tile >= Tile.ROADBASE && tile <= Tile.VROADPOWER)) &&
+           tile !== Tile.HROADPOWER && tile !== Tile.VTUBEROAD &&
            tile !== Tile.ROADBASE)
         adjTile |= 1;
     }
@@ -59,8 +59,8 @@ var fixSingle = function(x, y) {
       tile = this._worldEffects.getTile(x + 1, y);
       tile = TileUtils.normalizeRoad(tile);
 
-      if ((tile === Tile.VRAILROAD || (tile >= Tile.ROADBASE && tile <= Tile.VROADPOWER)) &&
-          tile !== Tile.VROADPOWER && tile !== Tile.HRAILROAD &&
+      if ((tile === Tile.VTUBEROAD || (tile >= Tile.ROADBASE && tile <= Tile.VROADPOWER)) &&
+          tile !== Tile.VROADPOWER && tile !== Tile.HTUBEROAD &&
           tile !== Tile.VBRIDGE)
         adjTile |= 2;
     }
@@ -69,8 +69,8 @@ var fixSingle = function(x, y) {
       tile = this._worldEffects.getTile(x, y + 1);
       tile = TileUtils.normalizeRoad(tile);
 
-      if ((tile === Tile.HRAILROAD || (tile >= Tile.ROADBASE && tile <= Tile.VROADPOWER)) &&
-          tile !== Tile.HROADPOWER && tile !== Tile.VRAILROAD &&
+      if ((tile === Tile.HTUBEROAD || (tile >= Tile.ROADBASE && tile <= Tile.VROADPOWER)) &&
+          tile !== Tile.HROADPOWER && tile !== Tile.VTUBEROAD &&
           tile !== Tile.ROADBASE)
         adjTile |= 4;
     }
@@ -79,8 +79,8 @@ var fixSingle = function(x, y) {
       tile = this._worldEffects.getTile(x - 1, y);
       tile = TileUtils.normalizeRoad(tile);
 
-      if ((tile === Tile.VRAILROAD || (tile >= Tile.ROADBASE && tile <= Tile.VROADPOWER)) &&
-          tile !== Tile.VROADPOWER && tile !== Tile.HRAILROAD &&
+      if ((tile === Tile.VTUBEROAD || (tile >= Tile.ROADBASE && tile <= Tile.VROADPOWER)) &&
+          tile !== Tile.VROADPOWER && tile !== Tile.HTUBEROAD &&
           tile !== Tile.VBRIDGE)
         adjTile |= 8;
     }
@@ -136,7 +136,7 @@ var fixSingle = function(x, y) {
       if (tile.isConductive()) {
         tile = tile.getValue();
         tile = TileUtils.normalizeRoad(tile);
-        if (tile !== Tile.VPOWER && tile !== Tile.VROADPOWER && tile !== Tile.RAILVPOWERH)
+        if (tile !== Tile.VPOWER && tile !== Tile.VROADPOWER && tile !== Tile.TUBEVPOWERH)
           adjTile |= 1;
       }
     }
@@ -146,7 +146,7 @@ var fixSingle = function(x, y) {
       if (tile.isConductive()) {
         tile = tile.getValue();
         tile = TileUtils.normalizeRoad(tile);
-        if (tile !== Tile.HPOWER && tile !== Tile.HROADPOWER && tile !== Tile.RAILHPOWERV)
+        if (tile !== Tile.HPOWER && tile !== Tile.HROADPOWER && tile !== Tile.TUBEHPOWERV)
           adjTile |= 2;
       }
     }
@@ -156,7 +156,7 @@ var fixSingle = function(x, y) {
       if (tile.isConductive()) {
         tile = tile.getValue();
         tile = TileUtils.normalizeRoad(tile);
-        if (tile !== Tile.VPOWER && tile !== Tile.VROADPOWER && tile !== Tile.RAILVPOWERH)
+        if (tile !== Tile.VPOWER && tile !== Tile.VROADPOWER && tile !== Tile.TUBEVPOWERH)
           adjTile |= 4;
       }
     }
@@ -166,7 +166,7 @@ var fixSingle = function(x, y) {
       if (tile.isConductive()) {
         tile = tile.getValue();
         tile = TileUtils.normalizeRoad(tile);
-        if (tile !== Tile.HPOWER && tile !== Tile.HROADPOWER && tile !== Tile.RAILHPOWERV)
+        if (tile !== Tile.HPOWER && tile !== Tile.HROADPOWER && tile !== Tile.TUBEHPOWERV)
           adjTile |= 8;
       }
     }
@@ -181,7 +181,7 @@ var fixSingle = function(x, y) {
       if (tile.isHydraulic()) {
         tile = tile.getValue();
         tile = TileUtils.normalizeRoad(tile);
-        if (tile !== Tile.VTUBE && tile !== Tile.VROADTUBE && tile !== Tile.RAILVTUBEH)
+        if (tile !== Tile.VTUBE && tile !== Tile.VTUBEROAD && tile !== Tile.TUBEVPOWERH)
           adjTile |= 1;
       }
     }
@@ -191,7 +191,7 @@ var fixSingle = function(x, y) {
       if (tile.isHydraulic()) {
         tile = tile.getValue();
         tile = TileUtils.normalizeRoad(tile);
-        if (tile !== Tile.HTUBE && tile !== Tile.HROADTUBE && tile !== Tile.RAILHTUBEV)
+        if (tile !== Tile.HTUBE && tile !== Tile.HTUBEROAD && tile !== Tile.TUBEHPOWERV)
           adjTile |= 2;
       }
     }
@@ -201,7 +201,7 @@ var fixSingle = function(x, y) {
       if (tile.isHydraulic()) {
         tile = tile.getValue();
         tile = TileUtils.normalizeRoad(tile);
-        if (tile !== Tile.VTUBE && tile !== Tile.VROADTUBE && tile !== Tile.RAILVTUBEH)
+        if (tile !== Tile.VTUBE && tile !== Tile.VTUBEROAD && tile !== Tile.TUBEVPOWERH)
           adjTile |= 4;
       }
     }
@@ -211,7 +211,7 @@ var fixSingle = function(x, y) {
       if (tile.isHydraulic()) {
         tile = tile.getValue();
         tile = TileUtils.normalizeRoad(tile);
-        if (tile !== Tile.HTUBE && tile !== Tile.HROADTUBE && tile !== Tile.RAILHTUBEV)
+        if (tile !== Tile.HTUBE && tile !== Tile.HTUBEROAD && tile !== Tile.TUBEHPOWERV)
           adjTile |= 8;
       }
     }

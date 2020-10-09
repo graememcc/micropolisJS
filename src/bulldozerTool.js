@@ -60,6 +60,8 @@ BulldozerTool.prototype.layDoze = function(x, y) {
     case Tile.VPOWER:
     case Tile.HRAIL:
     case Tile.VRAIL:
+    case Tile.HTUBE:
+    case Tile.VTUBE:
       this._worldEffects.setTile(x, y, Tile.RIVER);
       break;
 

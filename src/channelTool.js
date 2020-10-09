@@ -38,7 +38,7 @@ ChannelTool.prototype.layChannel = function(x, y) {
         if (tile.isHydraulic()) {
           tile = tile.getValue();
           tile = TileUtils.normalizeRoad(tile);
-          if (tile != Tile.HROADTUBE && tile != Tile.RAILHTUBEV && tile != Tile.HTUBE) { 
+          if (tile != Tile.HTUBEROAD && tile != Tile.TUBEHPOWERV && tile != Tile.HTUBE) { 
             this._worldEffects.setTile(x, y, Tile.VTUBE, Tile.HYDRABIT | Tile.BULLBIT);
             break;
           }
@@ -50,7 +50,7 @@ ChannelTool.prototype.layChannel = function(x, y) {
         if (tile.isHydraulic()) {
           tile = tile.getValue();
           tile = TileUtils.normalizeRoad(tile);
-          if (tile != Tile.HROADTUBE && tile != Tile.RAILHTUBEV && tile != Tile.HTUBE) {
+          if (tile != Tile.HTUBEROAD && tile != Tile.TUBEHPOWERV && tile != Tile.HTUBE) {
             this._worldEffects.setTile(x, y, Tile.VTUBE, Tile.HYDRABIT | Tile.BULLBIT);
             break;
           }
@@ -62,7 +62,7 @@ ChannelTool.prototype.layChannel = function(x, y) {
         if (tile.isHydraulic()) {
           tile = tile.getValue();
           tile = TileUtils.normalizeRoad(tile);
-          if (tile != Tile.VROADTUBE && tile != Tile.RAILVTUBEH && tile != Tile.VTUBE) {
+          if (tile != Tile.VTUBEROAD && tile != Tile.TUBEVPOWERH && tile != Tile.VTUBE) {
             this._worldEffects.setTile(x, y, Tile.HTUBE, Tile.HYDRABIT | Tile.BULLBIT);
             break;
           }
@@ -74,7 +74,7 @@ ChannelTool.prototype.layChannel = function(x, y) {
         if (tile.isHydraulic()) {
           tile = tile.getValue();
           tile = TileUtils.normalizeRoad(tile);
-          if (tile != Tile.VROADTUBE && tile != Tile.RAILVTUBEH && tile != Tile.VTUBE) {
+          if (tile != Tile.VTUBEROAD && tile != Tile.TUBEVPOWERH && tile != Tile.VTUBE) {
             this._worldEffects.setTile(x, y, Tile.HTUBE, Tile.HYDRABIT | Tile.BULLBIT);
             break;
           }
@@ -84,19 +84,19 @@ ChannelTool.prototype.layChannel = function(x, y) {
       return this.TOOLRESULT_FAILED;
     
     case Tile.ROADS:
-      this._worldEffects.setTile(x, y, Tile.HROADTUBE, Tile.HYDRABIT | Tile.BURNBIT | Tile.BULLBIT);
+      this._worldEffects.setTile(x, y, Tile.HTUBEROAD, Tile.HYDRABIT | Tile.BURNBIT | Tile.BULLBIT);
       break;
 
     case Tile.ROADS2:
-      this._worldEffects.setTile(x, y, Tile.VROADTUBE, Tile.HYDRABIT | Tile.BURNBIT | Tile.BULLBIT);
+      this._worldEffects.setTile(x, y, Tile.VTUBEROAD, Tile.HYDRABIT | Tile.BURNBIT | Tile.BULLBIT);
       break;
 
-    case Tile.LHRAIL:
-      this._worldEffects.setTile(x, y, Tile.RAILHTUBEV, Tile.HYDRABIT | Tile.BURNBIT | Tile.BULLBIT);
+    case Tile.LHPOWER:
+      this._worldEffects.setTile(x, y, Tile.TUBEVPOWERH, Tile.HYDRABIT | Tile.BURNBIT | Tile.BULLBIT);
       break;
 
-    case Tile.LVRAIL:
-      this._worldEffects.setTile(x, y, Tile.RAILVTUBEH, Tile.HYDRABIT | Tile.BURNBIT | Tile.BULLBIT);
+    case Tile.LVPOWER:
+      this._worldEffects.setTile(x, y, Tile.TUBEHPOWERV, Tile.HYDRABIT | Tile.BURNBIT | Tile.BULLBIT);
       break;
 
     default:

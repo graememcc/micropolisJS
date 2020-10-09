@@ -256,8 +256,6 @@ Tile.ROADS10        = 75;
 Tile.INTERSECTION   = 76;
 Tile.HROADPOWER     = 77;
 Tile.VROADPOWER     = 78;
-Tile.HROADTUBE     = 223;             ///
-Tile.VROADTUBE     = 223;           ///
 Tile.BRWH           = 79;
 Tile.LTRFBASE       = 80; // First tile with low traffic
 // tile 81 -- 94 ?
@@ -293,16 +291,16 @@ Tile.LVPOWER7       = 217;
 Tile.LVPOWER8       = 218;
 Tile.LVPOWER9       = 219;
 Tile.LVPOWER10      = 220;
-Tile.RAILHPOWERV    = 221; // Horizontal rail, vertical power
-Tile.RAILVPOWERH    = 222; // Vertical rail, horizontal power
+Tile.TUBEHPOWERV    = 221; // Horizontal tube, vertical power
+Tile.TUBEVPOWERH    = 222; // Vertical tube, horizontal power
 Tile.POWERBASE      = Tile.HPOWER;
-Tile.LASTPOWER      = Tile.RAILVPOWERH;
+Tile.LASTPOWER      = Tile.TUBEVPOWERH;
 
 Tile.UNUSED_TRASH6  = 223;
 
 /* tubes lines */ //________
-Tile.HTUBE         = 224;
-Tile.VTUBE         = 225;
+Tile.VTUBE         = 224;
+Tile.HTUBE         = 225;
 Tile.LHTUBE        = 226;
 Tile.LVTUBE        = 227;
 Tile.LVTUBE2       = 228;
@@ -314,10 +312,10 @@ Tile.LVTUBE7       = 233;
 Tile.LVTUBE8       = 234;
 Tile.LVTUBE9       = 235;
 Tile.LVTUBE10      = 236;
-Tile.RAILHTUBEV    = 237; // Horizontal rail, vertical tube
-Tile.RAILVTUBEH    = 238; // Vertical rail, horizontal tube
+Tile.HTUBEROAD     = 237; // Horizontal tube road
+Tile.VTUBEROAD     = 238; // Vertical tube road
 Tile.TUBEBASE      = Tile.HTUBE;
-Tile.LASTTUBE      = Tile.RAILVTUBEH;
+Tile.LASTTUBE      = 238;
 
 /* Rail 
 Tile.HRAIL          = 224;
