@@ -219,7 +219,8 @@ var fieldFound = function(map, x, y, simData) {
 
   var trafficOK = Traffic.ROUTE_FOUND;
 
-  // Occasionally check to see if the zone is connected to the road network. The chance of this happening increases
+
+/*  // Occasionally check to see if the zone is connected to the road network. The chance of this happening increases
   // as the zone's population increases. Note: we will never execute this conditional if the zone is empty, as zero
   // will never be be bigger than any of the values Random will generate
   if (population > Random.getRandom(35)) {
@@ -256,13 +257,13 @@ var fieldFound = function(map, x, y, simData) {
     // 81.8% of them are above -20880, so nearly 82% of the time, we will never take this branch.
     // Thus, there's approximately a 9% chance that the value will be in the range, and we *might* grow.
     if (zoneScore > -350 && (zoneScore - 26380) > Random.getRandom16Signed()) {
-/*
+
       // If this zone is empty, and field demand is strong, we might make a hospital
       if (population === 0 && Random.getChance(3)) {
         makeHospital(map, x, y, simData, zonePower);
         return;
       }
-*/
+
       // Get an index in the range 0-3 scoring the land desirability and pollution, and grow the zone to the next
       // population rank
       lpValue = ZoneUtils.getLandPollutionValue(simData.blockMaps, x, y);
@@ -281,6 +282,7 @@ var fieldFound = function(map, x, y, simData) {
       degradeZone(map, x, y, simData.blockMaps, population, lpValue, zoneIrrigate);
     }
   }
+  */
 };
 
 

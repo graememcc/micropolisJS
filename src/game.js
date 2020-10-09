@@ -395,22 +395,22 @@ Game.prototype.setCrop = function(c){
   switch (c) {
     case Simulation.CROP_CORN:
     
-      BaseTool.setCropCost(10);
+      BaseTool.setCropCost(BaseTool.CORN_COST);
       break;
 
     case Simulation.CROP_WHEAT:
       
-      BaseTool.setCropCost(100);
+      BaseTool.setCropCost(BaseTool.WHEAT_COST);
       break;
 
     case Simulation.CROP_ORCHARD:
      
-      BaseTool.setCropCost(1000);
+      BaseTool.setCropCost(BaseTool.ORCHARD_COST);
       break;
 
     case Simulation.CROP_POTATO:
      
-      BaseTool.setCropCost(10000);
+      BaseTool.setCropCost(BaseTool.POTATO_COST);
       break;
 
     default:

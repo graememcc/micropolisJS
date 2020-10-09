@@ -358,28 +358,6 @@ Tile.CHURCH0BASE    = 414; // numbered alias
 Tile.CHURCH         = 418; // Center of church (tiles 414--422)
 Tile.CHURCH0        = 418; // numbered alias
 
-//field zone tiles
-
-Tile.FIELDBASE      = 956;//Tile.RESBASE; // Empty field, tiles
-Tile.FREEF          = 960; //Tile.FREEZ; // center-tile of 3x3 empty field
-
-Tile.FARM           = 971; // Single tile farms ----- start tile of crops
-Tile.FFARM          = Tile.FARM; // first farm
-Tile.LFARM          = 982; // last farm
- 
-Tile.FZB            = 975; //Tile.RZB; // center tile first 3x3 tile field
-
-//INDIE field zone tiles
-
-Tile.INDFIELDBASE      = 983;//Tile.RESBASE; // Empty field, tiles
-Tile.FREEINDF          = 987; //Tile.FREEZ; // center-tile of 3x3 empty field
-
-Tile.INDFARM           = 992; //Tile.HOUSE; // Single tile farms
-Tile.FINDFARM          = Tile.INDFARM; // first farm = first house
-Tile.LINDFARM          = 1003; // Tile.HHTHR; // last farm = last house
- 
-Tile.INDFZB            = 975; //Tile.RZB; // center tile first 3x3 tile field
-
 // Commercial zone tiles
 
 Tile.COMBASE        = 423; // Empty commercial, tiles 423--431
@@ -526,6 +504,27 @@ Tile.NUKESWIRL4     = 955;
 
 // Tiles 956-959 unused (originally)
 //    TILE_COUNT     = 960;
+
+//field zone tiles
+
+Tile.FIELDBASE      = 956;//Tile.RESBASE; // Empty field, tiles
+Tile.FREEF          = 960; //Tile.FREEZ; // center-tile of 3x3 empty field
+ 
+Tile.FZB            = 975;  // center tile first 3x3 tile field
+
+//INDIE field zone tiles
+
+Tile.INDFIELDBASE      = 965; // Empty field, tiles
+Tile.FREEINDF          = 969; //Tile.FREEZ; // center-tile of 3x3 empty field
+ 
+Tile.INDFZB            = 975;  // center tile first 3x3 tile field
+
+// crops tiles
+
+Tile.CORN           = 974; 
+Tile.WHEAT          = 975; 
+Tile.ORCHARD        = 976;
+Tile.POTATO         = 977; 
 
 // Extended zones: 956-1019
 

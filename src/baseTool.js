@@ -48,6 +48,17 @@ var doAutoBulldoze = function(x, y) {
   }
 };
 
+var cropcost = function(x, y) {
+  var tile = this._worldEffects.getTile(x, y);
+    tile = TileUtils.normalizeRoad(tile);
+    switch (tile) {
+      case Tile.CORN: setCropCost(CORN_COST); break;
+      case Tile.WHEAT: setCropCost(WHEAT_COST); break;
+      case Tile.ORCHARD: setCropCost(ORCHARD_COST); break;
+      case Tile.POTATO: setCropCost(POTATO_COST); break;
+    }
+};
+
 
 var apply = function(budget) {
   this._worldEffects.apply();
@@ -73,6 +84,10 @@ var modifyIfEnoughFunding = function(budget) {
   return true;
 };
 
+var CORN_COST = 50;
+var WHEAT_COST = 100;
+var ORCHARD_COST = 150;
+var POTATO_COST = 200;
 
 var TOOLRESULT_OK = 0;
 var TOOLRESULT_FAILED = 1;
@@ -83,7 +98,7 @@ var BaseToolConstructor = {
   addCost: addCost,
   autoBulldoze: true,
   wwtp: true,
-  cropcost: 10,
+  cropcost: cropcost,
   bulldozerCost: 1,
   clear: clear,
   doAutoBulldoze: doAutoBulldoze,
@@ -133,7 +148,11 @@ var BaseTool = {
     return BaseToolConstructor.autoBulldoze;
   },
   save: save,
-  load: load
+  load: load,
+  CORN_COST : CORN_COST,
+  WHEAT_COST : WHEAT_COST,
+  ORCHARD_COST : ORCHARD_COST,
+  POTATO_COST : POTATO_COST
 };
 
 export { BaseTool };
