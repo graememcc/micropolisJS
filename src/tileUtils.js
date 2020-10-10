@@ -85,7 +85,7 @@ var isResidentialZone = function(tile) {
 
 var isField = unwrapTile(function(tile) {
   return (tile >= Tile.FIELDBASE && tile <= Tile.FIELDBASE+8) ||
-         (tile >= Tile.CORN && tile <= Tile.POTATO);
+         (tile >= Tile.CORN && tile <= Tile.FPOTATO);
 });
 
 
@@ -95,7 +95,8 @@ var isFieldZone = function(tile) {
 
 var isIndField = unwrapTile(function(tile) {
   return (tile >= Tile.INDFIELDBASE && tile <= Tile.INDFIELDBASE+8) ||
-        (tile >= Tile.CORN && tile <= Tile.POTATO);
+        (tile == Tile.CORN) || (tile == Tile.WHEAT) 
+        || (tile == Tile.ORCHARD)|| (tile == Tile.POTATO)
 });
 
 

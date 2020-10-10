@@ -29,7 +29,7 @@ BuildingTool.prototype.putBuilding = function(leftX, topY) {
   var c = BaseTool.getCropCost();
  
   if(this.centreTile == Tile.FREEF || this.centreTile == Tile.FREEINDF) {
-      if(b) {this.centreTile = Tile.FREEF;} //secondo me non serve
+      if(b) {this.centreTile = Tile.FREEF;}
       else this.centreTile = Tile.FREEINDF;
       this.addCost(c);
   }
@@ -44,18 +44,54 @@ BuildingTool.prototype.putBuilding = function(leftX, topY) {
       tileValue = baseTile;
 
       if (TileUtils.isIndField(tileValue) || TileUtils.isField(tileValue) ||
-           (tileValue>=Tile.WWTPBASE && tileValue<=Tile.LASTWWTP)){
-           if (dx === 1 && dy === 1 && !(tileValue>=Tile.WWTPBASE && tileValue<=Tile.LASTWWTP)) 
+           (tileValue>=Tile.WWTPBASE && tileValue<=Tile.LASTWWTP))
+      {
+           if (dx === 1 && dy === 1 && (tileValue === Tile.FREEINDF)) 
            {
-              switch (c){
-                case BaseTool.CORN_COST     : tileValue = Tile.CORN; break;
-                case BaseTool.WHEAT_COST    : tileValue = Tile.WHEAT; break;
-                case BaseTool.ORCHARD_COST  : tileValue = Tile.ORCHARD; break;
-                case BaseTool.POTATO_COST   : tileValue = Tile.POTATO; break;
-                default: break;
-              } 
-            }
-            tileFlags = Tile.BNHYBIT;
+             switch (c){
+               case BaseTool.CORN_COST: 
+                 tileValue = Tile.CORN; 
+                 break;
+ 
+               case BaseTool.WHEAT_COST: 
+                 tileValue = Tile.WHEAT;
+                 break;
+ 
+               case BaseTool.ORCHARD_COST: 
+                 tileValue = Tile.ORCHARD; 
+                 break;
+ 
+               case BaseTool.POTATO_COST: 
+                 tileValue = Tile.POTATO; 
+                 break;
+ 
+               default: break;
+             } 
+           }
+
+           if (dx === 1 && dy === 1 && (tileValue === Tile.FREEF)) 
+           {
+             switch (c){
+               case BaseTool.CORN_COST: 
+                 tileValue = Tile.FCORN; 
+                 break;
+ 
+               case BaseTool.WHEAT_COST: 
+                 tileValue = Tile.FWHEAT;
+                 break;
+ 
+               case BaseTool.ORCHARD_COST: 
+                 tileValue = Tile.FORCHARD; 
+                 break;
+ 
+               case BaseTool.POTATO_COST: 
+                 tileValue = Tile.FPOTATO; 
+                 break;
+ 
+               default: break;
+             } 
+           }
+        tileFlags = Tile.BNHYBIT;
       }
       else
         tileFlags = Tile.BNCNBIT;

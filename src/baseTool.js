@@ -52,10 +52,21 @@ var cropcost = function(x, y) {
   var tile = this._worldEffects.getTile(x, y);
     tile = TileUtils.normalizeRoad(tile);
     switch (tile) {
-      case Tile.CORN: setCropCost(CORN_COST); break;
-      case Tile.WHEAT: setCropCost(WHEAT_COST); break;
-      case Tile.ORCHARD: setCropCost(ORCHARD_COST); break;
-      case Tile.POTATO: setCropCost(POTATO_COST); break;
+      case Tile.CORN: 
+      case Tile.FCORN:
+        setCropCost(CORN_COST); break;
+
+      case Tile.WHEAT:
+      case Tile.FWHEAT:
+        setCropCost(WHEAT_COST); break;
+
+      case Tile.ORCHARD:
+      case Tile.FORCHARD:
+        setCropCost(ORCHARD_COST); break;
+
+      case Tile.POTATO: 
+      case Tile.FPOTATO: 
+        setCropCost(POTATO_COST); break;
     }
 };
 

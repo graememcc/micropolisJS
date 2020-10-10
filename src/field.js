@@ -209,15 +209,62 @@ var fieldFound = function(map, x, y, simData) {
 
   // Notify the census
   simData.census.fieldZonePop += 1;
+  
+  var tile = map.getTileValue(x, y);
+  var zoneIrrigate = map.getTile(x, y).isIrrigated();
+  if(zoneIrrigate){
+    switch(tile){
+      case Tile.FCORN: 
+        tile = Tile.CORN;
+        break;
+
+      case Tile.FWHEAT:
+        tile = Tile.WHEAT;
+        break;
+
+      case Tile.FORCHARD:
+        centreTile = Tile.ORCHARD; 
+        break;
+
+      case Tile.FPOTATO: 
+        tile  = Tile.POTATO;  
+        break;
+
+      default: break;  
+    }
+  }
+  else{
+      switch(tile){
+        case Tile.CORN: 
+          tile = Tile.FCORN;
+          break;
+  
+        case Tile.WHEAT:
+          tile = Tile.FWHEAT;
+          break;
+  
+        case Tile.ORCHARD:
+          centreTile = Tile.FORCHARD; 
+          break;
+  
+        case Tile.POTATO: 
+          tile  = Tile.FPOTATO;  
+          break;
+  
+        default: break;  
+      }
+    }
+    map.setTile(x, y, tile, Tile.BLBNHYBIT | Tile.ZONEBIT);
+  
 
   // Also, notify the census of our population
-  var tileValue = map.getTileValue(x, y);
+  /*var tileValue = map.getTileValue(x, y);
   var population = getZonePopulation(map, x, y, tileValue);
   simData.census.fieldPop += population;
 
-  var zoneIrrigate = map.getTile(x, y).isIrrigated();
+  
 
-  var trafficOK = Traffic.ROUTE_FOUND;
+  var trafficOK = Traffic.ROUTE_FOUND;*/
 
 
 /*  // Occasionally check to see if the zone is connected to the road network. The chance of this happening increases

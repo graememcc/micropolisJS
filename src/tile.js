@@ -522,9 +522,13 @@ Tile.INDFZB            = 975;  // center tile first 3x3 tile field
 // crops tiles
 
 Tile.CORN           = 974; 
-Tile.WHEAT          = 975; 
-Tile.ORCHARD        = 976;
-Tile.POTATO         = 977; 
+Tile.FCORN          = 975; 
+Tile.WHEAT          = 976;
+Tile.FWHEAT         = 977; 
+Tile.ORCHARD        = 978;
+Tile.FORCHARD       = 979;
+Tile.POTATO         = 980;
+Tile.FPOTATO        = 981; 
 
 // Extended zones: 956-1019
 
