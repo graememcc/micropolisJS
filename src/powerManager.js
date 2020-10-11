@@ -7,6 +7,7 @@
  *
  */
 
+import { BaseTool } from './baseTool';
 import { BlockMap } from './blockMap';
 import { Direction } from './direction';
 import { EventEmitter } from './eventEmitter';
@@ -23,8 +24,10 @@ var PowerManager = EventEmitter(function(map) {
   this._map = map;
   this._powerStack = [];
   this._irrigateStack = [];
+  this._setCropStack = [];
   this.powerGridMap = new BlockMap(this._map.width, this._map.height, 1);
   this.irrigateGridMap = new BlockMap(this._map.width, this._map.height, 1);
+  this.costFieldMap = new BlockMap(this._map.width, this._map.height, 1);
 });
 
 
@@ -56,6 +59,27 @@ PowerManager.prototype.setTileIrrigate = function(x, y) {
   tile.removeFlags(Tile.IRRIGBIT);
 };
 
+PowerManager.prototype.setCostCrop = function(x, y) {
+  var tile = this._map.getTile(x, y);
+  var tileValue = tile.getValue();
+
+  switch (tileValue) {
+    case Tile.FCORN:
+    case Tile.CORN  : 
+      this.costFieldMap.set(x, y, BaseTool.CORN_COST); break;
+    case Tile.WHEAT : 
+    case Tile.FWHEAT :
+      this.costFieldMap.set(x, y, BaseTool.WHEAT_COST); break;
+    case Tile.ORCHARD : 
+    case Tile.FORCHARD :
+      this.costFieldMap.set(x, y, BaseTool.ORCHARD_COST); break;
+    case Tile.POTATO : 
+    case Tile.FPOTATO : 
+      this.costFieldMap.set(x, y, BaseTool.POTATO_COST); break;
+    default: break;
+  }
+};
+
 
 PowerManager.prototype.clearPowerStack = function() {
   this._powerStackPointer = 0;
@@ -65,6 +89,11 @@ PowerManager.prototype.clearPowerStack = function() {
 PowerManager.prototype.clearIrrigateStack = function() {
   this._irrigateStackPointer = 0;
   this._irrigateStack = [];
+};
+
+PowerManager.prototype.clearsetCropStack = function() {
+  this._setCropStackPointer = 0;
+  this._setCropStack = [];
 };
 
 PowerManager.prototype.testForConductive = function(pos, testDir) {

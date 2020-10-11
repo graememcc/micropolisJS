@@ -8,9 +8,11 @@
  */
 
 import { Tile } from './tile';
+import { TileUtils } from './tileUtils';
 
 // Tile to be filled to avoid creating lots of GC-able objects
 var tile = new Tile();
+var tileutils = TileUtils;
 
 
 function MapScanner(map) {
@@ -41,8 +43,11 @@ MapScanner.prototype.mapScan = function(startX, maxX, simData) {
       if (tile.isConductive())
         simData.powerManager.setTilePower(x, y);
 
-      if (tile.isHydraulic())
+      if (tile.isHydraulic() && (tileValue < Tile.INDFIELDBASE || tileValue > Tile.INDFIELDBASE+8))
         simData.powerManager.setTileIrrigate(x, y);
+
+      if(tileutils.isFieldZone(tile) || tileutils.isIndFieldZone(tile))
+        simData.powerManager.setCostCrop(x,y);
 
       if (tile.isZone()) {
         simData.repairManager.checkTile(x, y, simData.cityTime);

@@ -219,6 +219,7 @@ Simulation.prototype._clearCensus = function() {
   this._census.clearCensus();
   this._powerManager.clearPowerStack();
   this._powerManager.clearIrrigateStack();
+  this._powerManager.clearsetCropStack();
   this.blockMaps.fireStationMap.clear();
   this.blockMaps.policeStationMap.clear();
 };
@@ -363,7 +364,7 @@ var simulate = function(simData) {
       this._sendMessages();
       break;
 
-    case 11: //nello stesso case perche phaseCycle arriva max a 15 (bitwise con 15)
+    case 11:
       if ((this._simCycle % speedPowerScan[speedIndex]) === 0)
         this._powerManager.doPowerScan(this._census);
         if ((this._simCycle % speedIrrigateScan[speedIndex]) === 0)

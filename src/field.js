@@ -7,7 +7,9 @@
  *
  */
 
+import { BaseTool } from './baseTool';
 import { Config } from './config';
+import { PowerManager } from './powerManager';
 import { Random } from './random';
 import { Tile } from './tile';
 import { TileUtils } from './tileUtils';
@@ -212,21 +214,26 @@ var fieldFound = function(map, x, y, simData) {
   
   var tile = map.getTileValue(x, y);
   var zoneIrrigate = map.getTile(x, y).isIrrigated();
-  if(zoneIrrigate){
-    switch(tile){
-      case Tile.FCORN: 
+  var prevTile = map.getTileValue(x-1, y);
+  var cost=0;
+  if( prevTile !== (Tile.FREEINDF-1))
+  {
+  if(zoneIrrigate) {
+    cost = simData.powerManager.costFieldMap.get(x, y);
+    switch(cost){
+      case BaseTool.CORN_COST: 
         tile = Tile.CORN;
         break;
 
-      case Tile.FWHEAT:
+      case BaseTool.WHEAT_COST:
         tile = Tile.WHEAT;
         break;
 
-      case Tile.FORCHARD:
+      case BaseTool.ORCHARD_COST:
         centreTile = Tile.ORCHARD; 
         break;
 
-      case Tile.FPOTATO: 
+      case BaseTool.POTATO_COST: 
         tile  = Tile.POTATO;  
         break;
 
@@ -234,7 +241,8 @@ var fieldFound = function(map, x, y, simData) {
     }
   }
   else{
-      switch(tile){
+    tile = Tile.FREEF;
+     /* switch(tile){
         case Tile.CORN: 
           tile = Tile.FCORN;
           break;
@@ -252,8 +260,9 @@ var fieldFound = function(map, x, y, simData) {
           break;
   
         default: break;  
-      }
+      }*/
     }
+  }
     map.setTile(x, y, tile, Tile.BLBNHYBIT | Tile.ZONEBIT);
   
 
