@@ -237,8 +237,7 @@ Simulation.prototype._constructSimData = function() {
     simulator: this,
     spriteManager: this.spriteManager,
     trafficManager: this._traffic,
-    valves: this._valves,
-    wwtpcost: this._wwtpcost
+    valves: this._valves
   };
 };
 
