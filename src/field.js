@@ -252,7 +252,7 @@ var fieldFound = function(map, x, y, simData) {
           break;
   
         case Tile.ORCHARD:
-          tile = Tile.FORCHARD; 
+          centreTile = Tile.FORCHARD; 
           break;
   
         case Tile.POTATO: 
@@ -264,26 +264,6 @@ var fieldFound = function(map, x, y, simData) {
     }
   }
     map.setTile(x, y, tile, Tile.BLBNHYBIT | Tile.ZONEBIT);
-
-  var tileValue = map.getTileValue(x, y);
-  var population = getZonePopulation(map, x, y, tileValue); 
-  simData.census.fieldPop += population;
-    
-  if(simData.budget.shouldDegradeField()){
-    if (Random.getChance(511)) {
-    lpValue = ZoneUtils.getLandPollutionValue(simData.blockMaps, x, y);
-    degradeZone(map, x, y, simData.blockMaps, population, lpValue, zoneIrrigate);
-    return;
-    }
-  }else{
-    if(Random.getChance(511)){
-      lpValue = ZoneUtils.getLandPollutionValue(simData.blockMaps, x, y);
-      growZone(map, x, y, simData.blockMaps, population, lpValue, zoneIrrigate);
-      return;
-    }
-  }
-
-
   
 
   // Also, notify the census of our population
@@ -362,12 +342,32 @@ var fieldFound = function(map, x, y, simData) {
 };
 
 
+var makeHospital = function(map, x, y, simData, zoneIrrigate) { /////////////////analogia?
+  // We only build a hospital if the population requires it
+  if (simData.census.needHospital > 0) {
+    ZoneUtils.putZone(map, x, y, Tile.HOSPITAL, zonePower, zoneIrrigate);
+    simData.census.needHospital = 0;
+    return;
+  }
+};
 
+
+var hospitalFound = function(map, x, y, simData) { //////////////////////////////
+  simData.census.hospitalPop += 1;
+
+  // Degrade to an empty zone if a hospital is no longer sustainable
+  if (simData.census.needHospital === -1) {
+    if (Random.getRandom(20) === 0)
+      ZoneUtils.putZone(map, x, y, Tile.FREE, map.getTile(x, y).isPowered(), map.getTile(x, y).isIrrigated());
+  }
+};
 
 
 var Field = {
   registerHandlers: function(mapScanner, repairManager) {
     mapScanner.addAction(TileUtils.isFieldZone, fieldFound);
+    mapScanner.addAction(TileUtils.HOSPITAL, hospitalFound); ///////////////////
+    repairManager.addAction(Tile.HOSPITAL, 15, 3); //////////////////
   },
   getZonePopulation: getZonePopulation
 };
