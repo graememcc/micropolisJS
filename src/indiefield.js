@@ -209,7 +209,7 @@ var indfieldFound = function(map, x, y, simData) {
   var lpValue;
 
   // Notify the census
-  simData.census.fieldZonePop += 1;
+  simData.census.indfieldZonePop += 1;
 
   // Also, notify the census of our population
   var tileValue = map.getTileValue(x, y);

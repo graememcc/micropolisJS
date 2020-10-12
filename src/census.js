@@ -68,6 +68,7 @@ Census.prototype.clearCensus = function() {
   this.indPop = 0;
   this.resZonePop = 0;
   this.fieldZonePop = 0;
+  this.indfieldZonePop = 0;
   this.comZonePop = 0;
   this.indZonePop = 0;
   this.hospitalPop = 0;

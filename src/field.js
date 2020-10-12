@@ -20,6 +20,7 @@ import { ZoneUtils } from './zoneUtils';
 // increasing order of land value, cycling through each population value
 var placeField = function(map, x, y, population, lpValue, zoneIrrigate) {
   var centreTile = ((lpValue * 4) + population) * 9 + Tile.FZB;
+  this.zonePower = false; // dava errore se non dichiarato
   ZoneUtils.putZone(map, x, y, centreTile, zonePower, zoneIrrigate);
 };
 
