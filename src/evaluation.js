@@ -83,6 +83,7 @@ Evaluation.prototype.getAssessedValue = function(census) {
   value = census.roadTotal * 5;
   value += census.railTotal * 10;
   value += census.policeStationPop * 1000;
+  value += census.fieldZonePop * 1000;
   value += census.fireStationPop * 1000;
   value += census.hospitalPop * 400;
   value += census.stadiumPop * 3000;
@@ -183,7 +184,7 @@ var getTrafficAverage = function(blockMaps, census) {
 
 
 var getUnemployment = function(census) {
-  var b = (census.fieldPop + census.comPop + census.indPop) * 8;
+  var b = (census.comPop + census.indPop) * 8;
 
   if (b === 0)
       return 0;
@@ -266,6 +267,9 @@ Evaluation.prototype.getScore = function(simData) {
 
   if (budget.fireEffect < budget.MAX_FIRE_STATION_EFFECT)
     score = Math.round(score * (0.9 + (budget.fireEffect / (10 * budget.MAX_FIRE_STATION_EFFECT))));
+
+    if (budget.fieldEffect < budget.MAX_FIELD_STATION_EFFECT)
+    score = Math.round(score * (0.9 + (budget.fieldEffect / (10 * budget.MAX_FIELD_STATION_EFFECT))));
 
   // Penalise the player by 15% if demand for any type of zone has collapsed due
   // to overprovision

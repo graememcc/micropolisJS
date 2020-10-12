@@ -210,8 +210,7 @@ var fieldFound = function(map, x, y, simData) {
   // pollution scores (higher is better). This is then used to select the variant to build
   var lpValue;
 
-  // Notify the census
-  simData.census.fieldZonePop += 1;
+  
   
   var tile = map.getTileValue(x, y);
   var zoneIrrigate = map.getTile(x, y).isIrrigated();
@@ -220,6 +219,8 @@ var fieldFound = function(map, x, y, simData) {
   if( prevTile !== (Tile.FREEINDF-1))
   {
   if(zoneIrrigate) {
+    // Notify the census
+    simData.census.fieldZonePop += 1;
     cost = simData.powerManager.costFieldMap.get(x, y);
     switch(cost){
       case BaseTool.CORN_COST: 
@@ -231,7 +232,7 @@ var fieldFound = function(map, x, y, simData) {
         break;
 
       case BaseTool.ORCHARD_COST:
-        centreTile = Tile.ORCHARD; 
+        tile = Tile.ORCHARD; 
         break;
 
       case BaseTool.POTATO_COST: 
@@ -263,7 +264,7 @@ var fieldFound = function(map, x, y, simData) {
         default: break;  
       }*/
     }
-  }
+  
     map.setTile(x, y, tile, Tile.BLBNHYBIT | Tile.ZONEBIT);
 
   var tileValue = map.getTileValue(x, y);
@@ -283,7 +284,7 @@ var fieldFound = function(map, x, y, simData) {
       return;
     }
   }
-
+}
 
   
 

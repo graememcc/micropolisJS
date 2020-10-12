@@ -43,8 +43,7 @@ BuildingTool.prototype.putBuilding = function(leftX, topY) {
       posX = leftX + dx;
       tileValue = baseTile;
 
-      if (TileUtils.isIndField(tileValue) || TileUtils.isField(tileValue) ||
-           (tileValue>=Tile.WWTPBASE && tileValue<=Tile.LASTWWTP))
+      if (TileUtils.isIndField(tileValue))
       {
         if (dx === 1 && dy === 1 && (tileValue === Tile.FREEINDF)) 
         {
@@ -68,6 +67,10 @@ BuildingTool.prototype.putBuilding = function(leftX, topY) {
             default: break;
           } 
         }
+      tileFlags = Tile.BURNBIT;
+      }
+        else if (TileUtils.isField(tileValue) ||(tileValue>=Tile.WWTPBASE && tileValue<=Tile.LASTWWTP))
+        {
         if (dx === 1 && dy === 1 && (tileValue === Tile.FREEF)) 
         {
           switch (c){

@@ -59,7 +59,7 @@ var Budget = EventEmitter(function() {
   this.roadSpend = 0;
   this.fireSpend = 0;
   this.policeSpend = 0;
-  this.fieldSpend
+  this.fieldSpend = 0;
 
   this.awaitingValues = false;
   this.autoBudget = true;
