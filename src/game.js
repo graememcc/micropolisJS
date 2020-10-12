@@ -127,7 +127,8 @@ function Game(gameMap, tileSet, snowTileSet, spriteSheet, difficulty, name) {
       taxRate: this.simulation.budget.cityTax,
       totalFunds: this.simulation.budget.totalFunds,
       taxesCollected: this.simulation.budget.taxFund,
-      fieldsCost: this.simulation.budget.fieldsCost
+      fieldMaintenanceBudget: this.simulation.budget.fieldMaintenanceBudget,
+      fieldRate: Math.floor(this.simulation.budget.fieldPercent * 100),
     };
 
     return [budgetData];
@@ -462,6 +463,7 @@ Game.prototype.handleBudgetWindowClosure = function(data) {
     this.simulation.budget.roadPercent = data.roadPercent / 100;
     this.simulation.budget.firePercent = data.firePercent / 100;
     this.simulation.budget.policePercent = data.policePercent / 100;
+    this.simulation.budget.fieldPercent = data.fieldPercent / 100;
     this.simulation.budget.setTax(data.taxPercent - 0);
     if (this.simNeededBudget) {
       this.simulation.budget.doBudgetWindow();

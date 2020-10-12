@@ -18,8 +18,8 @@ var BudgetWindow = ModalWindow(function() {
 });
 
 
-var dataKeys = ['roadMaintenanceBudget', 'fireMaintenanceBudget', 'policeMaintenanceBudget'];
-var spendKeys = ['roadRate', 'fireRate', 'policeRate'];
+var dataKeys = ['roadMaintenanceBudget', 'fireMaintenanceBudget', 'policeMaintenanceBudget', 'fieldMaintenanceBudget'];
+var spendKeys = ['roadRate', 'fireRate', 'policeRate', 'fieldRate'];
 
 var budgetResetID = '#budgetReset';
 var budgetCancelID = '#budgetCancel';
@@ -81,11 +81,12 @@ var submit = function(e) {
 
   // Get element values
   var roadPercent = $('#roadRate')[0].value;
+  var fieldPercent = $('#fieldRate')[0].value;
   var firePercent = $('#fireRate')[0].value;
   var policePercent = $('#policeRate')[0].value;
   var taxPercent = $('#taxRate')[0].value;
 
-  var data = {cancelled: false, roadPercent: roadPercent, firePercent: firePercent,
+  var data = {cancelled: false, roadPercent: roadPercent, firePercent: firePercent, fieldPercent: fieldPercent,
                         policePercent: policePercent, taxPercent: taxPercent, e: e, original: e.type};
   this.close(data);
 };
@@ -134,13 +135,12 @@ BudgetWindow.prototype.open = function(budgetData) {
   if (taxesCollected === undefined)
     throw new Error('Missing budget data (taxesCollected)');
 
-  var cashFlow = taxesCollected - this.roadMaintenanceBudget - this.fireMaintenanceBudget - this.policeMaintenanceBudget;
+  var cashFlow = taxesCollected - this.fieldMaintenanceBudget - this.roadMaintenanceBudget - this.fireMaintenanceBudget - this.policeMaintenanceBudget;
   var currentFunds = previousFunds + cashFlow;
   $('#taxesCollected').text('$' + taxesCollected);
   $('#cashFlow').text((cashFlow < 0 ? '-$' : '$') + cashFlow);
   $('#previousFunds').text((previousFunds < 0 ? '-$' : '$') + previousFunds);
   $('#currentFunds').text('$' + currentFunds);
-  $('#fieldsCost').text('$' + fieldsCost);
 
   this._toggleDisplay();
 };

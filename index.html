@@ -199,7 +199,6 @@
         </header>
         <div id="budgetFormContainer" class="padding10 open">
           <form id="budgetForm">
-            <div id="fieldInfo" class="elided budgetRight budgetData">Year fields cost: <span id="fieldsCost"></span></div>
             <div id="taxInfo" class="elided budgetData">Tax Collected: <span id="taxesCollected"></span></div>
             <div id="cashInfo" class="elided budgetRight budgetData">Cashflow: <span id="cashFlow"></span></div>
             <div id="previousInfo" class="elided budgetData">Previous funds: <span id="previousFunds"></span></div>
@@ -230,6 +229,13 @@
               <input type="range" id="taxRate" min="0" max="20" step="1">
               <div>
                 <label for="taxRate" class="elided budgetData" id="taxRateLabel">100% of $100 = $100</label>
+              </div>
+            </fieldset>
+            <fieldset>
+              <legend>Field</legend>
+              <input type="range" id="fieldRate" min="0" max="100" step="1" data-source="fieldMaintenanceBudget">
+              <div>
+                <label for="fieldRate" class="elided budgetData" id="fieldRateLabel">100% of $100 = $100</label>
               </div>
             </fieldset>
             <div id="budgetButtons" class="alignCenter">

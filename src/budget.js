@@ -42,7 +42,6 @@ var Budget = EventEmitter(function() {
   this.cityTax = 7;
   this.cashFlow = 0;
   this.taxFund = 0;
-  this.fieldsCost = 0;
 
   // These values denote how much money is required to fully maintain the relevant services
   this.roadMaintenanceBudget = 0;
@@ -69,7 +68,7 @@ var Budget = EventEmitter(function() {
 
 var saveProps = ['autoBudget', 'totalFunds', 'policePercent', 'roadPercent', 'firePercent','fieldPercent', 'roadSpend',
                  'policeSpend', 'fireSpend','fieldSpend', 'roadMaintenanceBudget', 'policeMaintenanceBudget',
-                 'fireMaintenanceBudget','fieldMintenanceBudget', 'cityTax','fieldEffect', 'roadEffect', 'policeEffect', 'fireEffect', 'fieldsCost'];
+                 'fireMaintenanceBudget','fieldMintenanceBudget', 'cityTax','fieldEffect', 'roadEffect', 'policeEffect', 'fireEffect'];
 
 Budget.prototype.save = function(saveData) {
   for (var i = 0, l = saveProps.length; i < l; i++)
@@ -270,7 +269,7 @@ Budget.prototype.collectTax = function(gameLevel, census) {
   this.taxFund = Math.floor(Math.floor(census.totalPop * census.landValueAverage / 120) * this.cityTax * FLevels[gameLevel]);
 
   if (census.totalPop > 0) {
-    this.cashFlow = this.taxFund - (this.fieldsCost + this.policeMaintenanceBudget + this.fireMaintenanceBudget + this.roadMaintenanceBudget + this.fieldMaintenanceBudget);
+    this.cashFlow = this.taxFund - (this.policeMaintenanceBudget + this.fireMaintenanceBudget + this.roadMaintenanceBudget + this.fieldMaintenanceBudget);
     this.doBudgetNow(false);
   } else {
     // We don't want roads etc deteriorating when population hasn't yet been established
