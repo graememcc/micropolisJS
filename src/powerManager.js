@@ -51,7 +51,7 @@ PowerManager.prototype.setTileIrrigate = function(x, y) {
 
   if (((tileValue >= Tile.WWTPBASE && tileValue <= Tile.LASTWWTP) ||
       this.irrigateGridMap.worldGet(x, y) > 0) &&
-      (tileValue < Tile.INDFIELDBASE || tileValue > Tile.FREEINDF+4)) {
+      (tileValue < Tile.INDFIELDBASE || tileValue > Tile.INDFPOTATO)) {
     tile.addFlags(Tile.IRRIGBIT);
     return;
   }
@@ -64,17 +64,25 @@ PowerManager.prototype.setCostCrop = function(x, y) {
   var tileValue = tile.getValue();
 
   switch (tileValue) {
-    case Tile.FCORN:
-    case Tile.CORN  : 
+    case Tile.CORN:
+    case Tile.FCORN: 
+    case Tile.INDCORN: 
+    case Tile.INDFCORN:
       this.costFieldMap.set(x, y, BaseTool.CORN_COST); break;
-    case Tile.WHEAT : 
-    case Tile.FWHEAT :
+    case Tile.WHEAT: 
+    case Tile.FWHEAT:
+    case Tile.INDWHEAT: 
+    case Tile.INDFWHEAT:
       this.costFieldMap.set(x, y, BaseTool.WHEAT_COST); break;
-    case Tile.ORCHARD : 
-    case Tile.FORCHARD :
+    case Tile.ORCHARD: 
+    case Tile.FORCHARD:
+    case Tile.INDORCHARD: 
+    case Tile.INDFORCHARD:
       this.costFieldMap.set(x, y, BaseTool.ORCHARD_COST); break;
-    case Tile.POTATO : 
-    case Tile.FPOTATO : 
+    case Tile.POTATO: 
+    case Tile.FPOTATO: 
+    case Tile.INDPOTATO: 
+    case Tile.INDFPOTATO:
       this.costFieldMap.set(x, y, BaseTool.POTATO_COST); break;
     default: break;
   }

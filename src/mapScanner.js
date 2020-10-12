@@ -43,7 +43,7 @@ MapScanner.prototype.mapScan = function(startX, maxX, simData) {
       if (tile.isConductive())
         simData.powerManager.setTilePower(x, y);
 
-      if (tile.isHydraulic() && (tileValue < Tile.INDFIELDBASE || tileValue > Tile.INDFIELDBASE+8))
+      if (tile.isHydraulic())
         simData.powerManager.setTileIrrigate(x, y);
 
       if(tileutils.isFieldZone(tile) || tileutils.isIndFieldZone(tile))

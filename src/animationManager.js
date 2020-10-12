@@ -112,7 +112,7 @@ AnimationManager.prototype.getTiles = function(tileValues, offsetX, offsetY, xBo
       var tileValue = this._map.getTileValue(mapX, mapY);
 
       if (shouldBlink && (tile & ZONEBIT) && !(tile & POWERBIT) && !(tile & HYDRABIT) 
-      &&(tileValue < Tile.CORN)) {
+          && (tileValue < Tile.INDFIELDBASE)) {
         tileValues[index] = LIGHTNINGBOLT;
         continue;
       }

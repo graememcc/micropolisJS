@@ -13,6 +13,7 @@ import { Tile } from './tile';
 import { TileUtils } from './tileUtils';
 import { Traffic } from './traffic';
 import { ZoneUtils } from './zoneUtils';
+import { BaseTool } from './baseTool';
 
 // Field tiles have 'populations' of 16, 24, 32 or 40, and value from 0 to 3. The tiles are laid out in
 // increasing order of land value, cycling through each population value
@@ -210,7 +211,8 @@ var indfieldFound = function(map, x, y, simData) {
 
   // Notify the census
   simData.census.fieldZonePop += 1;
-    cost = simData.powerManager.costFieldMap.get(x, y);
+  var tile = map.getTileValue(x, y);
+  var cost = simData.powerManager.costFieldMap.get(x, y);
     switch(cost){
       case BaseTool.CORN_COST: 
         tile = Tile.INDCORN;

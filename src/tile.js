@@ -510,25 +510,32 @@ Tile.NUKESWIRL4     = 955;
 Tile.FIELDBASE      = 956;//Tile.RESBASE; // Empty field, tiles
 Tile.FREEF          = 960; //Tile.FREEZ; // center-tile of 3x3 empty field
  
+Tile.CORN           = 965; 
+Tile.FCORN          = 966; 
+Tile.WHEAT          = 967;
+Tile.FWHEAT         = 968; 
+Tile.ORCHARD        = 969;
+Tile.FORCHARD       = 970;
+Tile.POTATO         = 971;
+Tile.FPOTATO        = 972; 
+
 Tile.FZB            = 975;  // center tile first 3x3 tile field
 
 //INDIE field zone tiles
 
-Tile.INDFIELDBASE      = 965; // Empty field, tiles
-Tile.FREEINDF          = 969; //Tile.FREEZ; // center-tile of 3x3 empty field
+Tile.INDFIELDBASE    = 973; // Empty field, tiles
+Tile.FREEINDF        = 977; //Tile.FREEZ; // center-tile of 3x3 empty field
  
-Tile.INDFZB            = 975;  // center tile first 3x3 tile field
+Tile.INDFZB          = 975;  // center tile first 3x3 tile field
 
-// crops tiles
-
-Tile.CORN           = 974; 
-Tile.FCORN          = 975; 
-Tile.WHEAT          = 976;
-Tile.FWHEAT         = 977; 
-Tile.ORCHARD        = 978;
-Tile.FORCHARD       = 979;
-Tile.POTATO         = 980;
-Tile.FPOTATO        = 981; 
+Tile.INDCORN         = 982; 
+Tile.INDFCORN        = 983; 
+Tile.INDWHEAT        = 984;
+Tile.INDFWHEAT       = 985; 
+Tile.INDORCHARD      = 986;
+Tile.INDFORCHARD     = 987;
+Tile.INDPOTATO       = 988;
+Tile.INDFPOTATO      = 989; 
 
 // Extended zones: 956-1019
 
