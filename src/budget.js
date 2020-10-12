@@ -260,7 +260,7 @@ Budget.prototype.collectTax = function(gameLevel, census) {
   // How much would it cost to fully fund every service?
   this.policeMaintenanceBudget = census.policeStationPop * policeMaintenanceCost;
   this.fireMaintenanceBudget = census.fireStationPop * fireMaintenanceCost;
-  this.fieldMaintenanceBudget = census.fieldZonePop * fieldMaintenanceCost;
+  this.fieldMaintenanceBudget = ( census.fieldZonePop + census.indfieldZonePop ) * fieldMaintenanceCost;
 
   var roadCost = census.roadTotal * roadMaintenanceCost;
   var railCost = census.railTotal * railMaintenanceCost;

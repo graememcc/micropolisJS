@@ -209,15 +209,49 @@ var indfieldFound = function(map, x, y, simData) {
   var lpValue;
 
   // Notify the census
-  simData.census.indfieldZonePop += 1;
+  simData.census.fieldZonePop += 1;
+    cost = simData.powerManager.costFieldMap.get(x, y);
+    switch(cost){
+      case BaseTool.CORN_COST: 
+        tile = Tile.INDCORN;
+        break;
 
-  // Also, notify the census of our population
-  var tileValue = map.getTileValue(x, y);
-  var population = getZonePopulation(map, x, y, tileValue);
+      case BaseTool.WHEAT_COST:
+        tile = Tile.INDWHEAT;
+        break;
+
+      case BaseTool.ORCHARD_COST:
+        tile = Tile.INDORCHARD; 
+        break;
+
+      case BaseTool.POTATO_COST: 
+        tile  = Tile.INDPOTATO;  
+        break;
+
+      default: break;  
+    }
+
+    map.setTile(x, y, tile, Tile.BLBNHYBIT | Tile.ZONEBIT);
+    
+    var tileValue = map.getTileValue(x, y);
+  var population = getZonePopulation(map, x, y, tileValue); 
   simData.census.fieldPop += population;
-
+    
+  if(simData.budget.shouldDegradeField()){
+    if (Random.getChance(511)) {
+    lpValue = ZoneUtils.getLandPollutionValue(simData.blockMaps, x, y);
+    degradeZone(map, x, y, simData.blockMaps, population, lpValue, zoneIrrigate);
+    return;
+    }
+  }else{
+    if(Random.getChance(511)){
+      lpValue = ZoneUtils.getLandPollutionValue(simData.blockMaps, x, y);
+      growZone(map, x, y, simData.blockMaps, population, lpValue, zoneIrrigate);
+      return;
+    }
+  }
   
-  var trafficOK = Traffic.ROUTE_FOUND;
+  /*var trafficOK = Traffic.ROUTE_FOUND;
 
   // Occasionally check to see if the zone is connected to the road network. The chance of this happening increases
   // as the zone's population increases. Note: we will never execute this conditional if the zone is empty, as zero
@@ -259,7 +293,7 @@ var indfieldFound = function(map, x, y, simData) {
         makeHospital(map, x, y, simData, zonePower);
         return;
       }
-*/
+
       // Get an index in the range 0-3 scoring the land desirability and pollution, and grow the zone to the next
       // population rank
       lpValue = ZoneUtils.getLandPollutionValue(simData.blockMaps, x, y);
@@ -277,7 +311,7 @@ var indfieldFound = function(map, x, y, simData) {
       lpValue = ZoneUtils.getLandPollutionValue(simData.blockMaps, x, y);
       degradeZone(map, x, y, simData.blockMaps, population, lpValue);
     }
-  }
+  }*/
 };
 
 
