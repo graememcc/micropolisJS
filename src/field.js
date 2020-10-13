@@ -20,7 +20,7 @@ import { ZoneUtils } from './zoneUtils';
 // increasing order of land value, cycling through each population value
 var placeField = function(map, x, y, population, lpValue, zoneIrrigate) {
   var centreTile = ((lpValue * 4) + population) * 9 + Tile.FZB;
-  this.zonePower = false; // dava errore se non dichiarato
+  var zonePower = false; // dava errore se non dichiarato
   ZoneUtils.putZone(map, x, y, centreTile, zonePower, zoneIrrigate);
 };
 
@@ -30,9 +30,9 @@ var getFreeZonePopulation = function(map, x, y, tileValue) {
   var count = 0;
   for (var xx = x - 1; xx <= x + 1; xx++) {
     for (var yy = y - 1; yy <= y + 1; yy++) {
-      if (xx === x && yy === y) continue;
+   //   if (xx === x && yy === y) continue;
       tileValue = map.getTileValue(xx, yy);
-      if (tileValue >= Tile.FCORN && tileValue <= Tile.FPOTATO)
+      if (tileValue >= Tile.CORN && tileValue <= Tile.POTATO)
         count += 1;
     }
   }
@@ -45,7 +45,7 @@ var getZonePopulation = function(map, x, y, tileValue) {
   if (tileValue instanceof Tile)
     tileValue = tile.getValue();
 
-  if (tileValue === Tile.FREEF) 
+  if (tileValue === Tile.FREEF || (tileValue >= Tile.CORN && tileValue <= Tile.POTATO)) 
     return getFreeZonePopulation(map, x, y, tileValue);
 
   var populationIndex = Math.floor((tileValue - Tile.FZB) / 9) % 4 + 1; 
@@ -216,8 +216,8 @@ var fieldFound = function(map, x, y, simData) {
   var zoneIrrigate = map.getTile(x, y).isIrrigated();
   var prevTile = map.getTileValue(x-1, y);
   var cost=0;
-  if( prevTile !== (Tile.FREEINDF-1))
-  {
+  //if( prevTile !== (Tile.FREEINDF-1))
+  //{
   if(zoneIrrigate) {
     // Notify the census
     simData.census.fieldZonePop += 1;
@@ -264,7 +264,7 @@ var fieldFound = function(map, x, y, simData) {
       growZone(map, x, y, simData.blockMaps, population, lpValue, zoneIrrigate);
       return;
     }
-  }
+  //}
 }
 
   

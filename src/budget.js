@@ -68,7 +68,7 @@ var Budget = EventEmitter(function() {
 
 var saveProps = ['autoBudget', 'totalFunds', 'policePercent', 'roadPercent', 'firePercent','fieldPercent', 'roadSpend',
                  'policeSpend', 'fireSpend','fieldSpend', 'roadMaintenanceBudget', 'policeMaintenanceBudget',
-                 'fireMaintenanceBudget','fieldMintenanceBudget', 'cityTax','fieldEffect', 'roadEffect', 'policeEffect', 'fireEffect'];
+                 'fireMaintenanceBudget','fieldMaintenanceBudget', 'cityTax','fieldEffect', 'roadEffect', 'policeEffect', 'fireEffect'];
 
 Budget.prototype.save = function(saveData) {
   for (var i = 0, l = saveProps.length; i < l; i++)
@@ -127,12 +127,6 @@ Budget.prototype._calculateBestPercentages = function() {
   var cashRemaining = this.totalFunds + this.taxFund;
 
   // Spending priorities: road, fire, police
-  if (cashRemaining >= this.fieldSpend)
-    fieldCost = this.fieldSpend;
-  else
-    fieldCost = cashRemaining;
-  cashRemaining -= fieldCost;
-
   if (cashRemaining >= this.roadSpend)
     roadCost = this.roadSpend;
   else
@@ -151,10 +145,12 @@ Budget.prototype._calculateBestPercentages = function() {
     policeCost = cashRemaining;
   cashRemaining -= policeCost;
 
-  if (this.fieldMaintenanceBudget > 0)
-  this.fieldPercent = (fieldCost / this.fieldMaintenanceBudget).toPrecision(2) - 0;
-else
-  this.fieldPercent = 1;
+  if (cashRemaining >= this.fieldSpend)
+    fieldCost = this.fieldSpend;
+  else
+    fieldCost = cashRemaining;
+  cashRemaining -= fieldCost;
+
 
   if (this.roadMaintenanceBudget > 0)
     this.roadPercent = (roadCost / this.roadMaintenanceBudget).toPrecision(2) - 0;
@@ -170,6 +166,11 @@ else
     this.policePercent = (policeCost / this.policeMaintenanceBudget).toPrecision(2) - 0;
   else
     this.policePercent = 1;
+
+  if (this.fieldMaintenanceBudget > 0)
+    this.fieldPercent = (fieldCost / this.fieldMaintenanceBudget).toPrecision(2) - 0;
+  else
+    this.fieldPercent = 1;
 
   return {road: roadCost, police: policeCost, fire: fireCost, field: fieldCost};
 };
@@ -240,9 +241,6 @@ Budget.prototype.updateFundEffects = function() {
   this.fireEffect = this.MAX_FIRESTATION_EFFECT;
   this.fieldEffect = this.MAX_FIELD_EFFECT;
 
-  if (this.fieldMaintenanceBudget > 0)
-    this.fieldEffect = Math.floor(this.fieldEffect * this.fieldSpend / this.fieldMaintenanceBudget);
-
   if (this.roadMaintenanceBudget > 0)
     this.roadEffect = Math.floor(this.roadEffect * this.roadSpend / this.roadMaintenanceBudget);
 
@@ -251,6 +249,10 @@ Budget.prototype.updateFundEffects = function() {
 
   if (this.policeMaintenanceBudget > 0)
     this.policeEffect = Math.floor(this.policeEffect * this.policeSpend / this.policeMaintenanceBudget);
+
+  if (this.fieldMaintenanceBudget > 0)
+    this.fieldEffect = Math.floor(this.fieldEffect * this.fieldSpend / this.fieldMaintenanceBudget);
+
 };
 
 
@@ -274,10 +276,10 @@ Budget.prototype.collectTax = function(gameLevel, census) {
   } else {
     // We don't want roads etc deteriorating when population hasn't yet been established
     // (particularly early game)
-    this.fieldEffect  = this.MAX_FIELD_EFFECT;
     this.roadEffect   = this.MAX_ROAD_EFFECT;
     this.policeEffect = this.MAX_POLICESTATION_EFFECT;
     this.fireEffect   = this.MAX_FIRESTATION_EFFECT;
+    this.fieldEffect  = this.MAX_FIELD_EFFECT;
   }
 };
 

@@ -29,9 +29,9 @@ var getFreeZonePopulation = function(map, x, y, tileValue) {
   var count = 0;
   for (var xx = x - 1; xx <= x + 1; xx++) {
     for (var yy = y - 1; yy <= y + 1; yy++) {
-      if (xx === x && yy === y) continue;
+//      if (xx === x && yy === y) continue;
       tileValue = map.getTileValue(xx, yy);
-      if (tileValue >= Tile.FINDFARM && tileValue <= Tile.LINDFARM)
+      if (tileValue >= Tile.INDCORN && tileValue <= Tile.INDPOTATO)
         count += 1;
     }
   }
@@ -44,7 +44,7 @@ var getZonePopulation = function(map, x, y, tileValue) {
   if (tileValue instanceof Tile)
     tileValue = tile.getValue();
 
-  if (tileValue === Tile.FREEINDF) 
+  if (tileValue === Tile.FREEINDF || tileValue >= Tile.INDCORN && tileValue <= Tile.INDPOTATO) 
     return getFreeZonePopulation(map, x, y, tileValue);
 
   var populationIndex = Math.floor((tileValue - Tile.INDFZB) / 9) % 4 + 1; 
@@ -238,7 +238,7 @@ var indfieldFound = function(map, x, y, simData) {
     var tileValue = map.getTileValue(x, y);
   var population = getZonePopulation(map, x, y, tileValue); 
   
-  simData.census.fieldPop += population;
+  simData.census.indfieldPop += population;
     
   if(simData.budget.shouldDegradeField()){
     if (Random.getChance(511)) {
