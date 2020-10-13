@@ -208,7 +208,7 @@ var indfieldFound = function(map, x, y, simData) {
   // If we choose to grow this zone, we will fill it with an index in the range 0-3 reflecting the land value and
   // pollution scores (higher is better). This is then used to select the variant to build
   var lpValue;
-
+  var zoneIrrigate = false;
   // Notify the census
   simData.census.indfieldZonePop += 1;
   var tile = map.getTileValue(x, y);
@@ -237,6 +237,7 @@ var indfieldFound = function(map, x, y, simData) {
     
     var tileValue = map.getTileValue(x, y);
   var population = getZonePopulation(map, x, y, tileValue); 
+  
   simData.census.fieldPop += population;
     
   if(simData.budget.shouldDegradeField()){

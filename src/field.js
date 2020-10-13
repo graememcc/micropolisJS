@@ -32,7 +32,7 @@ var getFreeZonePopulation = function(map, x, y, tileValue) {
     for (var yy = y - 1; yy <= y + 1; yy++) {
       if (xx === x && yy === y) continue;
       tileValue = map.getTileValue(xx, yy);
-      if (tileValue >= Tile.FFARM && tileValue <= Tile.LFARM)
+      if (tileValue >= Tile.FCORN && tileValue <= Tile.FPOTATO)
         count += 1;
     }
   }
@@ -244,25 +244,6 @@ var fieldFound = function(map, x, y, simData) {
   }
   else{
     tile = Tile.FREEF;
-     /* switch(tile){
-        case Tile.CORN: 
-          tile = Tile.FCORN;
-          break;
-  
-        case Tile.WHEAT:
-          tile = Tile.FWHEAT;
-          break;
-  
-        case Tile.ORCHARD:
-          tile = Tile.FORCHARD; 
-          break;
-  
-        case Tile.POTATO: 
-          tile  = Tile.FPOTATO;  
-          break;
-  
-        default: break;  
-      }*/
     }
   
     map.setTile(x, y, tile, Tile.BLBNHYBIT | Tile.ZONEBIT);
