@@ -314,7 +314,7 @@ Budget.prototype.shouldDegradeRoad = function() {
 };
 
 Budget.prototype.shouldDegradeField = function() {
-  return this.fieldEffect < Math.floor(15 * this.MAX_FIELD_EFFECT / 16);
+  return this.fieldEffect < Math.floor(15 * this.MAX_FIELD_EFFECT / 25);
 };
 
 

@@ -13,18 +13,18 @@ import { MiscUtils } from './miscUtils';
 
 var Valves = EventEmitter(function () {
   this.resValve = 0;
-  this.fieldValve = 0;
+  //this.fieldValve = 0;
   this.comValve = 0;
   this.indValve = 0;
   this.resCap = false;
-  this.fieldCap = false;
+  //this.fieldCap = false;
   this.comCap = false;
   this.indCap = false;
 });
 
 
 var RES_VALVE_RANGE = 2000;
-var FIELD_VALVE_RANGE = 2000;
+//var FIELD_VALVE_RANGE = 2000;
 var COM_VALVE_RANGE = 1500;
 var IND_VALVE_RANGE = 1500;
 
@@ -36,7 +36,7 @@ var extMarketParamTable = [1.2, 1.1, 0.98];
 
 Valves.prototype.save = function(saveData) {
   saveData.resValve = this.resValve;
-  saveData.fieldValve = this.fieldValve;
+  //saveData.fieldValve = this.fieldValve;
   saveData.comValve = this.comValve;
   saveData.indValve = this.indValve;
 };
@@ -44,7 +44,7 @@ Valves.prototype.save = function(saveData) {
 
 Valves.prototype.load = function(saveData) {
   this.resValve = saveData.resValve;
-  this.fieldValve = saveData.fieldValve;
+  //this.fieldValve = saveData.fieldValve;
   this.comValve = saveData.comValve;
   this.indValve = saveData.indValve;
 
@@ -60,8 +60,8 @@ Valves.prototype.setValves = function(gameLevel, census, budget) {
   var projectedIndPopMin = 5.0;
   var resRatioDefault = 1.3;
   var resRatioMax = 2;
-  var fieldRatioDefault = 1.3;
-  var fieldRatioMax = 2;1
+  //var fieldRatioDefault = 1.3;
+  //var fieldRatioMax = 2;1
   var comRatioMax = 2;
   var indRatioMax = 2;
   var taxMax = 20;
@@ -70,27 +70,26 @@ Valves.prototype.setValves = function(gameLevel, census, budget) {
 
   // Residential zones scale their population index when reporting it to the census
   var normalizedResPop = census.resPop / resPopDenom;
-  var normalizedFieldPop = census.fieldPop / resPopDenom; //even field has 8 pos as respopdenom 
-  census.totalPop = Math.round(normalizedResPop + normalizedFieldPop + census.comPop + census.indPop);
+  //var normalizedFieldPop = census.fieldPop / resPopDenom; //even field has 8 pos as respopdenom 
+  //var normalizedFieldPop = 0;
+  census.totalPop = Math.round(normalizedResPop /*+ normalizedFieldPop*/ + census.comPop + census.indPop);
 
   // A lack of developed commercial and industrial and field zones means there are no employment opportunities, which constrain
   // growth. (This might hurt initially if, for example, the player lays out an initial grid, as the residential zones
   // will likely develop first, so the residential valve will immediately crater).
-  if (census.resPop > 0 || census.fieldPop > 0)
-    employment = (census.comHist10[1] + census.indHist10[1] + census.fieldHist10[1]) / (normalizedResPop + normalizedFieldPop);
+  if (census.resPop > 0 /*|| census.fieldPop > 0*/)
+    employment = (census.comHist10[1] + census.indHist10[1] /*+ census.fieldHist10[1]*/) / (normalizedResPop /*+ normalizedFieldPop*/);
   else
     employment = 1;
 
   // Given the employment rate, calculate expected migration, add in births, and project the new population.
   var migration = normalizedResPop * (employment - 1);
-  var migrationField= normalizedFieldPop * (employment - 1);
   var births = normalizedResPop * birthRate;
   var projectedResPop = normalizedResPop + migration + births;
 
-  var projectedFieldPop = normalizedFieldPop + migrationField + 0.15; //???????????
 
   // Examine how many zones require workers
-  labourBase = census.comHist10[1] + census.indHist10[1] + census.fieldHist10[1];
+  labourBase = census.comHist10[1] + census.indHist10[1] /*+ census.fieldHist10[1]*/;
   if (labourBase > 0.0)
     labourBase = census.resHist10[1] / labourBase;
   else
@@ -99,7 +98,7 @@ Valves.prototype.setValves = function(gameLevel, census, budget) {
 
   // Project future industry and commercial needs, taking into account available labour, and competition from
   // other global cities
-  var internalMarket = (normalizedResPop + normalizedFieldPop + census.comPop + census.indPop) / internalMarketDenom;
+  var internalMarket = (normalizedResPop /*+ normalizedFieldPop*/ + census.comPop + census.indPop) / internalMarketDenom;
   var projectedComPop = internalMarket * labourBase;
   var projectedIndPop = census.indPop * labourBase * extMarketParamTable[gameLevel];
   projectedIndPop = Math.max(projectedIndPop, projectedIndPopMin);
@@ -111,11 +110,11 @@ Valves.prototype.setValves = function(gameLevel, census, budget) {
   else
     resRatio = resRatioDefault;
 
-  var fieldRatio;
+ /* var fieldRatio;
     if (normalizedFieldPop > 0)
-      fieldRatio = projectedFieldPop / normalizedFieldPop; //
+      fieldRatio = projectedFieldPop / normalizedFieldPop; 
     else
-      fieldRatio = fieldRatioDefault;   //
+      fieldRatio = fieldRatioDefault;   */
  
   var comRatio;
   if (census.comPop > 0)
@@ -130,27 +129,27 @@ Valves.prototype.setValves = function(gameLevel, census, budget) {
     indRatio = projectedIndPop;
 
   resRatio = Math.min(resRatio, resRatioMax);
-  fieldRatio = Math.min(fieldRatio, fieldRatioMax);
+  //fieldRatio = Math.min(fieldRatio, fieldRatioMax);
   comRatio = Math.min(comRatio, comRatioMax);
   indRatio = Math.min(indRatio, indRatioMax);
 
   // Constrain growth according to the tax level.
   var z = Math.min((budget.cityTax + gameLevel), taxMax);
   resRatio = (resRatio - 1) * taxTableScale + taxTable[z];
-  fieldRatio = (fieldRatio - 1) * taxTableScale + taxTable[z];
+ // fieldRatio = (fieldRatio - 1) * taxTableScale + taxTable[z];
   comRatio = (comRatio - 1) * taxTableScale + taxTable[z];
   indRatio = (indRatio - 1) * taxTableScale + taxTable[z];
 
   this.resValve = MiscUtils.clamp(this.resValve + Math.round(resRatio), -RES_VALVE_RANGE, RES_VALVE_RANGE);
-  this.fieldValve = MiscUtils.clamp(this.fieldValve + Math.round(fieldRatio), -FIELD_VALVE_RANGE, FIELD_VALVE_RANGE);
+  //this.fieldValve = MiscUtils.clamp(this.fieldValve + Math.round(fieldRatio), -FIELD_VALVE_RANGE, FIELD_VALVE_RANGE);
   this.comValve = MiscUtils.clamp(this.comValve + Math.round(comRatio), -COM_VALVE_RANGE, COM_VALVE_RANGE);
   this.indValve = MiscUtils.clamp(this.indValve + Math.round(indRatio), -IND_VALVE_RANGE, IND_VALVE_RANGE);
 
   if (this.resCap && this.resValve > 0)
     this.resValve = 0;
 
-  if (this.fieldCap && this.fieldValve > 0)
-    this.fieldValve = 0;
+  /*if (this.fieldCap && this.fieldValve > 0)
+    this.fieldValve = 0;*/
 
   if (this.comCap && this.comValve > 0)
       this.comValve = 0;

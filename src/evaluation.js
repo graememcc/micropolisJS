@@ -99,7 +99,7 @@ Evaluation.prototype.getAssessedValue = function(census) {
 
 Evaluation.prototype.getPopulation = function(census) {
   var oldPopulation = this.cityPop;
-  this.cityPop = (census.resPop + census.fieldPop*3 + census.indfieldPop/2 + (census.comPop + census.indPop) * 8) * 20;
+  this.cityPop = (census.resPop + /*census.fieldPop*3 + census.indfieldPop/2*/ + (census.comPop + census.indPop) * 8) * 20;
   this.cityPopDelta = this.cityPop - oldPopulation;
 
   if (this.cityPopDelta !== 0)
@@ -248,8 +248,8 @@ Evaluation.prototype.getScore = function(simData) {
   if (valves.resCap)
     score = Math.round(score * demandPenalty);
 
-  if (valves.fieldCap)
-    score = Math.round(score * demandPenalty);
+  /*if (valves.fieldCap)
+    score = Math.round(score * demandPenalty);*/
 
   if (valves.comCap)
     score = Math.round(score * demandPenalty);
@@ -276,8 +276,8 @@ Evaluation.prototype.getScore = function(simData) {
   if (valves.resValve < -1000)
     score = Math.round(score * 0.85);
 
-  if (valves.fieldValve < -1000)
-    score = Math.round(score * 0.85);
+  /*if (valves.fieldValve < -1000)
+    score = Math.round(score * 0.85);*/
 
   if (valves.comValve < -1000)
     score = Math.round(score * 0.85);

@@ -176,22 +176,22 @@ var degradeZone = function(map, x, y, blockMaps, population, lpValue) {
   switch(tileValue){
     case Tile.INDCORN:
       tileValue = Tile.INDFCORN;
-      map.setTile(x, y, tileValue, Tile.BLBNHYBIT);
+      map.setTile(x, y, tileValue, Tile.BLBNHYBIT | Tile.ZONEBIT);
       break;
 
     case Tile.INDWHEAT:
       tileValue = Tile.INDFWHEAT;
-      map.setTile(x, y, tileValue, Tile.BLBNHYBIT);
+      map.setTile(x, y, tileValue, Tile.BLBNHYBIT | Tile.ZONEBIT);
       break;
 
     case Tile.INDORCHARD:
       tileValue = Tile.INDFORCHARD;
-      map.setTile(x, y, tileValue, Tile.BLBNHYBIT);
+      map.setTile(x, y, tileValue, Tile.BLBNHYBIT | Tile.ZONEBIT);
       break;
 
     case Tile.INDPOTATO:
       tileValue = Tile.INDFPOTATO;
-      map.setTile(x, y, tileValue, Tile.BLBNHYBIT);
+      map.setTile(x, y, tileValue, Tile.BLBNHYBIT | Tile.ZONEBIT);
       break;
 
   }
@@ -295,18 +295,18 @@ var indfieldFound = function(map, x, y, simData) {
   simData.census.indfieldPop += population;
     
   if(simData.budget.shouldDegradeField()){
-    if (Random.getChance(511)) {
+    //if (Random.getChance(511)) {
     lpValue = ZoneUtils.getLandPollutionValue(simData.blockMaps, x, y);
     degradeZone(map, x, y, simData.blockMaps, population, lpValue, zoneIrrigate);
     return;
-    }
-  }else{
+    //}
+  }/*else{
     if(Random.getChance(511)){
     lpValue = ZoneUtils.getLandPollutionValue(simData.blockMaps, x, y);
     growZone(map, x, y, simData.blockMaps, population, lpValue, zoneIrrigate);
     return;
     }
-  }
+  }*/
   
   /*var trafficOK = Traffic.ROUTE_FOUND;
 
@@ -372,32 +372,12 @@ var indfieldFound = function(map, x, y, simData) {
 };
 
 
-/*var makeHospital = function(map, x, y, simData) { /////////////////analogia?
-  // We only build a hospital if the population requires it
-  if (simData.census.needHospital > 0) {
-    ZoneUtils.putZone(map, x, y, Tile.HOSPITAL, zonePower, zoneIrrigate);
-    simData.census.needHospital = 0;
-    return;
-  }
-};
 
-
-var hospitalFound = function(map, x, y, simData) { //////////////////////////////
-  simData.census.hospitalPop += 1;
-
-  // Degrade to an empty zone if a hospital is no longer sustainable
-  if (simData.census.needHospital === -1) {
-    if (Random.getRandom(20) === 0)
-      ZoneUtils.putZone(map, x, y, Tile.FREE, map.getTile(x, y).isPowered(), map.getTile(x, y).isIrrigated());
-  }
-};*/
 
 
 var IndField = {
   registerHandlers: function(mapScanner, repairManager) {
     mapScanner.addAction(TileUtils.isIndFieldZone, indfieldFound);
-    /*mapScanner.addAction(TileUtils.HOSPITAL, hospitalFound); ///////////////////
-    repairManager.addAction(Tile.HOSPITAL, 15, 3); */
   },
   getZonePopulation: getZonePopulation
 };

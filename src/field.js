@@ -21,7 +21,8 @@ import { ZoneUtils } from './zoneUtils';
 var placeField = function(map, x, y, population, lpValue, zoneIrrigate, centreTile) {
   //var centreTile = ((lpValue * 4) + population) * 9 + Tile.FZB;
   var zonePower = false; // dava errore se non dichiarato
-  ZoneUtils.putZone(map, x, y, centreTile, zonePower, zoneIrrigate);
+  tile = centreTile;
+  ZoneUtils.putZone(map, x, y, tile, zonePower, zoneIrrigate);
 };
 
 
@@ -171,27 +172,29 @@ var growZone = function(map, x, y, blockMaps, population, lpValue, zoneIrrigate)
 var degradeZone = function(map, x, y, blockMaps, population, lpValue, zoneIrrigate) {
   //var xx, yy;
   var tileValue = map.getTileValue(x, y);
-
   switch(tileValue){
     case Tile.CORN:
       tileValue = Tile.FCORN;
-      map.setTile(x, y, tileValue, Tile.BLBNHYBIT);
+      map.setTile(x, y, tileValue, Tile.BLBNHYBIT | Tile.ZONEBIT);
       break;
 
     case Tile.WHEAT:
       tileValue = Tile.FWHEAT;
-      map.setTile(x, y, tileValue, Tile.BLBNHYBIT);
+      map.setTile(x, y, tileValue, Tile.BLBNHYBIT | Tile.ZONEBIT);
       break;
 
     case Tile.ORCHARD:
       tileValue = Tile.FORCHARD;
-      map.setTile(x, y, tileValue, Tile.BLBNHYBIT);
+      map.setTile(x, y, tileValue, Tile.BLBNHYBIT | Tile.ZONEBIT);
       break;
 
     case Tile.POTATO:
       tileValue = Tile.FPOTATO;
-      map.setTile(x, y, tileValue, Tile.BLBNHYBIT);
+      map.setTile(x, y, tileValue, Tile.BLBNHYBIT | Tile.ZONEBIT);
       break;
+
+    default:
+      return;
 
   }
 
@@ -261,15 +264,10 @@ var fieldFound = function(map, x, y, simData) {
   // If we choose to grow this zone, we will fill it with an index in the range 0-3 reflecting the land value and
   // pollution scores (higher is better). This is then used to select the variant to build
   var lpValue;
-
-  
-  
   var tile = map.getTileValue(x, y);
   var zoneIrrigate = map.getTile(x, y).isIrrigated();
-  //var prevTile = map.getTileValue(x-1, y);
+  
   var cost = 0;
-  //if( prevTile !== (Tile.FREEINDF-1))
-  //{
   if(zoneIrrigate) {
     // Notify the census
     simData.census.fieldZonePop += 1;
@@ -307,17 +305,17 @@ var fieldFound = function(map, x, y, simData) {
   var population = 0;
   if(tile != Tile.FREEF) { 
   if(simData.budget.shouldDegradeField()){
-    if (Random.getChance(511)) {
+    //if (Random.getChance(511)) {
+      //if(1){
     lpValue = ZoneUtils.getLandPollutionValue(simData.blockMaps, x, y);
     degradeZone(map, x, y, simData.blockMaps, population, lpValue, zoneIrrigate);
     return;
-    }
-  }else{
+  /*}else{
     if(Random.getChance(511)){
       lpValue = ZoneUtils.getLandPollutionValue(simData.blockMaps, x, y);
       growZone(map, x, y, simData.blockMaps, population, lpValue, zoneIrrigate);
       return;
-    }
+    }*/
   //}
 }
 }
