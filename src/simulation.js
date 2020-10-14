@@ -25,7 +25,7 @@ import { PowerManager } from './powerManager';
 import { RepairManager } from './repairManager';
 import { Residential } from './residential';
 import { Field } from './field';
-import { IndField } from './indiefield'
+import { IndField } from './indfield'
 import { Road } from './road';
 import { SpriteManager } from './spriteManager';
 import { Stadia } from './stadia';

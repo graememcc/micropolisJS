@@ -17,8 +17,8 @@ import { BaseTool } from './baseTool';
 
 // Field tiles have 'populations' of 16, 24, 32 or 40, and value from 0 to 3. The tiles are laid out in
 // increasing order of land value, cycling through each population value
-var placeIndField = function(map, x, y, population, lpValue) {
-  var centreTile = ((lpValue * 4) + population) * 9 + Tile.INDFZB;
+var placeIndField = function(map, x, y, population, lpValue, zoneIrrigate, centreTile) {
+  //var centreTile = ((lpValue * 4) + population) * 9 + Tile.INDFZB;
   ZoneUtils.putZone(map, x, y, centreTile, zonePower, zoneIrrigate);
   
 };
@@ -119,7 +119,33 @@ var growZone = function(map, x, y, blockMaps, population, lpValue) {
 
   var tileValue = map.getTileValue(x, y);
 
-  if (tileValue === Tile.FREEINDF) {
+  switch(tileValue){
+    case Tile.INDFCORN:
+      tileValue = Tile.INDCORN;
+      placeIndField(map, x, y, 0, lpValue, zoneIrrigate, tileValue);
+      break;
+
+    case Tile.INDFWHEAT:
+      tileValue = Tile.INDWHEAT;
+      placeIndField(map, x, y, 0, lpValue, zoneIrrigate, tileValue);
+      break;
+
+    case Tile.INDFORCHARD:
+      tileValue = Tile.INDORCHARD;
+      placeIndField(map, x, y, 0, lpValue, zoneIrrigate, tileValue);
+      break;
+
+    case Tile.INDFPOTATO:
+      tileValue = Tile.INDPOTATO;
+      placeIndField(map, x, y, 0, lpValue, zoneIrrigate, tileValue);
+      break;
+    
+    default:
+      return;
+
+  }
+
+  /*if (tileValue === Tile.FREEINDF) {
     if (population < 8) {
       // Zone capacity not yet reached: build another farm
       buildIndFarm(map, x, y, lpValue);
@@ -137,14 +163,42 @@ var growZone = function(map, x, y, blockMaps, population, lpValue) {
     // Zone population not yet maxed out
     placeField(map, x, y, Math.floor(population / 8) - 1, lpValue);
     ZoneUtils.incRateOfGrowth(blockMaps, x, y, 8);
-  }
+  }*/
 };
 
 
 var freeZone = [0, 3, 6, 1, 4, 7, 2, 5, 8];
 
 var degradeZone = function(map, x, y, blockMaps, population, lpValue) {
-  var xx, yy;
+
+  var tileValue = map.getTileValue(x, y);
+
+  switch(tileValue){
+    case Tile.INDCORN:
+      tileValue = Tile.INDFCORN;
+      map.setTile(x, y, tileValue, Tile.BLBNHYBIT);
+      break;
+
+    case Tile.INDWHEAT:
+      tileValue = Tile.INDFWHEAT;
+      map.setTile(x, y, tileValue, Tile.BLBNHYBIT);
+      break;
+
+    case Tile.INDORCHARD:
+      tileValue = Tile.INDFORCHARD;
+      map.setTile(x, y, tileValue, Tile.BLBNHYBIT);
+      break;
+
+    case Tile.INDPOTATO:
+      tileValue = Tile.INDFPOTATO;
+      map.setTile(x, y, tileValue, Tile.BLBNHYBIT);
+      break;
+
+  }
+
+  return;
+
+  /*var xx, yy;
   if (population === 0)
     return;
 
@@ -183,7 +237,7 @@ var degradeZone = function(map, x, y, blockMaps, population, lpValue) {
         return;
       }
     }
-  }
+  }*/
 };
 
 
@@ -235,9 +289,9 @@ var indfieldFound = function(map, x, y, simData) {
 
     map.setTile(x, y, tile, Tile.BLBNHYBIT | Tile.ZONEBIT);
     
-    var tileValue = map.getTileValue(x, y);
-  var population = getZonePopulation(map, x, y, tileValue); 
-  
+  //var tileValue = map.getTileValue(x, y);
+  //var population = getZonePopulation(map, x, y, tileValue); 
+  var population = 0;
   simData.census.indfieldPop += population;
     
   if(simData.budget.shouldDegradeField()){
@@ -248,9 +302,9 @@ var indfieldFound = function(map, x, y, simData) {
     }
   }else{
     if(Random.getChance(511)){
-      lpValue = ZoneUtils.getLandPollutionValue(simData.blockMaps, x, y);
-      growZone(map, x, y, simData.blockMaps, population, lpValue, zoneIrrigate);
-      return;
+    lpValue = ZoneUtils.getLandPollutionValue(simData.blockMaps, x, y);
+    growZone(map, x, y, simData.blockMaps, population, lpValue, zoneIrrigate);
+    return;
     }
   }
   
@@ -318,7 +372,7 @@ var indfieldFound = function(map, x, y, simData) {
 };
 
 
-var makeHospital = function(map, x, y, simData) { /////////////////analogia?
+/*var makeHospital = function(map, x, y, simData) { /////////////////analogia?
   // We only build a hospital if the population requires it
   if (simData.census.needHospital > 0) {
     ZoneUtils.putZone(map, x, y, Tile.HOSPITAL, zonePower, zoneIrrigate);
@@ -336,14 +390,14 @@ var hospitalFound = function(map, x, y, simData) { /////////////////////////////
     if (Random.getRandom(20) === 0)
       ZoneUtils.putZone(map, x, y, Tile.FREE, map.getTile(x, y).isPowered(), map.getTile(x, y).isIrrigated());
   }
-};
+};*/
 
 
 var IndField = {
   registerHandlers: function(mapScanner, repairManager) {
     mapScanner.addAction(TileUtils.isIndFieldZone, indfieldFound);
-    mapScanner.addAction(TileUtils.HOSPITAL, hospitalFound); ///////////////////
-    repairManager.addAction(Tile.HOSPITAL, 15, 3); //////////////////
+    /*mapScanner.addAction(TileUtils.HOSPITAL, hospitalFound); ///////////////////
+    repairManager.addAction(Tile.HOSPITAL, 15, 3); */
   },
   getZonePopulation: getZonePopulation
 };
