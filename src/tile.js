@@ -314,7 +314,7 @@ Tile.LVTUBE9       = 235;
 Tile.LVTUBE10      = 236;
 Tile.HTUBEROAD     = 237; // Horizontal tube road
 Tile.VTUBEROAD     = 238; // Vertical tube road
-Tile.TUBEBASE      = Tile.HTUBE;
+Tile.TUBEBASE      = Tile.VTUBE;
 Tile.LASTTUBE      = 238;
 
 /* Rail 

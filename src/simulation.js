@@ -416,10 +416,10 @@ Simulation.prototype._wrapMessage = function(message, data) {
 Simulation.prototype._sendMessages = function() {
   this._checkGrowth();
 
-  var totalZonePop = this._census.resZonePop + this._census.fieldZonePop + this._census.comZonePop +
+  var totalZonePop = this._census.resZonePop + /*this._census.fieldZonePop*/ + this._census.comZonePop +
                      this._census.indZonePop;
   var powerPop = this._census.nuclearPowerPop + this._census.coalPowerPop /*+ this._census.wwtpPowerPop*/;
-  var waterPop = this._census.wwtpPowerPop;
+ // var waterPop = this._census.wwtpPowerPop;
 
   switch (this._cityTime & 63) {
     case 1:
@@ -427,11 +427,11 @@ Simulation.prototype._sendMessages = function() {
         this._emitEvent(Messages.FRONT_END_MESSAGE, {subject: Messages.NEED_MORE_RESIDENTIAL});
       break;
 
-    case 4:
+   /* case 4:
       if (Math.floor(totalZonePop / 4) >= this._census.fieldZonePop)
         this._emitEvent(Messages.FRONT_END_MESSAGE, {subject: Messages.NEED_MORE_FIELD});
-      break;
-
+      break;*/
+      
     case 8:
       if (Math.floor(totalZonePop / 8) >= this._census.comZonePop)
         this._emitEvent(Messages.FRONT_END_MESSAGE, {subject: Messages.NEED_MORE_COMMERCIAL});
@@ -456,11 +456,11 @@ Simulation.prototype._sendMessages = function() {
       if (totalZonePop > 10 && powerPop === 0)
         this._emitEvent(Messages.FRONT_END_MESSAGE, {subject: Messages.NEED_ELECTRICITY});
       break;
-//if there is no need to watering fields this case can be modified considering the field tiles value
-    case 24:
+
+    /*case 24:
       if (totalZonePop > 10 && waterPop === 0) //wwtp request according popolation
         this._emitEvent(Messages.FRONT_END_MESSAGE, {subject: Messages.NEED_WATER});
-      break;
+      break;*/
 
     case 26:
       if (this._census.resPop > 500 && this._census.stadiumPop === 0) {
@@ -489,7 +489,7 @@ Simulation.prototype._sendMessages = function() {
       }
       break;
 
-    case 32: //in census. fields are zone but not considered here. Field doesnt need elettricity? if not do not change
+    case 32:
       var zoneCount = this._census.unpoweredZoneCount + this._census.poweredZoneCount;
       if (zoneCount > 0) {
         if (this._census.poweredZoneCount / zoneCount < 0.7 && powerPop > 0) {
@@ -605,12 +605,12 @@ Simulation.prototype._checkGrowth = function() {
 
 Simulation.prototype._onValveChange  = function() {
   this._resLast = this._valves.resValve;
-  this._fieldLast = this._valves.fieldValve,
+ // this._fieldLast = this._valves.fieldValve,
   this._comLast = this._valves.comValve;
   this._indLast = this._valves.indValve;
 
   this._emitEvent(Messages.VALVES_UPDATED, {residential: this._valves.resValve,
-                                            field: this._valves.fieldValve, 
+                                            //field: this._valves.fieldValve, 
                                             commercial: this._valves.comValve,
                                             industrial: this._valves.indValve});
 };
