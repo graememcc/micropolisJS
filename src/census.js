@@ -9,7 +9,7 @@
 
 import { MiscUtils } from './miscUtils';
 
-var arrs = ['res', 'field', 'indfield', 'com', 'ind', 'crime',
+var arrs = ['res', /*'field', 'indfield',*/ 'com', 'ind', 'crime',
             'money', 'pollution'];
 function Census() {
   this.clearCensus();
