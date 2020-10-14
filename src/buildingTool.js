@@ -49,19 +49,19 @@ BuildingTool.prototype.putBuilding = function(leftX, topY) {
         {
           switch (c){
             case BaseTool.CORN_COST: 
-              tileValue = Tile.INDCORN; 
+              tileValue = Tile.INDFCORN; 
               break;
  
             case BaseTool.WHEAT_COST: 
-              tileValue = Tile.INDWHEAT;
+              tileValue = Tile.INDFWHEAT;
               break;
  
             case BaseTool.ORCHARD_COST: 
-              tileValue = Tile.INDORCHARD; 
+              tileValue = Tile.INDFORCHARD; 
               break;
  
             case BaseTool.POTATO_COST: 
-              tileValue = Tile.INDPOTATO; 
+              tileValue = Tile.INDFPOTATO; 
               break;
  
             default: break;
