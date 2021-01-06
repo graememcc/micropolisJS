@@ -83,12 +83,14 @@ Evaluation.prototype.getAssessedValue = function(census) {
   value = census.roadTotal * 5;
   value += census.railTotal * 10;
   value += census.policeStationPop * 1000;
+  //value += census.fieldZonePop * 1000;
   value += census.fireStationPop * 1000;
   value += census.hospitalPop * 400;
   value += census.stadiumPop * 3000;
   value += census.seaportPop * 5000;
   value += census.airportPop * 10000;
   value += census.coalPowerPop * 3000;
+  value += census.wwtpPowerPop * 3000;
   value += census.nuclearPowerPop * 6000;
 
   this.cityAssessedValue = value * 1000;
@@ -97,7 +99,7 @@ Evaluation.prototype.getAssessedValue = function(census) {
 
 Evaluation.prototype.getPopulation = function(census) {
   var oldPopulation = this.cityPop;
-  this.cityPop = (census.resPop + (census.comPop + census.indPop) * 8) * 20;
+  this.cityPop = (census.resPop + /*census.fieldPop*3 + census.indfieldPop/2*/ + (census.comPop + census.indPop) * 8) * 20;
   this.cityPopDelta = this.cityPop - oldPopulation;
 
   if (this.cityPopDelta !== 0)
@@ -246,6 +248,9 @@ Evaluation.prototype.getScore = function(simData) {
   if (valves.resCap)
     score = Math.round(score * demandPenalty);
 
+  /*if (valves.fieldCap)
+    score = Math.round(score * demandPenalty);*/
+
   if (valves.comCap)
     score = Math.round(score * demandPenalty);
 
@@ -263,10 +268,16 @@ Evaluation.prototype.getScore = function(simData) {
   if (budget.fireEffect < budget.MAX_FIRE_STATION_EFFECT)
     score = Math.round(score * (0.9 + (budget.fireEffect / (10 * budget.MAX_FIRE_STATION_EFFECT))));
 
+    if (budget.fieldEffect < budget.MAX_FIELD_STATION_EFFECT)
+    score = Math.round(score * (0.9 + (budget.fieldEffect / (10 * budget.MAX_FIELD_STATION_EFFECT))));
+
   // Penalise the player by 15% if demand for any type of zone has collapsed due
   // to overprovision
   if (valves.resValve < -1000)
     score = Math.round(score * 0.85);
+
+  /*if (valves.fieldValve < -1000)
+    score = Math.round(score * 0.85);*/
 
   if (valves.comValve < -1000)
     score = Math.round(score * 0.85);

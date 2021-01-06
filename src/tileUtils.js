@@ -22,6 +22,7 @@ var unwrapTile = function(f) {
 var canBulldoze = unwrapTile(function(tileValue) {
   return (tileValue >= Tile.FIRSTRIVEDGE  && tileValue <= Tile.LASTRUBBLE) ||
          (tileValue >= Tile.POWERBASE + 2 && tileValue <= Tile.POWERBASE + 12) ||
+         (tileValue >= Tile.TUBEBASE + 2 && tileValue <= Tile.TUBEBASE + 12) || ///channel is autobulldoze
          (tileValue >= Tile.TINYEXP       && tileValue <= Tile.LASTTINYEXP + 2);
 });
 
@@ -82,6 +83,25 @@ var isResidentialZone = function(tile) {
 };
 
 
+var isField = unwrapTile(function(tile) {
+  return (tile >= Tile.FIELDBASE && tile <= Tile.FPOTATO);
+});
+
+
+var isFieldZone = function(tile) {
+  return tile.isZone() && isField(tile);
+};
+
+var isIndField = unwrapTile(function(tile) {
+  return (tile >= Tile.INDFIELDBASE && tile <= Tile.INDFPOTATO)
+});
+
+
+var isIndFieldZone = function(tile) {
+  return tile.isZone() && isIndField(tile);
+};
+
+
 var isRoad = unwrapTile(function(tile) {
   return tile >= Tile.ROADBASE && tile < Tile.POWERBASE;
 });
@@ -115,6 +135,10 @@ var TileUtils = {
   isRail: isRail,
   isResidential: isResidential,
   isResidentialZone: isResidentialZone,
+  isField: isField,
+  isFieldZone: isFieldZone,
+  isIndField : isIndField,
+  isIndFieldZone : isIndFieldZone,
   isRoad: isRoad,
   normalizeRoad: normalizeRoad,
   randomFire: randomFire,

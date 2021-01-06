@@ -13,6 +13,7 @@ import { Industrial } from './industrial';
 import { MiscUtils } from './miscUtils';
 import { Random } from './random';
 import { Residential } from './residential';
+import { Field } from './field';
 import { Tile } from './tile';
 
 // Smoothing styles for map smoothing

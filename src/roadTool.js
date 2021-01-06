@@ -35,7 +35,7 @@ RoadTool.prototype.layRoad = function(x, y) {
         tile = this._worldEffects.getTileValue(x + 1, y);
         tile = TileUtils.normalizeRoad(tile);
 
-        if (tile === Tile.VRAILROAD || tile === Tile.HBRIDGE ||
+        if (tile === Tile.VTUBEROAD || tile === Tile.HBRIDGE ||
             (tile >= Tile.ROADS && tile <= Tile.HROADPOWER)) {
           this._worldEffects.setTile(x, y, Tile.HBRIDGE, Tile.BULLBIT);
           break;
@@ -46,7 +46,7 @@ RoadTool.prototype.layRoad = function(x, y) {
         tile = this._worldEffects.getTileValue(x - 1, y);
         tile = TileUtils.normalizeRoad(tile);
 
-        if (tile === Tile.VRAILROAD || tile === Tile.HBRIDGE ||
+        if (tile === Tile.VTUBEROAD || tile === Tile.HBRIDGE ||
             (tile >= Tile.ROADS && tile <= Tile.INTERSECTION)) {
           this._worldEffects.setTile(x, y, Tile.HBRIDGE, Tile.BULLBIT);
           break;
@@ -57,7 +57,7 @@ RoadTool.prototype.layRoad = function(x, y) {
         tile = this._worldEffects.getTileValue(x, y + 1);
         tile = TileUtils.normalizeRoad(tile);
 
-        if (tile === Tile.HRAILROAD || tile === Tile.VROADPOWER ||
+        if (tile === Tile.HTUBEROAD || tile === Tile.VROADPOWER ||
             (tile >= Tile.VBRIDGE && tile <= Tile.INTERSECTION)) {
           this._worldEffects.setTile(x, y, Tile.VBRIDGE, Tile.BULLBIT);
           break;
@@ -68,7 +68,7 @@ RoadTool.prototype.layRoad = function(x, y) {
         tile = this._worldEffects.getTileValue(x, y - 1);
         tile = TileUtils.normalizeRoad(tile);
 
-        if (tile === Tile.HRAILROAD || tile === Tile.VROADPOWER ||
+        if (tile === Tile.HTUBEROAD || tile === Tile.VROADPOWER ||
             (tile >= Tile.VBRIDGE && tile <= Tile.INTERSECTION)) {
           this._worldEffects.setTile(x, y, Tile.VBRIDGE, Tile.BULLBIT);
           break;
@@ -85,12 +85,12 @@ RoadTool.prototype.layRoad = function(x, y) {
       this._worldEffects.setTile(x, y, Tile.HROADPOWER | Tile.CONDBIT | Tile.BURNBIT | Tile.BULLBIT);
       break;
 
-    case Tile.LHRAIL:
-      this._worldEffects.setTile(x, y, Tile.HRAILROAD | Tile.BURNBIT | Tile.BULLBIT);
+    case Tile.LHTUBE:
+      this._worldEffects.setTile(x, y, Tile.HTUBEROAD | Tile.BURNBIT | Tile.BULLBIT);
       break;
 
-    case Tile.LVRAIL:
-      this._worldEffects.setTile(x, y, Tile.VRAILROAD | Tile.BURNBIT | Tile.BULLBIT);
+    case Tile.LVTUBE:
+      this._worldEffects.setTile(x, y, Tile.VTUBEROAD | Tile.BURNBIT | Tile.BULLBIT);
       break;
 
     default:

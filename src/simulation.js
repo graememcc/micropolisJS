@@ -24,6 +24,8 @@ import { MiscUtils } from './miscUtils';
 import { PowerManager } from './powerManager';
 import { RepairManager } from './repairManager';
 import { Residential } from './residential';
+import { Field } from './field';
+import { IndField } from './indfield'
 import { Road } from './road';
 import { SpriteManager } from './spriteManager';
 import { Stadia } from './stadia';
@@ -127,7 +129,6 @@ Simulation.prototype.setLevel = function(l) {
   this._gameLevel = l;
 };
 
-
 Simulation.prototype.setSpeed = function(s) {
   if (s !== Simulation.SPEED_PAUSED &&
       s !== Simulation.SPEED_SLOW &&
@@ -217,6 +218,8 @@ Simulation.prototype._simFrame = function() {
 Simulation.prototype._clearCensus = function() {
   this._census.clearCensus();
   this._powerManager.clearPowerStack();
+  this._powerManager.clearIrrigateStack();
+  this._powerManager.clearsetCropStack();
   this.blockMaps.fireStationMap.clear();
   this.blockMaps.policeStationMap.clear();
 };
@@ -282,12 +285,15 @@ Simulation.prototype.init = function() {
   this._powerManager.registerHandlers(this._mapScanner, this._repairManager);
   Road.registerHandlers(this._mapScanner, this._repairManager);
   Residential.registerHandlers(this._mapScanner, this._repairManager);
+  Field.registerHandlers(this._mapScanner, this._repairManager);
+  IndField.registerHandlers(this._mapScanner, this._repairManager);
   Stadia.registerHandlers(this._mapScanner, this._repairManager);
   Transport.registerHandlers(this._mapScanner, this._repairManager);
 
   var simData = this._constructSimData();
   this._mapScanner.mapScan(0, this._map.width, simData);
   this._powerManager.doPowerScan(this._census);
+  this._powerManager.doIrrigateScan(this._census);
   BlockMapUtils.pollutionTerrainLandValueScan(this._map, this._census, this.blockMaps);
   BlockMapUtils.crimeScan(this._census, this.blockMaps);
   BlockMapUtils.populationDensityScan(this._map, this.blockMaps);
@@ -296,6 +302,7 @@ Simulation.prototype.init = function() {
 
 
 var speedPowerScan = [2, 4, 5];
+var speedIrrigateScan = [2, 4, 5];
 var speedPollutionTerrainLandValueScan = [2, 7, 17];
 var speedCrimeScan = [1, 8, 18];
 var speedPopulationDensityScan = [1, 9,19];
@@ -359,6 +366,8 @@ var simulate = function(simData) {
     case 11:
       if ((this._simCycle % speedPowerScan[speedIndex]) === 0)
         this._powerManager.doPowerScan(this._census);
+        if ((this._simCycle % speedIrrigateScan[speedIndex]) === 0)
+        this._powerManager.doIrrigateScan(this._census);
       break;
 
     case 12:
@@ -407,9 +416,10 @@ Simulation.prototype._wrapMessage = function(message, data) {
 Simulation.prototype._sendMessages = function() {
   this._checkGrowth();
 
-  var totalZonePop = this._census.resZonePop + this._census.comZonePop +
+  var totalZonePop = this._census.resZonePop + /*this._census.fieldZonePop*/ + this._census.comZonePop +
                      this._census.indZonePop;
-  var powerPop = this._census.nuclearPowerPop + this._census.coalPowerPop;
+  var powerPop = this._census.nuclearPowerPop + this._census.coalPowerPop /*+ this._census.wwtpPowerPop*/;
+ // var waterPop = this._census.wwtpPowerPop;
 
   switch (this._cityTime & 63) {
     case 1:
@@ -417,7 +427,12 @@ Simulation.prototype._sendMessages = function() {
         this._emitEvent(Messages.FRONT_END_MESSAGE, {subject: Messages.NEED_MORE_RESIDENTIAL});
       break;
 
-    case 5:
+   /* case 4:
+      if (Math.floor(totalZonePop / 4) >= this._census.fieldZonePop)
+        this._emitEvent(Messages.FRONT_END_MESSAGE, {subject: Messages.NEED_MORE_FIELD});
+      break;*/
+      
+    case 8:
       if (Math.floor(totalZonePop / 8) >= this._census.comZonePop)
         this._emitEvent(Messages.FRONT_END_MESSAGE, {subject: Messages.NEED_MORE_COMMERCIAL});
       break;
@@ -441,6 +456,11 @@ Simulation.prototype._sendMessages = function() {
       if (totalZonePop > 10 && powerPop === 0)
         this._emitEvent(Messages.FRONT_END_MESSAGE, {subject: Messages.NEED_ELECTRICITY});
       break;
+
+    /*case 24:
+      if (totalZonePop > 10 && waterPop === 0) //wwtp request according popolation
+        this._emitEvent(Messages.FRONT_END_MESSAGE, {subject: Messages.NEED_WATER});
+      break;*/
 
     case 26:
       if (this._census.resPop > 500 && this._census.stadiumPop === 0) {
@@ -585,10 +605,12 @@ Simulation.prototype._checkGrowth = function() {
 
 Simulation.prototype._onValveChange  = function() {
   this._resLast = this._valves.resValve;
+ // this._fieldLast = this._valves.fieldValve,
   this._comLast = this._valves.comValve;
   this._indLast = this._valves.indValve;
 
   this._emitEvent(Messages.VALVES_UPDATED, {residential: this._valves.resValve,
+                                            //field: this._valves.fieldValve, 
                                             commercial: this._valves.comValve,
                                             industrial: this._valves.indValve});
 };
@@ -637,6 +659,10 @@ Object.defineProperties(Simulation,
   SPEED_SLOW:  MiscUtils.makeConstantDescriptor(1),
   SPEED_MED: MiscUtils.makeConstantDescriptor(2),
   SPEED_FAST: MiscUtils.makeConstantDescriptor(3),
+  CROP_CORN: MiscUtils.makeConstantDescriptor(0),
+  CROP_WHEAT:  MiscUtils.makeConstantDescriptor(1),
+  CROP_ORCHARD: MiscUtils.makeConstantDescriptor(2),
+  CROP_POTATO: MiscUtils.makeConstantDescriptor(3),
 });
 
 

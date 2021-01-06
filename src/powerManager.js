@@ -7,6 +7,7 @@
  *
  */
 
+import { BaseTool } from './baseTool';
 import { BlockMap } from './blockMap';
 import { Direction } from './direction';
 import { EventEmitter } from './eventEmitter';
@@ -15,13 +16,18 @@ import { Random } from './random';
 import { Tile } from './tile';
 
 var COAL_POWER_STRENGTH = 700;
+var WWTP_POWER_STRENGTH = 700;
 var NUCLEAR_POWER_STRENGTH = 2000;
 
 
 var PowerManager = EventEmitter(function(map) {
   this._map = map;
   this._powerStack = [];
+  this._irrigateStack = [];
+  this._setCropStack = [];
   this.powerGridMap = new BlockMap(this._map.width, this._map.height, 1);
+  this.irrigateGridMap = new BlockMap(this._map.width, this._map.height, 1);
+  this.costFieldMap = new BlockMap(this._map.width, this._map.height, 1);
 });
 
 
@@ -29,7 +35,8 @@ PowerManager.prototype.setTilePower = function(x, y) {
   var tile = this._map.getTile(x, y);
   var tileValue = tile.getValue();
 
-  if (tileValue === Tile.NUCLEAR || tileValue === Tile.POWERPLANT ||
+  if ((tileValue >= Tile.NUCLEARBASE && tileValue <= Tile.LASTZONE) || 
+      (tileValue >= Tile.COALBASE && tileValue <= Tile.LASTPOWERPLANT) ||
       this.powerGridMap.worldGet(x, y) > 0) {
     tile.addFlags(Tile.POWERBIT);
     return;
@@ -38,12 +45,64 @@ PowerManager.prototype.setTilePower = function(x, y) {
   tile.removeFlags(Tile.POWERBIT);
 };
 
+PowerManager.prototype.setTileIrrigate = function(x, y) {
+  var tile = this._map.getTile(x, y);
+  var tileValue = tile.getValue();
+
+  if (((tileValue >= Tile.WWTPBASE && tileValue <= Tile.LASTWWTP) ||
+      this.irrigateGridMap.worldGet(x, y) > 0) &&
+      (tileValue < Tile.INDFIELDBASE || tileValue > Tile.INDFPOTATO)) {
+    tile.addFlags(Tile.IRRIGBIT);
+    return;
+  }
+
+  tile.removeFlags(Tile.IRRIGBIT);
+};
+
+PowerManager.prototype.setCostCrop = function(x, y) {
+  var tile = this._map.getTile(x, y);
+  var tileValue = tile.getValue();
+
+  switch (tileValue) {
+    case Tile.CORN:
+    case Tile.FCORN: 
+    case Tile.INDCORN: 
+    case Tile.INDFCORN:
+      this.costFieldMap.set(x, y, BaseTool.CORN_COST); break;
+    case Tile.WHEAT: 
+    case Tile.FWHEAT:
+    case Tile.INDWHEAT: 
+    case Tile.INDFWHEAT:
+      this.costFieldMap.set(x, y, BaseTool.WHEAT_COST); break;
+    case Tile.ORCHARD: 
+    case Tile.FORCHARD:
+    case Tile.INDORCHARD: 
+    case Tile.INDFORCHARD:
+      this.costFieldMap.set(x, y, BaseTool.ORCHARD_COST); break;
+    case Tile.POTATO: 
+    case Tile.FPOTATO: 
+    case Tile.INDPOTATO: 
+    case Tile.INDFPOTATO:
+      this.costFieldMap.set(x, y, BaseTool.POTATO_COST); break;
+    default: break;
+  }
+};
+
 
 PowerManager.prototype.clearPowerStack = function() {
   this._powerStackPointer = 0;
   this._powerStack = [];
 };
 
+PowerManager.prototype.clearIrrigateStack = function() {
+  this._irrigateStackPointer = 0;
+  this._irrigateStack = [];
+};
+
+PowerManager.prototype.clearsetCropStack = function() {
+  this._setCropStackPointer = 0;
+  this._setCropStack = [];
+};
 
 PowerManager.prototype.testForConductive = function(pos, testDir) {
   var movedPos = new this._map.Position(pos);
@@ -51,6 +110,19 @@ PowerManager.prototype.testForConductive = function(pos, testDir) {
   if (movedPos.move(testDir)) {
     if (this._map.getTile(movedPos.x, movedPos.y).isConductive()) {
       if (this.powerGridMap.worldGet(movedPos.x, movedPos.y) === 0)
+          return true;
+    }
+  }
+
+  return false;
+};
+
+PowerManager.prototype.testForHydraulic = function(pos, testDir) {
+  var movedPos = new this._map.Position(pos);
+
+  if (movedPos.move(testDir)) {
+    if (this._map.getTile(movedPos.x, movedPos.y).isHydraulic()) {
+      if (this.irrigateGridMap.worldGet(movedPos.x, movedPos.y) === 0)
           return true;
     }
   }
@@ -103,6 +175,61 @@ PowerManager.prototype.doPowerScan = function(census) {
   }
 };
 
+// come per powerScan bisogna usare irrigatescan per fare scan delle robe che sono hydra
+PowerManager.prototype.doIrrigateScan = function(census) {
+  // Clear irrigate this._map.
+  this.irrigateGridMap.clear();
+
+  // Irrigation that the wwtp can deliver.
+  var maxPower = census.wwtpPowerPop * WWTP_POWER_STRENGTH;
+
+  var powerConsumption = 0; // Amount of power used.
+
+  while (this._irrigateStack.length > 0) {
+    var pos = this._irrigateStack.pop();
+    var anyDir = Direction.INVALID;
+    var conNum;
+    do {
+      powerConsumption++;
+      if (powerConsumption > maxPower) {
+        this._emitEvent(Messages.NOT_ENOUGH_WATER);
+        return;
+      }
+
+      if (anyDir !== Direction.INVALID)
+        pos.move(anyDir);
+
+      this.irrigateGridMap.worldSet(pos.x, pos.y, 1);
+      conNum = 0;
+      var dir = Direction.BEGIN;
+
+      while (dir < Direction.END && conNum < 2) {
+        if (this.testForHydraulic(pos, dir)) {
+          conNum++;
+          anyDir = dir;
+        }
+        dir = Direction.increment90(dir);
+      }
+      if (conNum > 1)
+        this._irrigateStack.push(new this._map.Position(pos));
+    } while (conNum);
+  }
+};
+
+PowerManager.prototype.wwtpPowerFound = function(map, x, y, simData) {
+  simData.census.wwtpPowerPop += 1;
+
+  this._irrigateStack.push(new map.Position(x, y));
+
+  /* Ensure animation runs
+  var dX = [-1, 2, 1, 2];
+  var dY = [-1, -1, 0, 0];
+
+  for (var i = 0; i < 4; i++)
+    map.addTileFlags(x + dX[i], y + dY[i], Tile.ANIMBIT);*/
+};
+
+
 
 PowerManager.prototype.coalPowerFound = function(map, x, y, simData) {
   simData.census.coalPowerPop += 1;
@@ -143,8 +270,10 @@ PowerManager.prototype.nuclearPowerFound = function(map, x, y, simData) {
 PowerManager.prototype.registerHandlers = function(mapScanner, repairManager) {
   mapScanner.addAction(Tile.POWERPLANT, this.coalPowerFound.bind(this));
   mapScanner.addAction(Tile.NUCLEAR, this.nuclearPowerFound.bind(this));
+  mapScanner.addAction(Tile.WWTP, this.wwtpPowerFound.bind(this));
   repairManager.addAction(Tile.POWERPLANT, 7, 4);
   repairManager.addAction(Tile.NUCLEAR, 7, 4);
+  repairManager.addAction(Tile.WWTP, 7, 4);
 };
 
 

@@ -13,6 +13,7 @@ import { TileUtils } from './tileUtils';
 
 var BIT_MASK = Tile.BIT_MASK;
 var POWERBIT = Tile.POWERBIT;
+var HYDRABIT = Tile.HYDRABIT;
 var ANIMBIT = Tile.ANIMBIT;
 var ZONEBIT = Tile.ZONEBIT;
 var INVALID = Tile.TILE_INVALID;
@@ -108,7 +109,10 @@ AnimationManager.prototype.getTiles = function(tileValues, offsetX, offsetY, xBo
       if (tile === INVALID)
         continue;
 
-      if (shouldBlink && (tile & ZONEBIT) && !(tile & POWERBIT)) {
+      var tileValue = this._map.getTileValue(mapX, mapY);
+
+      if (shouldBlink && (tile & ZONEBIT) && !(tile & POWERBIT) && !(tile & HYDRABIT) 
+          && (tileValue < Tile.INDFIELDBASE)) {
         tileValues[index] = LIGHTNINGBOLT;
         continue;
       }

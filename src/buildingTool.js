@@ -10,6 +10,7 @@
 import { ConnectingTool } from './connectingTool';
 import { Tile } from './tile';
 import { TileUtils } from './tileUtils';
+import { BaseTool } from './baseTool';
 
 var BuildingTool = ConnectingTool(function(cost, centreTile, map, size, animated) {
   this.init(cost, map, false);
@@ -19,9 +20,21 @@ var BuildingTool = ConnectingTool(function(cost, centreTile, map, size, animated
 });
 
 
+
 BuildingTool.prototype.putBuilding = function(leftX, topY) {
   var posX, posY, tileValue, tileFlags;
-  var baseTile = this.centreTile - this.size - 1;
+ // var baseTile = this.centreTile - this.size - 1;
+  var baseTile;
+  var b = BaseTool.getWWTP();
+  var c = BaseTool.getCropCost();
+ 
+  if(this.centreTile == Tile.FREEF || this.centreTile == Tile.FREEINDF) {
+      if(b) {this.centreTile = Tile.FREEF;}
+      else this.centreTile = Tile.FREEINDF;
+      this.addCost(c);
+  }
+
+  baseTile = this.centreTile - this.size - 1;
 
   for (var dy = 0; dy < this.size; dy++) {
     posY = topY + dy;
@@ -29,14 +42,69 @@ BuildingTool.prototype.putBuilding = function(leftX, topY) {
     for (var dx = 0; dx < this.size; dx++) {
       posX = leftX + dx;
       tileValue = baseTile;
-      tileFlags = Tile.BNCNBIT;
+
+      if (TileUtils.isIndField(tileValue))
+      {
+        if (dx === 1 && dy === 1 && (tileValue === Tile.FREEINDF)) 
+        {
+          switch (c){
+            case BaseTool.CORN_COST: 
+              tileValue = Tile.INDFCORN; 
+              break;
+ 
+            case BaseTool.WHEAT_COST: 
+              tileValue = Tile.INDFWHEAT;
+              break;
+ 
+            case BaseTool.ORCHARD_COST: 
+              tileValue = Tile.INDFORCHARD; 
+              break;
+ 
+            case BaseTool.POTATO_COST: 
+              tileValue = Tile.INDFPOTATO; 
+              break;
+ 
+            default: break;
+          } 
+        }
+      tileFlags = Tile.BURNBIT;
+      }
+        else if (TileUtils.isField(tileValue) ||(tileValue>=Tile.WWTPBASE && tileValue<=Tile.LASTWWTP))
+        {
+        if (dx === 1 && dy === 1 && (tileValue === Tile.FREEF)) 
+        {
+          switch (c){
+            case BaseTool.CORN_COST: 
+              tileValue = Tile.FCORN; 
+              break;
+ 
+            case BaseTool.WHEAT_COST: 
+              tileValue = Tile.FWHEAT;
+              break;
+ 
+            case BaseTool.ORCHARD_COST: 
+              tileValue = Tile.FORCHARD; 
+              break;
+ 
+            case BaseTool.POTATO_COST: 
+              tileValue = Tile.FPOTATO; 
+              break;
+ 
+            default: break;
+             } 
+           }
+        tileFlags = Tile.BNHYBIT;
+      }
+      else
+        tileFlags = Tile.BNCNBIT;
 
       if (dx === 1) {
-        if (dy === 1)
+        if (dy === 1){
           tileFlags |= Tile.ZONEBIT;
+        }
         else if (dy === 2 && this.animated)
           tileFlags |= Tile.ANIMBIT;
-      }
+      }       
 
       this._worldEffects.setTile(posX, posY, tileValue, tileFlags);
 

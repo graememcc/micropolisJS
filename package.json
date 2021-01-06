@@ -11,7 +11,7 @@
   },
   "scripts": {
     "build": "webpack --env.production",
-    "watch": "webpack --watch --env.development",
+    "watch": "webpack --watch --env.production",
     "start": "webpack-dev-server --env.development",
     "test": "jest",
     "test:watch": "jest --watch",

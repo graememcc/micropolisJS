@@ -94,12 +94,12 @@ QueryTool.prototype.classifyDebug = function(x, y, blockMaps) {
 QueryTool.prototype.classifyZone = function(x, y) {
   var baseTiles = [
       Tile.DIRT, Tile.RIVER, Tile.TREEBASE, Tile.RUBBLE,
-      Tile.FLOOD, Tile.RADTILE, Tile.FIRE, Tile.ROADBASE,
-      Tile.POWERBASE, Tile.RAILBASE, Tile.RESBASE, Tile.COMBASE,
+      Tile.FLOOD, Tile.RADTILE, Tile.FIRE, Tile.ROADBASE, 
+      Tile.POWERBASE, Tile.TUBEBASE, Tile.RESBASE, Tile.COMBASE,
       Tile.INDBASE, Tile.PORTBASE, Tile.AIRPORTBASE, Tile.COALBASE,
       Tile.FIRESTBASE, Tile.POLICESTBASE, Tile.STADIUMBASE, Tile.NUCLEARBASE,
-      Tile.HBRDG0, Tile.RADAR0, Tile.FOUNTAIN, Tile.INDBASE2,
-      Tile.FOOTBALLGAME1, Tile.VBRDG0, 952];
+      Tile.HBRDG0, Tile.RADAR0, Tile.FOUNTAIN, Tile.INDBASE2, Tile.WWTPBASE,
+      Tile.FOOTBALLGAME1, Tile.VBRDG0, 952, Tile.FIELDBASE];
 
   var tileValue = this._map.getTileValue(x, y);
   if (tileValue >= Tile.COALSMOKE1 && tileValue < Tile.FOOTBALLGAME1)
@@ -126,8 +126,10 @@ QueryTool.prototype.doTool = function(x, y, blockMaps) {
     $('#queryTileBurnable').text(tile.isCombustible() ? '\u2714' : '\u2718');
     $('#queryTileBulldozable').text(tile.isBulldozable() ? '\u2714' : '\u2718');
     $('#queryTileCond').text(tile.isConductive() ? '\u2714' : '\u2718');
+    $('#queryTileHydra').text(tile.isHydraulic() ? '\u2714' : '\u2718');
     $('#queryTileAnim').text(tile.isAnimated() ? '\u2714' : '\u2718');
     $('#queryTilePowered').text(tile.isPowered() ? '\u2714' : '\u2718');
+    $('#queryTileIrrigated').text(tile.isIrrigated() ? '\u2714' : '\u2718');
     $('#queryTileZone').text(tile.isZone() ? '\u2714' : '\u2718');
   }
 

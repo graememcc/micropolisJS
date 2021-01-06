@@ -13,23 +13,25 @@ import { Tile } from './tile';
 import { TileUtils } from './tileUtils';
 import { Traffic } from './traffic';
 import { ZoneUtils } from './zoneUtils';
+import { BaseTool } from './baseTool';
 
-// Residential tiles have 'populations' of 16, 24, 32 or 40, and value from 0 to 3. The tiles are laid out in
+// Field tiles have 'populations' of 16, 24, 32 or 40, and value from 0 to 3. The tiles are laid out in
 // increasing order of land value, cycling through each population value
-var placeResidential = function(map, x, y, population, lpValue, zonePower) {
-  var centreTile = ((lpValue * 4) + population) * 9 + Tile.RZB;
+var placeIndField = function(map, x, y, population, lpValue, zoneIrrigate, centreTile) {
+  //var centreTile = ((lpValue * 4) + population) * 9 + Tile.INDFZB;
   ZoneUtils.putZone(map, x, y, centreTile, zonePower, zoneIrrigate);
+  
 };
 
 
-// Look for housing in the adjacent 8 tiles
-var getFreeZonePopulation = function(map, x, y, tileValue) {
+// Look for farming in the adjacent 8 tiles
+var getFreeZonePopulation = function(map, x, y, tileValue) { 
   var count = 0;
   for (var xx = x - 1; xx <= x + 1; xx++) {
     for (var yy = y - 1; yy <= y + 1; yy++) {
-      if (xx === x && yy === y) continue;
+//      if (xx === x && yy === y) continue;
       tileValue = map.getTileValue(xx, yy);
-      if (tileValue >= Tile.LHTHR && tileValue <= Tile.HHTHR)
+      if (tileValue >= Tile.INDCORN && tileValue <= Tile.INDPOTATO)
         count += 1;
     }
   }
@@ -38,19 +40,19 @@ var getFreeZonePopulation = function(map, x, y, tileValue) {
 };
 
 
-var getZonePopulation = function(map, x, y, tileValue) {
+var getZonePopulation = function(map, x, y, tileValue) { 
   if (tileValue instanceof Tile)
     tileValue = tile.getValue();
 
-  if (tileValue === Tile.FREEZ)
+  if (tileValue === Tile.FREEINDF || tileValue >= Tile.INDCORN && tileValue <= Tile.INDPOTATO) 
     return getFreeZonePopulation(map, x, y, tileValue);
 
-  var populationIndex = Math.floor((tileValue - Tile.RZB) / 9) % 4 + 1;
+  var populationIndex = Math.floor((tileValue - Tile.INDFZB) / 9) % 4 + 1; 
   return populationIndex * 8 + 16;
 };
 
 
-// Assess a tile for suitability for a house. Prefers tiles near roads
+// Assess a tile for suitability for a farm. Prefers tiles near roads
 var evalLot = function(map, x, y) {
   var xDelta = [0, 1, 0, -1];
   var yDelta = [-1, 0, 1, 0];
@@ -59,7 +61,7 @@ var evalLot = function(map, x, y) {
     return -1;
 
   var tileValue = map.getTileValue(x, y);
-  if (tileValue < Tile.RESBASE || tileValue > Tile.RESBASE + 8)
+  if (tileValue < Tile.INDFIELDBASE || tileValue > Tile.INDFIELDBASE + 8)
     return -1;
 
   var score = 1;
@@ -79,7 +81,7 @@ var evalLot = function(map, x, y) {
 };
 
 
-var buildHouse = function(map, x, y, lpValue) {
+var buildIndFarm = function(map, x, y, lpValue) { 
   var best = 0;
   var bestScore = 0;
 
@@ -104,11 +106,11 @@ var buildHouse = function(map, x, y, lpValue) {
 
   if (best > 0 && map.testBounds(x + xDelta[best], y + yDelta[best]))
     map.setTile(x + xDelta[best], y + yDelta[best],
-              Tile.HOUSE + Random.getRandom(2) + lpValue * 3, Tile.BLBNCNBIT);
+              Tile.INDFARM + Random.getRandom(2) + lpValue * 3, Tile.BLBNBIT);
 };
 
 
-var growZone = function(map, x, y, blockMaps, population, lpValue, zonePower) {
+var growZone = function(map, x, y, blockMaps, population, lpValue) {
   var pollution = blockMaps.pollutionDensityMap.worldGet(x, y);
 
   // Cough! Too polluted! No-one wants to move here!
@@ -117,14 +119,40 @@ var growZone = function(map, x, y, blockMaps, population, lpValue, zonePower) {
 
   var tileValue = map.getTileValue(x, y);
 
-  if (tileValue === Tile.FREEZ) {
+  switch(tileValue){
+    case Tile.INDFCORN:
+      tileValue = Tile.INDCORN;
+      placeIndField(map, x, y, 0, lpValue, zoneIrrigate, tileValue);
+      break;
+
+    case Tile.INDFWHEAT:
+      tileValue = Tile.INDWHEAT;
+      placeIndField(map, x, y, 0, lpValue, zoneIrrigate, tileValue);
+      break;
+
+    case Tile.INDFORCHARD:
+      tileValue = Tile.INDORCHARD;
+      placeIndField(map, x, y, 0, lpValue, zoneIrrigate, tileValue);
+      break;
+
+    case Tile.INDFPOTATO:
+      tileValue = Tile.INDPOTATO;
+      placeIndField(map, x, y, 0, lpValue, zoneIrrigate, tileValue);
+      break;
+    
+    default:
+      return;
+
+  }
+
+  /*if (tileValue === Tile.FREEINDF) {
     if (population < 8) {
-      // Zone capacity not yet reached: build another house
-      buildHouse(map, x, y, lpValue);
+      // Zone capacity not yet reached: build another farm
+      buildIndFarm(map, x, y, lpValue);
       ZoneUtils.incRateOfGrowth(blockMaps, x, y, 1);
     } else if (blockMaps.populationDensityMap.worldGet(x, y) > 64) {
-      // There is local demand for higher density housing
-      placeResidential(map, x, y, 0, lpValue, zonePower);
+      // There is local demand for higher density farming
+      placeIndField(map, x, y, 0, lpValue);
       ZoneUtils.incRateOfGrowth(blockMaps, x, y, 8);
     }
 
@@ -133,34 +161,62 @@ var growZone = function(map, x, y, blockMaps, population, lpValue, zonePower) {
 
   if (population < 40) {
     // Zone population not yet maxed out
-    placeResidential(map, x, y, Math.floor(population / 8) - 1, lpValue, zonePower);
+    placeField(map, x, y, Math.floor(population / 8) - 1, lpValue);
     ZoneUtils.incRateOfGrowth(blockMaps, x, y, 8);
-  }
+  }*/
 };
 
 
 var freeZone = [0, 3, 6, 1, 4, 7, 2, 5, 8];
 
-var degradeZone = function(map, x, y, blockMaps, population, lpValue, zonePower) {
-  var xx, yy;
+var degradeZone = function(map, x, y, blockMaps, population, lpValue) {
+
+  var tileValue = map.getTileValue(x, y);
+
+  switch(tileValue){
+    case Tile.INDCORN:
+      tileValue = Tile.INDFCORN;
+      map.setTile(x, y, tileValue, Tile.BLBNHYBIT | Tile.ZONEBIT);
+      break;
+
+    case Tile.INDWHEAT:
+      tileValue = Tile.INDFWHEAT;
+      map.setTile(x, y, tileValue, Tile.BLBNHYBIT | Tile.ZONEBIT);
+      break;
+
+    case Tile.INDORCHARD:
+      tileValue = Tile.INDFORCHARD;
+      map.setTile(x, y, tileValue, Tile.BLBNHYBIT | Tile.ZONEBIT);
+      break;
+
+    case Tile.INDPOTATO:
+      tileValue = Tile.INDFPOTATO;
+      map.setTile(x, y, tileValue, Tile.BLBNHYBIT | Tile.ZONEBIT);
+      break;
+
+  }
+
+  return;
+
+  /*var xx, yy;
   if (population === 0)
     return;
 
   if (population > 16) {
     // Degrade to a lower density block
-    placeResidential(map, x, y, Math.floor((population - 24) / 8), lpValue, zonePower);
+    placeIndField(map, x, y, Math.floor((population - 24) / 8), lpValue);
     ZoneUtils.incRateOfGrowth(blockMaps, x, y, -8);
     return;
   }
 
   if (population === 16) {
-    // Already at lowest density: degrade to 8 individual houses
-    map.setTile(x, y, Tile.FREEZ, Tile.BLBNCNBIT | Tile.ZONEBIT);
+    // Already at lowest density: degrade to 8 individual farms
+    map.setTile(x, y, Tile.FREEINDF, Tile.BLBNBIT | Tile.ZONEBIT); 
 
     for (yy = y - 1; yy <= y + 1; yy++) {
       for (xx = x - 1; xx <= x + 1; xx++) {
         if (xx === x && yy === y) continue;
-        map.setTile(x, y, Tile.LHTHR + lpValue + Random.getRandom(2), Tile.BLBNCNBIT);
+        map.setTile(x, y, Tile.FFARM + lpValue + Random.getRandom(2), Tile.BLBNBIT);
       }
     }
 
@@ -168,25 +224,25 @@ var degradeZone = function(map, x, y, blockMaps, population, lpValue, zonePower)
     return;
   }
 
-  // Already down to individual houses. Remove one
+  // Already down to individual farms. Remove one
   var i = 0;
   ZoneUtils.incRateOfGrowth(blockMaps, x, y, -1);
 
   for (xx = x - 1; xx <= x + 1; xx++) {
     for (yy = y - 1; yy <= y + 1; yy++, i++) {
       var currentValue = map.getTileValue(xx, yy);
-      if (currentValue >= Tile.LHTHR && currentValue <= Tile.HHTHR) {
-        // We've found a house. Replace it with the normal free zone tile
-        map.setTile(xx, yy, freeZone[i] + Tile.RESBASE, Tile.BLBNCNBIT);
+      if (currentValue >= Tile.FINDFARM && currentValue <= Tile.LINDFARM) {
+        // We've found a farm. Replace it with the normal free zone tile
+        map.setTile(xx, yy, freeZone[i] + Tile.INDFIELDBASE, Tile.BLBNBIT);
         return;
       }
     }
-  }
+  }*/
 };
 
 
 // Returns a score for the zone in the range -3000 - 3000
-var evalResidential = function(blockMaps, x, y, traffic) {
+var evalField = function(blockMaps, x, y, traffic) {
   if (traffic === Traffic.NO_ROAD_FOUND)
     return -3000;
 
@@ -202,52 +258,84 @@ var evalResidential = function(blockMaps, x, y, traffic) {
 };
 
 
-var residentialFound = function(map, x, y, simData) {
+var indfieldFound = function(map, x, y, simData) {
   // If we choose to grow this zone, we will fill it with an index in the range 0-3 reflecting the land value and
   // pollution scores (higher is better). This is then used to select the variant to build
   var lpValue;
-
+  var zoneIrrigate = false;
   // Notify the census
-  simData.census.resZonePop += 1;
+  simData.census.indfieldZonePop += 1;
+  var tile = map.getTileValue(x, y);
+  var cost = simData.powerManager.costFieldMap.get(x, y);
+    switch(cost){
+      case BaseTool.CORN_COST: 
+        tile = Tile.INDCORN;
+        break;
 
-  // Also, notify the census of our population
-  var tileValue = map.getTileValue(x, y);
-  var population = getZonePopulation(map, x, y, tileValue);
-  simData.census.resPop += population;
+      case BaseTool.WHEAT_COST:
+        tile = Tile.INDWHEAT;
+        break;
 
-  var zonePower = map.getTile(x, y).isPowered();
+      case BaseTool.ORCHARD_COST:
+        tile = Tile.INDORCHARD; 
+        break;
 
-  var trafficOK = Traffic.ROUTE_FOUND;
+      case BaseTool.POTATO_COST: 
+        tile  = Tile.INDPOTATO;  
+        break;
+
+      default: break;  
+    }
+
+    map.setTile(x, y, tile, Tile.BLBNHYBIT | Tile.ZONEBIT);
+    
+  //var tileValue = map.getTileValue(x, y);
+  //var population = getZonePopulation(map, x, y, tileValue); 
+  var population = 0;
+  simData.census.indfieldPop += population;
+    
+  if(simData.budget.shouldDegradeField()){
+    //if (Random.getChance(511)) {
+    lpValue = ZoneUtils.getLandPollutionValue(simData.blockMaps, x, y);
+    degradeZone(map, x, y, simData.blockMaps, population, lpValue, zoneIrrigate);
+    return;
+    //}
+  }/*else{
+    if(Random.getChance(511)){
+    lpValue = ZoneUtils.getLandPollutionValue(simData.blockMaps, x, y);
+    growZone(map, x, y, simData.blockMaps, population, lpValue, zoneIrrigate);
+    return;
+    }
+  }*/
+  
+  /*var trafficOK = Traffic.ROUTE_FOUND;
 
   // Occasionally check to see if the zone is connected to the road network. The chance of this happening increases
   // as the zone's population increases. Note: we will never execute this conditional if the zone is empty, as zero
   // will never be be bigger than any of the values Random will generate
   if (population > Random.getRandom(35)) {
     // Is there a route from this zone to a commercial zone?
-    trafficOK = simData.trafficManager.makeTraffic(x, y, simData.blockMaps, TileUtils.isCommercial);
+    trafficOK = simData.trafficManager.makeTraffic(x, y, simData.blockMaps, TileUtils.isResidential);
 
     // If we're not connected to the road network, then going shopping will be a pain. Move out.
     if (trafficOK === Traffic.NO_ROAD_FOUND) {
       lpValue = ZoneUtils.getLandPollutionValue(simData.blockMaps, x, y);
-      degradeZone(map, x, y, simData.blockMaps, population, lpValue, zonePower);
+      degradeZone(map, x, y, simData.blockMaps, population, lpValue);
       return;
     }
   }
 
   // Sometimes we will randomly choose to assess this block. However, always assess it if it's empty or contains only
-  // single houses.
-  if (tileValue === Tile.FREEZ || Random.getChance(7)) {
+  // single farms.
+  if (tileValue === Tile.FREEINDF || Random.getChance(7)) {
     // First, score the individual zone. This is a value in the range -3000 to 3000
-    // Then take into account global demand for housing.
-    var locationScore = evalResidential(simData.blockMaps, x, y, trafficOK);
-    var zoneScore = simData.valves.resValve + locationScore;
+    // Then take into account global demand for farming.
+    var locationScore = evalField(simData.blockMaps, x, y, trafficOK);
+    var zoneScore = simData.valves.fieldValve + locationScore;
 
-    // Naturally unpowered zones should be penalized
-    if (!zonePower)
-      zoneScore = -500;
 
-    // The residential demand valve has range -2000 to 2000, so taking into account the "no traffic" and
-    // "no power" modifiers above, zoneScore must lie in the range -5500 - 5000.
+    // The field demand valve has range -2000 to 2000, so taking into account the "no traffic" and
+    // "no irrigation" modifiers above, zoneScore must lie in the range -5500 - 5000.
 
     // Now, observe that if there are no roads we will never take this branch, as zoneScore will equal -3000.
     // Given the comment above about ranges for zoneScore, zoneScore - 26380, will be in the range -26729 to -20880.
@@ -256,7 +344,8 @@ var residentialFound = function(map, x, y, simData) {
     // 81.8% of them are above -20880, so nearly 82% of the time, we will never take this branch.
     // Thus, there's approximately a 9% chance that the value will be in the range, and we *might* grow.
     if (zoneScore > -350 && (zoneScore - 26380) > Random.getRandom16Signed()) {
-      // If this zone is empty, and residential demand is strong, we might make a hospital
+/*
+      // If this zone is empty, and field demand is strong, we might make a hospital
       if (population === 0 && Random.getChance(3)) {
         makeHospital(map, x, y, simData, zonePower);
         return;
@@ -265,7 +354,7 @@ var residentialFound = function(map, x, y, simData) {
       // Get an index in the range 0-3 scoring the land desirability and pollution, and grow the zone to the next
       // population rank
       lpValue = ZoneUtils.getLandPollutionValue(simData.blockMaps, x, y);
-      growZone(map, x, y, simData.blockMaps, population, lpValue, zonePower);
+      growZone(map, x, y, simData.blockMaps, population, lpValue);
       return;
     }
 
@@ -277,41 +366,21 @@ var residentialFound = function(map, x, y, simData) {
       // Get an index in the range 0-3 scoring the land desirability and pollution, and degrade to the next
       // lower ranked zone
       lpValue = ZoneUtils.getLandPollutionValue(simData.blockMaps, x, y);
-      degradeZone(map, x, y, simData.blockMaps, population, lpValue, zonePower);
+      degradeZone(map, x, y, simData.blockMaps, population, lpValue);
     }
-  }
+  }*/
 };
 
 
-var makeHospital = function(map, x, y, simData, zonePower) {
-  // We only build a hospital if the population requires it
-  if (simData.census.needHospital > 0) {
-    ZoneUtils.putZone(map, x, y, Tile.HOSPITAL, zonePower, zoneIrrigate);
-    simData.census.needHospital = 0;
-    return;
-  }
-};
 
 
-var hospitalFound = function(map, x, y, simData) {
-  simData.census.hospitalPop += 1;
 
-  // Degrade to an empty zone if a hospital is no longer sustainable
-  if (simData.census.needHospital === -1) {
-    if (Random.getRandom(20) === 0)
-      ZoneUtils.putZone(map, x, y, Tile.FREE, map.getTile(x, y).isPowered(), map.getTile(x, y).isIrrigated());
-  }
-};
-
-
-var Residential = {
+var IndField = {
   registerHandlers: function(mapScanner, repairManager) {
-    mapScanner.addAction(TileUtils.isResidentialZone, residentialFound);
-    mapScanner.addAction(TileUtils.HOSPITAL, hospitalFound);
-    repairManager.addAction(Tile.HOSPITAL, 15, 3);
+    mapScanner.addAction(TileUtils.isIndFieldZone, indfieldFound);
   },
   getZonePopulation: getZonePopulation
 };
 
 
-export { Residential };
+export { IndField };

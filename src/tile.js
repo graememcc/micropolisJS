@@ -77,6 +77,9 @@ Tile.prototype.isConductive = function() {
   return (this._value & Tile.CONDBIT) > 0;
 };
 
+Tile.prototype.isHydraulic = function() {
+  return (this._value & Tile.HYDRABIT) > 0;
+};
 
 Tile.prototype.isCombustible = function() {
   return (this._value & Tile.BURNBIT) > 0;
@@ -87,6 +90,9 @@ Tile.prototype.isPowered = function() {
   return (this._value & Tile.POWERBIT) > 0;
 };
 
+Tile.prototype.isIrrigated = function() {
+  return (this._value & Tile.IRRIGBIT) > 0;
+};
 
 Tile.prototype.isZone = function() {
   return (this._value & Tile.ZONEBIT) > 0;
@@ -159,15 +165,19 @@ Tile.prototype.toString = function() {
   var s = 'Tile# ' + value;
   s += this.isCombustible() ? ' burning' : '';
   s += this.isPowered() ? ' powered' : '';
+  s += this.isIrrigated() ? ' irrigated' : '';
   s += this.isAnimated() ? ' animated' : '';
   s += this.isConductive() ? ' conductive' : '';
+  s += this.isHydraulic() ? ' hydraulic' : '';
   s += this.isZone() ? ' zone' : '';
   s += this.isBulldozable() ? ' bulldozeable' : '';
   return s;
 };
 
 
-// Bit-masks for statusBits
+// Bit-masks for statusBits   con ANIMATED bit???? per hydra --> come condbit
+Tile.HYDRABIT = 0x20000; // bit 17, tile can run water. AGG
+Tile.IRRIGBIT = 0x10000; // bit 16, tile is irrigated. AGGIUNTO
 Tile.POWERBIT  = 0x8000; // bit 15, tile has power.
 Tile.CONDBIT = 0x4000; // bit 14. tile can conduct electricity.
 Tile.BURNBIT = 0x2000; // bit 13, tile can be lit.
@@ -178,9 +188,11 @@ Tile.BLBNBIT   = Tile.BULLBIT | Tile.BURNBIT;
 Tile.BLBNCNBIT = Tile.BULLBIT | Tile.BURNBIT | Tile.CONDBIT;
 Tile.BNCNBIT   = Tile.BURNBIT | Tile.CONDBIT;
 Tile.ASCBIT   = Tile.ANIMBIT | Tile.CONDBIT | Tile.BURNBIT;
-Tile.ALLBITS = Tile.POWERBIT | Tile.CONDBIT | Tile.BURNBIT | Tile.BULLBIT | Tile.ANIMBIT | Tile.ZONEBIT;
+Tile.BNHYBIT   = Tile.BURNBIT | Tile.HYDRABIT; //
+Tile.BLBNHYBIT = Tile.BULLBIT | Tile.BURNBIT | Tile.HYDRABIT; //
+Tile.ALLBITS = Tile.HYDRABIT | Tile.IRRIGBIT | Tile.POWERBIT | Tile.CONDBIT | Tile.BURNBIT | Tile.BULLBIT | Tile.ANIMBIT | Tile.ZONEBIT ;
 Tile.BIT_START = 0x400;
-Tile.BIT_END = 0x8000;
+Tile.BIT_END = 0x20000;
 Tile.BIT_MASK = Tile.BIT_START - 1;
 
 // TODO Add comment for each tile
@@ -279,14 +291,33 @@ Tile.LVPOWER7       = 217;
 Tile.LVPOWER8       = 218;
 Tile.LVPOWER9       = 219;
 Tile.LVPOWER10      = 220;
-Tile.RAILHPOWERV    = 221; // Horizontal rail, vertical power
-Tile.RAILVPOWERH    = 222; // Vertical rail, horizontal power
+Tile.TUBEHPOWERV    = 221; // Horizontal tube, vertical power
+Tile.TUBEVPOWERH    = 222; // Vertical tube, horizontal power
 Tile.POWERBASE      = Tile.HPOWER;
-Tile.LASTPOWER      = Tile.RAILVPOWERH;
+Tile.LASTPOWER      = Tile.TUBEVPOWERH;
 
 Tile.UNUSED_TRASH6  = 223;
 
-/* Rail */
+/* tubes lines */ //________
+Tile.VTUBE         = 224;
+Tile.HTUBE         = 225;
+Tile.LHTUBE        = 226;
+Tile.LVTUBE        = 227;
+Tile.LVTUBE2       = 228;
+Tile.LVTUBE3       = 229;
+Tile.LVTUBE4       = 230;
+Tile.LVTUBE5       = 231;
+Tile.LVTUBE6       = 232;
+Tile.LVTUBE7       = 233;
+Tile.LVTUBE8       = 234;
+Tile.LVTUBE9       = 235;
+Tile.LVTUBE10      = 236;
+Tile.HTUBEROAD     = 237; // Horizontal tube road
+Tile.VTUBEROAD     = 238; // Vertical tube road
+Tile.TUBEBASE      = Tile.VTUBE;
+Tile.LASTTUBE      = 238;
+
+/* Rail 
 Tile.HRAIL          = 224;
 Tile.VRAIL          = 225;
 Tile.LHRAIL         = 226;
@@ -304,6 +335,7 @@ Tile.HRAILROAD      = 237;
 Tile.VRAILROAD      = 238;
 Tile.RAILBASE       = Tile.HRAIL;
 Tile.LASTRAIL       = 238;
+*/ 
 
 Tile.ROADVPOWERH    = 239; /* bogus? */
 
@@ -384,6 +416,10 @@ Tile.AIRPORT        = 716;
 Tile.COALBASE       = 745; // First tile of coal power plant.
 Tile.POWERPLANT     = 750; // 'Center' tile of coal power plant.
 Tile.LASTPOWERPLANT = 760; // Last tile of coal power plant.
+
+Tile.WWTPBASE       = 868; //Tile.COALBASE;
+Tile.WWTP           = 873; //Tile.POWERPLANT;
+Tile.LASTWWTP       = 883;//Tile.LASTPOWERPLANT;
 
 // Fire station (3x3).
 Tile.FIRESTBASE     = 761; // First tile of fire station.
@@ -468,6 +504,38 @@ Tile.NUKESWIRL4     = 955;
 
 // Tiles 956-959 unused (originally)
 //    TILE_COUNT     = 960;
+
+//field zone tiles
+
+Tile.FIELDBASE      = 956;//Tile.RESBASE; // Empty field, tiles
+Tile.FREEF          = 960; //Tile.FREEZ; // center-tile of 3x3 empty field
+ 
+Tile.CORN           = 965; 
+Tile.FCORN          = 966; 
+Tile.WHEAT          = 967;
+Tile.FWHEAT         = 968; 
+Tile.ORCHARD        = 969;
+Tile.FORCHARD       = 970;
+Tile.POTATO         = 971;
+Tile.FPOTATO        = 972; 
+
+Tile.FZB            = 975;  // center tile first 3x3 tile field
+
+//INDIE field zone tiles
+
+Tile.INDFIELDBASE    = 973; // Empty field, tiles
+Tile.FREEINDF        = 977; //Tile.FREEZ; // center-tile of 3x3 empty field
+ 
+Tile.INDFZB          = 975;  // center tile first 3x3 tile field
+
+Tile.INDCORN         = 982; 
+Tile.INDFCORN        = 983; 
+Tile.INDWHEAT        = 984;
+Tile.INDFWHEAT       = 985; 
+Tile.INDORCHARD      = 986;
+Tile.INDFORCHARD     = 987;
+Tile.INDPOTATO       = 988;
+Tile.INDFPOTATO      = 989; 
 
 // Extended zones: 956-1019
 

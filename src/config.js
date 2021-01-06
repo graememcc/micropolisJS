@@ -12,9 +12,9 @@
 // debug options.
 
 var Config = {
-  debug: false,
-  gameDebug: false,
-  queryDebug: false
+  debug: true,
+  gameDebug: true,
+  queryDebug: true
 };
 
 

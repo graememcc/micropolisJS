@@ -11,12 +11,12 @@ import { ConnectingTool } from './connectingTool';
 import { Tile } from './tile';
 import { TileUtils } from './tileUtils';
 
-var WireTool = ConnectingTool(function(map) {
+var ChannelTool = ConnectingTool(function(map) {
   this.init(5, map, true, true);
 });
 
 
-WireTool.prototype.layWire = function(x, y) {
+ChannelTool.prototype.layChannel = function(x, y) {
   this.doAutoBulldoze(x, y);
   var cost = this.toolCost;
 
@@ -25,8 +25,8 @@ WireTool.prototype.layWire = function(x, y) {
 
   switch (tile) {
     case Tile.DIRT:
-      this._worldEffects.setTile(x, y, Tile.LHPOWER, Tile.CONDBIT | Tile.BURNBIT | Tile.BULLBIT);
-      break;
+      this._worldEffects.setTile(x, y, Tile.LHTUBE, Tile.HYDRABIT | Tile.BURNBIT | Tile.BULLBIT); 
+      break;                  
 
     case Tile.RIVER:
     case Tile.REDGE:
@@ -35,11 +35,11 @@ WireTool.prototype.layWire = function(x, y) {
 
       if (x < this._map.width - 1) {
         tile = this._worldEffects.getTile(x + 1, y);
-        if (tile.isConductive()) {
+        if (tile.isHydraulic()) {
           tile = tile.getValue();
           tile = TileUtils.normalizeRoad(tile);
-          if (tile != Tile.HROADPOWER && tile != Tile.TUBEHPOWERV && tile != Tile.HPOWER) {
-            this._worldEffects.setTile(x, y, Tile.VPOWER, Tile.CONDBIT | Tile.BULLBIT);
+          if (tile != Tile.HTUBEROAD && tile != Tile.TUBEHPOWERV && tile != Tile.HTUBE) { 
+            this._worldEffects.setTile(x, y, Tile.VTUBE, Tile.HYDRABIT | Tile.BULLBIT);
             break;
           }
         }
@@ -47,11 +47,11 @@ WireTool.prototype.layWire = function(x, y) {
 
       if (x > 0) {
         tile = this._worldEffects.getTile(x - 1, y);
-        if (tile.isConductive()) {
+        if (tile.isHydraulic()) {
           tile = tile.getValue();
           tile = TileUtils.normalizeRoad(tile);
-          if (tile != Tile.HROADPOWER && tile != Tile.TUBEHPOWERV && tile != Tile.HPOWER) {
-            this._worldEffects.setTile(x, y, Tile.VPOWER, Tile.CONDBIT | Tile.BULLBIT);
+          if (tile != Tile.HTUBEROAD && tile != Tile.TUBEHPOWERV && tile != Tile.HTUBE) {
+            this._worldEffects.setTile(x, y, Tile.VTUBE, Tile.HYDRABIT | Tile.BULLBIT);
             break;
           }
         }
@@ -59,11 +59,11 @@ WireTool.prototype.layWire = function(x, y) {
 
       if (y < this._map.height - 1) {
         tile = this._worldEffects.getTile(x, y + 1);
-        if (tile.isConductive()) {
+        if (tile.isHydraulic()) {
           tile = tile.getValue();
           tile = TileUtils.normalizeRoad(tile);
-          if (tile != Tile.VROADPOWER && tile != Tile.TUBEVPOWERH && tile != Tile.VPOWER) {
-            this._worldEffects.setTile(x, y, Tile.HPOWER, Tile.CONDBIT | Tile.BULLBIT);
+          if (tile != Tile.VTUBEROAD && tile != Tile.TUBEVPOWERH && tile != Tile.VTUBE) {
+            this._worldEffects.setTile(x, y, Tile.HTUBE, Tile.HYDRABIT | Tile.BULLBIT);
             break;
           }
         }
@@ -71,32 +71,32 @@ WireTool.prototype.layWire = function(x, y) {
 
       if (y > 0) {
         tile = this._worldEffects.getTile(x, y - 1);
-        if (tile.isConductive()) {
+        if (tile.isHydraulic()) {
           tile = tile.getValue();
           tile = TileUtils.normalizeRoad(tile);
-          if (tile != Tile.VROADPOWER && tile != Tile.TUBEVPOWERH && tile != Tile.VPOWER) {
-            this._worldEffects.setTile(x, y, Tile.HPOWER, Tile.CONDBIT | Tile.BULLBIT);
+          if (tile != Tile.VTUBEROAD && tile != Tile.TUBEVPOWERH && tile != Tile.VTUBE) {
+            this._worldEffects.setTile(x, y, Tile.HTUBE, Tile.HYDRABIT | Tile.BULLBIT);
             break;
           }
         }
       }
 
       return this.TOOLRESULT_FAILED;
-
+    
     case Tile.ROADS:
-      this._worldEffects.setTile(x, y, Tile.HROADPOWER, Tile.CONDBIT | Tile.BURNBIT | Tile.BULLBIT);
+      this._worldEffects.setTile(x, y, Tile.HTUBEROAD, Tile.HYDRABIT | Tile.BURNBIT | Tile.BULLBIT);
       break;
 
     case Tile.ROADS2:
-      this._worldEffects.setTile(x, y, Tile.VROADPOWER, Tile.CONDBIT | Tile.BURNBIT | Tile.BULLBIT);
+      this._worldEffects.setTile(x, y, Tile.VTUBEROAD, Tile.HYDRABIT | Tile.BURNBIT | Tile.BULLBIT);
       break;
 
-    case Tile.LHTUBE:
-      this._worldEffects.setTile(x, y, Tile.TUBEHPOWERV, Tile.CONDBIT | Tile.BURNBIT | Tile.BULLBIT);
+    case Tile.LHPOWER:
+      this._worldEffects.setTile(x, y, Tile.TUBEVPOWERH, Tile.HYDRABIT | Tile.BURNBIT | Tile.BULLBIT);
       break;
 
-    case Tile.LVTUBE:
-      this._worldEffects.setTile(x, y, Tile.TUBEVPOWERH, Tile.CONDBIT | Tile.BURNBIT | Tile.BULLBIT);
+    case Tile.LVPOWER:
+      this._worldEffects.setTile(x, y, Tile.TUBEHPOWERV, Tile.HYDRABIT | Tile.BURNBIT | Tile.BULLBIT);
       break;
 
     default:
@@ -109,9 +109,9 @@ WireTool.prototype.layWire = function(x, y) {
 };
 
 
-WireTool.prototype.doTool = function(x, y, blockMaps) {
-  this.result = this.layWire(x, y);
+ChannelTool.prototype.doTool = function(x, y, blockMaps) {
+  this.result = this.layChannel(x, y);
 };
 
 
-export { WireTool };
+export { ChannelTool };

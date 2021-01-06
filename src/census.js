@@ -9,7 +9,7 @@
 
 import { MiscUtils } from './miscUtils';
 
-var arrs = ['res', 'com', 'ind', 'crime',
+var arrs = ['res', /*'field', 'indfield',*/ 'com', 'ind', 'crime',
             'money', 'pollution'];
 function Census() {
   this.clearCensus();
@@ -63,9 +63,13 @@ Census.prototype.clearCensus = function() {
   this.roadTotal = 0;
   this.railTotal = 0;
   this.resPop = 0;
+  this.fieldPop = 0;
+  this.indfieldPop = 0;
   this.comPop = 0;
   this.indPop = 0;
   this.resZonePop = 0;
+  this.fieldZonePop = 0;
+  this.indfieldZonePop = 0;
   this.comZonePop = 0;
   this.indZonePop = 0;
   this.hospitalPop = 0;
@@ -73,6 +77,7 @@ Census.prototype.clearCensus = function() {
   this.policeStationPop = 0;
   this.fireStationPop = 0;
   this.stadiumPop = 0;
+  this.wwtpPowerPop = 0;
   this.coalPowerPop = 0;
   this.nuclearPowerPop = 0;
   this.seaportPop = 0;
@@ -80,10 +85,10 @@ Census.prototype.clearCensus = function() {
 };
 
 
-var saveProps = ['resPop', 'comPop', 'indPop', 'crimeRamp', 'pollutionRamp', 'landValueAverage', 'pollutionAverage',
-             'crimeAverage', 'totalPop', 'resHist10', 'resHist120', 'comHist10', 'comHist120', 'indHist10',
-             'indHist120', 'crimeHist10', 'crimeHist120', 'moneyHist10', 'moneyHist120', 'pollutionHist10',
-             'pollutionHist120'];
+var saveProps = ['resPop', /*'fieldPop', 'indfieldpop',*/ 'comPop', 'indPop', 'crimeRamp', 'pollutionRamp', 'landValueAverage', 
+             'pollutionAverage', 'crimeAverage', 'totalPop', 'resHist10', 'resHist120', /*'fieldHist10', 'fieldHist120',*/ 'comHist10', 'comHist120',
+             'indHist10', 'indHist120', 'crimeHist10', 'crimeHist120', 'moneyHist10', 'moneyHist120',
+             'pollutionHist10', 'pollutionHist120'];
 
 Census.prototype.save = function(saveData) {
   for (var i = 0, l = saveProps.length; i < l; i++)
@@ -103,6 +108,8 @@ Census.prototype.take10Census = function(budget) {
   rotate10Arrays.call(this);
 
   this.resHist10[0] = Math.floor(this.resPop / resPopDenom);
+  //this.fieldHist10[0] = Math.floor(this.fieldPop / resPopDenom);
+ // this.indfieldHist10[0] = Math.floor(this.indfieldPop / resPopDenom);
   this.comHist10[0] = this.comPop;
   this.indHist10[0] = this.indPop;
 
@@ -133,6 +140,8 @@ Census.prototype.take120Census = function() {
   var resPopDenom = 8;
 
   this.resHist120[0] = Math.floor(this.resPop / resPopDenom);
+  //this.fieldHist120[0] = Math.floor(this.fieldPop / resPopDenom);
+ // this.indfieldHist120[0] = Math.floor(this.indfieldPop / resPopDenom);
   this.comHist120[0] = this.comPop;
   this.indHist120[0] = this.indPop;
   this.crimeHist120[0] = this.crimeHist10[0];

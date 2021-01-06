@@ -16,6 +16,7 @@ var checkBigZone = function(tileValue) {
   switch (tileValue) {
 
     case Tile.POWERPLANT:
+    case Tile.WWTP:
     case Tile.PORT:
     case Tile.NUCLEAR:
     case Tile.STADIUM:
@@ -23,6 +24,7 @@ var checkBigZone = function(tileValue) {
       break;
 
     case Tile.POWERPLANT + 1:
+    case Tile.WWTP + 1:
     case Tile.COALSMOKE3:
     case Tile.COALSMOKE3 + 1:
     case Tile.COALSMOKE3 + 2:
@@ -33,6 +35,7 @@ var checkBigZone = function(tileValue) {
       break;
 
     case Tile.POWERPLANT + 4:
+    case Tile.WWTP + 4:
     case Tile.PORT + 4:
     case Tile.NUCLEAR + 4:
     case Tile.STADIUM + 4:
@@ -40,6 +43,7 @@ var checkBigZone = function(tileValue) {
       break;
 
     case Tile.POWERPLANT + 5:
+    case Tile.WWTP + 5:
     case Tile.PORT + 5:
     case Tile.NUCLEAR + 5:
     case Tile.STADIUM + 5:
@@ -119,8 +123,10 @@ var checkBigZone = function(tileValue) {
 };
 
 
-var checkZoneSize = function(tileValue) {
-  if ((tileValue >= Tile.RESBASE - 1        && tileValue <= Tile.PORTBASE - 1) ||
+var checkZoneSize = function(tileValue) { //add for field
+  if ((tileValue >= Tile.RESBASE - 1 && tileValue <= Tile.PORTBASE - 1) ||
+      (tileValue >= Tile.FIELDBASE && tileValue <= Tile.FZB) ||
+      (tileValue >= Tile.INDFIELDBASE && tileValue <= Tile.INDFZB) ||
       (tileValue >= Tile.LASTPOWERPLANT + 1 && tileValue <= Tile.POLICESTATION + 4) ||
       (tileValue >= Tile.CHURCH1BASE && tileValue <= Tile.CHURCH7LAST)) {
     return 3;
@@ -128,6 +134,7 @@ var checkZoneSize = function(tileValue) {
 
   if ((tileValue >= Tile.PORTBASE    && tileValue <= Tile.LASTPORT) ||
       (tileValue >= Tile.COALBASE    && tileValue <= Tile.LASTPOWERPLANT) ||
+      (tileValue >= Tile.WWTPBASE    && tileValue <= Tile.LASTWWTP) || 
       (tileValue >= Tile.STADIUMBASE && tileValue <= Tile.LASTZONE)) {
     return 4;
   }
@@ -193,7 +200,7 @@ var incRateOfGrowth = function(blockMaps, x, y, growthDelta) {
 
 // Calls map.putZone after first checking for flood, fire
 // and radiation. Should be called with coordinates of centre tile.
-var putZone = function(map, x, y, centreTile, isPowered) {
+var putZone = function(map, x, y, centreTile, isPowered, isIrrigated) {
   for (var dY = -1; dY < 2; dY++) {
     for (var dX = -1; dX < 2; dX++) {
       var tileValue = map.getTileValue(x + dX, y + dY);
@@ -205,6 +212,8 @@ var putZone = function(map, x, y, centreTile, isPowered) {
   map.addTileFlags(x, y, Tile.BULLBIT);
   if (isPowered)
     map.addTileFlags(x, y, Tile.POWERBIT);
+  if (isIrrigated)
+    map.addTileFlags(x, y, Tile.IRRIGBIT);
 };
 
 

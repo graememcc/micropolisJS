@@ -55,6 +55,7 @@ var oppositeAndUnderwater = function(tileValue, oldDir, newDir) {
     return false;
 
   if (tileValue == Tile.POWERBASE || tileValue == Tile.POWERBASE + 1 ||
+      tileValue == Tile.TUBEBASE || tileValue == Tile.TUBEBASE + 1 ||
       tileValue == Tile.RAILBASE || tileValue == Tile.RAILBASE + 1)
     return true;
 
@@ -67,7 +68,8 @@ var tileDeltaY = [0, -1, -1,  0,  1,  1,  1,  0, -1];
 var xDelta = [0,  0,  2,  2,  2,  0, -2, -2, -2];
 var yDelta = [0, -2, -2,  0,  2,  2,  2,  0, -2];
 var tileWhiteList = [Tile.RIVER, Tile.CHANNEL, Tile.POWERBASE,
-                Tile.POWERBASE + 1, Tile.RAILBASE,
+                Tile.POWERBASE + 1, Tile.TUBEBASE,
+                Tile.TUBEBASE + 1, Tile.RAILBASE,
                 Tile.RAILBASE + 1, Tile.BRWH, Tile.BRWV];
 
 var CANTMOVE = 10;

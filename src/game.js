@@ -6,7 +6,7 @@
  * http://micropolisjs.graememcc.co.uk/COPYING
  *
  */
-
+import { BuildingTool } from './buildingTool';
 import { BaseTool } from './baseTool';
 import { BudgetWindow } from './budgetWindow';
 import { Config } from './config';
@@ -14,6 +14,7 @@ import { CongratsWindow } from './congratsWindow';
 import { DebugWindow } from './debugWindow';
 import { DisasterWindow } from './disasterWindow';
 import { EvaluationWindow } from './evaluationWindow';
+import { FieldWindow } from './fieldWindow';
 import { GameCanvas } from './gameCanvas';
 import { GameMap } from './gameMap';
 import { InfoBar } from './infoBar';
@@ -32,6 +33,7 @@ import { SettingsWindow } from './settingsWindow';
 import { Simulation } from './simulation';
 import { Storage } from './storage';
 import { Text } from './text';
+import { Tile } from './tile';
 import { TouchWarnWindow } from './touchWarnWindow';
 
 var disasterTimeout = 20 * 1000;
@@ -48,7 +50,8 @@ function Game(gameMap, tileSet, snowTileSet, spriteSheet, difficulty, name) {
     this.gameMap = new GameMap(120, 100);
     savedGame = gameMap;
   }
-
+  this.defaultwwtp = true;
+  this.croptype = Simulation.CROP_CORN;
   this.tileSet = tileSet;
   this.snowTileSet = snowTileSet;
   this.defaultSpeed = Simulation.SPEED_MED;
@@ -123,7 +126,9 @@ function Game(gameMap, tileSet, snowTileSet, spriteSheet, difficulty, name) {
       policeRate: Math.floor(this.simulation.budget.policePercent * 100),
       taxRate: this.simulation.budget.cityTax,
       totalFunds: this.simulation.budget.totalFunds,
-      taxesCollected: this.simulation.budget.taxFund
+      taxesCollected: this.simulation.budget.taxFund,
+      fieldMaintenanceBudget: this.simulation.budget.fieldMaintenanceBudget,
+      fieldRate: Math.floor(this.simulation.budget.fieldPercent * 100),
     };
 
     return [budgetData];
@@ -172,6 +177,14 @@ function Game(gameMap, tileSet, snowTileSet, spriteSheet, difficulty, name) {
   // ... the touch warn window
   this.touchWindow = new TouchWarnWindow(opacityLayerID, 'touchWarnWindow');
   this.touchWindow.addEventListener(Messages.TOUCH_WINDOW_CLOSED, this.genericDialogClosure);
+
+  // ... the field crops window
+  this.handleFieldRequest = makeWindowOpenHandler('field', function() {
+    return [{cropselect: this.croptype, shouldWWTP: this.defaultwwtp}];
+  }.bind(this));
+  this.fieldWindow = new FieldWindow(opacityLayerID, 'fieldWindow');
+  this.fieldWindow.addEventListener(Messages.FIELD_WINDOW_CLOSED, this.handleFieldWindowClosure.bind(this));
+  this.inputStatus.addEventListener(Messages.FIELD_REQUESTED, this.handleFieldRequest.bind(this));
 
   // ... and finally the query window
   this.queryWindow = new QueryWindow(opacityLayerID, 'queryWindow');
@@ -352,6 +365,61 @@ Game.prototype.handleSettingsWindowClosure = function(actions) {
 };
 
 
+Game.prototype.handleFieldWindowClosure = function(actions) {
+  this.dialogOpen = false;
+
+  for (var i = 0, l = actions.length; i < l; i++) {
+    var a = actions[i];
+
+    switch (a.action) {
+      case FieldWindow.WWTP:
+       BaseTool.setWWTP(a.data);
+        break;
+
+      case FieldWindow.CROP:
+        this.setCrop(a.data);
+        break;
+
+      default:
+        console.warn('Unexpected action', a);
+    }
+  }
+};
+
+Game.prototype.setCrop = function(c){
+  if (c !== Simulation.CROP_CORN &&
+    c !== Simulation.CROP_WHEAT &&
+    c !== Simulation.CROP_ORCHARD &&
+    c !== Simulation.CROP_POTATO)
+  throw new Error('Invalid crop!');
+
+  switch (c) {
+    case Simulation.CROP_CORN:
+    
+      BaseTool.setCropCost(BaseTool.CORN_COST);
+      break;
+
+    case Simulation.CROP_WHEAT:
+      
+      BaseTool.setCropCost(BaseTool.WHEAT_COST);
+      break;
+
+    case Simulation.CROP_ORCHARD:
+     
+      BaseTool.setCropCost(BaseTool.ORCHARD_COST);
+      break;
+
+    case Simulation.CROP_POTATO:
+     
+      BaseTool.setCropCost(BaseTool.POTATO_COST);
+      break;
+
+    default:
+        console.warn('Unexpected action', a);
+  }
+};
+
+
 Game.prototype.handleDebugWindowClosure = function(actions) {
   this.dialogOpen = false;
 
@@ -395,6 +463,7 @@ Game.prototype.handleBudgetWindowClosure = function(data) {
     this.simulation.budget.roadPercent = data.roadPercent / 100;
     this.simulation.budget.firePercent = data.firePercent / 100;
     this.simulation.budget.policePercent = data.policePercent / 100;
+    this.simulation.budget.fieldPercent = data.fieldPercent / 100;
     this.simulation.budget.setTax(data.taxPercent - 0);
     if (this.simNeededBudget) {
       this.simulation.budget.doBudgetWindow();
@@ -432,6 +501,7 @@ Game.prototype.handleDebugRequest = makeWindowOpenHandler('debug');
 Game.prototype.handleDisasterRequest = makeWindowOpenHandler('disaster');
 Game.prototype.handleQueryRequest = makeWindowOpenHandler('query');
 Game.prototype.handleScreenshotRequest = makeWindowOpenHandler('screenshot');
+Game.prototype.handleFieldRequest = makeWindowOpenHandler('field');
 
 
 Game.prototype.handleMandatoryBudget = function() {

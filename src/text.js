@@ -19,12 +19,12 @@ var landValueStrings = ['Slum', 'Lower Class', 'Middle Class', 'High'];
 var crimeStrings = ['Safe', 'Light', 'Moderate', 'Dangerous'];
 var pollutionStrings = ['None', 'Moderate', 'Heavy', 'Very Heavy'];
 var rateStrings = ['Declining', 'Stable', 'Slow Growth', 'Fast Growth'];
-var zoneTypes = ['Clear', 'Water', 'Trees', 'Rubble', 'Flood', 'Radioactive Waste',
-                 'Fire', 'Road', 'Power', 'Rail', 'Residential', 'Commercial',
+var zoneTypes = ['Clear', 'Water', 'Trees', 'Rubble', 'Flood', 'Radioactive Waste', 
+                 'Fire', 'Road', 'Power', 'Channel', 'Residential', 'Commercial', 
                  'Industrial', 'Seaport', 'Airport', 'Coal Power', 'Fire Department',
                  'Police Department', 'Stadium', 'Nuclear Power', 'Draw Bridge',
-                 'Radar Dish', 'Fountain', 'Industrial', 'Steelers 38  Bears 3',
-                 'Draw Bridge', 'Ur 238'];
+                 'Radar Dish', 'Fountain', 'Industrial', 'Wwtp', 'Steelers 38  Bears 3',
+                 'Draw Bridge', 'Ur 238', 'Field'];
 
 // Evaluation window
 var gameLevel = {};
@@ -68,6 +68,7 @@ neutralMessages[Messages.NEED_ELECTRICITY] = true;
 neutralMessages[Messages.NEED_MORE_INDUSTRIAL] = true;
 neutralMessages[Messages.NEED_MORE_COMMERCIAL] = true;
 neutralMessages[Messages.NEED_MORE_RESIDENTIAL] = true;
+neutralMessages[Messages.NEED_MORE_FIELD] = true;
 neutralMessages[Messages.NEED_MORE_RAILS] = true;
 neutralMessages[Messages.NEED_MORE_ROADS] = true;
 neutralMessages[Messages.NEED_POLICE_STATION] = true;
@@ -113,6 +114,7 @@ messageText[Messages.NEED_ELECTRICITY] = 'Build a Power Plant';
 messageText[Messages.NEED_MORE_INDUSTRIAL] = 'More industrial zones needed';
 messageText[Messages.NEED_MORE_COMMERCIAL] = 'More commercial zones needed';
 messageText[Messages.NEED_MORE_RESIDENTIAL] = 'More residential zones needed';
+messageText[Messages.NEED_MORE_FIELD] = 'More field zones needed';
 messageText[Messages.NEED_MORE_RAILS] = 'Inadequate rail system';
 messageText[Messages.NEED_MORE_ROADS] = 'More roads required';
 messageText[Messages.NEED_POLICE_STATION] = 'Citizens demand a Police Department';

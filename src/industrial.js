@@ -31,28 +31,28 @@ var getZonePopulation = function(map, x, y, tileValue) {
 
 // Takes a map and coordinates, a population category in the range 1-4, a value category in the range 0-1, and places
 // the appropriate industrial zone on the map
-var placeIndustrial = function(map, x, y, populationCategory, valueCategory, zonePower) {
+var placeIndustrial = function(map, x, y, populationCategory, valueCategory, zonePower, zoneIrrigate) {
   var centreTile = ((valueCategory * 4) + populationCategory) * 9 + Tile.IZB;
-  ZoneUtils.putZone(map, x, y, centreTile, zonePower);
+  ZoneUtils.putZone(map, x, y, centreTile, zonePower, zoneIrrigate);
 };
 
 
-var growZone = function(map, x, y, blockMaps, population, valueCategory, zonePower) {
+var growZone = function(map, x, y, blockMaps, population, valueCategory, zonePower, zoneIrrigate) {
   // Switch to the next category of zone
   if (population < 4) {
-    placeIndustrial(map, x, y, population, valueCategory, zonePower);
+    placeIndustrial(map, x, y, population, valueCategory, zonePower, zoneIrrigate);
     ZoneUtils.incRateOfGrowth(blockMaps, x, y, 8);
   }
 };
 
 
-var degradeZone = function(map, x, y, blockMaps, populationCategory, valueCategory, zonePower) {
+var degradeZone = function(map, x, y, blockMaps, populationCategory, valueCategory, zonePower, zoneIrrigate) {
   // Note that we special case empty zones here, rather than having to check population value on every
   // call to placeIndustrial (which we anticipate will be called more often)
   if (populationCategory > 1)
-    placeIndustrial(map, x, y, populationCategory - 2, valueCategory, zonePower);
+    placeIndustrial(map, x, y, populationCategory - 2, valueCategory, zonePower, zoneIrrigate);
   else
-    ZoneUtils.putZone(map, x, y, Tile.INDCLR, zonePower);
+    ZoneUtils.putZone(map, x, y, Tile.INDCLR, zonePower, zoneIrrigate);
 
   ZoneUtils.incRateOfGrowth(blockMaps, x, y, -8);
 };
@@ -101,6 +101,8 @@ var industrialFound = function(map, x, y, simData) {
   var zonePower = map.getTile(x, y).isPowered();
   setAnimation(map, x, y, tileValue, zonePower);
 
+  var zoneIrrigate = map.getTile(x, y).isIrrigated();
+
   // Occasionally check to see if the zone is connected to the transport network (the chance of this happening
   // increases as the population increases). Growth naturally stalls if workers cannot reach the factories.
   // Note in particular, we will never take this branch if the zone is empty.
@@ -112,7 +114,7 @@ var industrialFound = function(map, x, y, simData) {
     // Trigger outward migration if not connected to road network (unless the zone is already empty)
     if (trafficOK === Traffic.NO_ROAD_FOUND) {
       var newValue = Random.getRandom16() & 1;
-      degradeZone(map, x, y, simData.blockMaps, population, newValue, zonePower);
+      degradeZone(map, x, y, simData.blockMaps, population, newValue, zonePower, zoneIrrigate);
       return;
     }
   }
@@ -137,7 +139,7 @@ var industrialFound = function(map, x, y, simData) {
     // This has the nice effect of not preventing an individual unit from growing even if overall demand has collapsed
     // (the business itself might still be growing.
     if (zoneScore > -350 && (zoneScore - 26380) > Random.getRandom16Signed()) {
-      growZone(map, x, y, simData.blockMaps, population, Random.getRandom16() & 1, zonePower);
+      growZone(map, x, y, simData.blockMaps, population, Random.getRandom16() & 1, zonePower, zoneIrrigate);
       return;
     }
 
@@ -146,7 +148,7 @@ var industrialFound = function(map, x, y, simData) {
     // There is a 85.6% chance of the number being below 23380 thus never triggering this branch, which leaves a
     // 9% chance of this branch being conditional on zoneScore.
     if (zoneScore < 350 && (zoneScore + 26380) < Random.getRandom16Signed())
-      degradeZone(map, x, y, simData.blockMaps, population, Random.getRandom16() & 1, zonePower);
+      degradeZone(map, x, y, simData.blockMaps, population, Random.getRandom16() & 1, zonePower, zoneIrrigate);
   }
 };
 

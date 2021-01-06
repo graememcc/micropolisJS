@@ -29,13 +29,13 @@ var getZonePopulation = function(map, x, y, tileValue) {
 
 // Takes a map and coordinates, a population category in the range 1-5, a value category in the range 0-3, and places
 // the appropriate industrial zone on the map
-var placeCommercial = function(map, x, y, population, lpValue, zonePower) {
+var placeCommercial = function(map, x, y, population, lpValue, zonePower, zoneIrrigate) {
   var centreTile = ((lpValue * 5) + population) * 9 + Tile.CZB;
-  ZoneUtils.putZone(map, x, y, centreTile, zonePower);
+  ZoneUtils.putZone(map, x, y, centreTile, zonePower, zoneIrrigate);
 };
 
 
-var growZone = function(map, x, y, blockMaps, population, lpValue, zonePower) {
+var growZone = function(map, x, y, blockMaps, population, lpValue, zonePower, zoneIrrigate) {
   // landValueMap contains values in the range 0-250, representing the desirability of the land.
   // Thus, after shifting, landValue will be in the range 0-7.
   var landValue = blockMaps.landValueMap.worldGet(x, y);
@@ -46,19 +46,19 @@ var growZone = function(map, x, y, blockMaps, population, lpValue, zonePower) {
 
   // This zone is desirable, and seemingly not to crowded. Switch to the next category of zone.
   if (population < 5) {
-    placeCommercial(map, x, y, population, lpValue, zonePower);
+    placeCommercial(map, x, y, population, lpValue, zonePower, zoneIrrigate);
     ZoneUtils.incRateOfGrowth(blockMaps, x, y, 8);
   }
 };
 
 
-var degradeZone = function(map, x, y, blockMaps, populationCategory, lpCategory, zonePower) {
+var degradeZone = function(map, x, y, blockMaps, populationCategory, lpCategory, zonePower, zoneIrrigate) {
   // Note that we special case empty zones here, rather than having to check population value on every
   // call to placeIndustrial (which we anticipate will be called more often)
   if (populationCategory > 1) {
-    placeCommercial(map, x, y, populationCategory - 2, lpCategory, zonePower);
+    placeCommercial(map, x, y, populationCategory - 2, lpCategory, zonePower, zoneIrrigate);
   } else {
-    ZoneUtils.putZone(map, x, y, Tile.COMCLR, zonePower);
+    ZoneUtils.putZone(map, x, y, Tile.COMCLR, zonePower, zoneIrrigate);
   }
 
   ZoneUtils.incRateOfGrowth(blockMaps, x, y, -8);
@@ -80,6 +80,7 @@ var commercialFound = function(map, x, y, simData) {
   simData.census.comPop += population;
 
   var zonePower = map.getTile(x, y).isPowered();
+  var zoneIrrigate = map.getTile(x, y).isIrrigated();
 
   // Occasionally check to see if the zone is connected to the transport network (the chance of this happening
   // increases as the population increases). Growth naturally stalls if consumers cannot reach the shops.
@@ -92,7 +93,7 @@ var commercialFound = function(map, x, y, simData) {
     // Trigger outward migration if not connected to road network
     if (trafficOK === Traffic.NO_ROAD_FOUND) {
       lpValue = ZoneUtils.getLandPollutionValue(simData.blockMaps, x, y);
-      degradeZone(map, x, y, simData.blockMaps, population, lpValue, zonePower);
+      degradeZone(map, x, y, simData.blockMaps, population, lpValue, zonePower, zoneIrrigate);
       return;
     }
   }
@@ -121,7 +122,7 @@ var commercialFound = function(map, x, y, simData) {
     // (the business itself might still be growing.
     if (zonePower && zoneScore > -350 && (zoneScore - 26380) > Random.getRandom16Signed()) {
       lpValue = ZoneUtils.getLandPollutionValue(simData.blockMaps, x, y);
-      growZone(map, x, y, simData.blockMaps, population, lpValue, zonePower);
+      growZone(map, x, y, simData.blockMaps, population, lpValue, zonePower, zoneIrrigate);
       return;
     }
 
@@ -131,7 +132,7 @@ var commercialFound = function(map, x, y, simData) {
     // 10.1% chance of this branch being conditional on zoneScore.
     if (zoneScore < 350 && (zoneScore + 26380) < Random.getRandom16Signed()) {
       lpValue = ZoneUtils.getLandPollutionValue(simData.blockMaps, x, y);
-      degradeZone(map, x, y, simData.blockMaps, population, lpValue, zonePower);
+      degradeZone(map, x, y, simData.blockMaps, population, lpValue, zonePower, zoneIrrigate);
     }
   }
 };
