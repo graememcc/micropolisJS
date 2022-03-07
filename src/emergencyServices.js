@@ -7,6 +7,7 @@
  *
  */
 
+import { Position } from './position';
 import { FIRESTATION, POLICESTATION } from "./tileValues";
 
 var handleService = function(censusStat, budgetEffect, blockMap) {
@@ -19,7 +20,7 @@ var handleService = function(censusStat, budgetEffect, blockMap) {
     if (!isPowered)
       effect = Math.floor(effect / 2);
 
-    var pos = new map.Position(x, y);
+    var pos = new Position(x, y);
     var connectedToRoads = simData.trafficManager.findPerimeterRoad(pos);
     if (!connectedToRoads)
       effect = Math.floor(effect / 2);
