@@ -25,7 +25,7 @@ RailTool.prototype.layRail = function(x, y) {
 
   switch (tile) {
     case TileValues.DIRT:
-      this._worldEffects.setTile(x, y, TileValues.LHRAIL | BULLBIT | BURNBIT);
+      this._worldEffects.setTile(x, y, TileValues.LHRAIL, BULLBIT | BURNBIT);
       break;
 
     case TileValues.RIVER:
