@@ -5,7 +5,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const GitRevisionPlugin = require('git-revision-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ScriptExtHtmlPlugin = require('script-ext-html-webpack-plugin');
-const StripAssertionCode = require('ts-transformer-unassert').default;
+// const StripAssertionCode = require('ts-transformer-unassert').default;
 
 const HANDLE_TYPESCRIPT_WITH_ATL = {test: /\.ts$/, loader: "awesome-typescript-loader"};
 
@@ -69,6 +69,7 @@ function addProductionConfigTo(options) {
   options.mode = 'production';
 
   removeATLRuleFrom(options.module);
+  /*
   const assertionStrippingConfig = {
     options: {
       getCustomTransformers: () => {
@@ -78,6 +79,7 @@ function addProductionConfigTo(options) {
   };
   stripTSAssertionsRule = Object.assign(assertionStrippingConfig, HANDLE_TYPESCRIPT_WITH_ATL);
   options.module.rules.push(stripTSAssertionsRule);
+  */
 }
 
 function removeATLRuleFrom(webpackModuleOptions) {
