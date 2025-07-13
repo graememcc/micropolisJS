@@ -62,6 +62,16 @@ function injectBuildIdIntoAbout(gitHash) {
   });
 }
 
+function injectBuildIdIntoNameLicense(gitHash) {
+  return new HtmlWebpackPlugin({
+    gitHash,
+    inject: false,
+    hash: true,
+    template: './name_license.html',
+    filename: 'name_license.html'
+  });
+}
+
 function addDevelopmentConfigTo(options) {
   options.devServer = {
     contentBase: `./${OUTPUT_DIRECTORY}`
@@ -117,6 +127,7 @@ function commonOptions() {
       copyStaticAssets(),
       injectBundleIntoHTML(buildId),
       injectBuildIdIntoAbout(buildId),
+      injectBuildIdIntoNameLicense(buildId),
     ],
   };
 
