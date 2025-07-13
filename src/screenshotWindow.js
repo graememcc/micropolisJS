@@ -6,10 +6,11 @@
  * http://micropolisjs.graememcc.co.uk/COPYING
  *
  */
+import $ from "jquery";
 
-import { SCREENSHOT_WINDOW_CLOSED } from './messages';
-import { ModalWindow } from './modalWindow';
-import { MiscUtils } from './miscUtils';
+import { SCREENSHOT_WINDOW_CLOSED } from './messages.ts';
+import { ModalWindow } from './modalWindow.js';
+import { MiscUtils } from './miscUtils.js';
 
 var ScreenshotWindow = ModalWindow(function() {
   $(screenshotCancelID).on('click', cancel.bind(this));

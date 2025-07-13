@@ -6,9 +6,10 @@
  * http://micropolisjs.graememcc.co.uk/COPYING
  *
  */
+import $ from "jquery";
 
-import { TOUCH_WINDOW_CLOSED } from './messages';
-import { ModalWindow } from './modalWindow';
+import { TOUCH_WINDOW_CLOSED } from './messages.ts';
+import { ModalWindow } from './modalWindow.js';
 
 var TouchWarnWindow = ModalWindow(function() {
   $(touchFormID).on('submit', submit.bind(this));

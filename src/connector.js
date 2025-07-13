@@ -7,9 +7,9 @@
  *
  */
 
-import { BLBNCNBIT, BULLBIT, BURNBIT } from "./tileFlags";
-import { TileUtils } from './tileUtils';
-import * as TileValues  from "./tileValues";
+import { BLBNCNBIT, BULLBIT, BURNBIT } from "./tileFlags.ts";
+import { TileUtils } from './tileUtils.js';
+import * as TileValues  from "./tileValues.ts";
 
 var RoadTable = [
   TileValues.ROADS, TileValues.ROADS2, TileValues.ROADS, TileValues.ROADS3,

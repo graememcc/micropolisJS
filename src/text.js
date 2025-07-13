@@ -7,9 +7,9 @@
  *
  */
 
-import { Evaluation } from './evaluation';
-import * as Messages from './messages';
-import { Simulation } from './simulation';
+import { Evaluation } from './evaluation.js';
+import * as Messages from './messages.ts';
+import { Simulation } from './simulation.js';
 
 // TODO Some kind of rudimentary L20N based on navigator.language?
 

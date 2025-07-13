@@ -7,14 +7,14 @@
  *
  */
 
-import { BaseSprite } from './baseSprite';
-import { EXPLOSION_REPORTED, SOUND_EXPLOSIONHIGH } from './messages';
-import { MiscUtils } from './miscUtils';
-import { Random } from './random';
-import { SPRITE_EXPLOSION } from './spriteConstants';
-import { SpriteUtils } from './spriteUtils';
-import { TileUtils } from './tileUtils';
-import { DIRT } from "./tileValues";
+import { BaseSprite } from './baseSprite.js';
+import { EXPLOSION_REPORTED, SOUND_EXPLOSIONHIGH } from './messages.ts';
+import { MiscUtils } from './miscUtils.js';
+import { Random } from './random.ts';
+import { SPRITE_EXPLOSION } from './spriteConstants.ts';
+import { SpriteUtils } from './spriteUtils.js';
+import { TileUtils } from './tileUtils.js';
+import { DIRT } from "./tileValues.ts";
 
 function ExplosionSprite(map, spriteManager, x, y) {
   this.init(SPRITE_EXPLOSION, map, spriteManager, x, y);

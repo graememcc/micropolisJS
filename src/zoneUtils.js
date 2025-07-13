@@ -7,9 +7,9 @@
  *
  */
 
-import { MiscUtils } from './miscUtils';
-import { BULLBIT, POWERBIT } from "./tileFlags";
-import * as TileValues from "./tileValues";
+import { MiscUtils } from './miscUtils.js';
+import { BULLBIT, POWERBIT } from "./tileFlags.ts";
+import * as TileValues from "./tileValues.ts";
 
 var checkBigZone = function(tileValue) {
   var result;

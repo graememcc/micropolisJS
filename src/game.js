@@ -6,33 +6,34 @@
  * http://micropolisjs.graememcc.co.uk/COPYING
  *
  */
+import $ from "jquery";
 
-import { BaseTool } from './baseTool';
-import { BudgetWindow } from './budgetWindow';
-import { Config } from './config';
-import { CongratsWindow } from './congratsWindow';
-import { DebugWindow } from './debugWindow';
-import { DisasterWindow } from './disasterWindow';
-import { EvaluationWindow } from './evaluationWindow';
-import { GameCanvas } from './gameCanvas';
-import { GameMap } from './gameMap';
-import { InfoBar } from './infoBar';
-import { InputStatus } from './inputStatus';
-import * as Messages from './messages';
-import { MonsterTV } from './monsterTV';
-import { NagWindow } from './nagWindow';
-import { Notification } from './notification';
-import { QueryWindow } from './queryWindow';
-import { Random } from './random';
-import { RCI } from './rci';
-import { SaveWindow } from './saveWindow';
-import { ScreenshotLinkWindow } from './screenshotLinkWindow';
-import { ScreenshotWindow } from './screenshotWindow';
-import { SettingsWindow } from './settingsWindow';
-import { Simulation } from './simulation';
-import { Storage } from './storage';
-import { Text } from './text';
-import { TouchWarnWindow } from './touchWarnWindow';
+import { BaseTool } from './baseTool.js';
+import { BudgetWindow } from './budgetWindow.js';
+import { Config } from './config.js';
+import { CongratsWindow } from './congratsWindow.js';
+import { DebugWindow } from './debugWindow.js';
+import { DisasterWindow } from './disasterWindow.js';
+import { EvaluationWindow } from './evaluationWindow.js';
+import { GameCanvas } from './gameCanvas.js';
+import { GameMap } from './gameMap.js';
+import { InfoBar } from './infoBar.js';
+import { InputStatus } from './inputStatus.js';
+import * as Messages from './messages.ts';
+import { MonsterTV } from './monsterTV.js';
+import { NagWindow } from './nagWindow.js';
+import { Notification } from './notification.js';
+import { QueryWindow } from './queryWindow.js';
+import { Random } from './random.ts';
+import { RCI } from './rci.js';
+import { SaveWindow } from './saveWindow.js';
+import { ScreenshotLinkWindow } from './screenshotLinkWindow.js';
+import { ScreenshotWindow } from './screenshotWindow.js';
+import { SettingsWindow } from './settingsWindow.js';
+import { Simulation } from './simulation.js';
+import { Storage } from './storage.js';
+import { Text } from './text.js';
+import { TouchWarnWindow } from './touchWarnWindow.js';
 
 var disasterTimeout = 20 * 1000;
 

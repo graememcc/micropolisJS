@@ -7,7 +7,7 @@
  *
  */
 
-import { TILE_COUNT } from "./tileValues";
+import { TILE_COUNT } from "./tileValues.ts";
 
 // Tiles must be 16px square
 var TILE_SIZE = 16;

@@ -7,12 +7,12 @@
  *
  */
 
-import { Random } from './random';
-import { ANIMBIT, ASCBIT, BNCNBIT } from "./tileFlags";
-import { TileUtils } from './tileUtils';
-import { INDCLR, IZB } from "./tileValues";
-import { Traffic } from './traffic';
-import { ZoneUtils } from './zoneUtils';
+import { Random } from './random.ts';
+import { ANIMBIT, ASCBIT, BNCNBIT } from "./tileFlags.ts";
+import { TileUtils } from './tileUtils.js';
+import { INDCLR, IZB } from "./tileValues.ts";
+import { Traffic } from './traffic.js';
+import { ZoneUtils } from './zoneUtils.js';
 
 // There are 8 types of industrial zone aside from the empty zone. They are categorized by population and value.
 // There are 4 levels of population (1-4), and 2 levels of value.

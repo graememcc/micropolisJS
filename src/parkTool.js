@@ -7,11 +7,11 @@
  *
  */
 
-import { BaseTool } from './baseTool';
-import { Random } from './random';
-import { ANIMBIT, BULLBIT, BURNBIT, CONDBIT } from "./tileFlags";
-import { TileUtils } from './tileUtils';
-import { DIRT, FOUNTAIN, WOODS2 } from "./tileValues";
+import { BaseTool } from './baseTool.js';
+import { Random } from './random.ts';
+import { ANIMBIT, BULLBIT, BURNBIT, CONDBIT } from "./tileFlags.ts";
+import { TileUtils } from './tileUtils.js';
+import { DIRT, FOUNTAIN, WOODS2 } from "./tileValues.ts";
 
 var makeTool = BaseTool.makeTool;
 var ParkTool = makeTool(function(map) {

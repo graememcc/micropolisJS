@@ -7,10 +7,10 @@
  *
  */
 
-import { EventEmitter } from './eventEmitter';
-import { CLASSIFICATION_UPDATED, POPULATION_UPDATED, SCORE_UPDATED } from './messages';
-import { MiscUtils } from './miscUtils';
-import { Random } from './random';
+import { EventEmitter } from './eventEmitter.js';
+import { CLASSIFICATION_UPDATED, POPULATION_UPDATED, SCORE_UPDATED } from './messages.ts';
+import { MiscUtils } from './miscUtils.js';
+import { Random } from './random.ts';
 
 var PROBLEMS = ['CVP_CRIME', 'CVP_POLLUTION', 'CVP_HOUSING', 'CVP_TAXES',
                 'CVP_TRAFFIC', 'CVP_UNEMPLOYMENT', 'CVP_FIRE'];

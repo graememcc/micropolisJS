@@ -7,10 +7,10 @@
  *
  */
 
-import { Random } from './random';
-import { TileUtils } from './tileUtils';
-import { DIRT, IZB, RADTILE } from "./tileValues";
-import { ZoneUtils } from './zoneUtils';
+import { Random } from './random.ts';
+import { TileUtils } from './tileUtils.js';
+import { DIRT, IZB, RADTILE } from "./tileValues.ts";
+import { ZoneUtils } from './zoneUtils.js';
 
 var xDelta = [-1,  0,  1,  0 ];
 var yDelta = [ 0, -1,  0,  1 ];

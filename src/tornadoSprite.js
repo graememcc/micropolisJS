@@ -7,12 +7,12 @@
  *
  */
 
-import { BaseSprite } from './baseSprite';
-import { SPRITE_DYING, SPRITE_MOVED } from './messages';
-import { MiscUtils } from './miscUtils';
-import { Random } from './random';
-import { SpriteConstants } from './spriteConstants';
-import { SpriteUtils } from './spriteUtils';
+import { BaseSprite } from './baseSprite.js';
+import { SPRITE_DYING, SPRITE_MOVED } from './messages.ts';
+import { MiscUtils } from './miscUtils.js';
+import { Random } from './random.ts';
+import * as SpriteConstants from './spriteConstants.ts';
+import { SpriteUtils } from './spriteUtils.js';
 
 function TornadoSprite(map, spriteManager, x, y) {
   this.init(SpriteConstants.SPRITE_TORNADO, map, spriteManager, x, y);

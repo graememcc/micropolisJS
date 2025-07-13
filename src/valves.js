@@ -7,9 +7,9 @@
  *
  */
 
-import { EventEmitter } from './eventEmitter';
-import { VALVES_UPDATED } from './messages';
-import { MiscUtils } from './miscUtils';
+import { EventEmitter } from './eventEmitter.js';
+import { VALVES_UPDATED } from './messages.ts';
+import { MiscUtils } from './miscUtils.js';
 
 var Valves = EventEmitter(function () {
   this.resValve = 0;

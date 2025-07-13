@@ -6,11 +6,12 @@
  * http://micropolisjs.graememcc.co.uk/COPYING
  *
  */
+import $ from "jquery";
 
-import { SETTINGS_WINDOW_CLOSED } from './messages';
-import { ModalWindow } from './modalWindow';
-import { MiscUtils } from './miscUtils';
-import { Simulation } from './simulation';
+import { SETTINGS_WINDOW_CLOSED } from './messages.ts';
+import { ModalWindow } from './modalWindow.js';
+import { MiscUtils } from './miscUtils.js';
+import { Simulation } from './simulation.js';
 
 var SettingsWindow = ModalWindow(function() {
   $(settingsCancelID).on('click', cancel.bind(this));

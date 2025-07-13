@@ -7,8 +7,8 @@
  *
  */
 
-import { EventEmitter } from './eventEmitter';
-import { SpriteUtils } from './spriteUtils';
+import { EventEmitter } from './eventEmitter.js';
+import { SpriteUtils } from './spriteUtils.js';
 
 var init = function(type, map, spriteManager, x, y) {
   this.type = type;

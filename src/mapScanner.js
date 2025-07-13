@@ -7,8 +7,8 @@
  *
  */
 
- import { Tile } from "./tile";
-import { FLOOD } from "./tileValues";
+import { Tile } from "./tile.ts";
+import { FLOOD } from "./tileValues.ts";
 
 // Tile to be filled to avoid creating lots of GC-able objects
 var tile = new Tile();

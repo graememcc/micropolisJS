@@ -6,9 +6,10 @@
  * http://micropolisjs.graememcc.co.uk/COPYING
  *
  */
+import $ from "jquery";
 
-import { EventEmitter } from './eventEmitter';
-import { MiscUtils } from './miscUtils';
+import { EventEmitter } from './eventEmitter.js';
+import { MiscUtils } from './miscUtils.js';
 
 var ModalWindow = function(constructorFunction, focusID) {
   focusID = focusID ? MiscUtils.normaliseDOMid(focusID) : null;

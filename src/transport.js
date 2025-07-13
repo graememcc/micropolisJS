@@ -7,11 +7,11 @@
  *
  */
 
-import { Random } from './random';
-import { SPRITE_SHIP } from './spriteConstants';
-import { ANIMBIT, CONDBIT, BURNBIT } from "./tileFlags";
-import { TileUtils } from './tileUtils';
-import * as TileValues from "./tileValues";
+import { Random } from './random.ts';
+import { SPRITE_SHIP } from './spriteConstants.ts';
+import { ANIMBIT, CONDBIT, BURNBIT } from "./tileFlags.ts";
+import { TileUtils } from './tileUtils.js';
+import * as TileValues from "./tileValues.ts";
 
 var railFound = function(map, x, y, simData) {
   simData.census.railTotal += 1;

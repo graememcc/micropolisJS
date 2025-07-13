@@ -6,12 +6,13 @@
  * http://micropolisjs.graememcc.co.uk/COPYING
  *
  */
+import $ from "jquery";
 
-import { EventEmitter } from './eventEmitter';
-import { GameCanvas } from './gameCanvas';
-import { GameTools } from './gameTools';
-import * as Messages from './messages';
-import { MiscUtils } from './miscUtils';
+import { EventEmitter } from './eventEmitter.js';
+import { GameCanvas } from './gameCanvas.js';
+import { GameTools } from './gameTools.js';
+import * as Messages from './messages.ts';
+import { MiscUtils } from './miscUtils.js';
 
 var InputStatus = EventEmitter(function(map, tileWidth) {
   this.gameTools = new GameTools(map);

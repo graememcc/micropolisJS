@@ -7,10 +7,10 @@
  *
  */
 
-import { ConnectingTool } from './connectingTool';
-import { CONDBIT, BURNBIT, BULLBIT } from "./tileFlags";
-import { TileUtils } from './tileUtils';
-import * as TileValues from "./tileValues";
+import { ConnectingTool } from './connectingTool.js';
+import { CONDBIT, BURNBIT, BULLBIT } from "./tileFlags.ts";
+import { TileUtils } from './tileUtils.js';
+import * as TileValues from "./tileValues.ts";
 
 var WireTool = ConnectingTool(function(map) {
   this.init(5, map, true, true);

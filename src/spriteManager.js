@@ -7,20 +7,20 @@
  *
  */
 
-import { AirplaneSprite } from './airplaneSprite';
-import { BoatSprite } from './boatSprite';
-import { CopterSprite } from './copterSprite';
-import { EventEmitter } from './eventEmitter';
-import { ExplosionSprite } from './explosionSprite';
-import * as Messages from './messages';
-import { MiscUtils } from './miscUtils';
-import { MonsterSprite } from './monsterSprite';
-import { Random } from './random';
-import * as SpriteConstants from './spriteConstants';
-import { SpriteUtils } from './spriteUtils';
-import { CHANNEL, RIVER } from "./tileValues";
-import { TornadoSprite } from './tornadoSprite';
-import { TrainSprite } from './trainSprite';
+import { AirplaneSprite } from './airplaneSprite.js';
+import { BoatSprite } from './boatSprite.js';
+import { CopterSprite } from './copterSprite.js';
+import { EventEmitter } from './eventEmitter.js';
+import { ExplosionSprite } from './explosionSprite.js';
+import * as Messages from './messages.ts';
+import { MiscUtils } from './miscUtils.js';
+import { MonsterSprite } from './monsterSprite.js';
+import { Random } from './random.ts';
+import * as SpriteConstants from './spriteConstants.ts';
+import { SpriteUtils } from './spriteUtils.js';
+import { CHANNEL, RIVER } from "./tileValues.ts";
+import { TornadoSprite } from './tornadoSprite.js';
+import { TrainSprite } from './trainSprite.js';
 
 var SpriteManager = EventEmitter(function(map) {
   this.spriteList = [];

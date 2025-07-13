@@ -6,12 +6,13 @@
  * http://micropolisjs.graememcc.co.uk/COPYING
  *
  */
+import $ from "jquery";
 
-import { Config } from './config';
-import { SplashScreen } from './splashScreen';
-import { TileSet } from './tileSet';
-import { TileSetURI } from './tileSetURI';
-import { TileSetSnowURI } from './tileSetSnowURI';
+import { Config } from './config.js';
+import { SplashScreen } from './splashScreen.js';
+import { TileSet } from './tileSet.js';
+import { TileSetURI } from './tileSetURI.ts';
+import { TileSetSnowURI } from './tileSetSnowURI.ts';
 
 /*
  *

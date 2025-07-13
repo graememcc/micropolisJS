@@ -7,12 +7,12 @@
  *
  */
 
-import { BaseSprite } from './baseSprite';
-import { PLANE_CRASHED } from './messages';
-import { MiscUtils } from './miscUtils';
-import { Random } from './random';
-import { SPRITE_AIRPLANE, SPRITE_HELICOPTER } from './spriteConstants';
-import { SpriteUtils } from './spriteUtils';
+import { BaseSprite } from './baseSprite.js';
+import { PLANE_CRASHED } from './messages.ts';
+import { MiscUtils } from './miscUtils.js';
+import { Random } from './random.ts';
+import { SPRITE_AIRPLANE, SPRITE_HELICOPTER } from './spriteConstants.ts';
+import { SpriteUtils } from './spriteUtils.js';
 
 function AirplaneSprite(map, spriteManager, x, y) {
   this.init(SPRITE_AIRPLANE, map, spriteManager, x, y);

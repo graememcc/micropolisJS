@@ -7,14 +7,14 @@
  *
  */
 
-import { BaseSprite } from './baseSprite';
-import { SPRITE_DYING, SPRITE_MOVED, SOUND_MONSTER } from './messages';
-import { MiscUtils } from './miscUtils';
-import { Random } from './random';
-import * as SpriteConstants  from './spriteConstants';
-import { SpriteUtils } from './spriteUtils';
-import { TileUtils } from './tileUtils';
-import { DIRT, RIVER, WATER_HIGH } from "./tileValues";
+import { BaseSprite } from './baseSprite.js';
+import { SPRITE_DYING, SPRITE_MOVED, SOUND_MONSTER } from './messages.ts';
+import { MiscUtils } from './miscUtils.js';
+import { Random } from './random.ts';
+import * as SpriteConstants  from './spriteConstants.ts';
+import { SpriteUtils } from './spriteUtils.js';
+import { TileUtils } from './tileUtils.js';
+import { DIRT, RIVER, WATER_HIGH } from "./tileValues.ts";
 
 function MonsterSprite(map, spriteManager, x, y) {
   this.init(SpriteConstants.SPRITE_MONSTER, map, spriteManager, x, y);

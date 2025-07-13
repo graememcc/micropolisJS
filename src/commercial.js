@@ -7,11 +7,11 @@
  *
  */
 
-import { Random } from './random';
-import { TileUtils } from './tileUtils';
-import { COMCLR, CZB } from "./tileValues";
-import { Traffic } from './traffic';
-import { ZoneUtils } from './zoneUtils';
+import { Random } from './random.ts';
+import { TileUtils } from './tileUtils.js';
+import { COMCLR, CZB } from "./tileValues.ts";
+import { Traffic } from './traffic.js';
+import { ZoneUtils } from './zoneUtils.js';
 
 // There are 20 types of commercial zone aside from the empty zone. They reflect 5 different categories of
 // population, and 4 grades of land value/pollution. Population value 1/low value corresponds to the 9 tiles

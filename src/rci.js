@@ -6,9 +6,10 @@
  * http://micropolisjs.graememcc.co.uk/COPYING
  *
  */
+import $ from "jquery";
 
-import { VALVES_UPDATED } from './messages';
-import { MiscUtils } from './miscUtils';
+import { VALVES_UPDATED } from './messages.ts';
+import { MiscUtils } from './miscUtils.js';
 
 function RCI(parentNode, eventSource, id) {
   if (arguments.length < 2)

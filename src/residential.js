@@ -7,14 +7,14 @@
  *
  */
 
-import { Config } from './config';
-import { Random } from './random';
-import { Tile } from './tile';
-import { BLBNCNBIT, ZONEBIT } from "./tileFlags";
-import { TileUtils } from './tileUtils';
-import * as TileValues from "./tileValues";
-import { Traffic } from './traffic';
-import { ZoneUtils } from './zoneUtils';
+import { Config } from './config.js';
+import { Random } from './random.ts';
+import { Tile } from './tile.ts';
+import { BLBNCNBIT, ZONEBIT } from "./tileFlags.ts";
+import { TileUtils } from './tileUtils.js';
+import * as TileValues from "./tileValues.ts";
+import { Traffic } from './traffic.js';
+import { ZoneUtils } from './zoneUtils.js';
 
 // Residential tiles have 'populations' of 16, 24, 32 or 40, and value from 0 to 3. The tiles are laid out in
 // increasing order of land value, cycling through each population value

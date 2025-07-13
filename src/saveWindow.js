@@ -6,9 +6,10 @@
  * http://micropolisjs.graememcc.co.uk/COPYING
  *
  */
+import $ from "jquery";
 
-import { SAVE_WINDOW_CLOSED } from './messages';
-import { ModalWindow } from './modalWindow';
+import { SAVE_WINDOW_CLOSED } from './messages.ts';
+import { ModalWindow } from './modalWindow.js';
 
 var SaveWindow = ModalWindow(function() {
   $(saveFormID).on('submit', submit.bind(this));

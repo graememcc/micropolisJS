@@ -6,10 +6,11 @@
  * http://micropolisjs.graememcc.co.uk/COPYING
  *
  */
+import $ from "jquery";
 
-import { ModalWindow } from './modalWindow';
-import { EVAL_WINDOW_CLOSED } from './messages';
-import { Text } from './text';
+import { ModalWindow } from './modalWindow.js';
+import { EVAL_WINDOW_CLOSED } from './messages.ts';
+import { Text } from './text.js';
 
 var EvaluationWindow = ModalWindow(function() {
   $(evaluationFormID).on('submit', submit.bind(this));

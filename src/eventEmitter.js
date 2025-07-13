@@ -7,7 +7,7 @@
  *
  */
 
-import { Config } from './config';
+import { Config } from './config.js';
 
 // Decorate the given object, by adding {add|remove}EventListener methods, and an internal '_emitEvent' method
 var EventEmitter = function(obj) {

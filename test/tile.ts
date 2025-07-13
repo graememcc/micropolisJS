@@ -54,25 +54,25 @@ describe("The Tile constructor", () => {
         it("should throw if called with a tile value lower than the minimum", () => {
             const apiAbuse = () => new Tile(TILE_INVALID - 1);
 
-            expect(apiAbuse).toThrowError();
+            expect(apiAbuse).toThrow();
         });
 
         it("should throw if called with a tile value higher than the maximum", () => {
             const apiAbuse = () => new Tile(TILE_COUNT);
 
-            expect(apiAbuse).toThrowError();
+            expect(apiAbuse).toThrow();
         });
 
         it("should throw if called with tile flags lower than the minimum", () => {
             const apiAbuse = () => new Tile(DIRT, TileFlags.BIT_START - 1);
 
-            expect(apiAbuse).toThrowError();
+            expect(apiAbuse).toThrow();
         });
 
         it("should throw if called with a tile flags higher than the maximum", () => {
             const apiAbuse = () => new Tile(DIRT, TileFlags.BIT_END + 1);
 
-            expect(apiAbuse).toThrowError();
+            expect(apiAbuse).toThrow();
         });
     });
 });
@@ -138,7 +138,7 @@ describe("when setting the value", () => {
 
         const apiAbuse = () => tile.setValue(TILE_INVALID - 1);
 
-        expect(apiAbuse).toThrowError();
+        expect(apiAbuse).toThrow();
     });
 });
 
@@ -206,7 +206,7 @@ describe("when adding flags", () => {
 
         const apiAbuse = () => tile.addFlags(TileFlags.BIT_START - 1);
 
-        expect(apiAbuse).toThrowError();
+        expect(apiAbuse).toThrow();
     });
 });
 
@@ -261,7 +261,7 @@ describe("when setting flags", () => {
 
         const apiAbuse = () => tile.addFlags(TileFlags.BIT_END - 1);
 
-        expect(apiAbuse).toThrowError();
+        expect(apiAbuse).toThrow();
     });
 });
 
@@ -328,7 +328,7 @@ describe("when removing flags", () => {
 
         const apiAbuse = () => tile.removeFlags(TileFlags.CONDBIT + 1);
 
-        expect(apiAbuse).toThrowError();
+        expect(apiAbuse).toThrow();
     });
 });
 
@@ -367,7 +367,7 @@ describe("when setting both the tile value and flags", () => {
 
         const apiAbuse = () => tile.set(TILE_INVALID - 1, TileFlags.NOFLAGS);
 
-        expect(apiAbuse).toThrowError();
+        expect(apiAbuse).toThrow();
     });
 
     it("should throw if called with a tile value higher than the maximum", () => {
@@ -375,7 +375,7 @@ describe("when setting both the tile value and flags", () => {
 
         const apiAbuse = () => tile.set(TILE_COUNT, TileFlags.NOFLAGS);
 
-        expect(apiAbuse).toThrowError();
+        expect(apiAbuse).toThrow();
     });
 
     it("should throw if called with invalid flags", () => {
@@ -383,7 +383,7 @@ describe("when setting both the tile value and flags", () => {
 
         const apiAbuse = () => tile.set(FLOOD, TileFlags.POWERBIT + 1);
 
-        expect(apiAbuse).toThrowError();
+        expect(apiAbuse).toThrow();
     });
 });
 

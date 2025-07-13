@@ -6,10 +6,11 @@
  * http://micropolisjs.graememcc.co.uk/COPYING
  *
  */
+import $ from "jquery";
 
-import * as Messages from './messages';
-import { MiscUtils } from './miscUtils';
-import { Text } from './text';
+import * as Messages from './messages.ts';
+import { MiscUtils } from './miscUtils.js';
+import { Text } from './text.js';
 
 // TODO L20N
 

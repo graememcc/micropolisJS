@@ -7,9 +7,9 @@
  *
  */
 
-import { EventEmitter } from './eventEmitter';
-import * as Messages from './messages';
-import { MiscUtils } from './miscUtils';
+import { EventEmitter } from './eventEmitter.js';
+import * as Messages from './messages.ts';
+import { MiscUtils } from './miscUtils.js';
 
 // Cost of maintaining 1 police station
 var policeMaintenanceCost = 100;

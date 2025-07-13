@@ -7,29 +7,29 @@
  *
  */
 
-import { BlockMap } from './blockMap';
-import { BlockMapUtils } from './blockMapUtils';
-import { Budget } from './budget';
-import { Census } from './census';
-import { Commercial } from './commercial';
-import { DisasterManager } from './disasterManager';
-import { EventEmitter } from './eventEmitter';
-import { EmergencyServices } from './emergencyServices';
-import { Evaluation } from './evaluation';
-import { Industrial } from './industrial';
-import { MapScanner } from './mapScanner';
-import * as Messages from './messages';
-import { MiscTiles } from './miscTiles';
-import { MiscUtils } from './miscUtils';
-import { PowerManager } from './powerManager';
-import { RepairManager } from './repairManager';
-import { Residential } from './residential';
-import { Road } from './road';
-import { SpriteManager } from './spriteManager';
-import { Stadia } from './stadia';
-import { Traffic } from './traffic';
-import { Transport } from './transport';
-import { Valves } from './valves';
+import { BlockMap } from './blockMap.ts';
+import { BlockMapUtils } from './blockMapUtils.js';
+import { Budget } from './budget.js';
+import { Census } from './census.js';
+import { Commercial } from './commercial.js';
+import { DisasterManager } from './disasterManager.js';
+import { EventEmitter } from './eventEmitter.js';
+import { EmergencyServices } from './emergencyServices.js';
+import { Evaluation } from './evaluation.js';
+import { Industrial } from './industrial.js';
+import { MapScanner } from './mapScanner.js';
+import * as Messages from './messages.ts';
+import { MiscTiles } from './miscTiles.js';
+import { MiscUtils } from './miscUtils.js';
+import { PowerManager } from './powerManager.js';
+import { RepairManager } from './repairManager.js';
+import { Residential } from './residential.js';
+import { Road } from './road.js';
+import { SpriteManager } from './spriteManager.js';
+import { Stadia } from './stadia.js';
+import { Traffic } from './traffic.js';
+import { Transport } from './transport.js';
+import { Valves } from './valves.js';
 
 var Simulation = EventEmitter(function (gameMap, gameLevel, speed, savedGame) {
   this._map = gameMap;
@@ -40,7 +40,7 @@ var Simulation = EventEmitter(function (gameMap, gameLevel, speed, savedGame) {
   this._simCycle = 0;
   this._cityTime = 0;
   this._cityPopLast = 0;
-  this._messageLast = Messages.VILLAGE_REACHED;
+  this._messageLast = undefined;
   this._startingYear = 1900;
 
   // Last date sent to front end
@@ -462,7 +462,7 @@ Simulation.prototype._sendMessages = function() {
 
     case 30:
       if (this._census.comPop > 100 && this._census.airportPop === 0) {
-          this._emitEvent(Messages.FRONT_END_MESSAGE, {subject: Messages._NEED_AIRPORT});
+          this._emitEvent(Messages.FRONT_END_MESSAGE, {subject: Messages.NEED_AIRPORT});
         this._valves.comCap = true;
       } else {
         this._valves.comCap = false;

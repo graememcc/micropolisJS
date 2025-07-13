@@ -7,9 +7,9 @@
  *
  */
 
-import { ANIMBIT, BULLBIT } from "./tileFlags";
-import * as TileValues from "./tileValues";
-import { ZoneUtils } from './zoneUtils';
+import { ANIMBIT, BULLBIT } from "./tileFlags.ts";
+import * as TileValues from "./tileValues.ts";
+import { ZoneUtils } from './zoneUtils.js';
 
 var pixToWorld = function(p) {
   return p >> 4;

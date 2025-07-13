@@ -7,12 +7,12 @@
  *
  */
 
-import { BaseSprite } from './baseSprite';
-import { HEAVY_TRAFFIC, HELICOPTER_CRASHED, SOUND_HEAVY_TRAFFIC } from './messages';
-import { MiscUtils } from './miscUtils';
-import { Random } from './random';
-import { SPRITE_HELICOPTER, SPRITE_MONSTER, SPRITE_TORNADO } from './spriteConstants';
-import { SpriteUtils } from './spriteUtils';
+import { BaseSprite } from './baseSprite.js';
+import { HEAVY_TRAFFIC, HELICOPTER_CRASHED, SOUND_HEAVY_TRAFFIC } from './messages.ts';
+import { MiscUtils } from './miscUtils.js';
+import { Random } from './random.ts';
+import { SPRITE_HELICOPTER, SPRITE_MONSTER, SPRITE_TORNADO } from './spriteConstants.ts';
+import { SpriteUtils } from './spriteUtils.js';
 
 function CopterSprite(map, spriteManager, x, y) {
   this.init(SPRITE_HELICOPTER, map, spriteManager, x, y);

@@ -7,14 +7,14 @@
  *
  */
 
-import { forEachCardinalDirection } from './direction';
-import { MiscUtils } from './miscUtils';
-import { Position } from './position';
-import { Random } from './random';
-import { SPRITE_HELICOPTER } from './spriteConstants';
-import { SpriteUtils } from './spriteUtils';
-import { TileUtils } from './tileUtils';
-import { DIRT, POWERBASE, ROADBASE } from "./tileValues";
+import { forEachCardinalDirection } from './direction.ts';
+import { MiscUtils } from './miscUtils.js';
+import { Position } from './position.ts';
+import { Random } from './random.ts';
+import { SPRITE_HELICOPTER } from './spriteConstants.ts';
+import { SpriteUtils } from './spriteUtils.js';
+import { TileUtils } from './tileUtils.js';
+import { DIRT, POWERBASE, ROADBASE } from "./tileValues.ts";
 
 function Traffic(map, spriteManager) {
   this._map = map;

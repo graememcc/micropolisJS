@@ -6,14 +6,15 @@
  * http://micropolisjs.graememcc.co.uk/COPYING
  *
  */
+import $ from "jquery";
 
-import { AnimationManager } from './animationManager';
-import { GameMap } from './gameMap';
-import { MiscUtils } from './miscUtils';
-import { MouseBox } from './mouseBox';
-import { Position } from './position';
-import { TileSet } from './tileSet';
-import { TILE_INVALID } from "./tileValues";
+import { AnimationManager } from './animationManager.js';
+import { GameMap } from './gameMap.js';
+import { MiscUtils } from './miscUtils.js';
+import { MouseBox } from './mouseBox.js';
+import { Position } from './position.ts';
+import { TileSet } from './tileSet.js';
+import { TILE_INVALID } from "./tileValues.ts";
 
 function GameCanvas(id, parentNode) {
   if (!(this instanceof GameCanvas))

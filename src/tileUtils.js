@@ -7,10 +7,10 @@
  *
  */
 
-import { Random } from './random';
-import { Tile } from './tile';
-import { ANIMBIT, BULLBIT } from "./tileFlags";
-import * as TileValues from "./tileValues";
+import { Random } from './random.ts';
+import { Tile } from './tile.ts';
+import { ANIMBIT, BULLBIT } from "./tileFlags.ts";
+import * as TileValues from "./tileValues.ts";
 
 var unwrapTile = function(f) {
   return function(tile) {

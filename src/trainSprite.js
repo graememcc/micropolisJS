@@ -7,13 +7,13 @@
  *
  */
 
-import { BaseSprite } from './baseSprite';
-import { TRAIN_CRASHED } from './messages';
-import { MiscUtils } from './miscUtils';
-import { Random } from './random';
-import { SPRITE_TRAIN } from './spriteConstants';
-import { SpriteUtils } from './spriteUtils';
-import * as TileValues from "./tileValues";
+import { BaseSprite } from './baseSprite.js';
+import { TRAIN_CRASHED } from './messages.ts';
+import { MiscUtils } from './miscUtils.js';
+import { Random } from './random.ts';
+import { SPRITE_TRAIN } from './spriteConstants.ts';
+import { SpriteUtils } from './spriteUtils.js';
+import * as TileValues from "./tileValues.ts";
 
 function TrainSprite(map, spriteManager, x, y) {
   this.init(SPRITE_TRAIN, map,

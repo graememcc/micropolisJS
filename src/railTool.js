@@ -7,10 +7,10 @@
  *
  */
 
-import { ConnectingTool } from './connectingTool';
-import { BULLBIT, BURNBIT, CONDBIT } from "./tileFlags";
-import { TileUtils } from './tileUtils';
-import * as TileValues from "./tileValues";
+import { ConnectingTool } from './connectingTool.js';
+import { BULLBIT, BURNBIT, CONDBIT } from "./tileFlags.ts";
+import { TileUtils } from './tileUtils.js';
+import * as TileValues from "./tileValues.ts";
 
 var RailTool = ConnectingTool(function(map) {
   this.init(20, map, true, true);

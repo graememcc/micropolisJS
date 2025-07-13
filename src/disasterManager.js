@@ -7,14 +7,14 @@
  *
  */
 
-import { EventEmitter } from './eventEmitter';
-import * as Messages from './messages';
-import { MiscUtils } from './miscUtils';
-import { Random } from './random';
-import { SPRITE_AIRPLANE } from './spriteConstants';
-import { TileUtils } from './tileUtils';
-import * as TileValues from "./tileValues";
-import { ZoneUtils } from './zoneUtils';
+import { EventEmitter } from './eventEmitter.js';
+import * as Messages from './messages.ts';
+import { MiscUtils } from './miscUtils.js';
+import { Random } from './random.ts';
+import { SPRITE_AIRPLANE } from './spriteConstants.ts';
+import { TileUtils } from './tileUtils.js';
+import * as TileValues from "./tileValues.ts";
+import { ZoneUtils } from './zoneUtils.js';
 
 var DisasterManager = EventEmitter(function(map, spriteManager, gameLevel) {
   this._map = map;

@@ -7,8 +7,8 @@
  *
  */
 
-import { ANIMBIT, POWERBIT } from "./tileFlags";
-import { FOOTBALLGAME1, FOOTBALLGAME2, FULLSTADIUM, STADIUM } from "./tileValues";
+import { ANIMBIT, POWERBIT } from "./tileFlags.ts";
+import { FOOTBALLGAME1, FOOTBALLGAME2, FULLSTADIUM, STADIUM } from "./tileValues.ts";
 
 var emptyStadiumFound = function(map, x, y, simData) {
   simData.census.stadiumPop += 1;

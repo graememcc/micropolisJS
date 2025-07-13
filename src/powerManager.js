@@ -7,14 +7,14 @@
  *
  */
 
-import { BlockMap } from './blockMap';
-import { forEachCardinalDirection } from './direction';
-import { EventEmitter } from './eventEmitter';
-import { Position } from './position';
-import { NOT_ENOUGH_POWER } from './messages';
-import { Random } from './random';
-import { ANIMBIT, BURNBIT, CONDBIT, POWERBIT } from "./tileFlags";
-import { NUCLEAR, POWERPLANT } from "./tileValues";
+import { BlockMap } from './blockMap.ts';
+import { forEachCardinalDirection } from './direction.ts';
+import { EventEmitter } from './eventEmitter.js';
+import { Position } from './position.ts';
+import { NOT_ENOUGH_POWER } from './messages.ts';
+import { Random } from './random.ts';
+import { ANIMBIT, BURNBIT, CONDBIT, POWERBIT } from "./tileFlags.ts";
+import { NUCLEAR, POWERPLANT } from "./tileValues.ts";
 
 var COAL_POWER_STRENGTH = 700;
 var NUCLEAR_POWER_STRENGTH = 2000;

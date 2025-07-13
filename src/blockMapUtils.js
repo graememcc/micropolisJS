@@ -7,13 +7,13 @@
  *
  */
 
-import { BlockMap } from './blockMap';
-import { Commercial } from './commercial';
-import { Industrial } from './industrial';
-import { MiscUtils } from './miscUtils';
-import { Random } from './random';
-import { Residential } from './residential';
-import * as TileValues from "./tileValues";
+import { BlockMap } from './blockMap.ts';
+import { Commercial } from './commercial.js';
+import { Industrial } from './industrial.js';
+import { MiscUtils } from './miscUtils.js';
+import { Random } from './random.ts';
+import { Residential } from './residential.js';
+import * as TileValues from "./tileValues.ts";
 
 // Smoothing styles for map smoothing
 var SMOOTH_NEIGHBOURS_THEN_BLOCK = 0;

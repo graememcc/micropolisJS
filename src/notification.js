@@ -6,9 +6,10 @@
  * http://micropolisjs.graememcc.co.uk/COPYING
  *
  */
+import $ from "jquery";
 
-import { MiscUtils } from './miscUtils';
-import { Text } from './text';
+import { MiscUtils } from './miscUtils.js';
+import { Text } from './text.js';
 
 var TIMEOUT_SECS = 30;
 

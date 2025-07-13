@@ -1,13 +1,24 @@
-const path = require('path');
+import { CleanWebpackPlugin } from 'clean-webpack-plugin';
+import CopyPlugin from 'copy-webpack-plugin';
+import { GitRevisionPlugin } from 'git-revision-webpack-plugin';
+import HtmlWebpackPlugin  from 'html-webpack-plugin';
+import path from 'path';
 
-const CleanWebpackPlugin = require('clean-webpack-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
-const GitRevisionPlugin = require('git-revision-webpack-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ScriptExtHtmlPlugin = require('script-ext-html-webpack-plugin');
+// Workaround now this is a module...
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
 // const StripAssertionCode = require('ts-transformer-unassert').default;
 
-const HANDLE_TYPESCRIPT_WITH_ATL = {test: /\.ts$/, loader: "awesome-typescript-loader"};
+const ADD_TS_EXTENSIONS_TO_WEPACK = [".ts", ".tsx", ".js"];
+const SUPPORT_FULLY_QUALIFIED_TS_ESM_IMPORTS = {
+  ".js": [".js", ".ts"],
+  ".cjs": [".cjs", ".cts"],
+  ".mjs": [".mjs", ".mts"],
+};
+const HANDLE_TYPESCRIPT_WITH_TS_LOADER = { test: /\.([cm]?ts|tsx)$/, loader: "ts-loader" };
 
 const OUTPUT_DIRECTORY = 'dist';
 
@@ -16,18 +27,19 @@ function recursivelyCopy(dir) {
 }
 
 function cleanUpLeftovers() {
-  return new CleanWebpackPlugin(OUTPUT_DIRECTORY, {});
+  return new CleanWebpackPlugin();
 }
 
 function copyStaticAssets() {
-  return new CopyWebpackPlugin([
-    recursivelyCopy('css'),
-    recursivelyCopy('images'),
-    recursivelyCopy('sprites'),
-    recursivelyCopy('thirdparty'),
-    'LICENSE',
-    'COPYING',
-  ]);
+  return new CopyPlugin({
+    "patterns": [
+      recursivelyCopy('css'),
+      recursivelyCopy('images'),
+      recursivelyCopy('sprites'),
+      'LICENSE',
+      'COPYING',
+    ]
+  });
 }
 
 function injectBundleIntoHTML(gitHash) {
@@ -50,12 +62,6 @@ function injectBuildIdIntoAbout(gitHash) {
   });
 }
 
-function deferInjectedBundle() {
-  return new ScriptExtHtmlPlugin({
-    defaultAttribute: 'defer'
-  });
-}
-
 function addDevelopmentConfigTo(options) {
   options.devServer = {
     contentBase: `./${OUTPUT_DIRECTORY}`
@@ -66,9 +72,6 @@ function addDevelopmentConfigTo(options) {
 }
 
 function addProductionConfigTo(options) {
-  options.mode = 'production';
-
-  removeATLRuleFrom(options.module);
   /*
   const assertionStrippingConfig = {
     options: {
@@ -82,14 +85,10 @@ function addProductionConfigTo(options) {
   */
 }
 
-function removeATLRuleFrom(webpackModuleOptions) {
-  webpackModuleOptions.rules = webpackModuleOptions.rules.filter((rule) => rule !== HANDLE_TYPESCRIPT_WITH_ATL);
-}
-
 function getBuildId() {
   // Technically don't need to use the webpack plugin, as not passing it to Webpack...
   const gitPlugin = new GitRevisionPlugin({
-    commitHashCommand: `log -1 --pretty=format:'%h' master`
+    commitHashCommand: `log -1 --pretty=format:'%h' main`
   });
 
   return gitPlugin.commithash().slice(0, 12);
@@ -100,10 +99,14 @@ function commonOptions() {
 
   const options = {
     entry: './src/micropolis.js',
+    resolve: {
+      extensions: ADD_TS_EXTENSIONS_TO_WEPACK,
+      extensionAlias: SUPPORT_FULLY_QUALIFIED_TS_ESM_IMPORTS,
+    },
     module: {
       rules: [
-        HANDLE_TYPESCRIPT_WITH_ATL
-      ]
+        HANDLE_TYPESCRIPT_WITH_TS_LOADER,
+      ],
     },
     output: {
       path: path.resolve(__dirname, OUTPUT_DIRECTORY),
@@ -114,20 +117,14 @@ function commonOptions() {
       copyStaticAssets(),
       injectBundleIntoHTML(buildId),
       injectBuildIdIntoAbout(buildId),
-      deferInjectedBundle()
     ],
-    resolve: {
-      extensions: [
-        ".js", ".json", ".ts"
-      ]
-    }
   };
 
   return options;
 }
 
-module.exports = function(env, argv) {
-  const options = commonOptions();
+export default function(env, argv) {
+  let options = commonOptions();
 
   if (env.development) {
     addDevelopmentConfigTo(options);

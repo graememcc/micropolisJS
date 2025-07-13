@@ -7,17 +7,17 @@
  *
  */
 
-import { BuildingTool } from './buildingTool';
-import { BulldozerTool } from './bulldozerTool';
-import { EventEmitter } from './eventEmitter';
-import { QUERY_WINDOW_NEEDED } from './messages';
-import { MiscUtils } from './miscUtils';
-import { ParkTool } from './parkTool';
-import { RailTool } from './railTool';
-import { RoadTool } from './roadTool';
-import { QueryTool } from './queryTool';
-import * as TileValues from "./tileValues";
-import { WireTool } from './wireTool';
+import { BuildingTool } from './buildingTool.js';
+import { BulldozerTool } from './bulldozerTool.js';
+import { EventEmitter } from './eventEmitter.js';
+import { QUERY_WINDOW_NEEDED } from './messages.ts';
+import { MiscUtils } from './miscUtils.js';
+import { ParkTool } from './parkTool.js';
+import { RailTool } from './railTool.js';
+import { RoadTool } from './roadTool.js';
+import { QueryTool } from './queryTool.js';
+import * as TileValues from "./tileValues.ts";
+import { WireTool } from './wireTool.js';
 
 function GameTools(map) {
   var tools = EventEmitter({

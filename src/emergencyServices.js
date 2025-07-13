@@ -7,8 +7,8 @@
  *
  */
 
-import { Position } from './position';
-import { FIRESTATION, POLICESTATION } from "./tileValues";
+import { Position } from './position.ts';
+import { FIRESTATION, POLICESTATION } from "./tileValues.ts";
 
 var handleService = function(censusStat, budgetEffect, blockMap) {
   return function(map, x, y, simData) {

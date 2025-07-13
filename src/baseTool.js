@@ -7,10 +7,10 @@
  *
  */
 
-import { MiscUtils } from './miscUtils';
-import { TileUtils } from './tileUtils';
-import { DIRT, HBRIDGE, LASTTINYEXP, TINYEXP } from "./tileValues";
-import { WorldEffects } from './worldEffects';
+import { MiscUtils } from './miscUtils.js';
+import { TileUtils } from './tileUtils.js';
+import { DIRT, HBRIDGE, LASTTINYEXP, TINYEXP } from "./tileValues.ts";
+import { WorldEffects } from './worldEffects.js';
 
 var init = function(cost, map, shouldAutoBulldoze, isDraggable) {
   isDraggable = isDraggable || false;

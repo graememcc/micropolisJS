@@ -7,8 +7,8 @@
  *
  */
 
-import { BURNBIT, CONDBIT } from "./tileFlags";
-import { RUBBLE, ROADBASE } from "./tileValues";
+import { BURNBIT, CONDBIT } from "./tileFlags.ts";
+import { RUBBLE, ROADBASE } from "./tileValues.ts";
 
 function RepairManager(map) {
   this._map = map;

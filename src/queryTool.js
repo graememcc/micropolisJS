@@ -6,13 +6,14 @@
  * http://micropolisjs.graememcc.co.uk/COPYING
  *
  */
+import $ from "jquery";
 
-import { BaseTool } from './baseTool';
-import { Config } from './config';
-import { EventEmitter } from './eventEmitter';
-import { QUERY_WINDOW_NEEDED } from './messages';
-import { Text } from './text';
-import * as TileValues from "./tileValues";
+import { BaseTool } from './baseTool.js';
+import { Config } from './config.js';
+import { EventEmitter } from './eventEmitter.js';
+import { QUERY_WINDOW_NEEDED } from './messages.ts';
+import { Text } from './text.js';
+import * as TileValues from "./tileValues.ts";
 
 var makeTool = BaseTool.makeTool;
 var QueryTool = EventEmitter(makeTool(function(map) {

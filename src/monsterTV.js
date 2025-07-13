@@ -6,10 +6,11 @@
  * http://micropolisjs.graememcc.co.uk/COPYING
  *
  */
+import $ from "jquery";
 
-import { EventEmitter } from './eventEmitter';
-import { GameCanvas } from './gameCanvas';
-import { SPRITE_DYING, SPRITE_MOVED } from './messages';
+import { EventEmitter } from './eventEmitter.js';
+import { GameCanvas } from './gameCanvas.js';
+import { SPRITE_DYING, SPRITE_MOVED } from './messages.ts';
 
 var TIMEOUT_SECS = 10;
 

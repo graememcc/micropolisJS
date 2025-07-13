@@ -7,7 +7,7 @@
  *
  */
 
-import { MiscUtils } from './miscUtils';
+import { MiscUtils } from './miscUtils.js';
 
 var arrs = ['res', 'com', 'ind', 'crime',
             'money', 'pollution'];

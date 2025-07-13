@@ -6,8 +6,9 @@
  * http://micropolisjs.graememcc.co.uk/COPYING
  *
  */
+import $ from "jquery";
 
-import { MiscUtils } from './miscUtils';
+import { MiscUtils } from './miscUtils.js';
 
 /*
  *

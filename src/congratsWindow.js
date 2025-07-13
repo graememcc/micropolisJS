@@ -6,9 +6,10 @@
  * http://micropolisjs.graememcc.co.uk/COPYING
  *
  */
+import $ from "jquery";
 
-import { CONGRATS_WINDOW_CLOSED } from './messages';
-import { ModalWindow } from './modalWindow';
+import { CONGRATS_WINDOW_CLOSED } from './messages.ts';
+import { ModalWindow } from './modalWindow.js';
 
 var CongratsWindow = ModalWindow(function() {
   $(congratsFormID).on('submit', submit.bind(this));

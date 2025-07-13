@@ -7,14 +7,14 @@
  *
  */
 
-import { ConnectingTool } from './connectingTool';
-import { EventEmitter } from './eventEmitter';
-import { SOUND_EXPLOSIONLOW, SOUND_EXPLOSIONHIGH } from './messages';
-import { Random } from './random';
-import { ANIMBIT, BULLBIT } from "./tileFlags";
-import { TileUtils } from './tileUtils';
-import * as TileValues from "./tileValues";
-import { ZoneUtils } from './zoneUtils';
+import { ConnectingTool } from './connectingTool.js';
+import { EventEmitter } from './eventEmitter.js';
+import { SOUND_EXPLOSIONLOW, SOUND_EXPLOSIONHIGH } from './messages.ts';
+import { Random } from './random.ts';
+import { ANIMBIT, BULLBIT } from "./tileFlags.ts";
+import { TileUtils } from './tileUtils.js';
+import * as TileValues from "./tileValues.ts";
+import { ZoneUtils } from './zoneUtils.js';
 
 var BulldozerTool = EventEmitter(ConnectingTool(function(map) {
   this.init(10, map, true);

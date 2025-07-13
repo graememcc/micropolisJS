@@ -7,10 +7,10 @@
  *
  */
 
-import { ANIMBIT, BIT_MASK, POWERBIT, ZONEBIT } from './tileFlags';
-import { TileHistory } from './tileHistory';
-import { LASTTINYEXP, LIGHTNINGBOLT, TILE_COUNT, TILE_INVALID } from "./tileValues";
-import { TileUtils } from './tileUtils';
+import { ANIMBIT, BIT_MASK, POWERBIT, ZONEBIT } from './tileFlags.ts';
+import { TileHistory } from './tileHistory.js';
+import { LASTTINYEXP, LIGHTNINGBOLT, TILE_COUNT, TILE_INVALID } from "./tileValues.ts";
+import { TileUtils } from './tileUtils.js';
 
 
 function AnimationManager(map, animationPeriod, blinkPeriod) {

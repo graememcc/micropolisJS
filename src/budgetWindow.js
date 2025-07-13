@@ -6,10 +6,11 @@
  * http://micropolisjs.graememcc.co.uk/COPYING
  *
  */
+import $ from "jquery";
 
-import { BUDGET_WINDOW_CLOSED } from './messages';
-import { MiscUtils } from './miscUtils';
-import { ModalWindow } from './modalWindow';
+import { BUDGET_WINDOW_CLOSED } from './messages.ts';
+import { MiscUtils } from './miscUtils.js';
+import { ModalWindow } from './modalWindow.js';
 
 var BudgetWindow = ModalWindow(function() {
   $(budgetCancelID).on('click', cancel.bind(this));

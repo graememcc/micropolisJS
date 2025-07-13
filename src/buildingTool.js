@@ -7,10 +7,10 @@
  *
  */
 
-import { ConnectingTool } from './connectingTool';
-import { ANIMBIT, BNCNBIT, ZONEBIT } from "./tileFlags";
-import { DIRT } from "./tileValues";
-import { TileUtils } from './tileUtils';
+import { ConnectingTool } from './connectingTool.js';
+import { ANIMBIT, BNCNBIT, ZONEBIT } from "./tileFlags.ts";
+import { DIRT } from "./tileValues.ts";
+import { TileUtils } from './tileUtils.js';
 
 var BuildingTool = ConnectingTool(function(cost, centreTile, map, size, animated) {
   this.init(cost, map, false);

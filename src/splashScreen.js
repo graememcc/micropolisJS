@@ -6,13 +6,14 @@
  * http://micropolisjs.graememcc.co.uk/COPYING
  *
  */
+import $ from "jquery";
 
-import { Config } from './config';
-import { Game } from './game';
-import { MapGenerator } from './mapGenerator';
-import { Simulation } from './simulation';
-import { SplashCanvas } from './splashCanvas';
-import { Storage } from './storage';
+import { Config } from './config.js';
+import { Game } from './game.js';
+import { MapGenerator } from './mapGenerator.js';
+import { Simulation } from './simulation.js';
+import { SplashCanvas } from './splashCanvas.js';
+import { Storage } from './storage.js';
 
 /*
  *

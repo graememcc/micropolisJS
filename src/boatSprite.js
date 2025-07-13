@@ -7,14 +7,14 @@
  *
  */
 
-import { BaseSprite } from './baseSprite';
-import { SHIP_CRASHED, SOUND_HONKHONK } from './messages';
-import { MiscUtils } from './miscUtils';
-import { Random } from './random';
-import { SPRITE_SHIP } from './spriteConstants';
-import { SpriteConstants } from './spriteConstants';
-import { SpriteUtils } from './spriteUtils';
-import * as TileValues from "./tileValues";
+import { BaseSprite } from './baseSprite.js';
+import { SHIP_CRASHED, SOUND_HONKHONK } from './messages.ts';
+import { MiscUtils } from './miscUtils.js';
+import { Random } from './random.ts';
+import { SPRITE_SHIP } from './spriteConstants.ts';
+import { SpriteConstants } from './spriteConstants.ts';
+import { SpriteUtils } from './spriteUtils.js';
+import * as TileValues from "./tileValues.ts";
 
 function BoatSprite(map, spriteManager, x, y) {
   this.init(SPRITE_SHIP, map, spriteManager, x, y);

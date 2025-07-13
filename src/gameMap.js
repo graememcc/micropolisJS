@@ -7,13 +7,13 @@
  *
  */
 
-import { Bounds } from "./bounds";
-import * as Direction from './direction';
-import { MiscUtils } from './miscUtils';
-import { Position } from './position';
-import { Tile } from './tile';
-import { BNCNBIT, ZONEBIT } from "./tileFlags";
-import { TILE_INVALID } from "./tileValues";
+import { Bounds } from "./bounds.ts";
+import * as Direction from './direction.ts';
+import { MiscUtils } from './miscUtils.js';
+import { Position } from './position.ts';
+import { Tile } from './tile.ts';
+import { BNCNBIT, ZONEBIT } from "./tileFlags.ts";
+import { TILE_INVALID } from "./tileValues.ts";
 
 function GameMap(width, height, defaultValue) {
   if (!(this instanceof GameMap))

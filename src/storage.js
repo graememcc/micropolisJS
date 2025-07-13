@@ -7,7 +7,7 @@
  *
  */
 
-import { MiscUtils } from './miscUtils';
+import { MiscUtils } from './miscUtils.js';
 
 // A very thin wrapper around localStorage, in case we wish to move to some other storage mechanism
 // (such as indexedDB) in the future
