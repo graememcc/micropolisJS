@@ -5,6 +5,10 @@
  * consult http://micropolisjs.graememcc.co.uk/LICENSE and
  * http://micropolisjs.graememcc.co.uk/COPYING
  *
+ * The name/term "MICROPOLIS" is a registered trademark of Micropolis (https://www.micropolis.com) GmbH
+ * (Micropolis Corporation, the "licensor") and is licensed here to the authors/publishers of the "Micropolis"
+ * city simulation game and its source code (the project or "licensee(s)") as a courtesy of the owner.
+ *
  */
 
 @import url(https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,300italic,400italic);
@@ -39,7 +43,7 @@ footer {
   left: 0;
   right: 0;
   bottom: 0px;
-  height: 35px;
+  height: 5em;
   background-color: darkslategray;
 }
 
@@ -62,7 +66,9 @@ main {
   overflow: hidden;
 }
 
-nav a, nav a:link, nav a:visited, nav a:hover, footer a, footer a:link, footer a:visited, footer a:hover #aboutHeader a, #aboutHeader a:link, #aboutHeader a:visited, #aboutHeader a:hover{
+nav a, nav a:link, nav a:visited, nav a:hover, footer a, footer a:link, footer a:visited, footer a:hover,
+#aboutHeader a, #aboutHeader a:link, #aboutHeader a:visited, #aboutHeader a:hover,
+#licenseHeader a, #licenseHeader a:link, #licenseHeader a:visited, #licenseHeader a:hover {
   text-decoration: none;
   color: white;
 }
@@ -297,6 +303,11 @@ nav li {
 
 .z1 {
   z-index: 1;
+}
+
+.nameLicense {
+  margin-top: 1em;
+  margin-bottom: 0.5em;
 }
 
 #budgetForm > div:nth-child(9) {
@@ -613,16 +624,16 @@ nav li {
 }
 
 @media (max-height: 742px) {
- footer {
-    height: 15px;
-  }
-
   header {
     height: 15px;
   }
 
   main {
     bottom: 35px;
+  }
+
+  footer {
+    height: 4em;
   }
 
   .border-bottom {
@@ -842,13 +853,13 @@ nav li {
 
 /* About/nag page styles */
 
-#aboutMain {
+#aboutMain, #licenseMain {
   position: relative;
   top: 50px;
   margin-bottom: 100px;
 }
 
-#aboutContainer {
+#aboutContainer, #licenseContainer {
   position: relative;
   left: 50%;
   border: 1px solid black;
@@ -858,11 +869,11 @@ nav li {
   transform: translate(-50%);
 }
 
-#aboutContainer p, #aboutContainer li, #aboutContainer h3 {
+#aboutContainer p, #aboutContainer li, #aboutContainer h3, #licenseContainer p, #licenseContainer li, #licenseContainer h3 {
   margin: 10px;
 }
 
-#aboutContainer h3 {
+#aboutContainer h3, #licenseContainer h3 {
   margin-top: 20px;
 }
 
@@ -870,7 +881,7 @@ nav li {
   margin-left: 50px;
 }
 
-#aboutFooter {
+#aboutFooter, #licenseFooter {
   position: relative;
 }
 
@@ -883,9 +894,16 @@ nav li {
   background-color: lightyellow;
 }
 
-#aboutMain a, #aboutMain a:link, #aboutMain a:visited, #aboutMain a:hover #nagContainer a, #nagContainer a:link, #nagContainer a:visited, #nagContainer a:hover {
+#aboutMain a, #aboutMain a:link, #aboutMain a:visited, #aboutMain a:hover,
+#licenseMain a, #licenseMain a:link, #licenseMain a:visited, #licenseMain a:hover,
+#nagContainer a, #nagContainer a:link, #nagContainer a:visited, #nagContainer a:hover {
   text-decoration: none;
   color: dodgerblue;
+}
+
+#licenseContainer ol {
+  margin-left: 3em;
+  margin-right: 3em;
 }
 
 /* Pre refactoring below */
